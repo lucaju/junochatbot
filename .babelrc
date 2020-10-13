@@ -1,0 +1,14 @@
+{
+	"presets": ["@babel/preset-env", "@babel/preset-react"],
+	"plugins": [[
+        "@babel/plugin-transform-runtime",
+        {
+            "corejs": 3,
+            "helpers": false,
+            "proposals": true,
+            "regenerator": true,
+            "useESModules": true,
+            "version": "^7.11.2"
+        }
+    ]]
+}

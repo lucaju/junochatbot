@@ -1,0 +1,27 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": ["eslint:recommended", "plugin:react/recommended"],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parser": "babel-eslint",
+	"parserOptions": {
+		"allowImportExportEverywhere": true,
+		"ecmaVersion": 2020,
+		"sourceType": "module"
+	},
+	"rules": {
+		"linebreak-style": ["error", "unix"],
+		"quotes": [2, "single"],
+		"no-multi-spaces": 0,
+		"no-trailing-spaces": 0,
+		"no-unused-vars": 2,
+		"semi": ["error", "always"],
+		"require-await": ["error"]
+	}
+}
