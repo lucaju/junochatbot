@@ -24,10 +24,10 @@ app.use(express.static('./build'));
 // app.use('/assets', express.static('./build/assets'));
 
 // catch all
-// app.get('*', (req, res) => {
-// 	console.log('catch all');
-// 	res.status(200).sendFile(path.join(publicPath, 'index.html'));
-// });
+app.get('*', (req, res) => {
+	// console.log('catch all');
+	res.status(200).sendFile(path.join(publicPath, 'index.html'));
+});
 
 // error
 // app.use((req, res) => res.status(404).send('404: Page not Found'));
