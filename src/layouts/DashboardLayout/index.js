@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Container, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import NavBar from './NavBar';
 import TopBar from './TopBar';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,10 +17,9 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     overflow: 'hidden',
     paddingTop: 64,
-    maxWidth: 1200,
-    // [theme.breakpoints.up('lg')]: {
-    //   paddingLeft: 256,
-    // },
+    [theme.breakpoints.up('lg')]: {
+      paddingLeft: 256,
+    },
   },
   contentContainer: {
     display: 'flex',
@@ -33,21 +33,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainLayout = () => {
+const DashboardLayout = () => {
   const classes = useStyles();
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
     <div className={classes.root}>
-      <TopBar />
-      <Container className={classes.wrapper}>
+      <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
+      <NavBar
+        onMobileClose={() => setMobileNavOpen(false)}
+        openMobile={isMobileNavOpen}
+      />
+      <div className={classes.wrapper}>
         <div className={classes.contentContainer}>
           <div className={classes.content}>
             <Outlet />
           </div>
         </div>
-      </Container>
+      </div>
     </div>
   );
 };
 
-export default MainLayout;
+export default DashboardLayout;

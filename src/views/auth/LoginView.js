@@ -6,15 +6,13 @@ import {
   Box,
   Button,
   Container,
-  Grid,
   Link,
   TextField,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-// import FacebookIcon from 'src/icons/Facebook';
-// import GoogleIcon from 'src/icons/Google';
-import Page from '../../components/Page';
+import Page from 'src/components/Page';
+import Logo from 'src/components/Logo';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +21,16 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
   },
+  container: {
+    marginTop: theme.spacing(8),
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+  },
+  logo: {
+		marginBottom: theme.spacing(4),
+		width: 256,
+	},
 }));
 
 const LoginView = () => {
@@ -37,17 +45,19 @@ const LoginView = () => {
         height="100%"
         justifyContent="center"
       >
-        <Container maxWidth="xs">
-          <img
-            className={classes.logo}
-            src="./assets/logo.png"
-            alt="Chat Stories"
-            width="250"
-          />
+        <Container maxWidth="xs" className={classes.container}>
+          <Logo className={classes.logo} />
+          <Typography
+            component="h1" 
+            variant="h5"
+            color="textPrimary"
+          >
+            Sign in
+          </Typography>
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123',
+              email: '',
+              password: '',
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
@@ -70,45 +80,6 @@ const LoginView = () => {
               values,
             }) => (
               <form onSubmit={handleSubmit}>
-                {/* <Box mb={3}>
-                  <Typography color="textPrimary" variant="h2">
-                    Sign in
-                  </Typography>
-                </Box>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={6}>
-                    <Button
-                      color="primary"
-                      fullWidth
-                      // startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Button
-                      fullWidth
-                      // startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid> */}
-                <Box mt={3} mb={1}>
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
-                  </Typography>
-                </Box>
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
@@ -144,15 +115,12 @@ const LoginView = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign in now
+                    Sign in
                   </Button>
                 </Box>
-                <Typography color="textSecondary" variant="body1">
-                  Don&apos;t have an account?{' '}
-                  <Link component={RouterLink} to="/register" variant="h6">
-                    Sign up
-                  </Link>
-                </Typography>
+                <Link component={RouterLink} to="/register" variant="body1">
+                  Forgot password?
+                </Link>
               </form>
             )}
           </Formik>
