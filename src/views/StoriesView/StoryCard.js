@@ -3,8 +3,9 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
   Box,
+  Button,
   Card,
-  CardActionArea,
+  CardActions,
   CardContent,
   CardMedia,
   colors,
@@ -12,12 +13,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import AdbIcon from '@material-ui/icons/Adb';
+import {useRefresh} from 'muuri-react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 325,
+    width: 325,
   },
-  noImage: {
+  noMedia: {
     backgroundColor: theme.palette.background.default,
   },
   media: {
@@ -37,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   authors: {
     textTransform: 'uppercase',
   },
+  icon: {
+    marginTop: theme.spacing(0.5)
+  }
 }));
 
 const StoryCard = ({ story, className, ...rest }) => {
@@ -54,49 +59,56 @@ const StoryCard = ({ story, className, ...rest }) => {
     setElevation(0);
   };
 
+  useRefresh([hover]);
+
   return (
     <Card
-      className={clsx(classes.root, className, !story.image && classes.noImage)}
+      className={clsx(classes.root, className, !story.image && classes.noMedia)}
       elevation={elevation}
       {...rest}
-      onMouseOver={mouseOver}
-      onMouseOut={mouseOut}
+      onMouseEnter={mouseOver}
+      onMouseLeave={mouseOut}
     >
-      <CardActionArea>
-        {story.image && (
-          <CardMedia
-            className={classes.media}
-            image={`/assets/stories/images/${story.image}`}
-            title={story.title}
-          />
-        )}
-        <CardContent>
-          <Box display="flex" alignItems="center">
-            <AdbIcon fontSize="small" />
-            <Typography color="textSecondary" variant="h6">
-              {story.title}
+      {story.image && (
+        <CardMedia
+          className={classes.media}
+          image={`/assets/stories/images/${story.image}`}
+          title={story.title}
+        />
+      )}
+      <CardContent>
+        <Box display="flex" alignItems="c">
+          <AdbIcon fontSize="small" className={classes.icon}/>
+          <Typography color="textSecondary" variant="h6">
+            {story.title}
+          </Typography>
+          <Box flexGrow={1} />
+          <div className={clsx(classes.label, hover && classes.labelHover)}>
+            <Typography
+              color="textSecondary"
+              variant="overline"
+              className={classes.year}
+            >
+              {story.year}
             </Typography>
-            <Box flexGrow={1} />
-            <div className={clsx(classes.label, hover && classes.labelHover)}>
-              <Typography
-                color="textSecondary"
-                variant="overline"
-                className={classes.year}
-              >
-                {story.year}
-              </Typography>
-            </div>
-          </Box>
-          <Box mt={1} display="flex" alignItems="flex-start">
-            <Typography className={classes.authors} variant="caption">
-              <span>{story.authors.join(' • ')}</span>
-            </Typography>
-          </Box>
-          <Box mt={1} display="flex" alignItems="center">
-            <Typography variant="body2">{story.description}</Typography>
-          </Box>
-        </CardContent>
-      </CardActionArea>
+          </div>
+        </Box>
+        <Box mt={1} display="flex" alignItems="flex-start">
+          <Typography className={classes.authors} variant="caption">
+            <span>{story.authors.join(' • ')}</span>
+          </Typography>
+        </Box>
+        <Box mt={1} display="flex" alignItems="center">
+          <Typography variant="body2">{story.description}</Typography>
+        </Box>
+      </CardContent>
+      {hover && (
+        <CardActions disableSpacing>
+          <Button>Edit</Button>
+          <Box flexGrow={1} />
+          <Button variant="outlined">Play</Button>
+        </CardActions>
+      )}
     </Card>
   );
 };
