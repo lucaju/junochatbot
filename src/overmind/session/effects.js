@@ -78,8 +78,7 @@ const dataStories = [
     category: 'Documentary',
     authors: ['Luciano Frizzera'],
     year: 2021,
-    description:
-      'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
+    description: ''
   },
   {
     title: 'Carbon',
@@ -87,8 +86,7 @@ const dataStories = [
     category: 'Sci-Fi',
     authors: ['Julia Salles'],
     year: 2021,
-    description:
-      'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
+    description: ''
   },
   {
     title: 'Silicon',
