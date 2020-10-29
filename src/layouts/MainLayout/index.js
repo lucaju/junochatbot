@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { Container, makeStyles } from '@material-ui/core';
-import TopBar from './TopBar';
+import TopBar from './Topbar';
 import { useApp } from 'src/overmind';
 
 const useStyles = makeStyles((theme) => ({
