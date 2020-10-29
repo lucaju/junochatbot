@@ -1,7 +1,8 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { Container, makeStyles } from '@material-ui/core';
 import TopBar from './TopBar';
+import { useApp } from 'src/overmind';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,17 +36,30 @@ const useStyles = makeStyles((theme) => ({
 
 const MainLayout = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const { state } = useApp();
+
+  const isSignedIn = state.session.isSignedIn;
+
+  useEffect(() => {
+    if (!isSignedIn) navigate('/login', { replace: true });
+    return () => {};
+  }, []);
 
   return (
     <div className={classes.root}>
-      <TopBar />
-      <Container className={classes.wrapper}>
-        <div className={classes.contentContainer}>
-          <div className={classes.content}>
-            <Outlet />
-          </div>
-        </div>
-      </Container>
+      {isSignedIn && (
+        <>
+          <TopBar />
+          <Container className={classes.wrapper}>
+            <div className={classes.contentContainer}>
+              <div className={classes.content}>
+                <Outlet />
+              </div>
+            </div>
+          </Container>
+        </>
+      )}
     </div>
   );
 };

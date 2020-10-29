@@ -1,12 +1,8 @@
+import { derived } from 'overmind';
+
 export const state = {
-  user: {
-    name: 'Luciano Frizzera',
-    role: 'admin',
-    email: 'lucaju@gmail.com',
-    avatar: 'lucaju.jpg',
-    language: 'en',
-    group: null,
-  },
-  stories: [],
+  user: null,
+  isSignedIn: derived((state) => state.user !== null),
+  stories: null,
   story: null,
 };

@@ -1,3 +1,30 @@
+export const auth = {
+  authenticateWithCredentials: async ({ email, password }) => {
+    //access endpoint
+    // const response = await fetch('/general/settings');
+    // return await response.json();
+
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(authUser);
+      }, 3000);
+    });
+  },
+  authenticateWithToken: async (token) => {
+    // if (token) requestOptions.headers['chatStoriesToken'] = token;
+
+    //access endpoint
+    // const response = await fetch('/general/settings');
+    // return await response.json();
+
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(authUser);
+      }, 3000);
+    });
+  },
+};
+
 export const stories = {
   getStories: async () => {
     //access endpoint
@@ -10,6 +37,16 @@ export const stories = {
       }, 3000);
     });
   },
+};
+
+const authUser = {
+  name: 'Luciano Frizzera',
+  role: 'admin',
+  email: 'lucaju@gmail.com',
+  avatar: 'lucaju.jpg',
+  language: 'en',
+  group: null,
+  token: 'TOKEN-123',
 };
 
 const dataStories = [
@@ -78,8 +115,7 @@ const dataStories = [
     category: 'Documentary',
     authors: ['Luciano Frizzera'],
     year: 2021,
-    description:
-      'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
+    description: '',
   },
   {
     title: 'Carbon',
@@ -87,8 +123,7 @@ const dataStories = [
     category: 'Sci-Fi',
     authors: ['Julia Salles'],
     year: 2021,
-    description:
-      'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
+    description: '',
   },
   {
     title: 'Silicon',
