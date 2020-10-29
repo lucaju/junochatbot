@@ -7,7 +7,7 @@ const Page = forwardRef(({ children, title = '', ...rest }, ref) => {
   return (
     <div ref={ref} {...rest}>
       <Helmet>
-        <title>{title}</title>
+        <title>Chat Stories - {title}</title>
       </Helmet>
       {children}
     </div>

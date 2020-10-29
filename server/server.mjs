@@ -26,7 +26,7 @@ app.use(express.static('./build'));
 // catch all
 app.get('*', (req, res) => {
 	// console.log('catch all');
-	res.set('Content-Type', 'text/event-stream');
+	// res.set('Content-Type', 'text/event-stream');
 	res.status(200).sendFile(path.join(publicPath, 'index.html'));
 });
 

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
 import {
   Box,
   CircularProgress,
   Container,
   makeStyles,
 } from '@material-ui/core';
+import { MuuriComponent } from 'muuri-react';
+import React, { useEffect, useState } from 'react';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
-import StoryCard from './StoryCard';
 import AddStoryCard from './AddStoryCard';
 import NoStories from './NoStories';
-import { MuuriComponent } from 'muuri-react';
+import StoryCard from './StoryCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     margin: 20,
   },
   spinner: {
-    marginTop: '25%'
-  }
+    marginTop: '25%',
+  },
 }));
 
 const title = 'My Stories';
@@ -56,10 +56,9 @@ const Stories = () => {
     return () => {};
   }, [isLoaded]);
 
-  const stories =
-    state.session.stories.length > 0
-      ? [AddStoryCard, ...state.session.stories]
-      : null;
+  const stories = state.session.stories
+    ? [AddStoryCard, ...state.session.stories]
+    : null;
 
   return (
     <Page className={classes.root} title={title}>
@@ -71,7 +70,11 @@ const Stories = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <CircularProgress className={classes.spinner} size={60} thickness={4} />
+            <CircularProgress
+              className={classes.spinner}
+              size={60}
+              thickness={4}
+            />
           </Box>
         )}
         {isLoaded && stories && (
