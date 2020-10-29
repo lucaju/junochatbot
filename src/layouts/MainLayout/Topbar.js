@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     width: 32,
     height: 32,
-    // marginRight: theme.spacing(1),
   },
 }));
 
@@ -65,8 +64,12 @@ const TopBar = ({ className, ...rest }) => {
             <Logo className={classes.logo} />
           </RouterLink>
           <Box className={classes.leftMenu}>
-          {LeftMenu.map((item) => {
-              if (item.restricted && !item.restricted.includes(state.session.user.role)) return;
+            {LeftMenu.map((item) => {
+              if (
+                item.restricted &&
+                !item.restricted.includes(state.session.user.role)
+              )
+                return;
               return (
                 <Button component={RouterLink} key={item.title} to={item.href}>
                   {item.title}
@@ -81,7 +84,11 @@ const TopBar = ({ className, ...rest }) => {
           <Box flexGrow={1} />
           <Box className={classes.rightMenu}>
             {RightMenu.map((item) => {
-              if (item.restricted && !item.restricted.includes(state.session.user.role)) return;
+              if (
+                item.restricted &&
+                !item.restricted.includes(state.session.user.role)
+              )
+                return;
               return (
                 <Button component={RouterLink} key={item.title} to={item.href}>
                   {item.title}
