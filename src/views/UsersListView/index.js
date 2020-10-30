@@ -4,13 +4,12 @@ import {
   Container,
   makeStyles,
 } from '@material-ui/core';
-import { MuuriComponent } from 'muuri-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
-import AddStoryCard from './AddStoryCard';
-import NoStories from './NoStories';
-import StoryCard from './StoryCard';
+import Results from './Results';
+import Toolbar from './Toolbar';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,35 +18,29 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
   },
-  grid: {
-    position: 'relative',
-    maxWidth: 1280,
-    margin: '0 -10px',
-    '-moz-box-sizing': 'content-box',
-    '-webkit-box-sizing': 'content-box',
-    boxSizing: 'content-box',
-  },
-  item: {
-    margin: 20,
-  },
-  spinner: {
-    marginTop: '25%',
-  },
 }));
 
-const title = 'My Stories';
+const title = 'Users';
 
-const Stories = () => {
+const UsersListView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const userTypeAllowed = ['admin', 'instructor'];
+    if (!userTypeAllowed.includes(state.session.user.role)) {
+      navigate('/', { replace: true });
+    }
+    return () => {};
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      await actions.session.getStories();
+      await actions.users.getUsers();
       setIsLoaded(true);
       setIsLoading(false);
     };
@@ -55,10 +48,6 @@ const Stories = () => {
     actions.ui.updateTitle(title);
     return () => {};
   }, [isLoaded]);
-
-  const stories = state.session.stories
-    ? [AddStoryCard, ...state.session.stories]
-    : null;
 
   return (
     <Page className={classes.root} title={title}>
@@ -77,25 +66,17 @@ const Stories = () => {
             />
           </Box>
         )}
-        {isLoaded && stories && (
-          <MuuriComponent>
-            {stories.map((story, index) => {
-              return index === 0 ? (
-                <AddStoryCard className={classes.item} key="addCard" />
-              ) : (
-                <StoryCard
-                  className={classes.item}
-                  key={story.title}
-                  story={story}
-                />
-              );
-            })}
-          </MuuriComponent>
+        {isLoaded && (
+          <>
+            <Toolbar />
+            <Box mt={3}>
+              <Results users={state.users.list} />
+            </Box>
+          </>
         )}
-        {isLoaded && !stories && <NoStories />}
       </Container>
     </Page>
   );
 };
 
-export default Stories;
+export default UsersListView;

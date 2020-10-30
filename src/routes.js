@@ -8,6 +8,7 @@ import MainLayout from './layouts/MainLayout';
 import LoginView from './views/auth/LoginView';
 import NotFoundView from './views/errors/NotFoundView';
 import StoriesView from './views/StoriesView';
+import UsersListView from './views/UsersListView';
 
 // * react-router-dom REFERENCES:
 // https://medium.com/frontend-digest/whats-new-in-react-router-6-732b06cc83e4
@@ -33,7 +34,7 @@ const routes = [
     element: <MainLayout />,
     children: [
       { path: '/', element: <StoriesView /> },
-      // { path: 'users', element: <UsersView /> },
+      { path: 'users', element: <UsersListView /> },
     ],
   },
   {
