@@ -37,12 +37,16 @@ const useStyles = makeStyles((theme) => ({
 const MainLayout = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { state } = useApp();
+  const { state, actions } = useApp();
 
   const isSignedIn = state.session.isSignedIn;
 
   useEffect(() => {
-    if (!isSignedIn) navigate('/login', { replace: true });
+    const checkUser = async () => {
+      const isSignIn = await actions.session.signedIn();
+      if (!isSignIn) navigate('/login', { replace: true });
+    };
+    checkUser();
     return () => {};
   }, []);
 

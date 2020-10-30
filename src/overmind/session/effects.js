@@ -7,7 +7,7 @@ export const auth = {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(authUser);
-      }, 3000);
+      }, 1000);
     });
   },
   authenticateWithToken: async (token) => {
@@ -20,7 +20,7 @@ export const auth = {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(authUser);
-      }, 3000);
+      }, 1000);
     });
   },
 };
@@ -34,7 +34,7 @@ export const stories = {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(dataStories);
-      }, 3000);
+      }, 1000);
     });
   },
 };
