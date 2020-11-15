@@ -1,8 +1,10 @@
 export const auth = {
   authenticateWithCredentials: async ({ email, password }) => {
-    //access endpoint
-    // const response = await fetch('/general/settings');
-    // return await response.json();
+    // //access endpoint
+    // const response = await fetch('https://api.chatstories.ca/admin/projects/all');
+    // console.log(response);
+    // const result  = await response.json();
+    // console.log(result);
 
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -30,6 +32,15 @@ export const stories = {
     //access endpoint
     // const response = await fetch('/general/settings');
     // return await response.json();
+
+    //
+
+     //access endpoint
+     const response = await fetch('https://api.chatstories.ca/admin/projects/all');
+    //  const response = await fetch('https://api.localhost/admin/projects/all');
+     console.log(response);
+     const result  = await response.json();
+     console.log(result);
 
     return await new Promise((resolve, reject) => {
       setTimeout(() => {

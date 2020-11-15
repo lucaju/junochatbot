@@ -54,7 +54,7 @@ const Stories = () => {
     fetchData();
     actions.ui.updateTitle(title);
     return () => {};
-  }, [isLoaded]);
+  }, []);
 
   const stories = state.session.stories
     ? [AddStoryCard, ...state.session.stories]
