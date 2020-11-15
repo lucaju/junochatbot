@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Results = ({ className, users, ...rest }) => {
+const Results = ({ handleDetailOpen, className, users, ...rest }) => {
   const classes = useStyles();
   // const [selecteduserIds, setSelecteduserIds] = useState([]);
   const [limit, setLimit] = useState(10);
@@ -181,6 +181,7 @@ const Results = ({ className, users, ...rest }) => {
 Results.propTypes = {
   className: PropTypes.string,
   users: PropTypes.array.isRequired,
+  handleDetailOpen: PropTypes.func,
 };
 
 export default Results;

@@ -2,14 +2,15 @@ import {
   Box,
   CircularProgress,
   Container,
-  makeStyles,
+  makeStyles
 } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
+import Details from './Details';
 import Results from './Results';
 import Toolbar from './Toolbar';
-import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +28,8 @@ const UsersListView = () => {
   const { state, actions } = useApp();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [detailsOpen, setDetailsOpen] = React.useState(false);
+  const [currentUserId, setCurrentUserId] = React.useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,9 +52,20 @@ const UsersListView = () => {
     return () => {};
   }, [isLoaded]);
 
+  const handleDetailOpen = (id) => {
+    setCurrentUserId(id);
+    setDetailsOpen(true);
+  };
+
+  const handleDetailClose = () => {
+    setCurrentUserId(null);
+    setDetailsOpen(false);
+  };
+
   return (
     <Page className={classes.root} title={title}>
       <Container maxWidth={false}>
+      <Details open={detailsOpen} handleDetailClose={handleDetailClose} userId={currentUserId}/>
         {!isLoaded && isLoading && (
           <Box
             display="flex"
@@ -68,9 +82,9 @@ const UsersListView = () => {
         )}
         {isLoaded && (
           <>
-            <Toolbar />
+            <Toolbar handleDetailOpen={handleDetailOpen}/>
             <Box mt={3}>
-              <Results users={state.users.list} />
+              <Results users={state.users.list} handleDetailOpen={handleDetailOpen}/>
             </Box>
           </>
         )}

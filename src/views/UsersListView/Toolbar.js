@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ handleDetailOpen, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -33,6 +33,7 @@ const Toolbar = ({ className, ...rest }) => {
           color="primary"
           variant="contained"
           startIcon={<AddCircleOutlineIcon />}
+          onClick={handleDetailOpen}
         >
           Add user
         </Button>
@@ -68,6 +69,7 @@ const Toolbar = ({ className, ...rest }) => {
 
 Toolbar.propTypes = {
   className: PropTypes.string,
+  handleDetailOpen: PropTypes.func
 };
 
 export default Toolbar;
