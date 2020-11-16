@@ -21,18 +21,19 @@ export const authenticate = async (
   { state, effects },
   { email = null, password = null, token = null }
 ) => {
-  let user;
+  let res;
   if (token) {
-    user = await effects.session.auth.authenticateWithToken(token);
+    res = await effects.session.auth.authenticateWithToken(token);
   } else {
-    user = await effects.session.auth.authenticateWithCredentials({
+    res = await effects.session.auth.authenticateWithCredentials({
       email,
       password,
     });
-    Cookies.set('chatStoriesToken', user.token);
+    Cookies.set('chatStoriesToken', res.user.token);
   }
-  state.session.user = user;
-  return user;
+  if (res.error) return res;
+  state.session.user = res.user;
+  return res.user;
 };
 
 export const getStories = async ({ state, effects }) => {

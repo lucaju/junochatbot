@@ -8,7 +8,9 @@ export const auth = {
 
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(authUser);
+        // const res = { error: 'fail' };
+        const res = { user: authUser };
+        resolve(res);
       }, 1000);
     });
   },
@@ -21,7 +23,9 @@ export const auth = {
 
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(authUser);
+        // const res = { error: 'fail' };
+        const res = { user: authUser };
+        resolve(res);
       }, 1000);
     });
   },

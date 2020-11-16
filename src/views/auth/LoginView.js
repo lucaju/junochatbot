@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     marginLeft: '45%',
   },
+  error: {
+    color: theme.palette.secondary.light,
+    textAlign: 'center',
+  }
 }));
 
 const LoginView = () => {
@@ -44,11 +48,13 @@ const LoginView = () => {
   const navigate = useNavigate();
   const { state, actions } = useApp();
   const [isAuthenticating, setIsAuthenticating] = useState(null);
+  const [error, setError] = useState();
 
   const hasToken = actions.session.getUserToken();
 
   const authenticate = async (values) => {
-    await actions.session.authenticate(values);
+    const result = await actions.session.authenticate(values);
+    if (result.error) setError(result.error);
   };
 
   useEffect(() => {
@@ -93,6 +99,12 @@ const LoginView = () => {
             <Typography component="h1" variant="h5" color="textPrimary">
               Sign in
             </Typography>
+            {error &&
+              <Typography component="h2" variant="subtitle1" className={classes.error}>
+                {`Unknown username.
+                Check again or try your email address.`}
+              </Typography>
+            }
             <Formik
               initialValues={{
                 email: 'lucaju@gmail.com',
