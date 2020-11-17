@@ -1,11 +1,63 @@
-export const getUsers = async () => {
+export const getUsers = async (filter) => {
   //access endpoint
   // const response = await fetch('/general/settings');
   // return await response.json();
 
   return await new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(dataUsers);
+      let result = dataUsers;
+      if (filter?.group) {
+        result = result.filter((user) => user.group === filter.group);
+      }
+      resolve(result);
+    }, 1000);
+  });
+};
+
+export const getUser = async (userId) => {
+  //access endpoint
+  // const response = await fetch('/general/settings');
+  // return await response.json();
+
+  return await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(dataUsers.find((user) => user.id === userId));
+    }, 1000);
+  });
+};
+
+export const addUser = async (userData) => {
+  //access endpoint
+  // const response = await fetch('/general/settings');
+  // return await response.json();
+
+  return await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ id: 497 });
+    }, 1000);
+  });
+};
+
+export const updateUser = async (userData) => {
+  //access endpoint
+  // const response = await fetch('/general/settings');
+  // return await response.json();
+
+  return await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ success: true });
+    }, 1000);
+  });
+};
+
+export const deleteUser = async (userId) => {
+  //access endpoint
+  // const response = await fetch('/general/settings');
+  // return await response.json();
+
+  return await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ success: true });
     }, 1000);
   });
 };
@@ -13,10 +65,13 @@ export const getUsers = async () => {
 const dataUsers = [
   {
     id: 1,
-    name: 'Ekaterina Tankova',
+    firstName: 'Ekaterina',
+    lastName: 'Tankova',
     avatarUrl: '/static/images/avatars/avatar_3.png',
     email: 'ekaterina.tankova@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'Dawson Cegep',
     stories: [
       {
         id: 1,
@@ -30,10 +85,13 @@ const dataUsers = [
   },
   {
     id: 2,
-    name: 'Cao Yu',
+    firstName: 'Cao',
+    lastName: 'Yu',
     avatarUrl: '/static/images/avatars/avatar_4.png',
     email: 'cao.yu@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'Dawson Cegep',
     stories: [
       {
         id: 1,
@@ -47,10 +105,13 @@ const dataUsers = [
   },
   {
     id: 3,
-    name: 'Alexa Richardson',
+    firstName: 'Alexa',
+    lastName: 'Richardson',
     avatarUrl: '/static/images/avatars/avatar_2.png',
     email: 'alex.ri@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'Dawson Cegep',
     stories: [
       {
         id: 1,
@@ -64,10 +125,13 @@ const dataUsers = [
   },
   {
     id: 4,
-    name: 'Anje Keizer',
+    firstName: 'Anje',
+    lastName: 'Keizer',
     avatarUrl: '/static/images/avatars/avatar_5.png',
     email: 'anje.keizer@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'Dawson Cegep',
     stories: [
       {
         id: 1,
@@ -81,10 +145,13 @@ const dataUsers = [
   },
   {
     id: 5,
-    name: 'Clarke Gillebert',
+    firstName: 'Clarke',
+    lastName: 'Gillebert',
     avatarUrl: '/static/images/avatars/avatar_6.png',
     email: 'clarke.gillebert@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'St. Lawrence Cegep',
     stories: [
       {
         id: 1,
@@ -98,10 +165,13 @@ const dataUsers = [
   },
   {
     id: 6,
-    name: 'Adam Denisov',
+    firstName: 'Adam',
+    lastName: 'Denisov',
     avatarUrl: '/static/images/avatars/avatar_1.png',
     email: 'adam.denisov@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'Dawson Cegep',
     stories: [
       {
         id: 1,
@@ -115,10 +185,13 @@ const dataUsers = [
   },
   {
     id: 7,
-    name: 'Ava Gregoraci',
+    firstName: 'Ava',
+    lastName: 'Gregoraci',
     avatarUrl: '/static/images/avatars/avatar_7.png',
     email: 'ava.gregoraci@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'St. Lawrence Cegep',
     stories: [
       {
         id: 1,
@@ -132,44 +205,13 @@ const dataUsers = [
   },
   {
     id: 8,
-    name: 'Emilee Simchenko',
+    firstName: 'Emilee',
+    lastName: 'Simchenko',
     avatarUrl: '/static/images/avatars/avatar_8.png',
     email: 'emilee.simchenko@email.io',
-    group: 'Dawson',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
-  },
-  {
-    id: 9,
-    name: 'Kwak Seong-Min',
-    avatarUrl: '/static/images/avatars/avatar_9.png',
-    email: 'kwak.seong.min@email.io',
-    group: 'Dawson',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
-  },
-  {
-    id: 10,
-    name: 'Merrile Burgett',
-    avatarUrl: '/static/images/avatars/avatar_10.png',
-    email: 'merrile.burgett@email.io',
-    group: 'Dawson',
+    roleType: 'Student',
+    language: 'en-CA',
+    group: 'Dawson Cegep',
     stories: [
       {
         id: 1,

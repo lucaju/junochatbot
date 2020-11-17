@@ -37,14 +37,14 @@ export const stories = {
     // const response = await fetch('/general/settings');
     // return await response.json();
 
-    //
-
-     //access endpoint
-     const response = await fetch('https://api.chatstories.ca/admin/projects/all');
+    //access endpoint
+    const response = await fetch(
+      'https://api.chatstories.ca/admin/projects/all'
+    );
     //  const response = await fetch('https://api.localhost/admin/projects/all');
-     console.log(response);
-     const result  = await response.json();
-     console.log(result);
+    console.log(response);
+    const result = await response.json();
+    console.log(result);
 
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -56,11 +56,11 @@ export const stories = {
 
 const authUser = {
   name: 'Luciano Frizzera',
-  role: 'admin',
+  roleType: 'Admin',
   email: 'lucaju@gmail.com',
-  avatar: 'lucaju.jpg',
-  language: 'en',
-  group: null,
+  avatarUrl: 'lucaju.jpg',
+  language: 'en-CA',
+  group: '',
   token: 'TOKEN-123',
 };
 

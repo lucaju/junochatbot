@@ -43,7 +43,7 @@ const RightMenu = [
   {
     href: '/users',
     title: 'Users',
-    restricted: ['admin', 'instructor'],
+    restricted: ['Admin', 'Instructor'],
   },
 ];
 
@@ -67,7 +67,7 @@ const TopBar = ({ className, ...rest }) => {
             {LeftMenu.map((item) => {
               if (
                 item.restricted &&
-                !item.restricted.includes(state.session.user.role)
+                !item.restricted.includes(state.session.user.roleType)
               )
                 return;
               return (
@@ -86,7 +86,7 @@ const TopBar = ({ className, ...rest }) => {
             {RightMenu.map((item) => {
               if (
                 item.restricted &&
-                !item.restricted.includes(state.session.user.role)
+                !item.restricted.includes(state.session.user.roleType)
               )
                 return;
               return (
@@ -100,7 +100,7 @@ const TopBar = ({ className, ...rest }) => {
             <Avatar
               className={classes.avatar}
               component={RouterLink}
-              src={`/assets/users/images/${state.session.user.avatar}`}
+              src={`/assets/users/images/${state.session.user.avatarUrl}`}
               to="/user/account"
             />
           </Box>

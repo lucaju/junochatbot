@@ -33,8 +33,8 @@ const UsersListView = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userTypeAllowed = ['admin', 'instructor'];
-    if (!userTypeAllowed.includes(state.session.user.role)) {
+    const userTypeAllowed = ['Admin', 'Instructor'];
+    if (!userTypeAllowed.includes(state.session.user.roleType)) {
       navigate('/', { replace: true });
     }
     return () => {};
@@ -58,7 +58,7 @@ const UsersListView = () => {
   };
 
   const handleDetailClose = () => {
-    setCurrentUserId(null);
+    setCurrentUserId(0);
     setDetailsOpen(false);
   };
 
