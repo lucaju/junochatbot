@@ -1,34 +1,40 @@
 import {
   Box,
   Button,
-  Checkbox,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
-  FormControlLabel,
   Grid,
   makeStyles,
   MenuItem,
   TextField,
   Typography,
 } from '@material-ui/core';
+import { Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import * as Yup from 'yup';
 import { useApp } from 'src/overmind';
 
 const useStyles = makeStyles((theme) => ({
   dialogSection: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  actionSection: {
     paddingRight: theme.spacing(3),
     paddingLeft: theme.spacing(3),
-    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
   heading: {
     textAlign: 'center',
     marginBottom: theme.spacing(1.5),
   },
-  marginBottom: {
-    marginBottom: theme.spacing(1.5),
+  marginBottom: { marginBottom: theme.spacing(1.5) },
+  buttonProgress: {
+    position: 'absolute',
+    marginLeft: '45%',
   },
   error: {
     marginTop: theme.spacing(1),
@@ -41,44 +47,14 @@ const AddStoryDialog = ({ open, handleClose }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const [error, setError] = useState();
-  const [isAdmin] = useState(state.session.isAdmin);
-  const [isInstructor] = useState(state.session.isInstructor);
-  const [isUserBehalf, setIsUserBehalf] = React.useState(false);
-
-  const newStoryDefault = {
-    title: '',
-    language: state.users.defaultLanguage,
-    user: null,
-  };
-
-  const [story, setStory] = useState(newStoryDefault);
-
-  useEffect(() => {
-     if (open) setStory(newStoryDefault);
-  }, [open]);
-
-  const handleChange = (event) => {
-    setStory({
-      ...story,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleOnUserBehalf = () => {
-    setIsUserBehalf(!isUserBehalf);
-  };
 
   const handleCancelButton = () => {
     handleClose();
   };
 
-  const submit = async () => {
-    const res = await actions.story.createStory(story);
-    console.log(res);
-    if (res.error) {
-      setError(res.error);
-      return;
-    }
+  const submit = async (values) => {
+    const res = await actions.story.createStory(values);
+    if (res.error) return setError(res.error);
     handleClose();
   };
 
@@ -98,87 +74,93 @@ const AddStoryDialog = ({ open, handleClose }) => {
           Oh oh. Server Error.
         </Typography>
       )}
-      <DialogContent>
-        <Grid
-          container
-          spacing={3}
-          className={classes.dialogSection}
-          justify="center"
-        >
-          <Grid item>
-            <Typography variant="h6" className={classes.heading}>
-              New Story
-            </Typography>
-            <TextField
-              fullWidth
-              label="Story title"
-              name="title"
-              onChange={handleChange}
-              required
-              value={story.title}
-              variant="outlined"
-              className={classes.marginBottom}
-            />
-            <TextField
-              fullWidth
-              label="Language"
-              name="language"
-              onChange={handleChange}
-              required
-              select
-              value={story.language}
-              variant="outlined"
-            >
-              {state.users.languages.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.name}
-                </MenuItem>
-              ))}
-            </TextField>
-            {(isAdmin || isInstructor) && (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={isUserBehalf}
-                    onChange={handleOnUserBehalf}
-                    name="userBehalf"
+      <Formik
+        initialValues={{ title: '', language: state.session.user.language }}
+        validationSchema={Yup.object().shape({
+          title: Yup.string()
+            .min(2)
+            .max(100)
+            .trim()
+            .required('Title is required'),
+          language: Yup.string().required(),
+        })}
+        onSubmit={async (values) => await submit(values)}
+      >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <DialogContent>
+              <Grid container spacing={3} className={classes.dialogSection}>
+                <Grid item md={12}>
+                  <Typography variant="h6" className={classes.heading}>
+                    New Story
+                  </Typography>
+                  <TextField
+                    error={Boolean(touched.title && errors.title)}
+                    fullWidth
+                    helperText={touched.title && errors.title}
+                    label="Story title"
+                    margin="normal"
+                    name="title"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.title}
+                    variant="outlined"
+                    className={classes.marginBottom}
                   />
-                }
-                label="User behalf?"
-              />
-            )}
-            {(isAdmin || isInstructor) && isUserBehalf && (
-              <TextField
-                fullWidth
-                label="On behalf of"
-                name="user"
-                onChange={handleChange}
-                select
-                value={story.user}
+                </Grid>
+                <Grid item md={8}>
+                  <TextField
+                    error={Boolean(touched.language && errors.language)}
+                    fullWidth
+                    label="Language"
+                    margin="normal"
+                    name="language"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    select
+                    value={values.language}
+                    variant="outlined"
+                  >
+                    {state.users.languages.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions className={classes.actionSection}>
+              <Button onClick={handleCancelButton} color="primary">
+                Cancel
+              </Button>
+              <Box flexGrow={1} />
+              <Button
+                color="primary"
+                disabled={isSubmitting}
+                type="submit"
                 variant="outlined"
               >
-                {/* {state.users.list.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.firstName} {option.lastname}
-                  </MenuItem>
-                ))} */}
-                <MenuItem key={1} value={1}>
-                    Luciano Frizzera
-                </MenuItem>
-              </TextField>
-            )}
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCancelButton} color="primary">
-          Cancel
-        </Button>
-        <Box flexGrow={1} />
-        <Button onClick={submit} color="primary" variant="outlined">
-          Create
-        </Button>
-      </DialogActions>
+                Create
+                {isSubmitting && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </Button>
+            </DialogActions>
+          </form>
+        )}
+      </Formik>
     </Dialog>
   );
 };

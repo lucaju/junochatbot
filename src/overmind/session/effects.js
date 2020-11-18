@@ -58,7 +58,7 @@ const authUser = {
   name: 'Luciano Frizzera',
   roleType: 'Admin',
   email: 'lucaju@gmail.com',
-  avatarUrl: 'lucaju.jpg',
+  avatar: 'lucaju.jpg',
   language: 'en-CA',
   group: '',
   token: 'TOKEN-123',

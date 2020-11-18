@@ -109,9 +109,7 @@ const TopBar = ({ className, ...rest }) => {
           <Box alignItems="center" display="flex" flexDirection="row" p={2}>
             <Avatar
               className={classes.avatar}
-              // component={RouterLink}
-              src={`/assets/users/images/${state.session.user.avatarUrl}`}
-              // to="/user/account"
+              src={`/assets/users/images/${state.session.user.avatar}`}
               onClick={handleProfileClick}
             />
           </Box>

@@ -6,7 +6,7 @@ import {
   Link,
   makeStyles,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -110,10 +110,7 @@ const LoginView = () => {
               </Typography>
             )}
             <Formik
-              initialValues={{
-                email: 'lucaju@gmail.com',
-                password: 'password',
-              }}
+              initialValues={{ email: '', password: '' }}
               validationSchema={Yup.object().shape({
                 email: Yup.string()
                   .email('Must be a valid email')

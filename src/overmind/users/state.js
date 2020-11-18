@@ -2,7 +2,6 @@ import { derived } from 'overmind';
 
 export const state = {
   list: null,
-  selected: null,
   languages: [
     { value: 'en-CA', name: 'English' },
     { value: 'fr-CA', name: 'French' },
