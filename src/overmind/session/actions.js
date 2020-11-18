@@ -36,6 +36,14 @@ export const authenticate = async (
   return res.user;
 };
 
+export const signOut = ({ state }) => {
+  Cookies.remove('chatStoriesToken');
+  state.session.user = null;
+  state.session.stories = null;
+  state.session.story = null;
+  return false;
+};
+
 export const getStories = async ({ state, effects }) => {
   state.session.stories = await effects.session.stories.getStories();
 };

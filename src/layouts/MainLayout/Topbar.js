@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from 'src/overmind';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import Logo from 'src/components/Logo';
+import Profile from 'src/components/Profile';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -50,6 +51,15 @@ const RightMenu = [
 const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
   const { state } = useApp();
+  const [anchorProfileEl, setAnchorProfileEl] = useState(null);
+
+  const handleProfileClick = (event) => {
+    setAnchorProfileEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setAnchorProfileEl(null);
+  };
 
   return (
     <div>
@@ -99,11 +109,13 @@ const TopBar = ({ className, ...rest }) => {
           <Box alignItems="center" display="flex" flexDirection="row" p={2}>
             <Avatar
               className={classes.avatar}
-              component={RouterLink}
+              // component={RouterLink}
               src={`/assets/users/images/${state.session.user.avatarUrl}`}
-              to="/user/account"
+              // to="/user/account"
+              onClick={handleProfileClick}
             />
           </Box>
+          <Profile anchor={anchorProfileEl} handleClose={handleProfileClose}/>
         </Toolbar>
       </AppBar>
     </div>
