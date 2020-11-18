@@ -26,8 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StoryCard = ({ className, ...rest }) => {
+const StoryCard = ({ className, openDialog, ...rest }) => {
   const classes = useStyles();
+
+  const handleClick = () => {
+    openDialog();
+  };
 
   return (
     <Card
@@ -35,7 +39,7 @@ const StoryCard = ({ className, ...rest }) => {
       variant="outlined"
       {...rest}
     >
-      <CardActionArea>
+      <CardActionArea onClick={handleClick}>
         <CardContent>
           <Box display="flex" alignItems="center">
             <AddCircleIcon className={classes.icon} fontSize="large" />
@@ -51,6 +55,7 @@ const StoryCard = ({ className, ...rest }) => {
 
 StoryCard.propTypes = {
   className: PropTypes.string,
+  openDialog: PropTypes.func
 };
 
 export default StoryCard;

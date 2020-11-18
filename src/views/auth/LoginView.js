@@ -6,15 +6,15 @@ import {
   Link,
   makeStyles,
   TextField,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import { Formik } from 'formik';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from 'src/components/Logo';
 import Page from 'src/components/Page';
-import * as Yup from 'yup';
 import { useApp } from 'src/overmind';
+import * as Yup from 'yup';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   error: {
     color: theme.palette.secondary.light,
     textAlign: 'center',
-  }
+  },
 }));
 
 const LoginView = () => {
@@ -99,12 +99,16 @@ const LoginView = () => {
             <Typography component="h1" variant="h5" color="textPrimary">
               Sign in
             </Typography>
-            {error &&
-              <Typography component="h2" variant="subtitle1" className={classes.error}>
+            {error && (
+              <Typography
+                component="h2"
+                variant="subtitle1"
+                className={classes.error}
+              >
                 {`Unknown username.
                 Check again or try your email address.`}
               </Typography>
-            }
+            )}
             <Formik
               initialValues={{
                 email: 'lucaju@gmail.com',

@@ -11,6 +11,7 @@ import { useApp } from 'src/overmind';
 import AddStoryCard from './AddStoryCard';
 import NoStories from './NoStories';
 import StoryCard from './StoryCard';
+import AddStoryDialog from './AddStoryDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +43,7 @@ const Stories = () => {
   const { state, actions } = useApp();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [addDialogOpen, setAddDialogOpen] = React.useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -60,8 +61,20 @@ const Stories = () => {
     ? [AddStoryCard, ...state.session.stories]
     : null;
 
+  const handleAddDialogOpen = () => {
+    setAddDialogOpen(true);
+  };
+
+  const handleAddDiaglogClose = () => {
+    setAddDialogOpen(false);
+  };
+
   return (
     <Page className={classes.root} title={title}>
+      <AddStoryDialog
+        open={addDialogOpen}
+        handleClose={handleAddDiaglogClose}
+      />
       <Container maxWidth={false}>
         {!isLoaded && isLoading && (
           <Box
@@ -81,7 +94,11 @@ const Stories = () => {
           <MuuriComponent>
             {stories.map((story, index) => {
               return index === 0 ? (
-                <AddStoryCard className={classes.item} key="addCard" />
+                <AddStoryCard
+                  className={classes.item}
+                  key="addCard"
+                  openDialog={handleAddDialogOpen}
+                />
               ) : (
                 <StoryCard
                   className={classes.item}
