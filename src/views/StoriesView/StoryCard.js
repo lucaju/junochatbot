@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StoryCard = ({ story, className, ...rest }) => {
+const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(0);
@@ -60,6 +60,10 @@ const StoryCard = ({ story, className, ...rest }) => {
   };
 
   useRefresh([hover]);
+
+  const handleEditClick = () => {
+    triggerEditStory(story.id);
+  };
 
   return (
     <Card
@@ -104,7 +108,7 @@ const StoryCard = ({ story, className, ...rest }) => {
       </CardContent>
       {hover && (
         <CardActions disableSpacing>
-          <Button>Edit</Button>
+          <Button onClick={handleEditClick}>Edit</Button>
           <Box flexGrow={1} />
           <Button variant="outlined">Play</Button>
         </CardActions>
@@ -115,6 +119,7 @@ const StoryCard = ({ story, className, ...rest }) => {
 
 StoryCard.propTypes = {
   story: PropTypes.object,
+  triggerEditStory: PropTypes.func,
   className: PropTypes.string,
 };
 

@@ -7,4 +7,5 @@ export const state = {
   isInstructor: derived((state) => state.user?.roleType === 'Instructor'),
   isStudent: derived((state) => state.user?.roleType === 'Student'),
   stories: [],
+  story: null,
 };

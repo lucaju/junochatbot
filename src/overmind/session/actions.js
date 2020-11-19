@@ -47,3 +47,7 @@ export const signOut = ({ state }) => {
 export const getStories = async ({ state, effects }) => {
   state.session.stories = await effects.session.stories.getStories();
 };
+
+export const editStory = ({ state }, storyID ) => {
+  state.session.story = storyID;
+};

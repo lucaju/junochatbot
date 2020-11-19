@@ -2,13 +2,11 @@ import React, { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Box,
   Divider,
   Drawer,
   Hidden,
   List,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import NavItem from './NavItem';
@@ -38,19 +36,6 @@ const items = [
     href: '/app/settings',
     // icon: SettingsIcon,
     title: 'Tags',
-  },
-];
-
-const itemsBottom = [
-  {
-    href: '/login',
-    // icon: LockIcon,
-    title: 'Stories',
-  },
-  {
-    href: '/register',
-    // icon: UserPlusIcon,
-    title: 'Users',
   },
 ];
 
@@ -97,17 +82,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       </Box>
       <Box flexGrow={1} />
       <Box p={2}>
-        <List>
-          {itemsBottom.map((item) => (
-            <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
-            />
-          ))}
-        </List>
-        
       </Box>
       {/* <Divider />
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
@@ -129,7 +103,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
 
   return (
     <>
-      <Hidden lgUp>
+      {/* <Hidden lgUp>
         <Drawer
           anchor="left"
           classes={{ paper: classes.mobileDrawer }}
@@ -139,8 +113,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         >
           {content}
         </Drawer>
-      </Hidden>
-      <Hidden mdDown>
+      </Hidden> */}
+      {/* <Hidden mdDown> */}
         <Drawer
           anchor="left"
           classes={{ paper: classes.desktopDrawer }}
@@ -149,7 +123,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         >
           {content}
         </Drawer>
-      </Hidden>
+      {/* </Hidden> */}
     </>
   );
 };

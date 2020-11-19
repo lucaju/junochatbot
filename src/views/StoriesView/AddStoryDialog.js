@@ -32,10 +32,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1.5),
   },
   marginBottom: { marginBottom: theme.spacing(1.5) },
-  buttonProgress: {
-    position: 'absolute',
-    marginLeft: '45%',
-  },
+  buttonProgress: { position: 'absolute' },
   error: {
     marginTop: theme.spacing(1),
     color: theme.palette.secondary.light,
@@ -43,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddStoryDialog = ({ open, handleClose }) => {
+const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const [error, setError] = useState();
@@ -55,7 +52,7 @@ const AddStoryDialog = ({ open, handleClose }) => {
   const submit = async (values) => {
     const res = await actions.story.createStory(values);
     if (res.error) return setError(res.error);
-    handleClose();
+    triggerEditStory(res.id);
   };
 
   return (
@@ -168,6 +165,7 @@ const AddStoryDialog = ({ open, handleClose }) => {
 AddStoryDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
+  triggerEditStory: PropTypes.func,
 };
 
 export default AddStoryDialog;

@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import { MuuriComponent } from 'muuri-react';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import AddStoryCard from './AddStoryCard';
@@ -44,6 +45,7 @@ const Stories = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -70,11 +72,17 @@ const Stories = () => {
     setAddDialogOpen(false);
   };
 
+  const triggerEditStory = (storyId) => {
+    actions.session.editStory(storyId);
+    navigate('/story/general', { replace: true });
+  };
+
   return (
     <Page className={classes.root} title={title}>
       <AddStoryDialog
         open={addDialogOpen}
         handleClose={handleAddDiaglogClose}
+        triggerEditStory={triggerEditStory}
       />
       <Container maxWidth={false}>
         {!isLoaded && isLoading && (
@@ -105,6 +113,7 @@ const Stories = () => {
                   className={classes.item}
                   key={story.title}
                   story={story}
+                  triggerEditStory={triggerEditStory}
                 />
               );
             })}

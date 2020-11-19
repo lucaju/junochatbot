@@ -10,6 +10,8 @@ import NotFoundView from './views/errors/NotFoundView';
 import StoriesView from './views/StoriesView';
 import UsersListView from './views/UsersListView';
 
+import GeneralView from './views/GeneralView';
+
 // * react-router-dom REFERENCES:
 // https://medium.com/frontend-digest/whats-new-in-react-router-6-732b06cc83e4
 // https://reacttraining.com/blog/react-router-v6-pre/
@@ -21,7 +23,7 @@ const routes = [
     path: 'story',
     element: <DashboardLayout />,
     children: [
-      // { path: 'general', element: <GeneralView /> },
+      { path: 'general', element: <GeneralView /> },
       // { path: 'videos', element: <VideosView /> },
       // { path: 'screenplay', element: <ScreenplayView /> },
       // { path: 'contexts', element: <ContextsView /> },
