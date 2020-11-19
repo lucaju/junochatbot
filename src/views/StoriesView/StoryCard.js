@@ -1,6 +1,3 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Box,
   Button,
@@ -9,11 +6,14 @@ import {
   CardContent,
   CardMedia,
   colors,
-  Typography,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import AdbIcon from '@material-ui/icons/Adb';
-import {useRefresh} from 'muuri-react';
+import clsx from 'clsx';
+import { useRefresh } from 'muuri-react';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'uppercase',
   },
   icon: {
-    marginTop: theme.spacing(0.5)
-  }
+    marginTop: theme.spacing(0.5),
+  },
 }));
 
 const StoryCard = ({ story, className, ...rest }) => {
@@ -78,7 +78,7 @@ const StoryCard = ({ story, className, ...rest }) => {
       )}
       <CardContent>
         <Box display="flex" alignItems="c">
-          <AdbIcon fontSize="small" className={classes.icon}/>
+          <AdbIcon fontSize="small" className={classes.icon} />
           <Typography color="textSecondary" variant="h6">
             {story.title}
           </Typography>

@@ -9,9 +9,9 @@ import React, { useEffect, useState } from 'react';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import AddStoryCard from './AddStoryCard';
+import AddStoryDialog from './AddStoryDialog';
 import NoStories from './NoStories';
 import StoryCard from './StoryCard';
-import AddStoryDialog from './AddStoryDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,9 +57,10 @@ const Stories = () => {
     return () => {};
   }, []);
 
-  const stories = state.session.stories
-    ? [AddStoryCard, ...state.session.stories]
-    : null;
+  const stories =
+    state.session.stories.length > 0 && !state.session.isStudent
+      ? [AddStoryCard, ...state.session.stories]
+      : state.session.stories;
 
   const handleAddDialogOpen = () => {
     setAddDialogOpen(true);
@@ -90,10 +91,10 @@ const Stories = () => {
             />
           </Box>
         )}
-        {isLoaded && stories && (
+        {isLoaded && stories.length > 0 && (
           <MuuriComponent>
             {stories.map((story, index) => {
-              return index === 0 ? (
+              return index === 0 && !state.session.isStudent ? (
                 <AddStoryCard
                   className={classes.item}
                   key="addCard"
@@ -109,7 +110,9 @@ const Stories = () => {
             })}
           </MuuriComponent>
         )}
-        {isLoaded && !stories && <NoStories />}
+        {isLoaded && stories.length === 0 && (
+          <NoStories openDialog={handleAddDialogOpen} />
+        )}
       </Container>
     </Page>
   );

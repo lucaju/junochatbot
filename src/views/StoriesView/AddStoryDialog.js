@@ -14,8 +14,8 @@ import {
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import * as Yup from 'yup';
 import { useApp } from 'src/overmind';
+import * as Yup from 'yup';
 
 const useStyles = makeStyles((theme) => ({
   dialogSection: {

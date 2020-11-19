@@ -1,16 +1,16 @@
-import React from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Box,
   Card,
   CardActionArea,
   CardContent,
   colors,
-  Typography,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +55,7 @@ const StoryCard = ({ className, openDialog, ...rest }) => {
 
 StoryCard.propTypes = {
   className: PropTypes.string,
-  openDialog: PropTypes.func
+  openDialog: PropTypes.func,
 };
 
 export default StoryCard;

@@ -5,5 +5,6 @@ export const state = {
   isSignedIn: derived((state) => state.user !== null),
   isAdmin: derived((state) => state.user?.roleType === 'Admin'),
   isInstructor: derived((state) => state.user?.roleType === 'Instructor'),
-  stories: null,
+  isStudent: derived((state) => state.user?.roleType === 'Student'),
+  stories: [],
 };

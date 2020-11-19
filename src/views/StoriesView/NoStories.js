@@ -1,5 +1,6 @@
-import React from 'react';
 import { Box, makeStyles, Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React from 'react';
 import AddStoryCard from './AddStoryCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -7,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     textTransform: 'uppercase',
     fontWeight: 700,
-    color: theme.palette.grey[700]
+    color: theme.palette.grey[700],
   },
   image: {
     marginBottom: 50,
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NoStories = () => {
+const NoStories = ({ openDialog }) => {
   const classes = useStyles();
 
   return (
@@ -39,9 +40,13 @@ const NoStories = () => {
         className={classes.image}
         src="/assets/images/undraw_chat_bot_kli5.svg"
       />
-      <AddStoryCard />
+      <AddStoryCard openDialog={openDialog} />
     </Box>
   );
+};
+
+NoStories.propTypes = {
+  openDialog: PropTypes.func,
 };
 
 export default NoStories;
