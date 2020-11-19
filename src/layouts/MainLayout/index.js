@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { Container, makeStyles } from '@material-ui/core';
-import TopBar from './Topbar';
+// import TopBar from './Topbar';
+import TopBar from 'src/components/TopBar';
 import { useApp } from 'src/overmind';
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +55,7 @@ const MainLayout = () => {
     <div className={classes.root}>
       {isSignedIn && (
         <>
-          <TopBar />
+          <TopBar storyEditMode={false}/>
           <Container className={classes.wrapper}>
             <div className={classes.contentContainer}>
               <div className={classes.content}>

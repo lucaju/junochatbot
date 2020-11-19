@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
-import NavBar from './NavBar';
-import TopBar from './TopBar';
+import { makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import TopBar from 'src/components/TopBar';
 import { useApp } from 'src/overmind';
+import NavBar from './NavBar';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     //   paddingLeft: 256,
     // },
   },
+  wrapperMobile: { paddingLeft: 0 },
+  wrapperCompact: { paddingLeft: 72 },
+  wrapperExpaned: { paddingLeft: 256 },
   contentContainer: {
     display: 'flex',
     flex: '1 1 auto',
@@ -37,7 +41,12 @@ const useStyles = makeStyles((theme) => ({
 const DashboardLayout = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const theme = useTheme();
   const { state, actions } = useApp();
+
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+  const [isCompactNav, setIsCompactNav] = useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const isSignedIn = state.session.isSignedIn;
 
@@ -50,16 +59,30 @@ const DashboardLayout = () => {
     return () => {};
   }, []);
 
+  const handleMenuClick = () => {
+    if (!isMobile) setIsCompactNav(!isCompactNav);
+    if (isMobile) {
+      setMobileNavOpen(!isMobileNavOpen);
+      setIsCompactNav(false);
+    }
+  };
+
   return (
     <div className={classes.root}>
       {isSignedIn && (
         <>
-          <TopBar />
+          <TopBar handleMenuClick={handleMenuClick} storyEditMode={true} />
           <NavBar
-          // onMobileClose={() => setMobileNavOpen(false)}
-          // openMobile={isMobileNavOpen}
+            onMobileClose={() => setMobileNavOpen(false)}
+            openMobile={isMobileNavOpen}
+            compactMode={isCompactNav}
           />
-          <div className={classes.wrapper}>
+          <div className={clsx(
+            classes.wrapper,
+            isMobile && classes.wrapperMobile,
+            isCompactNav && classes.wrapperCompact,
+            !isCompactNav && !isMobile && classes.wrapperExpaned,
+            )}>
             <div className={classes.contentContainer}>
               <div className={classes.content}>
                 <Outlet />

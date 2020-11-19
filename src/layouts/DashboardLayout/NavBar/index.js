@@ -1,61 +1,78 @@
-import React, { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {
   Box,
   Divider,
   Drawer,
   Hidden,
+  IconButton,
   List,
   makeStyles,
 } from '@material-ui/core';
+import AdbIcon from '@material-ui/icons/Adb';
+import LabelIcon from '@material-ui/icons/Label';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import MenuIcon from '@material-ui/icons/Menu';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import Logo from 'src/components/Logo';
 import NavItem from './NavItem';
 
 const items = [
   {
-    href: '/app/dashboard',
-    // icon: BarChartIcon,
     title: 'General',
+    href: '/story/general',
+    icon: AdbIcon,
   },
   {
-    href: '/app/customers',
-    // icon: UsersIcon,
     title: 'Video Collection',
+    href: '/story/video-collection',
+    icon: VideoLibraryIcon,
   },
   {
-    href: '/app/products',
-    // icon: ShoppingBagIcon,
     title: 'Screen Play',
+    href: '/story/screen-play',
+    icon: QuestionAnswerIcon,
   },
   {
-    href: '/app/account',
-    // icon: UserIcon,
     title: 'Contexts',
+    href: '/story/contexts',
+    icon: LabelIcon,
   },
   {
-    href: '/app/settings',
-    // icon: SettingsIcon,
     title: 'Tags',
+    href: '/story/tags',
+    icon: LocalOfferIcon,
   },
 ];
 
-const useStyles = makeStyles(() => ({
-  mobileDrawer: {
-    width: 256,
+const useStyles = makeStyles((theme) => ({
+  listExanded: {
+    padding: theme.spacing(2),
+    paddingTop: 0,
+  },
+  listCompacted: { padding: theme.spacing(0) },
+  mobileDrawer: { width: 256 },
+  logo: {
+    height: 36,
+    marginLeft: theme.spacing(1),
   },
   desktopDrawer: {
+    borderRight: 0,
     width: 256,
     top: 64,
     height: 'calc(100% - 64px)',
   },
-  avatar: {
-    cursor: 'pointer',
-    width: 64,
+  desktopDrawerCompact: { width: 72 },
+  topBar: {
     height: 64,
+    marginLeft: theme.spacing(2),
   },
 }));
 
-const NavBar = ({ onMobileClose, openMobile }) => {
+const NavBar = ({ onMobileClose, openMobile, compactMode }) => {
   const classes = useStyles();
   const location = useLocation();
 
@@ -67,8 +84,9 @@ const NavBar = ({ onMobileClose, openMobile }) => {
 
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
-      <Divider />
-      <Box p={2}>
+      <Box
+        className={compactMode ? classes.listCompacted : classes.listExanded}
+      >
         <List>
           {items.map((item) => (
             <NavItem
@@ -76,54 +94,58 @@ const NavBar = ({ onMobileClose, openMobile }) => {
               key={item.title}
               title={item.title}
               icon={item.icon}
+              isCompact={compactMode}
             />
           ))}
         </List>
       </Box>
-      <Box flexGrow={1} />
-      <Box p={2}>
-      </Box>
-      {/* <Divider />
-      <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar
-          className={classes.avatar}
-          component={RouterLink}
-          src={user.avatar}
-          to="/app/account"
-        />
-        <Typography className={classes.name} color="textPrimary" variant="h5">
-          {user.name}
-        </Typography>
-        <Typography color="textSecondary" variant="body2">
-          {user.jobTitle}
-        </Typography>
-      </Box> */}
+      {/* <Box flexGrow={1} />
+      <Box p={2}></Box> */}
     </Box>
   );
 
   return (
     <>
-      {/* <Hidden lgUp>
+      <Hidden mdUp>
         <Drawer
           anchor="left"
-          classes={{ paper: classes.mobileDrawer }}
+          classes={{ paper: clsx(classes.mobileDrawer) }}
           onClose={onMobileClose}
           open={openMobile}
           variant="temporary"
         >
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            className={classes.topBar}
+          >
+            <IconButton color="inherit" onClick={onMobileClose}>
+              <MenuIcon />
+            </IconButton>
+            <RouterLink to="/">
+              <Logo className={classes.logo} />
+            </RouterLink>
+          </Box>
+          <Divider />
           {content}
         </Drawer>
-      </Hidden> */}
-      {/* <Hidden mdDown> */}
+      </Hidden>
+      <Hidden smDown>
         <Drawer
           anchor="left"
-          classes={{ paper: classes.desktopDrawer }}
+          classes={{
+            paper: clsx(
+              classes.desktopDrawer,
+              compactMode && classes.desktopDrawerCompact
+            ),
+          }}
           open
           variant="persistent"
         >
           {content}
         </Drawer>
-      {/* </Hidden> */}
+      </Hidden>
     </>
   );
 };
@@ -131,11 +153,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
 NavBar.propTypes = {
   onMobileClose: PropTypes.func,
   openMobile: PropTypes.bool,
+  compactMode: PropTypes.bool,
 };
 
 NavBar.defaultProps = {
   onMobileClose: () => {},
   openMobile: false,
+  compactMode: false,
 };
 
 export default NavBar;
