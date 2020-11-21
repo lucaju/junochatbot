@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RightMenu = [
+const rightMenu = [
   {
     href: '/',
     title: 'My Stories',
@@ -105,7 +105,7 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
             className={clsx(classes.sideSpace, classes.rightMenu)}
           >
             <Box className={classes.rightMenu}>
-              {RightMenu.map((item) => {
+              {rightMenu.map((item) => {
                 if (
                   item.restricted &&
                   !item.restricted.includes(state.session.user.roleType)

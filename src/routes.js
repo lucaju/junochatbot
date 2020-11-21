@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import BlankLayout from './layouts/BlankLayout';
-import DashboardLayout from './layouts/DashboardLayout';
+import StoryLayout from './layouts/StoryLayout';
 import MainLayout from './layouts/MainLayout';
 
 import LoginView from './views/auth/LoginView';
@@ -21,7 +21,7 @@ import GeneralView from './views/GeneralView';
 const routes = [
   {
     path: 'story',
-    element: <DashboardLayout />,
+    element: <StoryLayout />,
     children: [
       { path: 'general', element: <GeneralView /> },
       // { path: 'videos', element: <VideosView /> },

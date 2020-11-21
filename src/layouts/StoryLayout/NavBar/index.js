@@ -99,8 +99,6 @@ const NavBar = ({ onMobileClose, openMobile, compactMode }) => {
           ))}
         </List>
       </Box>
-      {/* <Box flexGrow={1} />
-      <Box p={2}></Box> */}
     </Box>
   );
 
