@@ -11,6 +11,10 @@ import StoriesView from './views/StoriesView';
 import UsersListView from './views/UsersListView';
 
 import GeneralView from './views/GeneralView';
+import VideoCollectionView from './views/VideoCollectionView';
+import ScreenplayView from './views/ScreenplayView';
+import ContextsView from './views/ContextsView';
+import TagsView from './views/TagsView';
 
 // * react-router-dom REFERENCES:
 // https://medium.com/frontend-digest/whats-new-in-react-router-6-732b06cc83e4
@@ -24,10 +28,10 @@ const routes = [
     element: <StoryLayout />,
     children: [
       { path: 'general', element: <GeneralView /> },
-      // { path: 'videos', element: <VideosView /> },
-      // { path: 'screenplay', element: <ScreenplayView /> },
-      // { path: 'contexts', element: <ContextsView /> },
-      // { path: 'tags', element: <TagsView /> },
+      { path: 'video-collection', element: <VideoCollectionView /> },
+      { path: 'screenplay', element: <ScreenplayView /> },
+      { path: 'contexts', element: <ContextsView /> },
+      { path: 'tags', element: <TagsView /> },
       { path: '*', element: <Navigate to="/story/general" /> },
     ],
   },

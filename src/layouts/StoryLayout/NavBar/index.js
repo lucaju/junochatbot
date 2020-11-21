@@ -33,7 +33,7 @@ const items = [
   },
   {
     title: 'Screen Play',
-    href: '/story/screen-play',
+    href: '/story/screenplay',
     icon: QuestionAnswerIcon,
   },
   {

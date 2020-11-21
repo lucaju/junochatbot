@@ -27,7 +27,7 @@ import {
     return (
       <Page className={classes.root} title={title}>
         <Container maxWidth={false}>
-        General
+        Screen Play
         </Container>
       </Page>
     );
