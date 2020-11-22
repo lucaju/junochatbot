@@ -1,3 +1,11 @@
 export const state = {
-  story: null,
+  stories: [],
+  id: null,
+  permalink: '',
+  title: ' ',
+  language: '',
+  owner: {},
+  general: {
+    published: false,
+  },
 };

@@ -25,23 +25,35 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 180,
   },
+  title: {
+    marginLeft: -theme.spacing(2.5),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.text.secondary,
+  },
+  titleHover: {
+    backgroundColor: colors.orange[400],
+    color:
+      theme.palette.type === 'light'
+        ? theme.palette.text.primary
+        : theme.palette.grey[800],
+  },
   label: {
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: theme.palette.grey[100],
-    color: theme.palette.grey[400],
-    marginRight: -20,
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    borderColor:
+      theme.palette.type === 'light'
+        ? theme.palette.background.default
+        : theme.palette.grey[700],
+    color: theme.palette.text.secondary,
+    marginRight: -theme.spacing(1),
   },
-  labelHover: {
-    backgroundColor: colors.orange[400],
-  },
-  authors: {
-    textTransform: 'uppercase',
-  },
-  icon: {
-    marginTop: theme.spacing(0.5),
-  },
+  authors: { textTransform: 'uppercase' },
+  icon: { marginRight: theme.spacing(1) },
 }));
 
 const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {
@@ -81,20 +93,19 @@ const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {
         />
       )}
       <CardContent>
-        <Box display="flex" alignItems="c">
-          <AdbIcon fontSize="small" className={classes.icon} />
-          <Typography color="textSecondary" variant="h6">
-            {story.title}
-          </Typography>
+        <Box display="flex" alignItems="center">
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="row"
+            className={clsx(classes.title, hover && classes.titleHover)}
+          >
+            <AdbIcon fontSize="small" className={classes.icon} />
+            <Typography variant="h6">{story.title}</Typography>
+          </Box>
           <Box flexGrow={1} />
-          <div className={clsx(classes.label, hover && classes.labelHover)}>
-            <Typography
-              color="textSecondary"
-              variant="overline"
-              className={classes.year}
-            >
-              {story.year}
-            </Typography>
+          <div className={classes.label}>
+            <Typography variant="overline">{story.year}</Typography>
           </div>
         </Box>
         <Box mt={1} display="flex" alignItems="flex-start">

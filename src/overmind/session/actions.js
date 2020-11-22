@@ -38,16 +38,9 @@ export const authenticate = async (
 
 export const signOut = ({ state }) => {
   Cookies.remove('chatStoriesToken');
+  Cookies.remove('chatStoriesDarkMode');
   state.session.user = null;
   state.session.stories = null;
   state.session.story = null;
   return false;
-};
-
-export const getStories = async ({ state, effects }) => {
-  state.session.stories = await effects.session.stories.getStories();
-};
-
-export const editStory = ({ state }, storyID ) => {
-  state.session.story = storyID;
 };

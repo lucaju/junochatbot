@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardLayout = () => {
+const StoryLayout = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -77,12 +77,14 @@ const DashboardLayout = () => {
             openMobile={isMobileNavOpen}
             compactMode={isCompactNav}
           />
-          <div className={clsx(
-            classes.wrapper,
-            isMobile && classes.wrapperMobile,
-            isCompactNav && classes.wrapperCompact,
-            !isCompactNav && !isMobile && classes.wrapperExpaned,
-            )}>
+          <div
+            className={clsx(
+              classes.wrapper,
+              isMobile && classes.wrapperMobile,
+              isCompactNav && classes.wrapperCompact,
+              !isCompactNav && !isMobile && classes.wrapperExpaned
+            )}
+          >
             <div className={classes.contentContainer}>
               <div className={classes.content}>
                 <Outlet />
@@ -95,4 +97,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default StoryLayout;

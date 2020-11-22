@@ -16,6 +16,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useApp } from 'src/overmind';
 import Logo from './Logo';
 import Profile from './Profile';
+// import Brightness4Icon from '@material-ui/icons/Brightness4';
+// import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
-  sideSpace: { width: 250 },
+  sideSpace: { width: 300 },
   logo: {
     height: 38,
     marginLeft: theme.spacing(2),
@@ -53,7 +55,7 @@ const rightMenu = [
 
 const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
   const classes = useStyles();
-  const { state } = useApp();
+  const { state, actions } = useApp();
   const [anchorProfileEl, setAnchorProfileEl] = useState(null);
 
   const handleProfileClick = (event) => {
@@ -63,6 +65,10 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
   const handleProfileClose = () => {
     setAnchorProfileEl(null);
   };
+
+  // const handleSwitchBrightness = () => {
+  //   actions.session.setDarkMode(!state.ui.darkMode);
+  // };
 
   return (
     <div>
@@ -121,6 +127,13 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
                   </Button>
                 );
               })}
+              {/* <IconButton color="inherit" onClick={handleSwitchBrightness}>
+                {state.ui.darkMode ? (
+                  <Brightness7Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
+              </IconButton> */}
             </Box>
             <Avatar
               className={classes.avatar}

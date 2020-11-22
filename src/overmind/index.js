@@ -11,5 +11,5 @@ export const config = namespaced({
   ui,
   session,
   users,
-  story
+  story,
 });

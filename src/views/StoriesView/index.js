@@ -50,7 +50,7 @@ const Stories = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      await actions.session.getStories();
+      await actions.story.getStories();
       setIsLoaded(true);
       setIsLoading(false);
     };
@@ -60,9 +60,9 @@ const Stories = () => {
   }, []);
 
   const stories =
-    state.session.stories.length > 0 && !state.session.isStudent
-      ? [AddStoryCard, ...state.session.stories]
-      : state.session.stories;
+    state.story.stories.length > 0 && !state.story.isStudent
+      ? [AddStoryCard, ...state.story.stories]
+      : state.story.stories;
 
   const handleAddDialogOpen = () => {
     setAddDialogOpen(true);
@@ -73,7 +73,7 @@ const Stories = () => {
   };
 
   const triggerEditStory = (storyId) => {
-    actions.session.editStory(storyId);
+    actions.story.editStory(storyId);
     navigate('/story/general', { replace: true });
   };
 

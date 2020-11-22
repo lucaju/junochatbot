@@ -55,7 +55,7 @@ const MainLayout = () => {
     <div className={classes.root}>
       {isSignedIn && (
         <>
-          <TopBar storyEditMode={false}/>
+          <TopBar storyEditMode={false} />
           <Container className={classes.wrapper}>
             <div className={classes.contentContainer}>
               <div className={classes.content}>

@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { Button, Popover } from '@material-ui/core';
+import { Box, Button, Divider, Popover } from '@material-ui/core';
 import { useApp } from 'src/overmind';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 const Profile = ({ anchor, handleClose }) => {
-  const { actions } = useApp();
+  const { state, actions } = useApp();
   const navigate = useNavigate();
   const open = Boolean(anchor);
 
+  const switchAppearenceMode = () => {
+    actions.ui.setDarkMode(!state.ui.darkMode);
+  };
+
   const handleSignOut = () => {
-    console.log('Signing Out');
     const isSignIn = actions.session.signOut();
     if (!isSignIn) navigate('/login', { replace: true });
   };
@@ -30,7 +36,28 @@ const Profile = ({ anchor, handleClose }) => {
         horizontal: 'right',
       }}
     >
-      <Button onClick={handleSignOut}>Sign Out</Button>
+      <Box
+        alignItems="center"
+        display="flex"
+        flexDirection="row"
+        p={2}
+        width={225}
+      >
+        <Box alignItems="start" display="flex" flexDirection="column">
+          <Button
+            onClick={switchAppearenceMode}
+            startIcon={
+              state.ui.darkMode ? <Brightness7Icon /> : <Brightness4Icon />
+            }
+          >
+            Appearence: {state.ui.darkMode ? 'Dark' : 'Light'}
+          </Button>
+          <Divider />
+          <Button onClick={handleSignOut} startIcon={<ExitToAppIcon />}>
+            Sign Out
+          </Button>
+        </Box>
+      </Box>
     </Popover>
   );
 };

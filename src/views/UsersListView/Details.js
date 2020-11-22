@@ -58,7 +58,10 @@ const useStyles = makeStyles((theme) => ({
   avatarButton: { marginTop: theme.spacing(1) },
   marginBottom: { marginBottom: theme.spacing(1.5) },
   credentialsSection: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[700],
     marginBottom: theme.spacing(1),
   },
   chip: { marginRight: theme.spacing(1) },
