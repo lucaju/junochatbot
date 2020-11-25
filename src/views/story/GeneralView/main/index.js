@@ -5,7 +5,7 @@ import Bot from './Bot';
 import Story from './Story';
 import Ui from './Ui';
 
-const Main = ({ storyData }) => {
+const Main = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <Box
       display="flex"
@@ -14,20 +14,42 @@ const Main = ({ storyData }) => {
       alignItems="flex-start"
     >
       <Box mb={2} width={'100%'}>
-        <Story storyData={storyData} />
+        <Story
+          errors={errors}
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          touched={touched}
+          values={values}
+        />
       </Box>
       <Box mb={2} width={'100%'}>
-        <Bot storyData={storyData} />
+        <Bot
+          errors={errors}
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          touched={touched}
+          values={values}
+        />
       </Box>
       <Box width={'100%'}>
-        <Ui storyData={storyData} />
+        <Ui
+          errors={errors}
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          touched={touched}
+          values={values}
+        />
       </Box>
     </Box>
   );
 };
 
 Main.propTypes = {
-  storyData: PropTypes.object,
+  errors: PropTypes.object,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  touched: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default Main;

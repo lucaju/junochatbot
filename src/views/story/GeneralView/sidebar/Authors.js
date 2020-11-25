@@ -28,13 +28,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Authors = ({ authors, handleAuthorsChange }) => {
+const Authors = ({ handleBlur, handleChange, values }) => {
   const classes = useStyles();
   const { state } = useApp();
   const [showInput, setShowInput] = useState(false);
 
   const handleShowInput = () => {
     setShowInput(!showInput);
+    handleBlur();
+  };
+
+  const handleAuthorsChange = (action, user) => {
+    console.log(action, user);
+    handleChange();
   };
 
   return (
@@ -85,7 +91,7 @@ const Authors = ({ authors, handleAuthorsChange }) => {
             )}
           />
         )}
-        {authors.map(({ id, firstName, lastName, avatar }) => (
+        {values.general.authors.map(({ id, firstName, lastName, avatar }) => (
           <Chip
             key={id}
             avatar={
@@ -114,8 +120,9 @@ const Authors = ({ authors, handleAuthorsChange }) => {
 };
 
 Authors.propTypes = {
-  authors: PropTypes.array,
-  handleAuthorsChange: PropTypes.func,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  values: PropTypes.object,
 };
 
 export default Authors;

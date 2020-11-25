@@ -2,26 +2,26 @@ import {
   Box,
   makeStyles,
   MenuItem,
-  Slider,
   TextField,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useApp } from 'src/overmind';
 import { getIcon } from './icons';
+import SliderFormik from './SliderFormik';
 
 const useStyles = makeStyles((theme) => ({
   marginBottom: { marginBottom: theme.spacing(1) },
   label: {
     fontSize: '0.75rem',
     color: theme.palette.text.secondary,
-    marginBottom: theme.spacing(2)-1
+    marginBottom: theme.spacing(2) - 1,
   },
-  avatarSelectBox: { marginTop: '-5px' }
+  avatarSelectBox: { marginTop: '-5px' },
 }));
 
-const Bot = ({ storyData }) => {
+const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
   const { state } = useApp();
 
@@ -30,59 +30,36 @@ const Bot = ({ storyData }) => {
       <Typography variant="h6" gutterBottom>
         Bot
       </Typography>
-      <Box p={1} width="100%">
-        <TextField
-          // error={Boolean(touched.firstName && errors.firstName)}
-          fullWidth
-          // helperText={touched.firstName && errors.firstName}
-          label="Name"
-          name="bot.name"
-          // onBlur={handleBlur}
-          // onChange={handleChange}
-          value={storyData.general.bot.name}
-          className={classes.marginBottom}
-        />
-      </Box>
-      <Box p={1} width="100%">
-        <TextField
-          // error={Boolean(touched.firstName && errors.firstName)}
-          fullWidth
-          // helperText={touched.firstName && errors.firstName}
-          label="Biography"
-          name="bot.biography"
-          multiline
-          rowsMax={4}
-          rows={2}
-          // onBlur={handleBlur}
-          // onChange={handleChange}
-          value={storyData.general.bot.biography}
-          variant="outlined"
-          className={classes.marginBottom}
-        />
-      </Box>
-      <Box p={1} display="flex" flexDirection="row" width="100%">
-        <Box flexGrow={2} mr={2}>
-          <Typography id="discrete-slider" gutterBottom className={classes.label}>
-            Typing speed
-          </Typography>
-          <Slider
-            defaultValue={storyData.general.bot.speed}
-            getAriaValueText={() => `${storyData.general.bot.speed}`}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            step={10}
-            marks
-            min={80}
-            max={200}
-          />
-        </Box>
+      <Box
+        p={1}
+        display="flex"
+        flexDirection="row"
+        width="100%"
+        alignItems="flex-start"
+      >
         <Box flexGrow={1} mr={2}>
           <TextField
+            error={Boolean(
+              touched['general.bot.name'] && errors['general.bot.name']
+            )}
             fullWidth
-            label="Ballon"
-            name="bot.ballon"
+            label="Name"
+            name="general.bot.name"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.general.bot.name}
+            className={classes.marginBottom}
+          />
+        </Box>
+        <Box width="100px" mr={2}>
+          <TextField
+            fullWidth
+            label="Balloon"
+            name="general.bot.balloon"
             select
-            value={storyData.general.bot.ballon}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.general.bot.balloon}
           >
             {state.story.colors.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -95,9 +72,11 @@ const Bot = ({ storyData }) => {
           <TextField
             fullWidth
             label="Avatar"
-            name="bot.avatar"
+            name="general.bot.avatar"
             select
-            value={storyData.general.bot.avatar}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.general.bot.avatar}
           >
             {state.story.icons.map((option) => {
               const Icon = getIcon(option.value);
@@ -110,12 +89,46 @@ const Bot = ({ storyData }) => {
           </TextField>
         </Box>
       </Box>
+      <Box p={1} width="100%">
+        <TextField
+          error={Boolean(
+            touched['general.bot.biography'] && errors['general.bot.biography']
+          )}
+          fullWidth
+          label="Biography"
+          name="general.bot.biography"
+          multiline
+          rowsMax={2}
+          rows={2}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          value={values.general.bot.biography}
+          variant="outlined"
+          className={classes.marginBottom}
+        />
+      </Box>
+      <Box p={1} display="flex" flexDirection="row" width="100%">
+        <Box width="200px" mr={2}>
+          <Typography
+            id="discrete-slider"
+            gutterBottom
+            className={classes.label}
+          >
+            Typing speed
+          </Typography>
+          <SliderFormik name="general.bot.speed" />
+        </Box>
+      </Box>
     </>
   );
 };
 
 Bot.propTypes = {
-  storyData: PropTypes.object,
+  errors: PropTypes.object,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  touched: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default Bot;

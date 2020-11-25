@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   marginBottom: { marginBottom: theme.spacing(1) },
 }));
 
-const Story = ({ storyData }) => {
+const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
   const { state } = useApp();
 
@@ -23,29 +23,29 @@ const Story = ({ storyData }) => {
         Story
       </Typography>
       <Box p={1} display="flex" flexDirection="row" width="100%">
-        <Box flexGrow={4} mr={2}>
+        <Box flexGrow={1} mr={2}>
           <TextField
-            // error={Boolean(touched.firstName && errors.firstName)}
+            error={Boolean(touched.title && errors.title)}
             fullWidth
-            // helperText={touched.firstName && errors.firstName}
+            helperText={touched.title && errors.title}
             label="Title"
             name="title"
-            // onBlur={handleBlur}
-            // onChange={handleChange}
-            value={storyData.title}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.title}
             className={classes.marginBottom}
           />
         </Box>
-        <Box flexGrow={1} mr={2}>
+        <Box width="150px" mr={2}>
           <TextField
-            // error={Boolean(touched.language && errors.language)}
+            error={Boolean(touched['general.genre'] && errors.general['general.genre'])}
             fullWidth
             label="Genre"
-            name="genre"
-            // onBlur={handleBlur}
-            // onChange={handleChange}
+            name="general.genre"
+            onBlur={handleBlur}
+            onChange={handleChange}
             select
-            value={storyData.general.genre}
+            value={values.general.genre}
           >
             {state.story.genres.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -54,14 +54,16 @@ const Story = ({ storyData }) => {
             ))}
           </TextField>
         </Box>
-        <Box flexGrow={1}>
+        <Box width="100px">
           <TextField
             disabled
             fullWidth
             label="Language"
             name="language"
+            onBlur={handleBlur}
+            onChange={handleChange}
             select
-            value={storyData.language}
+            value={values.language}
           >
             {state.story.languages.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -73,17 +75,19 @@ const Story = ({ storyData }) => {
       </Box>
       <Box p={1} width="100%">
         <TextField
-          // error={Boolean(touched.firstName && errors.firstName)}
+          error={Boolean(
+            touched['general.description'] && errors['general.description']
+          )}
           fullWidth
-          // helperText={touched.firstName && errors.firstName}
+          helperText={touched['general.description'] && errors['general.description']}
           label="Description"
-          name="description"
+          name="general.description"
           multiline
-          rowsMax={4}
+          rowsMax={2}
           rows={2}
-          // onBlur={handleBlur}
-          // onChange={handleChange}
-          value={storyData.general.description}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          value={values.general.description}
           variant="outlined"
           className={classes.marginBottom}
         />
@@ -93,7 +97,11 @@ const Story = ({ storyData }) => {
 };
 
 Story.propTypes = {
-  storyData: PropTypes.object,
+  errors: PropTypes.object,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  touched: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default Story;

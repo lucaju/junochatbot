@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   marginBottom: { marginBottom: theme.spacing(1) },
 }));
 
-const Ui = ({ storyData }) => {
+const Ui = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
   const { state } = useApp();
 
@@ -23,13 +23,15 @@ const Ui = ({ storyData }) => {
         User Interface
       </Typography>
       <Box p={1} display="flex" flexDirection="row" width="100%">
-        <Box flexGrow={1} mr={2}>
+        <Box width='70px' mr={2}>
           <TextField
             fullWidth
             label="Sidebar"
-            name="ui.sidebar"
+            name="general.ui.sidebar"
             select
-            value={storyData.general.ui.sidebar}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.general.ui.sidebar}
           >
             <MenuItem key="left" value="left">
               Left
@@ -39,26 +41,30 @@ const Ui = ({ storyData }) => {
             </MenuItem>
           </TextField>
         </Box>
-        <Box flexGrow={2} mr={2}>
+        <Box width='200px' mr={2}>
           <TextField
-            // error={Boolean(touched.firstName && errors.firstName)}
+            error={Boolean(
+              touched['general.user.inputPlacehold'] &&
+                errors['general.user.inputPlacehold']
+            )}
             fullWidth
-            // helperText={touched.firstName && errors.firstName}
-            label="User input placeholder"
-            name="user.inputPlacehold"
-            // onBlur={handleBlur}
-            // onChange={handleChange}
-            value={storyData.general.user.inputPlacehold}
+            label="Input placeholder"
+            name="general.user.inputPlacehold"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.general.user.inputPlacehold}
             className={classes.marginBottom}
           />
         </Box>
-        <Box flexGrow={1}>
+        <Box width='100px' >
           <TextField
             fullWidth
-            label="User Ballon"
-            name="user.ballon"
+            label="Ballon"
+            name="general.user.balloon"
             select
-            value={storyData.general.user.ballon}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.general.user.balloon}
           >
             {state.story.colors.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -68,12 +74,17 @@ const Ui = ({ storyData }) => {
           </TextField>
         </Box>
       </Box>
+      
     </>
   );
 };
 
 Ui.propTypes = {
-  storyData: PropTypes.object,
+  errors: PropTypes.object,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  touched: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default Ui;

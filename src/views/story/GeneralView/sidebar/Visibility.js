@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Visibility = ({ isPublic }) => {
+const Visibility = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
 
   return (
@@ -30,13 +30,13 @@ const Visibility = ({ isPublic }) => {
       </Typography>
       <TextField
         className={classes.marginLeft}
-        // error={Boolean(touched.language && errors.language)}
+        error={Boolean(touched['general.public'] && errors['general.public'])}
         // label="Status"
-        name="public"
-        // onBlur={handleBlur}
-        // onChange={handleChange}
+        name="general.public"
+        onBlur={handleBlur}
+        onChange={handleChange}
         select
-        value={isPublic}
+        value={values.general.public}
       >
         <MenuItem key={'private'} value={false}>
           Private
@@ -50,7 +50,11 @@ const Visibility = ({ isPublic }) => {
 };
 
 Visibility.propTypes = {
-  isPublic: PropTypes.bool,
+  errors: PropTypes.object,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  touched: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default Visibility;

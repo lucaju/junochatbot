@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Permalink = ({ slug }) => {
+const Permalink = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
 
   return (
@@ -32,31 +32,35 @@ const Permalink = ({ slug }) => {
         Permalink
       </Typography>
       <TextField
-        // error={Boolean(touched.firstName && errors.firstName)}
+        error={Boolean(touched.slug && errors.slug)}
         fullWidth
-        // helperText={touched.firstName && errors.firstName}
+        helperText={touched.slug && errors.slug}
         label="URL slug"
-        name="url-slug"
-        // onBlur={handleBlur}
-        // onChange={handleChange}
-        value={slug}
+        name="slug"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.slug}
         className={classes.marginBottom}
       />
       <Link
         color="inherit"
         component={RouterLink}
-        to={`/play/${slug}`}
+        to={`/play/${values.slug}`}
         variant="body2"
         target="_blank"
       >
-        {`https://www.chatstories.ca/play/${slug}`}
+        {`https://www.chatstories.ca/play/${values.slug}`}
       </Link>
     </Box>
   );
 };
 
 Permalink.propTypes = {
-  slug: PropTypes.string,
+  errors: PropTypes.object,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  touched: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default Permalink;

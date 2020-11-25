@@ -1,21 +1,12 @@
 import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
-// import Visibility from './Visibility';
+// import Visibility sfrom './Visibility';
 // import Authors from './Authors';
 import FeaturedImage from './FeaturedImage';
 import Permalink from './Permalink';
 
-const SideBar = ({ storyData }) => {
-  // const handleAuthorsChange = (action, author) => {
-  //   if (action === 'delete') {
-  //     values.authors = values.authors.filter((usr) => usr.id !== author.id);
-  //   }
-  //   if (action === 'add') {
-  //     values.authors = [...values.authors, author];
-  //   }
-  // };
-
+const SideBar = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <Box
       display="flex"
@@ -23,21 +14,39 @@ const SideBar = ({ storyData }) => {
       justify="flex-start"
       alignItems="flex-start"
     >
-      <Permalink slug={storyData.slug} />
-      {/* {storyData.general.published && (
-        <Visibility isPublic={storyData.general.public} />
+      <Permalink
+        errors={errors}
+        handleBlur={handleBlur}
+        handleChange={handleChange}
+        touched={touched}
+        values={values}
+      />
+      {/* {values.general_published && (
+        <Visibility
+          errors={errors}
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          touched={touched}
+          values={values} />
       )} */}
       {/* <Authors
-        authors={storyData.general.authors}
-        handleAuthorsChange={handleAuthorsChange}
+        errors={errors}
+        handleBlur={handleBlur}
+        handleChange={handleChange}
+        touched={touched}
+        values={values}
       /> */}
-      <FeaturedImage imageFile={storyData.general.featuredImage} />
+      <FeaturedImage name="general.featuredImage" />
     </Box>
   );
 };
 
 SideBar.propTypes = {
-  storyData: PropTypes.object,
+  errors: PropTypes.object,
+  handleBlur: PropTypes.func,
+  handleChange: PropTypes.func,
+  touched: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default SideBar;

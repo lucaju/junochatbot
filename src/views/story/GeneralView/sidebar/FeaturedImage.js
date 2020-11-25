@@ -4,11 +4,12 @@ import {
   Card,
   CardMedia,
   makeStyles,
-  Typography
+  Typography,
 } from '@material-ui/core';
+import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -28,24 +29,35 @@ const useStyles = makeStyles((theme) => ({
   icon: { width: 40 },
 }));
 
-const FeaturedImage = ({ imageFile }) => {
+const FeaturedImage = ({ name }) => {
   const classes = useStyles();
-  const [imageToDisplay, setImageToDisplay] = useState(imageFile);
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField(name);
+  const [imageToDisplay, setImageToDisplay] = useState(null);
   const [file, setFile] = useState(null);
-  const [showDropzone, setShowDropzone] = useState(
-    imageFile !== '' ? false : true
-  );
+  const [showDropzone, setShowDropzone] = useState(null);
+
+  const { value } = meta;
+  const { setValue } = helpers;
+
+  useEffect(() => {
+    setImageToDisplay(value);
+    setShowDropzone(value !== '' ? false : true);
+    return () => {};
+  }, []);
 
   const handleDropZoneChange = (files) => {
-    // console.log('Files:', files);
+    console.log('Files:', files);
     setFile(files[0].file);
     const image = files[0].data;
+    setValue(files[0].file.name);
     setImageToDisplay(image);
     setShowDropzone(false);
   };
 
   const handleRemoveImage = () => {
     setImageToDisplay(null);
+    setValue('');
     setShowDropzone(true);
   };
 
@@ -97,7 +109,7 @@ const FeaturedImage = ({ imageFile }) => {
 };
 
 FeaturedImage.propTypes = {
-  imageFile: PropTypes.string,
+  name: PropTypes.string,
 };
 
 export default FeaturedImage;

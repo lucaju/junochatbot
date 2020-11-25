@@ -66,9 +66,9 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
     setAnchorProfileEl(null);
   };
 
-  // const handleSwitchBrightness = () => {
-  //   actions.session.setDarkMode(!state.ui.darkMode);
-  // };
+  const handleClick = () => {
+    actions.story.setCurrentStory(null);
+  };
 
   return (
     <div>
@@ -122,6 +122,7 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
                     component={RouterLink}
                     key={item.title}
                     to={item.href}
+                    onClick={handleClick}
                   >
                     {item.title}
                   </Button>

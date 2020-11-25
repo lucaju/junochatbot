@@ -33,7 +33,8 @@ export const createStory = async (newStory) => {
       story.slug = newStory.slug;
       story.language = newStory.language;
       story.owner = newStory.owner;
-      // story.general.authors.push*(newStory.owner);
+
+      mock.dataStories.unshift(story);
 
       resolve(story);
     }, 1000);
@@ -50,6 +51,37 @@ export const getStory = async (storyID) => {
   return await new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(mock.storyExample);
+    }, 1000);
+  });
+};
+
+export const updateStory = async (story) => {
+  //access endpoint
+  // const response = await fetch('/general/settings');
+  // return await response.json();
+
+  // console.log(storyID);
+
+  return await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(story);
+    }, 1000);
+  });
+};
+
+export const deleteStory = async (storyId) => {
+  //access endpoint
+  // const response = await fetch('/general/settings');
+  // return await response.json();
+
+  // console.log(storyID);
+
+  return await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      mock.dataStories = mock.dataStories.filter(
+        (story) => story.id !== storyId
+      );
+      resolve(storyId);
     }, 1000);
   });
 };

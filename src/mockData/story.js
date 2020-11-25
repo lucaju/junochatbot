@@ -156,11 +156,11 @@ export const storyDefault = {
       biography: '',
       avatar: 'adb',
       speed: 120,
-      ballon: 'white',
+      balloon: 'white',
     },
     user: {
       inputPlacehold: 'Type here',
-      ballon: 'blue',
+      balloon: 'blue',
     },
     ui: {
       sidebar: 'right',
@@ -192,18 +192,18 @@ export const storyExample = {
         email: 'spedraca@gme.com',
       },
     ],
-    published: true,
+    published: false,
     public: true,
     bot: {
       name: 'Swiss',
       biography: 'Your soul',
       avatar: 'adb',
       speed: 120,
-      ballon: 'white',
+      balloon: 'white',
     },
     user: {
       inputPlacehold: 'Type here',
-      ballon: 'blue',
+      balloon: 'blue',
     },
     ui: {
       sidebar: 'right',
