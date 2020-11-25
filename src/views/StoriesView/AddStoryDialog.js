@@ -52,7 +52,7 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
   const submit = async (values) => {
     const res = await actions.story.createStory(values);
     if (res.error) return setError(res.error);
-    triggerEditStory(res.id);
+    triggerEditStory(res);
   };
 
   return (
@@ -126,7 +126,7 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
                     value={values.language}
                     variant="outlined"
                   >
-                    {state.users.languages.map((option) => (
+                    {state.story.languages.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.name}
                       </MenuItem>

@@ -28,7 +28,7 @@ export const getUser = async (userId) => {
   return await new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(mock.dataUsers.find((user) => user.id === userId));
-    }, 1000);
+    }, 50);
   });
 };
 

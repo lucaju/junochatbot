@@ -18,7 +18,7 @@ import {
     },
   }));
   
-  const title = 'Users';
+  const title = 'Screenplay';
   
   const UsersListView = () => {
     const classes = useStyles();
@@ -27,7 +27,7 @@ import {
     return (
       <Page className={classes.root} title={title}>
         <Container maxWidth={false}>
-        Screen Play
+        Screenplay
         </Container>
       </Page>
     );

@@ -5,8 +5,8 @@ import {
   Divider,
   makeStyles,
 } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { useApp } from 'src/overmind';
 
 const useStyles = makeStyles((theme) => ({
   bar: {
@@ -19,12 +19,11 @@ const useStyles = makeStyles((theme) => ({
     paddingright: theme.spacing(2),
   },
   buttonProgress: { position: 'absolute' },
-  marginLeft: { marginLeft: theme.spacing(2)}
+  marginLeft: { marginLeft: theme.spacing(2) },
 }));
 
-const BottomBar = () => {
+const BottomBar = ({ storyData }) => {
   const classes = useStyles();
-  const { state, actions } = useApp();
   const { isSubmitting } = useState();
 
   const handleDeleteButton = () => {
@@ -48,9 +47,9 @@ const BottomBar = () => {
           color="primary"
           disabled={isSubmitting}
           type="submit"
-          variant={state.story.general.published ? 'text' : 'outlined'}
+          variant={storyData.general.published ? 'text' : 'outlined'}
         >
-          {state.story.general.published ? 'Switch to Draft' : 'Save draft'}
+          {storyData.general.published ? 'Switch to Draft' : 'Save draft'}
           {isSubmitting && (
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}
@@ -63,7 +62,7 @@ const BottomBar = () => {
           variant="contained"
           className={classes.marginLeft}
         >
-         {state.story.general.published ? 'Update' : 'Publish'}
+          {storyData.general.published ? 'Update' : 'Publish'}
           {isSubmitting && (
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}
@@ -71,6 +70,10 @@ const BottomBar = () => {
       </Box>
     </>
   );
+};
+
+BottomBar.propTypes = {
+  storyData: PropTypes.object,
 };
 
 export default BottomBar;

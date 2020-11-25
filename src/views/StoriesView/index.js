@@ -72,8 +72,8 @@ const Stories = () => {
     setAddDialogOpen(false);
   };
 
-  const triggerEditStory = (storyId) => {
-    actions.story.editStory(storyId);
+  const triggerEditStory = (story) => {
+    if (!story.new) actions.story.setCurrentStory(story.id);
     navigate('/story/general', { replace: true });
   };
 

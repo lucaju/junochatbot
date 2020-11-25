@@ -1,5 +1,7 @@
 export const authUser = {
-  name: 'Luciano Frizzera',
+  id: 1,
+  firstName: 'Luciano',
+  lastName: 'Frizzera',
   roleType: 'Admin',
   email: 'lucaju@gmail.com',
   avatar: 'lucaju.jpg',

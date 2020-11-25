@@ -1,7 +1,8 @@
 export const dataStories = [
   {
+    id: 1,
     title: 'After Life2',
-    permalink: 'after-life2',
+    slug: 'after-life2',
     icon: 'adb',
     image: 'image1.jpg',
     genre: 'Documentary',
@@ -13,8 +14,9 @@ export const dataStories = [
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
   {
+    id: 2,
     title: 'Silicon 2',
-    permalink: 'silicon2',
+    slug: 'silicon2',
     icon: 'adb',
     genre: 'Sci-Fi',
     authors: ['Julia Salles'],
@@ -25,8 +27,9 @@ export const dataStories = [
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
   {
+    id: 3,
     title: 'Hey I',
-    permalink: 'hey-i',
+    slug: 'hey-i',
     icon: 'adb',
     image: 'image6.jpg',
     genre: 'Documentary',
@@ -38,8 +41,9 @@ export const dataStories = [
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
   {
+    id: 4,
     title: 'After Life',
-    permalink: 'after-life',
+    slug: 'after-life',
     icon: 'adb',
     image: 'image2.jpg',
     genre: 'Drama',
@@ -51,8 +55,9 @@ export const dataStories = [
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
   {
+    id: 5,
     title: 'The Post-Human 2',
-    permalink: 'the-post-human-2',
+    slug: 'the-post-human-2',
     icon: 'adb',
     image: 'image3.png',
     genre: 'Documentary',
@@ -64,8 +69,9 @@ export const dataStories = [
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
   {
+    id: 6,
     title: 'The Post-Human',
-    permalink: 'the-post-human',
+    slug: 'the-post-human',
     icon: 'adb',
     genre: 'Sci-Fi',
     authors: ['Julia Salles'],
@@ -76,8 +82,9 @@ export const dataStories = [
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
   {
+    id: 7,
     title: 'Circuits',
-    permalink: 'circuits',
+    slug: 'circuits',
     icon: 'adb',
     image: 'image4.png',
     genre: 'Documentary',
@@ -88,8 +95,9 @@ export const dataStories = [
     description: '',
   },
   {
+    id: 8,
     title: 'Carbon',
-    permalink: 'carbon',
+    slug: 'carbon',
     icon: 'adb',
     genre: 'Sci-Fi',
     authors: ['Julia Salles'],
@@ -99,8 +107,9 @@ export const dataStories = [
     description: '',
   },
   {
+    id: 9,
     title: 'Silicon',
-    permalink: 'silicon',
+    slug: 'silicon',
     icon: 'adb',
     image: 'image5.png',
     genre: 'Documentary',
@@ -112,8 +121,9 @@ export const dataStories = [
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
   {
+    id: 10,
     title: 'Zero Or One',
-    permalink: 'zero-or-one',
+    slug: 'zero-or-one',
     icon: 'adb',
     genre: 'Sci-Fi',
     authors: ['Julia Salles'],
@@ -125,32 +135,47 @@ export const dataStories = [
   },
 ];
 
-export const storyDefaultGeneral = {
-  genre: '',
-  synopsis: '',
-  featuredImage: '',
-  collaborators: [],
-  published: false,
-  public: false,
-  bot: {
-    biography: '',
-    avatar: '',
-    speed: 120,
-    ballon: 'white',
+export const storyDefault = {
+  id: null,
+  slug: '',
+  title: '',
+  language: '',
+  owner: {
+    name: '',
+    email: '',
   },
-  user: {
-    inputPlacehold: 'Type here',
-    ballon: 'blue',
+  general: {
+    genre: '',
+    description: '',
+    featuredImage: '',
+    authors: [],
+    published: false,
+    public: true,
+    bot: {
+      name: '',
+      biography: '',
+      avatar: 'adb',
+      speed: 120,
+      ballon: 'white',
+    },
+    user: {
+      inputPlacehold: 'Type here',
+      ballon: 'blue',
+    },
+    ui: {
+      sidebar: 'right',
+      showVideoController: false,
+    },
   },
-  ui: {
-    sidebar: 'right',
-    showVideoController: false,
-  },
+  videoColletion: [],
+  screenplay: [],
+  tags: [],
+  contexts: [],
 };
 
 export const storyExample = {
-  id: 100,
-  permalink: '/after-life',
+  id: 1,
+  slug: 'after-life',
   title: 'After Life',
   language: 'en-CA',
   owner: {
@@ -158,8 +183,8 @@ export const storyExample = {
     email: 'lucaju@gmail.com',
   },
   general: {
-    genre: 'Documentary',
-    synopsis: 'A history beyond this world',
+    genre: 'documentary',
+    description: 'A history beyond this world',
     featuredImage: 'image1.jpg',
     collaborators: [
       {
@@ -167,9 +192,10 @@ export const storyExample = {
         email: 'spedraca@gme.com',
       },
     ],
-    published: false,
-    public: false,
+    published: true,
+    public: true,
     bot: {
+      name: 'Swiss',
       biography: 'Your soul',
       avatar: 'adb',
       speed: 120,
@@ -184,10 +210,14 @@ export const storyExample = {
       showVideoController: false,
     },
   },
+  videoColletion: [],
+  screenplay: [],
+  tags: [],
+  contexts: [],
 };
 
 export default {
   dataStories,
-  storyDefaultGeneral,
-  storyExample
+  storyDefault,
+  storyExample,
 };

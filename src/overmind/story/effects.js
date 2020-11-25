@@ -19,43 +19,37 @@ export const getStories = async () => {
   });
 };
 
-export const createStory = async (story) => {
+export const createStory = async (newStory) => {
   //access endpoint
   // const response = await fetch('/general/settings');
   // return await response.json();
 
   return await new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve({
-        ...story,
-        id: 111,
-        permalink: story.permalink,
-        title: story.title,
-        language: story.language,
-        owner: story.owner,
-        general: mock.storyGeneralDefault,
-      });
+      const story = mock.storyDefault;
+      story.new = true;
+      story.id = 1000;
+      story.title = newStory.title;
+      story.slug = newStory.slug;
+      story.language = newStory.language;
+      story.owner = newStory.owner;
+      // story.general.authors.push*(newStory.owner);
+
+      resolve(story);
     }, 1000);
   });
 };
 
-export const editStory = async (storyID) => {
+export const getStory = async (storyID) => {
   //access endpoint
   // const response = await fetch('/general/settings');
   // return await response.json();
 
-  console.log(storyID);
+  // console.log(storyID);
 
   return await new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve({
-        id: mock.storyExample.id,
-        permalink: mock.storyExample.permalink,
-        title: mock.storyExample.title,
-        language: mock.storyExample.language,
-        owner: mock.storyExample.owner,
-        general: mock.storyExample.storyGeneralDefault,
-      });
+      resolve(mock.storyExample);
     }, 1000);
   });
 };

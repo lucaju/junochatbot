@@ -1,11 +1,11 @@
 import { authUser } from './session';
 import { dataUsers } from './users';
-import { dataStories, storyExample, storyDefaultGeneral } from './story';
+import { dataStories, storyExample, storyDefault } from './story';
 
 export default {
   authUser,
   dataUsers,
   dataStories,
-  storyDefaultGeneral,
+  storyDefault,
   storyExample,
 };

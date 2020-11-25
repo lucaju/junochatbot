@@ -18,7 +18,7 @@ import {
     },
   }));
   
-  const title = 'Users';
+  const title = 'Contexts';
   
   const UsersListView = () => {
     const classes = useStyles();

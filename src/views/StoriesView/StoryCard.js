@@ -74,7 +74,11 @@ const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {
   useRefresh([hover]);
 
   const handleEditClick = () => {
-    triggerEditStory(story.id);
+    triggerEditStory(story);
+  };
+
+  const handlePlayClick = () => {
+    console.log(story);
   };
 
   return (
@@ -121,7 +125,7 @@ const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {
         <CardActions disableSpacing>
           <Button onClick={handleEditClick}>Edit</Button>
           <Box flexGrow={1} />
-          <Button variant="outlined">Play</Button>
+          <Button onClick={handlePlayClick} variant="outlined">Play</Button>
         </CardActions>
       )}
     </Card>

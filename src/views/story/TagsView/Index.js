@@ -18,7 +18,7 @@ import {
     },
   }));
   
-  const title = 'Users';
+  const title = 'Tags';
   
   const UsersListView = () => {
     const classes = useStyles();
