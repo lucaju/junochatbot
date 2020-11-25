@@ -33,6 +33,7 @@
 	"dependencies": {
 		"@material-ui/core": "^4.11.0",
 		"@material-ui/icons": "^4.9.1",
+		"@material-ui/lab": "^4.0.0-alpha.56",
 		"body-parser": "^1.19.0",
 		"chalk": "^4.1.0",
 		"clsx": "^1.1.1",
@@ -43,6 +44,7 @@
 		"history": "^5.0.0",
 		"js-cookie": "^2.2.1",
 		"luxon": "^1.25.0",
+		"material-ui-dropzone": "^3.5.0",
 		"muuri": "^0.9.3",
 		"muuri-react": "^3.1.6",
 		"overmind": "^26.0.0",
@@ -54,7 +56,8 @@
 		"react-perfect-scrollbar": "^1.5.8",
 		"react-router": "^6.0.0-beta.0",
 		"react-router-dom": "^6.0.0-beta.0",
-		"yup": "^0.30.0"
+		"slugify": "^1.4.6",
+		"yup": "^0.31.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.7",
