@@ -2,20 +2,18 @@ import {
   Box,
   CircularProgress,
   Container,
-  makeStyles,
+  makeStyles
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
+import DeleteDialog from 'src/components/DeleteDialog';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
+import * as Yup from 'yup';
 import BottomBar from './BottomBar';
 import Main from './main';
 import SideBar from './sidebar';
-import DeleteDialog from 'src/components/DeleteDialog';
-import InfoDialog from 'src/components/InfoDialog';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,10 +33,11 @@ const GeneralView = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [storyData, setStoryData] = useState(null);
+  const [submitType, setSubmitType] = useState(null);
+
   const [submitSuccess, setSubmitSuccess] = useState(null);
+
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
-  const [infoMessage, setInfoMessage] = useState('');
 
   useEffect(() => {
     if (!state.story.currentStory) navigate('/', { replace: true });
@@ -93,34 +92,33 @@ const GeneralView = () => {
   });
 
   const submit = async (values) => {
+    setSubmitSuccess(null);
     const res = await actions.story.updateStory(values);
     setSubmitSuccess(!!res);
-    if (!res) {
-      setInfoMessage('Error: something went wrong');
-      setInfoDialogOpen(true);
+    if (res) {
+      actions.ui.showNotification({
+        type: 'success',
+        message: 'Story Updated',
+      });
+    } else {
+      actions.ui.showNotification({
+        type: 'error',
+        message: 'Error: Something went wrong!',
+      });
     }
   };
 
-  const handleDeleteButton = () => {
-    setDeleteDialogOpen(true);
-  };
-
-  const handleDeleteStory = async () => {
+  const deleteStory = async () => {
     const res = await actions.story.deleteStory(state.story.currentStory.id);
     if (!res) {
-      setInfoMessage('Error: something went wrong');
-      setInfoDialogOpen(true);
+      setDeleteDialogOpen(false);
+      actions.ui.showNotification({
+        type: 'error',
+        message: 'Error: Something went wrong!',
+      });
       return;
-    } 
+    }
     navigate('/', { replace: true });
-  };
-
-  const handleCancelDelete = () => {
-    setDeleteDialogOpen(false);
-  };
-
-  const handleInfoDialog = () => {
-    setInfoDialogOpen(false);
   };
 
   return (
@@ -144,7 +142,12 @@ const GeneralView = () => {
             initialValues={storyData}
             validationSchema={formValidation}
             enableReinitialize={true}
-            onSubmit={async (values) => await submit(values)}
+            onSubmit={async (values) => {
+              submitType === 'delete'
+                ? await deleteStory(values)
+                : await submit(values);
+              setSubmitType(null);
+            }}
           >
             {({
               dirty,
@@ -191,30 +194,28 @@ const GeneralView = () => {
                 <Box>
                   <BottomBar
                     dirty={dirty}
-                    handleDelete={handleDeleteButton}
+                    handleDelete={() => setDeleteDialogOpen(true)}
                     isSubmitting={isSubmitting}
+                    name={'general.published'}
                     submitSuccess={submitSuccess}
                   />
                 </Box>
+                <DeleteDialog
+                  handleYes={() => {
+                    setSubmitType('delete');
+                    handleSubmit();
+                  }}
+                  handleNo={() => setDeleteDialogOpen(false)}
+                  isSubmitting={isSubmitting}
+                  message="Are you sure you want to delete this story?"
+                  open={deleteDialogOpen}
+                  title="Delete Story"
+                />
               </form>
             )}
           </Formik>
         </>
       )}
-      <DeleteDialog
-        handleOk={handleDeleteStory}
-        handleCancel={handleCancelDelete}
-        message="Are you sure you want to delete this story?"
-        open={deleteDialogOpen}
-        title="Delete Story"
-      />
-      <InfoDialog
-        handleOk={handleInfoDialog}
-        message={infoMessage}
-        open={infoDialogOpen}
-        title={infoMessage}
-      />
-      
     </Page>
   );
 };

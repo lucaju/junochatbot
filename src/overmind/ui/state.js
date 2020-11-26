@@ -1,4 +1,9 @@
 export const state = {
-    title: 'Chat Stories',
-    darkMode: true //false
+  title: 'Chat Stories',
+  darkMode: false,
+  notification: {
+    type: '',
+    message: '',
+    open: false,
+  },
 };

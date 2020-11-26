@@ -2,7 +2,7 @@ import mock from 'src/mockData';
 
 export const getUsers = async (filter) => {
   
-  console.log(filter);
+  // console.log(filter);
   //access endpoint
   // const response = await fetch('/general/settings');
   // return await response.json();
@@ -20,7 +20,7 @@ export const getUsers = async (filter) => {
 
 export const getUser = async (userId) => {
 
-  console.log(userId);
+  // console.log(userId);
   //access endpoint
   // const response = await fetch('/general/settings');
   // return await response.json();
@@ -34,7 +34,7 @@ export const getUser = async (userId) => {
 
 export const addUser = async (userData) => {
 
-  console.log(userData);
+  // console.log(userData);
   //access endpoint
   // const response = await fetch('/general/settings');
   // return await response.json();
@@ -48,7 +48,7 @@ export const addUser = async (userData) => {
 
 export const updateUser = async (userData) => {
 
-  console.log(userData);
+  // console.log(userData);
   //access endpoint
   // const response = await fetch('/general/settings');
   // return await response.json();
@@ -65,7 +65,7 @@ export const deleteUser = async (userId) => {
   // const response = await fetch('/general/settings');
   // return await response.json();
 
-  console.log(userId);
+  // console.log(userId);
 
   return await new Promise((resolve, reject) => {
     setTimeout(() => {

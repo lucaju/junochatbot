@@ -1,10 +1,10 @@
 import { makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import TopBar from 'src/components/TopBar';
 import { useApp } from 'src/overmind';
 import NavBar from './NavBar';
-import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,9 +19,6 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     overflow: 'hidden',
     paddingTop: 64,
-    // [theme.breakpoints.up('lg')]: {
-    //   paddingLeft: 256,
-    // },
   },
   wrapperMobile: { paddingLeft: 0 },
   wrapperCompact: { paddingLeft: 72 },

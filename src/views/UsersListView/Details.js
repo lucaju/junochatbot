@@ -16,7 +16,7 @@ import {
   MenuItem,
   OutlinedInput,
   TextField,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
@@ -26,9 +26,9 @@ import clsx from 'clsx';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
-import DeleteDialog from './DeleteDialog';
 
 const useStyles = makeStyles((theme) => ({
   dialogContent: {
@@ -66,20 +66,15 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: { marginRight: theme.spacing(1) },
   buttonProgress: { position: 'absolute' },
-  error: {
-    marginTop: theme.spacing(1),
-    color: theme.palette.secondary.light,
-    textAlign: 'center',
-  },
 }));
 
 const Details = ({ open, handleDetailClose, userId }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [error, setError] = useState();
   const [isAdmin] = useState(state.session.isAdmin);
   const [showPassword, setShowPassword] = useState(false);
+  const [submitType, setSubmitType] = useState(null);
 
   const initialValues = {
     newAvatar: '',
@@ -113,6 +108,18 @@ const Details = ({ open, handleDetailClose, userId }) => {
     return () => {};
   }, [open]);
 
+  const formValidation = Yup.object().shape({
+    newAvatar: Yup.string(),
+    firstName: Yup.string().trim().required('First name is required'),
+    lastName: Yup.string().trim().required('Last name is required'),
+    email: Yup.string().email().required('Email is required'),
+    password: Yup.string().max(255),
+    language: Yup.string().required(),
+    roleType: Yup.string().required(),
+    group: Yup.string(),
+    stories: Yup.array(),
+  });
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -137,21 +144,53 @@ const Details = ({ open, handleDetailClose, userId }) => {
     open = false;
   };
 
-  const handleDeleteClose = async (userId) => {
-    if (userId) await actions.users.deleteUser(userId);
-    setDeleteDialogOpen(false);
-    handleDetailClose();
-    open = false;
-  };
+  // const handleDeleteClose = async (userId) => {
+  //   if (userId) await actions.users.deleteUser(userId);
+  //   setDeleteDialogOpen(false);
+  //   handleDetailClose();
+  //   open = false;
+  // };
 
   const submit = async (values) => {
     //add extra info
     values = { ...values, stories: userData.stories };
 
     const res = await actions.users.save(values);
-    if (res.error) return setError(res.error);
-    handleDetailClose();
-    open = false;
+    if (res) {
+      const message = values.id ? 'User updated' : 'User created';
+      actions.ui.showNotification({
+        type: 'success',
+        message
+      });
+      handleDetailClose();
+      open = false;
+    } else {
+      actions.ui.showNotification({
+        type: 'error',
+        message: 'Error: Something went wrong!',
+      });
+    }
+    
+  };
+
+  const deleteUser = async (values) => {
+    console.log(values);
+    if (!values.id) return;
+    const res = await actions.users.deleteUser(userId);
+    if (res) {
+      actions.ui.showNotification({
+        type: 'success',
+        message: 'User removed'
+      });
+      handleDetailClose();
+      open = false;
+    } else {
+      actions.ui.showNotification({
+        type: 'error',
+        message: 'Error: Something went wrong!',
+      });
+    }
+    setDeleteDialogOpen(false);
   };
 
   return (
@@ -161,30 +200,17 @@ const Details = ({ open, handleDetailClose, userId }) => {
       maxWidth="sm"
       aria-labelledby="user-details-dialog"
     >
-      {error && (
-        <Typography
-          component="h2"
-          variant="subtitle1"
-          className={classes.error}
-        >
-          Oh oh. Server Error.
-        </Typography>
-      )}
       <Formik
         initialValues={userData}
-        validationSchema={Yup.object().shape({
-          newAvatar: Yup.string(),
-          firstName: Yup.string().trim().required('First name is required'),
-          lastName: Yup.string().trim().required('Last name is required'),
-          email: Yup.string().email().required('Email is required'),
-          password: Yup.string().max(255),
-          language: Yup.string().required(),
-          roleType: Yup.string().required(),
-          group: Yup.string(),
-          stories: Yup.array(),
-        })}
+        validationSchema={formValidation}
         enableReinitialize={true}
-        onSubmit={async (values) => await submit(values)}
+        // onSubmit={async (values) => await submit(values)}
+        onSubmit={async (values) => {
+            submitType === 'delete'
+              ? await deleteUser(values)
+              : await submit(values);
+            setSubmitType(null);
+          }}
       >
         {({
           errors,
@@ -426,7 +452,7 @@ const Details = ({ open, handleDetailClose, userId }) => {
                 variant="outlined"
               >
                 Save
-                {isSubmitting && (
+                {isSubmitting && submitType !== 'delete' && (
                   <CircularProgress
                     size={24}
                     className={classes.buttonProgress}
@@ -434,14 +460,26 @@ const Details = ({ open, handleDetailClose, userId }) => {
                 )}
               </Button>
             </DialogActions>
+            <DeleteDialog
+              handleYes={() => {
+                setSubmitType('delete');
+                handleSubmit();
+              }}
+              handleNo={() => setDeleteDialogOpen(false)}
+              isSubmitting={isSubmitting}
+              message="Are you sure you want to delete this user?"
+              open={deleteDialogOpen}
+              title="Delete User"
+            />
           </form>
         )}
       </Formik>
-      <DeleteDialog
+      
+      {/* <DeleteDialog
         open={deleteDialogOpen}
         handleDeleteClose={handleDeleteClose}
         userId={userData.id}
-      />
+      /> */}
     </Dialog>
   );
 };

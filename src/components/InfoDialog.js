@@ -20,7 +20,7 @@ const InfoDialog = ({ handleOk, message, open, title }) => (
     <DialogContent dividers>{message}</DialogContent>
     <DialogActions>
       <Button onClick={handleOk} color="primary">
-        Yes
+        Ok
       </Button>
     </DialogActions>
   </Dialog>

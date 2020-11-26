@@ -5,7 +5,7 @@ import {
   Divider,
   makeStyles,
 } from '@material-ui/core';
-import { useFormikContext } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
@@ -23,26 +23,38 @@ const useStyles = makeStyles((theme) => ({
   marginLeft: { marginLeft: theme.spacing(2) },
 }));
 
-const BottomBar = ({ dirty, handleDelete, isSubmitting, submitSuccess }) => {
+const BottomBar = ({
+  dirty,
+  handleDelete,
+  isSubmitting,
+  name,
+  submitSuccess,
+}) => {
   const classes = useStyles();
   const { values, submitForm } = useFormikContext();
+  const [field, meta, helpers] = useField(name);
+
+  const { value } = meta;
+  const { setValue } = helpers;
+
   const [status, setStatus] = useState(false);
   const [pushedButton, setPushedButton] = useState(null);
 
   useEffect(() => {
-    setStatus(values.general.published);
+    setStatus(value);
     return () => {};
   }, []);
 
   useEffect(() => {
-    if (submitSuccess) setStatus(values.general.published);
+    if (submitSuccess) setStatus(value);
   }, [submitSuccess]);
 
   const handleSubmit = async (type) => {
     setPushedButton(type);
-    if (type === 'draft') values.general.published = false;
-    if (type === 'publish') values.general.published = true;
+    if (type === 'draft') setValue(false);
+    if (type === 'publish') setValue(true);
     await submitForm();
+    setPushedButton(null);
   };
 
   return (
@@ -54,14 +66,13 @@ const BottomBar = ({ dirty, handleDelete, isSubmitting, submitSuccess }) => {
         flexDirection="row"
         className={classes.bar}
       >
-        <Button color="default" onClick={handleDelete}>
+        <Button color="default" disabled={isSubmitting} onClick={handleDelete}>
           Delete Story
         </Button>
         <Box flexGrow={1} />
         <Button
           color="primary"
           disabled={isSubmitting || !dirty}
-          // type="submit"
           onClick={() => handleSubmit('draft')}
           variant={status ? 'text' : 'outlined'}
         >
@@ -74,7 +85,6 @@ const BottomBar = ({ dirty, handleDelete, isSubmitting, submitSuccess }) => {
         <Button
           color="primary"
           disabled={isSubmitting || !dirty}
-          // type="submit"
           onClick={() => handleSubmit('publish')}
           variant="contained"
           className={classes.marginLeft}
@@ -93,6 +103,7 @@ BottomBar.propTypes = {
   dirty: PropTypes.bool,
   handleDelete: PropTypes.func,
   isSubmitting: PropTypes.bool,
+  name: PropTypes.string,
   submitSuccess: PropTypes.bool,
 };
 

@@ -34,7 +34,22 @@ export const createStory = async (newStory) => {
       story.language = newStory.language;
       story.owner = newStory.owner;
 
-      mock.dataStories.unshift(story);
+      //mock add to list
+      const storyToList = {
+        id: story.id ,
+        title: story.title,
+        slug: story.slug,
+        icon: story.general.bot.avatar,
+        image: story.general.featuredImage,
+        genre: story.general.genre,
+        authors: ['Luciano Frizzera'],
+        year: 2020,
+        published: story.general.publish,
+        public: story.general.public,
+        description: story.general.description
+      };
+
+      mock.dataStories.unshift(storyToList);
 
       resolve(story);
     }, 1000);
@@ -64,6 +79,27 @@ export const updateStory = async (story) => {
 
   return await new Promise((resolve, reject) => {
     setTimeout(() => {
+
+      //mock update list
+      const storyToList = {
+        id: story.id ,
+        title: story.title,
+        slug: story.slug,
+        icon: story.general.bot.avatar,
+        image: story.general.featuredImage,
+        genre: story.general.genre,
+        authors: ['Luciano Frizzera'],
+        year: 2020,
+        published: story.general.publish,
+        public: story.general.public,
+        description: story.general.description
+      };
+
+      mock.dataStories = mock.dataStories.map((story) => {
+        if (story.id === storyToList.id) return storyToList;
+        return story;
+      });
+
       resolve(story);
     }, 1000);
   });

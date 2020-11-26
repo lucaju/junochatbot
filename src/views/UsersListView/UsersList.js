@@ -17,7 +17,7 @@ import UserRow from './UserRow';
 
 const useStyles = makeStyles(() => ({}));
 
-const Results = ({ handleDetailOpen, className, users, ...rest }) => {
+const UsersList = ({ handleDetailOpen, className, users, ...rest }) => {
   const classes = useStyles();
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -73,10 +73,10 @@ const Results = ({ handleDetailOpen, className, users, ...rest }) => {
   );
 };
 
-Results.propTypes = {
+UsersList.propTypes = {
   className: PropTypes.string,
   users: PropTypes.array.isRequired,
   handleDetailOpen: PropTypes.func,
 };
 
-export default Results;
+export default UsersList;

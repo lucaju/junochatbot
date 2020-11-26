@@ -8,3 +8,15 @@ export const setDarkMode = ({ state }, value) => {
   state.ui.darkMode = value;
   Cookies.set('chatStoriesDarkMode', state.ui.darkMode);
 };
+
+export const showNotification = ({ state }, { type, message }) => {
+  state.ui.notification = { type, message, open: true };
+};
+
+export const closeNotification = ({ state }) => {
+  state.ui.notification = {
+    type: state.ui.notification.type,
+    messsage: '',
+    open: false,
+  };
+};

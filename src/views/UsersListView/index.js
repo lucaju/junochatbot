@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Details from './Details';
-import Results from './Results';
+import UsersList from './UsersList';
 import Toolbar from './Toolbar';
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +84,7 @@ const UsersListView = () => {
           <>
             <Toolbar handleDetailOpen={handleDetailOpen}/>
             <Box mt={3}>
-              <Results users={state.users.list} handleDetailOpen={handleDetailOpen}/>
+              <UsersList users={state.users.list} handleDetailOpen={handleDetailOpen}/>
             </Box>
           </>
         )}
