@@ -167,7 +167,7 @@ export const storyDefault = {
       showVideoController: false,
     },
   },
-  videoColletion: [],
+  videoCollection: [],
   screenplay: [],
   tags: [],
   contexts: [],
@@ -210,14 +210,39 @@ export const storyExample = {
       showVideoController: false,
     },
   },
-  videoColletion: [],
+  videoCollection: [],
   screenplay: [],
   tags: [],
   contexts: [],
 };
 
+export const dataVideoColletion = [
+  {
+    id: 1,
+    title: 'After Life2',
+    source: 'after-life2',
+    provider: 'video',
+    image: 'image1.jpg',
+    tags: [
+      { id: 1, name: 'person' },
+      { id: 2, name: 'communication' },
+    ]
+  },
+  {
+    id: 2,
+    title: 'Drive away',
+    source: 'drive-away',
+    provider: 'youtube',
+    image: 'image2.jpg',
+    tags: [
+      { id: 1, name: 'person' },
+    ],
+  },
+];
+
 export default {
   dataStories,
   storyDefault,
   storyExample,
+  dataVideoColletion,
 };

@@ -1,6 +1,11 @@
 import { authUser } from './session';
 import { dataUsers } from './users';
-import { dataStories, storyExample, storyDefault } from './story';
+import {
+  dataStories,
+  storyExample,
+  storyDefault,
+  dataVideoColletion,
+} from './story';
 
 export default {
   authUser,
@@ -8,4 +13,5 @@ export default {
   dataStories,
   storyDefault,
   storyExample,
+  dataVideoColletion,
 };

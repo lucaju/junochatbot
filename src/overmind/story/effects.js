@@ -121,3 +121,17 @@ export const deleteStory = async (storyId) => {
     }, 1000);
   });
 };
+
+export const getVideoCollection = async (storyId) => {
+  //access endpoint
+  // const response = await fetch('/general/settings');
+  // return await response.json();
+
+  // console.log(storyID);
+
+  return await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(resolve(mock.dataVideoColletion));
+    }, 1000);
+  });
+};

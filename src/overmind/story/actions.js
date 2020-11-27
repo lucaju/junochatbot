@@ -50,3 +50,9 @@ export const deleteStory = async ({ state, effects }, storyId) => {
   state.story.currentStory = {};
   return res;
 };
+
+export const getVideoCollection = async ({ state, effects }, storyId) => {
+  state.story.currentStory.videoCollection = await effects.story.getVideoCollection(
+    storyId
+  );
+};
