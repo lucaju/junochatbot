@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
-import Details from './Details';
+import Details from './details/';
 import UsersList from './UsersList';
 import Toolbar from './Toolbar';
 

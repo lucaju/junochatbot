@@ -100,7 +100,6 @@ const FeaturedImage = ({ name }) => {
           filesLimit={1}
           showAlerts={['error']}
           onAdd={(files) => handleDropZoneChange(files)}
-          // onAlert={(message, variant) => console.log(`${variant}: ${message}`)}
           showPreviewsInDropzone={false}
         />
       </Box>

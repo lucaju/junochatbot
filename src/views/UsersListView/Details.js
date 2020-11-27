@@ -474,19 +474,13 @@ const Details = ({ open, handleDetailClose, userId }) => {
           </form>
         )}
       </Formik>
-      
-      {/* <DeleteDialog
-        open={deleteDialogOpen}
-        handleDeleteClose={handleDeleteClose}
-        userId={userData.id}
-      /> */}
     </Dialog>
   );
 };
 
 Details.propTypes = {
-  open: PropTypes.bool,
   handleDetailClose: PropTypes.func,
+  open: PropTypes.bool,
   userId: PropTypes.any,
 };
 

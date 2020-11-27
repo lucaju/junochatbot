@@ -31,7 +31,8 @@ const BottomBar = ({
   submitSuccess,
 }) => {
   const classes = useStyles();
-  const { values, submitForm } = useFormikContext();
+  const { submitForm } = useFormikContext();
+  // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
 
   const { value } = meta;

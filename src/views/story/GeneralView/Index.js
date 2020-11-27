@@ -2,7 +2,7 @@ import {
   Box,
   CircularProgress,
   Container,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -170,7 +170,6 @@ const GeneralView = () => {
                     >
                       <Box flexGrow={1} pr={2}>
                         <Main
-                          // storyData={storyData}
                           errors={errors}
                           handleBlur={handleBlur}
                           handleChange={handleChange}
@@ -180,7 +179,6 @@ const GeneralView = () => {
                       </Box>
                       <Box width="330px">
                         <SideBar
-                          storyData={storyData}
                           errors={errors}
                           handleBlur={handleBlur}
                           handleChange={handleChange}
