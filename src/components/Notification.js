@@ -36,7 +36,7 @@ const Notification = ({ handleClose, message, open, type = 'info' }) => {
   );
 };
 
-Notification.default = {
+Notification.defaultProps = {
   message: '',
   open: false,
   type: 'info',
