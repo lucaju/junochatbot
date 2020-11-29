@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
   actionSection: {
     paddingRight: theme.spacing(3),
     paddingLeft: theme.spacing(3),
-    paddingBottom: theme.spacing(2),
   },
   heading: {
     textAlign: 'center',
@@ -93,7 +92,7 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
           values,
         }) => (
           <form onSubmit={handleSubmit}>
-            <DialogContent>
+            <DialogContent dividers>
               <Grid container spacing={3} className={classes.dialogSection}>
                 <Grid item md={12}>
                   <Typography variant="h6" className={classes.heading}>
