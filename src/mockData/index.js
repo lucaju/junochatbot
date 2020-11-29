@@ -1,11 +1,9 @@
 import { authUser } from './session';
-import { dataUsers } from './users';
-import {
-  dataStories,
-  storyExample,
-  storyDefault,
-  dataVideoColletion,
-} from './story';
+import { dataUsers } from './user';
+import { dataStories, storyExample, storyDefault } from './story';
+import { dataVideoCollection } from './video';
+import { dataTags } from './tag';
+import { dataContexts } from './context';
 
 export default {
   authUser,
@@ -13,5 +11,7 @@ export default {
   dataStories,
   storyDefault,
   storyExample,
-  dataVideoColletion,
+  dataVideoCollection,
+  dataTags,
+  dataContexts,
 };
