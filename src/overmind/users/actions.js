@@ -1,17 +1,17 @@
 export const getUsers = async ({ state, effects }, filter) => {
   const isAdmin = state.session.isAdmin;
   if (!isAdmin) filter = { group: state.session.user.group };
-  state.users.list = await effects.users.getUsers(filter);
+  state.users.list = await effects.users.api.getUsers(filter);
 };
 
 export const getUser = async ({ effects }, userId) => {
-  return await effects.users.getUser(userId);
+  return await effects.users.api.getUser(userId);
 };
 
 export const save = async ({ state, effects }, userData) => {
   let res;
   if (userData.id) {
-    res = await effects.users.updateUser(userData);
+    res = await effects.users.api.updateUser(userData);
     if (res) {
       state.users.list = state.users.list.map((user) => {
         if (user.id === userData.id) user = userData;
@@ -19,7 +19,7 @@ export const save = async ({ state, effects }, userData) => {
       });
     }
   } else {
-    res = await effects.users.addUser(userData);
+    res = await effects.users.api.addUser(userData);
     if (res) {
       userData.id = res.id;
       state.users.list.unshift(userData);
@@ -29,7 +29,7 @@ export const save = async ({ state, effects }, userData) => {
 };
 
 export const deleteUser = async ({ state, effects }, userId) => {
-  const res = await effects.users.deleteUser(userId);
+  const res = await effects.users.api.deleteUser(userId);
   if (res) {
     state.users.list = state.users.list.filter((user) => user.id !== userId);
   }

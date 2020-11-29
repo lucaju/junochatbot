@@ -1,75 +1,53 @@
 import mock from 'src/mockData';
 
-export const getUsers = async (filter) => {
-  
-  // console.log(filter);
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
+export const api = {
+  async getUsers(filter) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let result = mock.dataUsers;
+        if (filter?.group) {
+          result = result.filter((user) => user.group === filter.group);
+        }
+        resolve(result);
+      }, 1000);
+    });
+  },
 
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      let result = mock.dataUsers;
-      if (filter?.group) {
-        result = result.filter((user) => user.group === filter.group);
-      }
-      resolve(result);
-    }, 1000);
-  });
-};
+  async getUser(userId) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(mock.dataUsers.find((user) => user.id === userId));
+      }, 50);
+    });
+  },
 
-export const getUser = async (userId) => {
+  async addUser(userData) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        mock.dataUsers.unshift(userData);
+        resolve({ id: 497 });
+      }, 1000);
+    });
+  },
 
-  // console.log(userId);
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
+  async updateUser(userData) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        mock.dataUsers = mock.dataUsers.map((u) => {
+          if (userData.id === u.id) return userData;
+          return u;
+        });
+        resolve({ success: true });
+      }, 1000);
+    });
+  },
 
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(mock.dataUsers.find((user) => user.id === userId));
-    }, 50);
-  });
-};
-
-export const addUser = async (userData) => {
-
-  // console.log(userData);
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
-
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ id: 497 });
-    }, 1000);
-  });
-};
-
-export const updateUser = async (userData) => {
-
-  // console.log(userData);
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
-
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ success: true });
-    }, 1000);
-  });
-};
-
-export const deleteUser = async (userId) => {
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
-
-  // console.log(userId);
-
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ success: true });
-    }, 1000);
-  });
+  async deleteUser(userId) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        mock.dataUsers = mock.dataUsers.filter((user) => user.id !== userId);
+        resolve({ success: true });
+      }, 1000);
+    });
+  },
 };

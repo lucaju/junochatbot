@@ -23,9 +23,9 @@ export const authenticate = async (
 ) => {
   let res;
   if (token) {
-    res = await effects.session.auth.authenticateWithToken(token);
+    res = await effects.session.api.authenticateWithToken(token);
   } else {
-    res = await effects.session.auth.authenticateWithCredentials({
+    res = await effects.session.api.authenticateWithCredentials({
       email,
       password,
     });

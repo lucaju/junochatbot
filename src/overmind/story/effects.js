@@ -1,137 +1,99 @@
 import mock from 'src/mockData';
 
-export const getStories = async () => {
-  // const response = await fetch('/general/settings');
-  // return await response.json();
+export const storyAPI = {
+  async getStories() {
+    //access endpoint
+    // const response = await fetch(
+    //   'https://api.chatstories.ca/admin/projects/all'
+    // );
+    // console.log(response);
+    // const result = await response.json();
+    // console.log(result);
 
-  //access endpoint
-  const response = await fetch('https://api.chatstories.ca/admin/projects/all');
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(mock.dataStories);
+      }, 1000);
+    });
+  },
 
-  //  const response = await fetch('https://api.localhost/admin/projects/all');
-  console.log(response);
-  const result = await response.json();
-  console.log(result);
+  async createStory(newStory) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const story = mock.storyDefault;
+        story.new = true;
+        story.id = 1000;
+        story.title = newStory.title;
+        story.slug = newStory.slug;
+        story.language = newStory.language;
+        story.owner = newStory.owner;
 
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(mock.dataStories);
-    }, 1000);
-  });
-};
+        //mock add to list
+        const storyToList = {
+          id: story.id,
+          title: story.title,
+          slug: story.slug,
+          icon: story.general.bot.avatar,
+          image: story.general.featuredImage,
+          genre: story.general.genre,
+          authors: ['Luciano Frizzera'],
+          year: 2020,
+          published: story.general.publish,
+          public: story.general.public,
+          description: story.general.description,
+        };
 
-export const createStory = async (newStory) => {
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
+        mock.dataStories.unshift(storyToList);
 
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const story = mock.storyDefault;
-      story.new = true;
-      story.id = 1000;
-      story.title = newStory.title;
-      story.slug = newStory.slug;
-      story.language = newStory.language;
-      story.owner = newStory.owner;
+        resolve(story);
+      }, 1000);
+    });
+  },
 
-      //mock add to list
-      const storyToList = {
-        id: story.id ,
-        title: story.title,
-        slug: story.slug,
-        icon: story.general.bot.avatar,
-        image: story.general.featuredImage,
-        genre: story.general.genre,
-        authors: ['Luciano Frizzera'],
-        year: 2020,
-        published: story.general.publish,
-        public: story.general.public,
-        description: story.general.description
-      };
+  async getStory(storyID) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(mock.storyExample);
+      }, 1000);
+    });
+  },
 
-      mock.dataStories.unshift(storyToList);
+  async updateStory(story) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        //mock update list
+        const storyToList = {
+          id: story.id,
+          title: story.title,
+          slug: story.slug,
+          icon: story.general.bot.avatar,
+          image: story.general.featuredImage,
+          genre: story.general.genre,
+          authors: ['Luciano Frizzera'],
+          year: 2020,
+          published: story.general.publish,
+          public: story.general.public,
+          description: story.general.description,
+        };
 
-      resolve(story);
-    }, 1000);
-  });
-};
+        mock.dataStories = mock.dataStories.map((story) => {
+          if (story.id === storyToList.id) return storyToList;
+          return story;
+        });
 
-export const getStory = async (storyID) => {
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
+        resolve(story);
+      }, 1000);
+    });
+  },
 
-  // console.log(storyID);
-
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(mock.storyExample);
-    }, 1000);
-  });
-};
-
-export const updateStory = async (story) => {
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
-
-  // console.log(storyID);
-
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-
-      //mock update list
-      const storyToList = {
-        id: story.id ,
-        title: story.title,
-        slug: story.slug,
-        icon: story.general.bot.avatar,
-        image: story.general.featuredImage,
-        genre: story.general.genre,
-        authors: ['Luciano Frizzera'],
-        year: 2020,
-        published: story.general.publish,
-        public: story.general.public,
-        description: story.general.description
-      };
-
-      mock.dataStories = mock.dataStories.map((story) => {
-        if (story.id === storyToList.id) return storyToList;
-        return story;
-      });
-
-      resolve(story);
-    }, 1000);
-  });
-};
-
-export const deleteStory = async (storyId) => {
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
-
-  // console.log(storyID);
-
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      mock.dataStories = mock.dataStories.filter(
-        (story) => story.id !== storyId
-      );
-      resolve(storyId);
-    }, 1000);
-  });
-};
-
-export const getVideoCollection = async (storyId) => {
-  //access endpoint
-  // const response = await fetch('/general/settings');
-  // return await response.json();
-
-  // console.log(storyID);
-
-  return await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(resolve(mock.dataVideoColletion));
-    }, 1000);
-  });
+  async deleteStory(storyId) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        mock.dataStories = mock.dataStories.filter(
+          (story) => story.id !== storyId
+        );
+        resolve(storyId);
+      }, 1000);
+    });
+  },
 };
