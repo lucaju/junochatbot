@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
+import Details from './details/';
+import Toolbar from './Toolbar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,18 +23,18 @@ const useStyles = makeStyles((theme) => ({
 
 const title = 'Chat Stories';
 
-const UsersListView = () => {
+const VideoCollectionView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [currentVideoId, setCurrentVideoId] = React.useState(0);
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/', { replace: true });
     const getCollection = async () => {
-      await actions.story.getVideoCollection(state.story.currentStory.id);
-      console.log(state.story.currentStory);
+      await actions.video.getCollection();
       setIsLoading(false);
     };
     getCollection();
@@ -52,11 +54,11 @@ const UsersListView = () => {
   return (
     <Page className={classes.root} title={title}>
       <Container maxWidth={false}>
-        {/* <Details
+        <Details
           open={detailsOpen}
           handleDetailClose={handleDetailClose}
           videoId={currentVideoId}
-        /> */}
+        />
         {isLoading && (
           <Box
             display="flex"
@@ -73,9 +75,10 @@ const UsersListView = () => {
         )}
         {!isLoading && (
           <>
+            <Toolbar handleDetailOpen={handleDetailOpen} />
             <Box mt={3}>
               <Collection
-                videos={state.story.currentStory.videoCollection}
+                videos={state.video.collection}
                 handleDetailOpen={handleDetailOpen}
               />
             </Box>
@@ -86,4 +89,4 @@ const UsersListView = () => {
   );
 };
 
-export default UsersListView;
+export default VideoCollectionView;

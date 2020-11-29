@@ -6,11 +6,13 @@ import {
   IconButton,
   makeStyles,
   TableCell,
-  TableRow,
+  TableRow
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import VimeoIcon from './assets/vimeoIcon';
+import YoutubeIcon from './assets/YoutubeIcon';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -18,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 60,
   },
   chip: { marginRight: theme.spacing(1) },
+  textCenter: { textAlign: 'center' },
 }));
 
 const VideoRow = ({ video, handleEditClick }) => {
@@ -54,13 +57,16 @@ const VideoRow = ({ video, handleEditClick }) => {
         </Box>
       </TableCell>
       <TableCell>{video.title}</TableCell>
-      <TableCell>{video.provider}</TableCell>
+      <TableCell className={classes.textCenter}>
+        {video.provider === 'youtube' && <YoutubeIcon fontSize="large" />}
+        {video.provider === 'vimeo' && <VimeoIcon fontSize="large" />}
+      </TableCell>
       <TableCell>
         {video.tags &&
-          video.tags.map(({ id, name }) => (
+          video.tags.map(({ name }) => (
             <Chip
               className={classes.chip}
-              key={id}
+              key={name}
               label={name}
               variant="outlined"
             />

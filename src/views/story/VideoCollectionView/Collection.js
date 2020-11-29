@@ -1,6 +1,5 @@
 import {
   Box,
-  Card,
   makeStyles,
   Table,
   TableBody,
@@ -9,7 +8,6 @@ import {
   TablePagination,
   TableRow,
 } from '@material-ui/core';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -17,9 +15,10 @@ import VideoRow from './VideoRow';
 
 const useStyles = makeStyles(() => ({
   imageCell: { width: 120 },
+  providerCell: { width: 80 },
 }));
 
-const Collection = ({ handleDetailOpen, className, videos, ...rest }) => {
+const Collection = ({ handleDetailOpen, videos }) => {
   const classes = useStyles();
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -37,16 +36,16 @@ const Collection = ({ handleDetailOpen, className, videos, ...rest }) => {
   };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <>
       <PerfectScrollbar>
-        <Box minWidth={1050}>
+        <Box minWidth={750}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox"></TableCell>
                 <TableCell className={classes.imageCell}></TableCell>
                 <TableCell>Title</TableCell>
-                <TableCell>Provider</TableCell>
+                <TableCell className={classes.providerCell}>Provider</TableCell>
                 <TableCell>Tags</TableCell>
               </TableRow>
             </TableHead>
@@ -71,7 +70,7 @@ const Collection = ({ handleDetailOpen, className, videos, ...rest }) => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </PerfectScrollbar>
-    </Card>
+    </>
   );
 };
 
