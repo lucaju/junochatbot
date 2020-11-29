@@ -118,6 +118,12 @@ const GeneralView = () => {
       });
       return;
     }
+
+    actions.ui.showNotification({
+      type: 'success',
+      message: 'Story deleted.',
+    });
+    
     navigate('/', { replace: true });
   };
 
