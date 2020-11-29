@@ -22,11 +22,13 @@ const useStyles = makeStyles((theme) => ({
   dialogContent: {
     paddingRight: 0,
     paddingLeft: 0,
+    marginBottom: theme.spacing(1),
   },
   section: {
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
     paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   credentialsSection: {
     backgroundColor:
@@ -117,20 +119,23 @@ const Details = ({ open, handleDetailClose, userId }) => {
   const deleteUser = async (values) => {
     if (!values.id) return;
     const res = await actions.users.deleteUser(userId);
-    if (res) {
-      actions.ui.showNotification({
-        type: 'success',
-        message: 'User removed',
-      });
-      handleDetailClose();
-      open = false;
-    } else {
+
+    if (!res) {
       actions.ui.showNotification({
         type: 'error',
         message: 'Error: Something went wrong!',
       });
+      setDeleteDialogOpen(false);
+      return;
     }
-    setDeleteDialogOpen(false);
+
+    actions.ui.showNotification({
+      type: 'success',
+      message: 'User removed',
+    });
+
+    handleDetailClose();
+    open = false;
   };
 
   return (
@@ -163,7 +168,7 @@ const Details = ({ open, handleDetailClose, userId }) => {
           values,
         }) => (
           <form onSubmit={handleSubmit}>
-            <DialogContent className={classes.dialogContent}>
+            <DialogContent className={classes.dialogContent} dividers>
               <Grid container spacing={3} className={classes.section}>
                 <Personal
                   errors={errors}
@@ -201,7 +206,7 @@ const Details = ({ open, handleDetailClose, userId }) => {
                 </Grid>
               )}
             </DialogContent>
-            <DialogActions className={classes.section}>
+            <DialogActions>
               <Actions
                 dirty={dirty}
                 handleCancel={handleCancelButton}

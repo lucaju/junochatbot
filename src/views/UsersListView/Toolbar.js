@@ -28,10 +28,10 @@ const Toolbar = ({ handleDetailOpen, className, ...rest }) => {
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
-      <Box display="flex" justifyContent="center">
+      <Box display="flex" justifyContent="flex-start">
         <Button
           color="primary"
-          variant="contained"
+          variant="outlined"
           startIcon={<AddCircleOutlineIcon />}
           onClick={() => handleDetailOpen(0)}
         >

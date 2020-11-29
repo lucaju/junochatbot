@@ -37,7 +37,7 @@ const UsersList = ({ handleDetailOpen, className, users, ...rest }) => {
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
-        <Box minWidth={1050}>
+        <Box minWidth={750}>
           <Table>
             <TableHead>
               <TableRow>
