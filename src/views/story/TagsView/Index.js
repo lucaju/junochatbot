@@ -10,7 +10,7 @@ import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
 import Toolbar from './Toolbar';
-import Details from './details/';
+import Details from './details';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
-import Details from './details/';
+import Details from './details';
 import Toolbar from './Toolbar';
 
 const useStyles = makeStyles((theme) => ({
