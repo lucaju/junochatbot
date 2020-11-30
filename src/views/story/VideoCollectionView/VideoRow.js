@@ -11,7 +11,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import VimeoIcon from './assets/vimeoIcon';
+import VimeoIcon from './assets/VimeoIcon';
 import YoutubeIcon from './assets/YoutubeIcon';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,7 +1,7 @@
 import { useField } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import VimeoIcon from '../assets/vimeoIcon';
+import VimeoIcon from '../assets/VimeoIcon';
 import YoutubeIcon from '../assets/YoutubeIcon';
 
 const Provider = ({ name, videoProvider }) => {
