@@ -14,7 +14,7 @@ const Actions = ({
   handleDelete,
   isSubmitting,
   name,
-  userId,
+  videoId,
 }) => {
   const classes = useStyles();
   const { submitForm } = useFormikContext();
@@ -32,7 +32,7 @@ const Actions = ({
 
   return (
     <>
-      {userId !== 0 && (
+      {videoId !== 0 && (
         <>
           <Button color="default" onClick={handleDelete}>
             Delete
@@ -65,7 +65,7 @@ Actions.propTypes = {
   handleDelete: PropTypes.func,
   isSubmitting: PropTypes.bool,
   name: PropTypes.string,
-  userId: PropTypes.number,
+  videoId: PropTypes.number,
 };
 
 export default Actions;
