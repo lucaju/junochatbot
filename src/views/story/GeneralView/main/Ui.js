@@ -59,7 +59,7 @@ const Ui = ({ errors, handleBlur, handleChange, touched, values }) => {
         <Box width='100px' >
           <TextField
             fullWidth
-            label="Ballon"
+            label="Balloon"
             name="general.user.balloon"
             select
             onBlur={handleBlur}
