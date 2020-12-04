@@ -18,14 +18,14 @@ const List = ({ name, title }) => {
   const { value } = meta;
   const { setValue } = helpers;
 
-  const handleDeleteS = (itemId) => {
+  const handleDelete = (itemId) => {
     setValue(value.filter((item) => item.id !== itemId));
   };
 
   return (
     <>
       <Typography variant="subtitle1" gutterBottom>
-        Intents
+        {title}
       </Typography>
       {value.length > 0 ? (
         value.map(({ id, title }) => (
@@ -34,7 +34,7 @@ const List = ({ name, title }) => {
             key={id}
             label={title}
             variant="outlined"
-            onDelete={() => handleDeleteS(id)}
+            onDelete={() => handleDelete(id)}
             icon={name === 'videos' ? <TheatersIcon /> : null}
           />
         ))
