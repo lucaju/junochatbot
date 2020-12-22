@@ -15,7 +15,7 @@ import {
   VideoCollectionView,
   ScreenplayView,
   ContextsView,
-  TagsView
+  TagsView,
 } from './views/story';
 
 // * react-router-dom REFERENCES:
