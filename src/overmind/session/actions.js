@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 export const hasToken = () => getUserToken();
 
 export const getUserToken = () => {
-  const token = Cookies.get('chatStoriesToken');
+  const token = Cookies.get('JunoToken');
   return token;
 };
 
@@ -29,7 +29,7 @@ export const authenticate = async (
       email,
       password,
     });
-    Cookies.set('chatStoriesToken', res.user.token);
+    Cookies.set('JunoToken', res.user.token);
   }
   if (res.error) return res;
   state.session.user = res.user;
@@ -37,8 +37,8 @@ export const authenticate = async (
 };
 
 export const signOut = ({ state }) => {
-  Cookies.remove('chatStoriesToken');
-  Cookies.remove('chatStoriesDarkMode');
+  Cookies.remove('JunoToken');
+  Cookies.remove('JunoDarkMode');
   state.session.user = null;
   state.session.stories = null;
   state.session.story = null;

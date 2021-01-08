@@ -1,5 +1,5 @@
 {
-	"name": "chatstories",
+	"name": "juno-chatbot",
 	"version": "1.0.0",
 	"description": "chatbot platform interactive audivisual storytelling",
 	"keywords": [
@@ -16,10 +16,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/lucaju/chatstories.git"
+		"url": "git+https://github.com/lucaju/junochatbot.git"
 	},
 	"bugs": {
-		"url": "https://github.com/lucaju/chatstories/issues"
+		"url": "https://github.com/lucaju/junochatbot/issues"
 	},
 	"scripts": {
 		"start": "env-cmd -e production node ./server/index.mjs",
@@ -29,7 +29,7 @@
 		"cm": "git-cz"
 	},
 	"main": "index.js",
-	"homepage": "https://github.com/lucaju/chatstories#readme",
+	"homepage": "https://github.com/lucaju/junochatbot#readme",
 	"dependencies": {
 		"@material-ui/core": "^4.11.2",
 		"@material-ui/icons": "^4.11.2",

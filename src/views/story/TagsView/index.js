@@ -2,7 +2,7 @@ import {
   Box,
   CircularProgress,
   Container,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const title = 'Chat Stories';
+const title = 'Juno Chatbot';
 
 const TagsView = () => {
   const classes = useStyles();
@@ -75,7 +75,7 @@ const TagsView = () => {
         )}
         {!isLoading && (
           <>
-            <Toolbar handleDetailOpen={handleDetailOpen}/>
+            <Toolbar handleDetailOpen={handleDetailOpen} />
             <Box mt={3}>
               <Collection
                 tags={state.tag.collection}

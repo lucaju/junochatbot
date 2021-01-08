@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const title = 'Chat Stories';
+const title = 'Juno Chatbot';
 
 const ContextView = () => {
   const classes = useStyles();

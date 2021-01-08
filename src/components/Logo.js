@@ -6,8 +6,8 @@ const Logo = (props) => {
 
   return (
     <img
-      src={state.ui.darkMode ? '/assets/logo_dark.png' : '/assets/logo.png'} 
-      alt="Chat Stories"
+      src={state.ui.darkMode ? '/assets/logo_dark.png' : '/assets/logo.png'}
+      alt="Juno Chatbot Logo"
       {...props}
     />
   );

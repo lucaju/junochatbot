@@ -6,7 +6,7 @@ export const updateTitle = ({ state }, title) => {
 
 export const setDarkMode = ({ state }, value) => {
   state.ui.darkMode = value;
-  Cookies.set('chatStoriesDarkMode', state.ui.darkMode);
+  Cookies.set('JunoDarkMode', state.ui.darkMode);
 };
 
 export const showNotification = ({ state }, { type, message }) => {

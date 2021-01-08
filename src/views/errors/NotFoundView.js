@@ -33,7 +33,7 @@ const NotFoundView = () => {
   const classes = useStyles();
 
   return (
-    <Page className={classes.root} title="Chat Stories - Page Not Found">
+    <Page className={classes.root} title="Juno Chatbot - Page Not Found">
       <Box
         display="flex"
         flexDirection="column"
@@ -41,13 +41,15 @@ const NotFoundView = () => {
         justifyContent="center"
       >
         <Container maxWidth="md" className={classes.container}>
-        <RouterLink to="/"><Logo className={classes.logo} /></RouterLink>
+          <RouterLink to="/">
+            <Logo className={classes.logo} />
+          </RouterLink>
           <Typography align="center" color="textPrimary" variant="h4">
             404: The page you are looking for isn’t here
           </Typography>
           <Typography align="center" color="textPrimary" variant="subtitle2">
-            You either tried some shady route or you came here by mistake. Go back to the{' '}
-            <RouterLink to="/">main page.</RouterLink>
+            You either tried some shady route or you came here by mistake. Go
+            back to the <RouterLink to="/">main page.</RouterLink>
           </Typography>
           <Box textAlign="center">
             <img

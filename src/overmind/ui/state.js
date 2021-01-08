@@ -1,5 +1,5 @@
 export const state = {
-  title: 'Chat Stories',
+  title: 'Juno Chatbot',
   darkMode: false,
   notification: {
     type: '',

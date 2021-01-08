@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   container: { height: 'calc(100vh - 64px - 68px - 36px)' },
 }));
 
-const title = 'Chat Stories';
+const title = 'Juno Chatbot';
 
 const GeneralView = () => {
   const classes = useStyles();
@@ -123,7 +123,7 @@ const GeneralView = () => {
       type: 'success',
       message: 'Story deleted.',
     });
-    
+
     navigate('/', { replace: true });
   };
 

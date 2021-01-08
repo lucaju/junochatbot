@@ -49,7 +49,7 @@ const Permalink = ({ errors, handleBlur, handleChange, touched, values }) => {
         variant="body2"
         target="_blank"
       >
-        {`https://www.chatstories.ca/play/${values.slug}`}
+        {`https://www.junochatbot.ca/play/${values.slug}`}
       </Link>
     </Box>
   );

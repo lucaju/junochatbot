@@ -4,7 +4,7 @@ export const storyAPI = {
   async getStories() {
     //access endpoint
     // const response = await fetch(
-    //   'https://api.chatstories.ca/admin/projects/all'
+    //   'https://api.junochatbot.ca/admin/projects/all'
     // );
     // console.log(response);
     // const result = await response.json();
