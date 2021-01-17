@@ -17,5 +17,5 @@ export const config = namespaced({
   story,
   video,
   tag,
-  intentContext
+  intentContext,
 });

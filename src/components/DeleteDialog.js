@@ -14,7 +14,14 @@ const useStyles = makeStyles(() => ({
   buttonProgress: { position: 'absolute' },
 }));
 
-const DeleteDialog = ({ handleYes, handleNo, isSubmitting, message, open, title }) => {
+const DeleteDialog = ({
+  handleYes,
+  handleNo,
+  isSubmitting,
+  message,
+  open,
+  title,
+}) => {
   const classes = useStyles();
 
   return (

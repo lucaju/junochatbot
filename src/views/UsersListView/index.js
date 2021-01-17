@@ -2,7 +2,7 @@ import {
   Box,
   CircularProgress,
   Container,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +65,11 @@ const UsersListView = () => {
   return (
     <Page className={classes.root} title={title}>
       <Container maxWidth={false}>
-      <Details open={detailsOpen} handleDetailClose={handleDetailClose} userId={currentUserId}/>
+        <Details
+          open={detailsOpen}
+          handleDetailClose={handleDetailClose}
+          userId={currentUserId}
+        />
         {!isLoaded && isLoading && (
           <Box
             display="flex"
@@ -82,9 +86,12 @@ const UsersListView = () => {
         )}
         {isLoaded && (
           <>
-            <Toolbar handleDetailOpen={handleDetailOpen}/>
+            <Toolbar handleDetailOpen={handleDetailOpen} />
             <Box mt={3}>
-              <UsersList users={state.users.list} handleDetailOpen={handleDetailOpen}/>
+              <UsersList
+                users={state.users.list}
+                handleDetailOpen={handleDetailOpen}
+              />
             </Box>
           </>
         )}

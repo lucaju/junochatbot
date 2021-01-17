@@ -3,7 +3,7 @@ import {
   makeStyles,
   MenuItem,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';

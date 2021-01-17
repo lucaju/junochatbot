@@ -162,5 +162,5 @@ export const dataUsers = [
 ];
 
 export default {
-  dataUsers
+  dataUsers,
 };

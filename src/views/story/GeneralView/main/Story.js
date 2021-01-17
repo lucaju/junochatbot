@@ -38,7 +38,9 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
         </Box>
         <Box width="150px" mr={2}>
           <TextField
-            error={Boolean(touched['general.genre'] && errors.general['general.genre'])}
+            error={Boolean(
+              touched['general.genre'] && errors.general['general.genre']
+            )}
             fullWidth
             label="Genre"
             name="general.genre"
@@ -79,7 +81,9 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
             touched['general.description'] && errors['general.description']
           )}
           fullWidth
-          helperText={touched['general.description'] && errors['general.description']}
+          helperText={
+            touched['general.description'] && errors['general.description']
+          }
           label="Description"
           name="general.description"
           multiline

@@ -6,7 +6,7 @@ import {
   IconButton,
   makeStyles,
   TableCell,
-  TableRow
+  TableRow,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';

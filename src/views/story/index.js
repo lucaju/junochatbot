@@ -5,9 +5,9 @@ import ContextsView from './ContextsView';
 import TagsView from './TagsView';
 
 export {
-    GeneralView,
-    VideoCollectionView,
-    ScreenplayView,
-    ContextsView,
-    TagsView
+  GeneralView,
+  VideoCollectionView,
+  ScreenplayView,
+  ContextsView,
+  TagsView,
 };

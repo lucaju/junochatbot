@@ -125,7 +125,9 @@ const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {
         <CardActions disableSpacing>
           <Button onClick={handleEditClick}>Edit</Button>
           <Box flexGrow={1} />
-          <Button onClick={handlePlayClick} variant="outlined">Play</Button>
+          <Button onClick={handlePlayClick} variant="outlined">
+            Play
+          </Button>
         </CardActions>
       )}
     </Card>

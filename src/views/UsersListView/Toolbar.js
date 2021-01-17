@@ -69,7 +69,7 @@ const Toolbar = ({ handleDetailOpen, className, ...rest }) => {
 
 Toolbar.propTypes = {
   className: PropTypes.string,
-  handleDetailOpen: PropTypes.func
+  handleDetailOpen: PropTypes.func,
 };
 
 export default Toolbar;

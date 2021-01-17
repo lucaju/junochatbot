@@ -8,15 +8,17 @@ export const api = {
       }, 1000);
     });
   },
-  async getVideo({storyId, videoId}) {
+  async getVideo({ storyId, videoId }) {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
-        const video = mock.dataVideoCollection.find((video) => video.id === videoId);
+        const video = mock.dataVideoCollection.find(
+          (video) => video.id === videoId
+        );
         resolve(resolve(video));
       }, 1000);
     });
   },
-  async createVideo({storyId, video}) {
+  async createVideo({ storyId, video }) {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
         video.id = 100;
@@ -25,7 +27,7 @@ export const api = {
       }, 1000);
     });
   },
-  async updateVideo({storyId, video}) {
+  async updateVideo({ storyId, video }) {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
         mock.dataVideoCollection = mock.dataVideoCollection.map((v) => {
@@ -36,7 +38,7 @@ export const api = {
       }, 1000);
     });
   },
-  async deleteVideo({storyId, videoId}) {
+  async deleteVideo({ storyId, videoId }) {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
         mock.dataVideoCollection = mock.dataVideoCollection.filter(

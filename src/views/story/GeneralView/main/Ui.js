@@ -23,7 +23,7 @@ const Ui = ({ errors, handleBlur, handleChange, touched, values }) => {
         User Interface
       </Typography>
       <Box p={1} display="flex" flexDirection="row" width="100%">
-        <Box width='70px' mr={2}>
+        <Box width="70px" mr={2}>
           <TextField
             fullWidth
             label="Sidebar"
@@ -41,7 +41,7 @@ const Ui = ({ errors, handleBlur, handleChange, touched, values }) => {
             </MenuItem>
           </TextField>
         </Box>
-        <Box width='200px' mr={2}>
+        <Box width="200px" mr={2}>
           <TextField
             error={Boolean(
               touched['general.user.inputPlacehold'] &&
@@ -56,7 +56,7 @@ const Ui = ({ errors, handleBlur, handleChange, touched, values }) => {
             className={classes.marginBottom}
           />
         </Box>
-        <Box width='100px' >
+        <Box width="100px">
           <TextField
             fullWidth
             label="Balloon"
@@ -74,7 +74,6 @@ const Ui = ({ errors, handleBlur, handleChange, touched, values }) => {
           </TextField>
         </Box>
       </Box>
-      
     </>
   );
 };
