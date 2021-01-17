@@ -5,7 +5,7 @@ import express from 'express';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const publicPath = path.join(__dirname, '..', 'build');
+const publicPath = path.join(__dirname, '..', 'dist');
 const app = express();
 
 app.use(bodyParser.json({ limit: '5mb' })); // support json encoded bodies
@@ -13,21 +13,21 @@ app.use(bodyParser.json({ limit: '5mb' })); // support json encoded bodies
 // dev tools
 //dev
 const loadDevTools = async () => {
-	const { devTools } = await import('./dev/dev.mjs');
-	devTools(app);
+  const { devTools } = await import('./dev/dev.mjs');
+  devTools(app);
 };
 
 if (process.env.NODE_ENV === 'development') loadDevTools();
 
 // static
-app.use(express.static('./build'));
-// app.use('/assets', express.static('./build/assets'));
+app.use(express.static('./dist'));
+// app.use('/assets', express.static('./dist/assets'));
 
 // catch all
 app.get('*', (req, res) => {
-	// console.log('catch all');
-	// res.set('Content-Type', 'text/event-stream');
-	res.status(200).sendFile(path.join(publicPath, 'index.html'));
+  // console.log('catch all');
+  // res.set('Content-Type', 'text/event-stream');
+  res.status(200).sendFile(path.join(publicPath, 'index.html'));
 });
 
 // error

@@ -12,23 +12,13 @@ module.exports = merge(common, {
   optimization: {
     checkWasmTypes: true,
     concatenateModules: true,
+    emitOnErrors: false,
     flagIncludedChunks: true,
-    namedChunks: false,
-    namedModules: false,
     nodeEnv: 'production',
-    noEmitOnErrors: true,
-    occurrenceOrder: true,
     sideEffects: true,
     usedExports: true,
     minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        cache: true, //default
-        parallel: true, // default
-        sourceMap: true, //use sourceMapDevToolPlugin
-      }),
-      new OptimizeCSSAssetsPlugin({}),
-    ],
+    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin({})],
   },
   plugins: [
     new webpack.DefinePlugin({

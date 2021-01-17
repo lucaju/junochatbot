@@ -13,7 +13,7 @@ export default Merge.merge(common, {
   cache: true,
   devtool: false,
   devServer: {
-    contentBase: path.join(__dirname, 'build'),
+    contentBase: path.join(__dirname, 'dist'),
     historyApiFallback: true,
   },
   performance: { hints: false },
@@ -24,19 +24,15 @@ export default Merge.merge(common, {
   optimization: {
     checkWasmTypes: false,
     concatenateModules: false,
+    emitOnErrors: true,
     flagIncludedChunks: false,
-    namedModules: true,
-    namedChunks: true,
     minimize: false,
     nodeEnv: 'development',
-    noEmitOnErrors: false,
-    occurrenceOrder: false,
     removeAvailableModules: false,
     sideEffects: false,
     usedExports: false,
   },
   plugins: [
-    new webpack.NamedChunksPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),

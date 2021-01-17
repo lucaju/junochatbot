@@ -1,25 +1,25 @@
 const path = require('path');
-// const webpack = require('webpack');
+const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WebpackBar = require('webpackbar');
+// const WebpackBar = require('webpackbar');
 
 module.exports = {
   mode: 'none', // all mode defaults for dev and prod and set in the respective configs
   entry: { app: ['./src/index.js'] },
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'build'),
-  },
+  // output: {
+  // filename: '[name].js',
+  // path: path.resolve(__dirname, 'dist'),
+  // },
   resolve: {
     alias: {
       src: path.resolve(__dirname, 'src/'),
     },
   },
   plugins: [
-    // new webpack.ProgressPlugin(),
+    new webpack.ProgressPlugin(),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
@@ -27,13 +27,16 @@ module.exports = {
       inject: 'body',
     }),
     new MiniCssExtractPlugin({
-      filename: ({ name }) => `${name.replace('/js/', '/css/')}.css`,
+      filename: '[name].css',
       chunkFilename: '[id].css',
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: 'src/assets/', to: './assets' }],
     }),
-    new WebpackBar({ color: '#0099ff' }),
+    // new WebpackBar({ color: '#0099ff' }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
   ],
   module: {
     rules: [
@@ -55,7 +58,7 @@ module.exports = {
                     proposals: true,
                     // 'helpers': false,
                     useESModules: true,
-                    version: '^7.11.2',
+                    version: '^7.12.10',
                   },
                 ],
               ],
@@ -75,34 +78,12 @@ module.exports = {
         ],
       },
       {
-        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        enforce: 'pre', // preload the jshint loader
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              query: { limit: 25000 },
-            },
-          },
-        ],
+        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/i,
-        enforce: 'pre', // preload the jshint loader
-        // exclude: /node_modules/, // exclude any and all files in the node_modules folder
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'img',
-            },
-          },
-          {
-            loader: 'image-webpack-loader',
-            options: { disable: true /* webpack@2.x and newer */ },
-          },
-        ],
+        type: 'asset/resource',
       },
       {
         test: /\.svg$/,
