@@ -139,9 +139,14 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
             </Box>
             <Avatar
               className={classes.avatar}
-              src={`/assets/users/images/${state.session.user.avatar}`}
+              src={
+                state.session.user.avatar &&
+                `/assets/users/images/${state.session.user.avatar}`
+              }
               onClick={handleProfileClick}
-            />
+            >
+              {!state.session.user.avatar && <PersonRoundedIcon />}
+            </Avatar>
           </Box>
         </Toolbar>
         <Profile anchor={anchorProfileEl} handleClose={handleProfileClose} />
