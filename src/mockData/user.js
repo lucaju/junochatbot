@@ -4,9 +4,9 @@ export const dataUsers = [
     firstName: 'Luciano',
     lastName: 'Frizzera',
     avatar: 'lucaju.jpg',
-    email: 'lucaju@gmail.com',
-    roleType: 'Admin',
-    language: 'en-CA',
+    userName: 'lucaju@gmail.com',
+    roleTypeId: 'Admin',
+    languageCode: 'en-CA',
     group: 'None',
     stories: [
       {
@@ -24,9 +24,9 @@ export const dataUsers = [
     firstName: 'Cao',
     lastName: 'Yu',
     avatar: '',
-    email: 'cao.yu@email.io',
-    roleType: 'Student',
-    language: 'en-CA',
+    userName: 'cao.yu@userName.io',
+    roleTypeId: 'Student',
+    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -44,9 +44,9 @@ export const dataUsers = [
     firstName: 'Alexa',
     lastName: 'Richardson',
     avatar: '',
-    email: 'alex.ri@email.io',
-    roleType: 'Student',
-    language: 'en-CA',
+    userName: 'alex.ri@userName.io',
+    roleTypeId: 'Student',
+    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -64,9 +64,9 @@ export const dataUsers = [
     firstName: 'Anje',
     lastName: 'Keizer',
     avatar: '',
-    email: 'anje.keizer@email.io',
-    roleType: 'Student',
-    language: 'en-CA',
+    userName: 'anje.keizer@userName.io',
+    roleTypeId: 'Student',
+    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -84,9 +84,9 @@ export const dataUsers = [
     firstName: 'Clarke',
     lastName: 'Gillebert',
     avatar: '',
-    email: 'clarke.gillebert@email.io',
-    roleType: 'Student',
-    language: 'en-CA',
+    userName: 'clarke.gillebert@userName.io',
+    roleTypeId: 'Student',
+    languageCode: 'en-CA',
     group: 'St. Lawrence Cegep',
     stories: [
       {
@@ -104,9 +104,9 @@ export const dataUsers = [
     firstName: 'Adam',
     lastName: 'Denisov',
     avatar: '',
-    email: 'adam.denisov@email.io',
-    roleType: 'Student',
-    language: 'en-CA',
+    userName: 'adam.denisov@userName.io',
+    roleTypeId: 'Student',
+    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -124,9 +124,9 @@ export const dataUsers = [
     firstName: 'Ava',
     lastName: 'Gregoraci',
     avatar: '',
-    email: 'ava.gregoraci@email.io',
-    roleType: 'Student',
-    language: 'en-CA',
+    userName: 'ava.gregoraci@userName.io',
+    roleTypeId: 'Student',
+    languageCode: 'en-CA',
     group: 'St. Lawrence Cegep',
     stories: [
       {
@@ -144,9 +144,9 @@ export const dataUsers = [
     firstName: 'Emilee',
     lastName: 'Simchenko',
     avatar: '',
-    email: 'emilee.simchenko@email.io',
-    roleType: 'Student',
-    language: 'en-CA',
+    userName: 'emilee.simchenko@userName.io',
+    roleTypeId: 'Student',
+    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {

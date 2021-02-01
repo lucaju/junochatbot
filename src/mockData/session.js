@@ -2,11 +2,10 @@ export const authUser = {
   id: 1,
   firstName: 'Luciano',
   lastName: 'Frizzera',
-  roleType: 'Admin',
-  email: 'lucaju@gmail.com',
+  roleTypeId: 'Admin',
+  userName: 'lucaju@gmail.com',
   avatar: 'lucaju.jpg',
-  language: 'en-CA',
-  group: '',
+  languageCode: 'en-CA',
   token: 'TOKEN-123',
 };
 

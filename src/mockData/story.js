@@ -139,10 +139,10 @@ export const storyDefault = {
   id: null,
   slug: '',
   title: '',
-  language: '',
+  languageCode: '',
   owner: {
     name: '',
-    email: '',
+    userName: '',
   },
   general: {
     genre: '',
@@ -177,10 +177,10 @@ export const storyExample = {
   id: 1,
   slug: 'after-life',
   title: 'After Life',
-  language: 'en-CA',
+  languageCode: 'en-CA',
   owner: {
-    name: 'Luciano Frizzera',
-    email: 'lucaju@gmail.com',
+    name: 4,
+    userName: 'lucaju@gmail.com',
   },
   general: {
     genre: 'documentary',
@@ -188,8 +188,8 @@ export const storyExample = {
     featuredImage: 'image1.jpg',
     collaborators: [
       {
-        name: 'Samia Pedraca',
-        email: 'spedraca@gme.com',
+        name: 7,
+        userName: 'spedraca@gme.com',
       },
     ],
     published: false,
