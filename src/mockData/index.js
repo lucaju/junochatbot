@@ -4,6 +4,7 @@ import { dataStories, storyExample, storyDefault } from './story';
 import { dataVideoCollection } from './video';
 import { dataTags } from './tag';
 import { dataContexts } from './context';
+import { dataScreenplay } from './screenplay';
 
 export default {
   authUser,
@@ -14,4 +15,5 @@ export default {
   dataVideoCollection,
   dataTags,
   dataContexts,
+  dataScreenplay,
 };
