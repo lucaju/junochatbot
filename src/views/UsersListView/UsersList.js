@@ -19,11 +19,11 @@ const useStyles = makeStyles(() => ({}));
 
 const UsersList = ({ handleDetailOpen, className, users, ...rest }) => {
   const classes = useStyles();
-  const [limit, setLimit] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(0);
 
-  const handleLimitChange = (event) => {
-    setLimit(event.target.value);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
   };
 
   const handlePageChange = (event, newPage) => {
@@ -49,13 +49,15 @@ const UsersList = ({ handleDetailOpen, className, users, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.slice(0, limit).map((user) => (
-                <UserRow
-                  key={user.id}
-                  user={user}
-                  handleEditClick={handleEditClick}
-                />
-              ))}
+              {users
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user) => (
+                  <UserRow
+                    key={user.id}
+                    user={user}
+                    handleEditClick={handleEditClick}
+                  />
+                ))}
             </TableBody>
           </Table>
         </Box>
@@ -63,9 +65,9 @@ const UsersList = ({ handleDetailOpen, className, users, ...rest }) => {
           component="div"
           count={users.length}
           onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleLimitChange}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
           page={page}
-          rowsPerPage={limit}
+          rowsPerPage={rowsPerPage}
           rowsPerPageOptions={[5, 10, 25]}
         />
       </PerfectScrollbar>
