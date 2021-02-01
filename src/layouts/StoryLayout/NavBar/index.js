@@ -122,7 +122,7 @@ const NavBar = ({ onMobileClose, openMobile, compactMode }) => {
               <MenuIcon />
             </IconButton>
             <RouterLink to="/">
-              <Logo className={classes.logo} />
+              <Logo type="icon" className={classes.logo} />
             </RouterLink>
           </Box>
           <Divider />

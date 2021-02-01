@@ -29,8 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
   sideSpace: { width: 300 },
   logo: {
-    height: 38,
+    maxHeight: 32,
     marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   rightMenu: { marginRight: theme.spacing(2) },
   avatar: {
@@ -85,6 +86,7 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
         >
           <Box
             alignItems="center"
+            justify="center"
             display="flex"
             flexDirection="row"
             className={classes.sideSpace}
@@ -95,7 +97,7 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
               </IconButton>
             )}
             <RouterLink to="/">
-              <Logo className={classes.logo} />
+              <Logo type="simplified" className={classes.logo} />
             </RouterLink>
           </Box>
           <Box flexGrow={1} />

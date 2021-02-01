@@ -42,7 +42,7 @@ const NotFoundView = () => {
       >
         <Container maxWidth="md" className={classes.container}>
           <RouterLink to="/">
-            <Logo className={classes.logo} />
+            <Logo type="full" className={classes.logo} />
           </RouterLink>
           <Typography align="center" color="textPrimary" variant="h4">
             404: The page you are looking for isn’t here

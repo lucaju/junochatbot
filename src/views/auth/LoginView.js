@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   logo: {
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(8),
     width: 256,
   },
   buttonProgress: {
@@ -77,8 +77,7 @@ const LoginView = () => {
   return (
     <Page className={classes.root} title="Login">
       <Container maxWidth="xs" className={classes.container}>
-        <Logo className={classes.logo} />
-
+        <Logo type="full" className={classes.logo} />
         {hasToken ? (
           <Box
             display="flex"
