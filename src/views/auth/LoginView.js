@@ -77,6 +77,14 @@ const LoginView = () => {
     }
   }, [state.session.isSignedIn]);
 
+  const formValidation = Yup.object().shape({
+    email: Yup.string()
+      .email('Must be a valid email')
+      .max(255)
+      .required('Email is required'),
+    password: Yup.string().max(255).required('Password is required'),
+  });
+
   return (
     <Page className={classes.root} title="Login">
       <Container maxWidth="xs" className={classes.container}>
@@ -112,15 +120,7 @@ const LoginView = () => {
             )}
             <Formik
               initialValues={{ email: '', password: '' }}
-              validationSchema={Yup.object().shape({
-                email: Yup.string()
-                  .email('Must be a valid email')
-                  .max(255)
-                  .required('Email is required'),
-                password: Yup.string()
-                  .max(255)
-                  .required('Password is required'),
-              })}
+              validationSchema={formValidation}
               onSubmit={async (values) => {
                 setIsAuthenticating(true);
                 await authenticate(values);

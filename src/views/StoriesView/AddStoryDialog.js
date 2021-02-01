@@ -54,6 +54,11 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
     triggerEditStory(res);
   };
 
+  const formValidation = Yup.object().shape({
+    title: Yup.string().min(2).max(100).trim().required('Title is required'),
+    languageCode: Yup.string().required(),
+  });
+
   return (
     <Dialog
       open={open}
@@ -71,15 +76,11 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
         </Typography>
       )}
       <Formik
-        initialValues={{ title: '', language: state.session.user.language }}
-        validationSchema={Yup.object().shape({
-          title: Yup.string()
-            .min(2)
-            .max(100)
-            .trim()
-            .required('Title is required'),
-          language: Yup.string().required(),
-        })}
+        initialValues={{
+          title: '',
+          languageCode: state.session.user.languageCode,
+        }}
+        validationSchema={formValidation}
         onSubmit={async (values) => await submit(values)}
       >
         {({
