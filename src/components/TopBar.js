@@ -16,8 +16,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useApp } from 'src/overmind';
 import Logo from './Logo';
 import Profile from './Profile';
-// import Brightness4Icon from '@material-ui/icons/Brightness4';
-// import Brightness7Icon from '@material-ui/icons/Brightness7';
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -45,11 +44,12 @@ const rightMenu = [
   {
     href: '/',
     title: 'Stories',
+    restricted: [1, 2],
   },
   {
     href: '/users',
     title: 'Users',
-    restricted: ['Admin', 'Instructor'],
+    restricted: [1, 2],
   },
 ];
 
@@ -115,7 +115,7 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
               {rightMenu.map((item) => {
                 if (
                   item.restricted &&
-                  !item.restricted.includes(state.session.user.roleType)
+                  !item.restricted.includes(state.session.user.roleTypeId)
                 )
                   return;
                 return (
@@ -129,13 +129,6 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
                   </Button>
                 );
               })}
-              {/* <IconButton color="inherit" onClick={handleSwitchBrightness}>
-                {state.ui.darkMode ? (
-                  <Brightness7Icon />
-                ) : (
-                  <Brightness4Icon />
-                )}
-              </IconButton> */}
             </Box>
             <Avatar
               className={classes.avatar}

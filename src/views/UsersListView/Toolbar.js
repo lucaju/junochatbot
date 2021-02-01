@@ -33,7 +33,7 @@ const Toolbar = ({ handleDetailOpen, className, ...rest }) => {
           color="primary"
           variant="outlined"
           startIcon={<AddCircleOutlineIcon />}
-          onClick={() => handleDetailOpen(0)}
+          onClick={() => handleDetailOpen({})}
         >
           Add user
         </Button>

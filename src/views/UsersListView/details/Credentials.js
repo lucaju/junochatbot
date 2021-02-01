@@ -27,14 +27,14 @@ const Credentials = ({ errors, handleBlur, handleChange, touched, values }) => {
     <>
       <Grid item md={6} xs={12}>
         <TextField
-          error={Boolean(touched.email && errors.email)}
+          error={Boolean(touched.userName && errors.userName)}
           fullWidth
-          helperText={touched.email && errors.email}
-          label="Email Address"
-          name="email"
+          helperText={touched.userName && errors.userName}
+          label="Email"
+          name="userName"
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.email}
+          value={values.userName}
           variant="outlined"
         />
       </Grid>
@@ -43,7 +43,6 @@ const Credentials = ({ errors, handleBlur, handleChange, touched, values }) => {
           <InputLabel htmlFor="password">Password</InputLabel>
           <OutlinedInput
             error={Boolean(touched.password && errors.password)}
-            // helperText={touched.password && errors.password}
             id="password"
             type={showPassword ? 'text' : 'password'}
             value={values.password}

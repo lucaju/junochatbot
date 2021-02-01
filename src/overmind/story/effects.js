@@ -25,7 +25,7 @@ export const storyAPI = {
         story.id = 1000;
         story.title = newStory.title;
         story.slug = newStory.slug;
-        story.language = newStory.language;
+        story.languageCode = newStory.languageCode;
         story.owner = newStory.owner;
 
         //mock add to list

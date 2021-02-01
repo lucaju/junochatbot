@@ -29,18 +29,19 @@ const UsersListView = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [detailsOpen, setDetailsOpen] = React.useState(false);
-  const [currentUserId, setCurrentUserId] = React.useState(0);
+  const [currentUser, setCurrentUser] = React.useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userTypeAllowed = ['Admin', 'Instructor'];
-    if (!userTypeAllowed.includes(state.session.user.roleType)) {
+    const userTypeAllowed = [1, 2];
+    if (!userTypeAllowed.includes(state.session.user.roleTypeId)) {
       navigate('/', { replace: true });
     }
     return () => {};
   }, []);
 
   useEffect(() => {
+    if (isLoaded) return;
     setIsLoading(true);
     const fetchData = async () => {
       await actions.users.getUsers();
@@ -52,13 +53,13 @@ const UsersListView = () => {
     return () => {};
   }, [isLoaded]);
 
-  const handleDetailOpen = (id) => {
-    setCurrentUserId(id);
+  const handleDetailOpen = (user) => {
+    setCurrentUser(user);
     setDetailsOpen(true);
   };
 
   const handleDetailClose = () => {
-    setCurrentUserId(0);
+    setCurrentUser({});
     setDetailsOpen(false);
   };
 
@@ -68,7 +69,7 @@ const UsersListView = () => {
         <Details
           open={detailsOpen}
           handleDetailClose={handleDetailClose}
-          userId={currentUserId}
+          user={currentUser}
         />
         {!isLoaded && isLoading && (
           <Box

@@ -17,14 +17,14 @@ const Attributions = ({
     <>
       <Grid item md={3} xs={12}>
         <TextField
-          error={Boolean(touched.language && errors.language)}
+          error={Boolean(touched.languageCode && errors.languageCode)}
           fullWidth
           label="Language"
-          name="language"
+          name="languageCode"
           onBlur={handleBlur}
           onChange={handleChange}
           select
-          value={values.language}
+          value={values.languageCode}
           variant="outlined"
         >
           {state.users.languages.map((option) => (
@@ -36,14 +36,14 @@ const Attributions = ({
       </Grid>
       <Grid item md={4} xs={12}>
         <TextField
-          error={Boolean(touched.roleType && errors.roleType)}
+          error={Boolean(touched.roleTypeId && errors.roleTypeId)}
           fullWidth
           label="Role"
-          name="roleType"
+          name="roleTypeId"
           onBlur={handleBlur}
           onChange={handleChange}
           select
-          value={values.roleType}
+          value={values.roleTypeId}
           disabled={!isAdmin}
           variant="outlined"
         >

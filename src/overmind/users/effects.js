@@ -1,53 +1,96 @@
-import mock from 'src/mockData';
+// import mock from 'src/mockData';
+const baseURL = 'https://api.junochatbot.ca';
 
 export const api = {
-  async getUsers(filter) {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        let result = mock.dataUsers;
-        if (filter?.group) {
-          result = result.filter((user) => user.group === filter.group);
-        }
-        resolve(result);
-      }, 1000);
+  async getUsers(token) {
+    const response = await fetch(`${baseURL}/admin/users/all`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
+    const result = await response.json();
+    return result;
   },
 
-  async getUser(userId) {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(mock.dataUsers.find((user) => user.id === userId));
-      }, 50);
+  async getUser(userId, token) {
+    const response = await fetch(`${baseURL}/admin/users/id/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
+    const result = await response.json();
+    return result;
   },
 
-  async addUser(userData) {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        mock.dataUsers.unshift(userData);
-        resolve({ id: 497 });
-      }, 1000);
+  async addUser(userData, token) {
+    const response = await fetch(`${baseURL}/admin/users`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
     });
+
+    if (response.status !== 200) {
+      return {
+        error: {
+          status: response.status,
+          statusText: response.statusText,
+        },
+      };
+    }
+
+    const result = await response.json();
+    return result;
   },
 
-  async updateUser(userData) {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        mock.dataUsers = mock.dataUsers.map((u) => {
-          if (userData.id === u.id) return userData;
-          return u;
-        });
-        resolve({ success: true });
-      }, 1000);
+  async updateUser(userData, token) {
+    const response = await fetch(`${baseURL}/admin/users`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
     });
+
+    if (response.status !== 200) {
+      return {
+        error: {
+          status: response.status,
+          statusText: response.statusText,
+        },
+      };
+    }
+
+    const result = await response.json();
+    return result;
   },
 
-  async deleteUser(userId) {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        mock.dataUsers = mock.dataUsers.filter((user) => user.id !== userId);
-        resolve({ success: true });
-      }, 1000);
+  async deleteUser(userId, token) {
+    const response = await fetch(`${baseURL}/admin/users`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userId),
     });
+
+    if (response.status !== 200) {
+      return {
+        error: {
+          status: response.status,
+          statusText: response.statusText,
+        },
+      };
+    }
+
+    const result = await response.json();
+    return result;
+
+    // return await new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     mock.dataUsers = mock.dataUsers.filter((user) => user.id !== userId);
+    //     resolve({ success: true });
+    //   }, 1000);
+    // });
   },
 };

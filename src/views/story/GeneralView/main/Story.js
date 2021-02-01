@@ -60,14 +60,14 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
           <TextField
             disabled
             fullWidth
-            label="Language"
-            name="language"
+            label="language"
+            name="languageCode"
             onBlur={handleBlur}
             onChange={handleChange}
             select
-            value={values.language}
+            value={values.languageCode}
           >
-            {state.story.languages.map((option) => (
+            {state.story.languageCodes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.name}
               </MenuItem>

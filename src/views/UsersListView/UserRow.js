@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { json } from 'overmind';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -43,7 +44,7 @@ const UserRow = ({ user, handleEditClick }) => {
             color="primary"
             aria-label="Edit"
             component="span"
-            onClick={() => handleEditClick(user.id)}
+            onClick={() => handleEditClick(json(user))}
           >
             <EditIcon fontSize="small" />
           </IconButton>
@@ -64,7 +65,7 @@ const UserRow = ({ user, handleEditClick }) => {
           </Typography>
         </Box>
       </TableCell>
-      <TableCell>{user.email}</TableCell>
+      <TableCell>{user.userName}</TableCell>
       <TableCell>{user.group}</TableCell>
       <TableCell>
         {user.stories &&

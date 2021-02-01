@@ -10,7 +10,7 @@ export const createStory = async ({ state, effects }, newStory) => {
   const userSession = state.session.user;
   story.owner = {
     id: userSession.id,
-    email: userSession.email,
+    userName: userSession.userName,
   };
   // story.general.authors.push({
   //   id: userSession.id,

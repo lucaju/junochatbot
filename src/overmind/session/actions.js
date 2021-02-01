@@ -1,39 +1,38 @@
 import Cookies from 'js-cookie';
 
 export const hasToken = () => getUserToken();
+export const getUserToken = () => Cookies.get('JunoToken');
 
-export const getUserToken = () => {
-  const token = Cookies.get('JunoToken');
-  return token;
-};
-
-export const signedIn = async ({ state, actions }) => {
+export const signedIn = async ({ state, effects }) => {
   if (state.session.isSignedIn) return true;
   if (!state.session.isSignedIn && hasToken()) {
     const token = getUserToken();
-    const user = await actions.session.authenticate({ token });
-    if (user) return true;
+    const response = await getUserDetails({ state, effects }, token);
+    return response.error ? false : true;
   }
   return false;
 };
 
-export const authenticate = async (
-  { state, effects },
-  { email = null, password = null, token = null }
-) => {
-  let res;
-  if (token) {
-    res = await effects.session.api.authenticateWithToken(token);
-  } else {
-    res = await effects.session.api.authenticateWithCredentials({
-      email,
-      password,
-    });
-    Cookies.set('JunoToken', res.user.token);
-  }
-  if (res.error) return res;
-  state.session.user = res.user;
-  return res.user;
+export const authenticate = async ({ state, effects }, { email, password }) => {
+  const response = await effects.session.api.authenticateWithCredentials({
+    email,
+    password,
+  });
+
+  if (response.error) return response;
+
+  const token = response.token;
+  Cookies.set('JunoToken', token);
+
+  const userDetails = await getUserDetails({ state, effects }, token);
+  return userDetails;
+};
+
+export const getUserDetails = async ({ state, effects }, token) => {
+  const response = await effects.session.api.getUserDetails(token);
+  if (response.error) return response;
+  state.session.user = { ...response, token };
+  return state.session.user;
 };
 
 export const signOut = ({ state }) => {

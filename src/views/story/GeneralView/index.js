@@ -65,7 +65,7 @@ const GeneralView = () => {
       .required()
       .required('Slug is required to create the permalink'),
     title: Yup.string().trim().max(125).required('Title is required'),
-    language: Yup.string().required(),
+    languageCode: Yup.string().required(),
     general: Yup.object().shape({
       genre: Yup.string(),
       description: Yup.string().max(255),

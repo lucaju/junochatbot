@@ -38,8 +38,8 @@ export const updateVideo = async ({ state, actions, effects }, video) => {
   });
   if (!res) return null;
   state.video.currentVideo = res;
-  state.video.collection = state.video.collection.map((video) => {
-    if (res.id === video.id) return res;
+  state.video.collection = state.video.collection.map((v) => {
+    if (res.id === v.id) return res;
     return video;
   });
   return res;

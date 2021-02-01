@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Details = ({ open, handleDetailClose, userId }) => {
+const Details = ({ open, handleDetailClose, user }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -52,10 +52,10 @@ const Details = ({ open, handleDetailClose, userId }) => {
     avatar: '',
     firstName: '',
     lastName: '',
-    email: '',
+    userName: '',
     password: '',
-    language: state.users.defaultLanguage,
-    roleType: state.users.defaultRoleType,
+    languageCode: state.users.defaultLanguage,
+    roleTypeId: state.users.defaultRoleType,
     group: state.users.defaultGroup,
     stories: [],
     submitType: 'submit',
@@ -66,17 +66,17 @@ const Details = ({ open, handleDetailClose, userId }) => {
   const [userData, setUserData] = useState(initialValues);
 
   useEffect(() => {
-    if (open && userId !== 0) {
-      const loadSelectedUserData = async (id) => {
-        const selectedUserData = await actions.users.getUser(id);
-        selectedUserData.password = '';
-        selectedUserData.submitType = 'submit';
-        setUserData(selectedUserData);
-      };
-      loadSelectedUserData(userId);
+    if (open && user.id === undefined) {
+      const selectedUserData = Object.assign(initialValues);
+      setUserData(selectedUserData);
     }
-    if (open && userId === 0) {
-      setUserData(initialValues);
+
+    if (open && user.id !== undefined) {
+      const selectedUserData = Object.assign(user);
+      selectedUserData.password = '';
+      selectedUserData.submitType = 'submit';
+      if (!selectedUserData.group) selectedUserData.group = 'None';
+      setUserData(selectedUserData);
     }
     return () => {};
   }, [open]);
@@ -85,10 +85,10 @@ const Details = ({ open, handleDetailClose, userId }) => {
     newAvatar: Yup.string(),
     firstName: Yup.string().trim().required('First name is required'),
     lastName: Yup.string().trim().required('Last name is required'),
-    email: Yup.string().email().required('Email is required'),
+    userName: Yup.string().email().required('Email is required'),
     password: Yup.string().max(255),
-    language: Yup.string().required(),
-    roleType: Yup.string().required(),
+    languageCode: Yup.string().required(),
+    roleTypeId: Yup.string().required(),
     group: Yup.string(),
     stories: Yup.array(),
   });
@@ -99,40 +99,42 @@ const Details = ({ open, handleDetailClose, userId }) => {
   };
 
   const submit = async (values) => {
-    const res = await actions.users.save(values);
-    if (res) {
-      const message = values.id ? 'User updated' : 'User created';
-      actions.ui.showNotification({
-        type: 'success',
-        message,
-      });
-      handleDetailClose();
-      open = false;
-    } else {
+    //remove unnecessary  info
+    const cleandedValues = { ...values };
+    delete cleandedValues.stories;
+    delete cleandedValues.submitType;
+
+    const response = await actions.users.save(cleandedValues);
+
+    if (response.error) {
       actions.ui.showNotification({
         type: 'error',
-        message: 'Error: Something went wrong!',
+        message: 'Something went wrong!',
       });
+      return;
     }
+
+    const message = values.id ? 'User updated' : 'User created';
+    actions.ui.showNotification({ type: 'success', message });
+
+    handleDetailClose();
+    open = false;
   };
 
   const deleteUser = async (values) => {
     if (!values.id) return;
-    const res = await actions.users.deleteUser(userId);
+    const response = await actions.users.deleteUser(user.id);
 
-    if (!res) {
+    if (response.error) {
       actions.ui.showNotification({
         type: 'error',
-        message: 'Error: Something went wrong!',
+        message: 'Something went wrong!',
       });
       setDeleteDialogOpen(false);
       return;
     }
 
-    actions.ui.showNotification({
-      type: 'success',
-      message: 'User removed',
-    });
+    actions.ui.showNotification({ type: 'success', message: 'User removed' });
 
     handleDetailClose();
     open = false;
@@ -200,7 +202,7 @@ const Details = ({ open, handleDetailClose, userId }) => {
                   values={values}
                 />
               </Grid>
-              {userData.id && (
+              {userData.id && userData.stories && (
                 <Grid container spacing={3} className={classes.section}>
                   <Stories name="stories" />
                 </Grid>
@@ -213,7 +215,7 @@ const Details = ({ open, handleDetailClose, userId }) => {
                 handleDelete={() => setDeleteDialogOpen(true)}
                 isSubmitting={isSubmitting}
                 name="submitType"
-                userId={userId}
+                userData={userData}
               />
             </DialogActions>
             <DeleteDialog
@@ -237,7 +239,7 @@ const Details = ({ open, handleDetailClose, userId }) => {
 Details.propTypes = {
   handleDetailClose: PropTypes.func,
   open: PropTypes.bool,
-  userId: PropTypes.any,
+  user: PropTypes.any,
 };
 
 export default Details;

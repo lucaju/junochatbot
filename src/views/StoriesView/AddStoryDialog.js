@@ -115,15 +115,15 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
                 </Grid>
                 <Grid item md={8}>
                   <TextField
-                    error={Boolean(touched.language && errors.language)}
+                    error={Boolean(touched.languageCode && errors.languageCode)}
                     fullWidth
-                    label="Language"
+                    label="language"
                     margin="normal"
-                    name="language"
+                    name="languageCode"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     select
-                    value={values.language}
+                    value={values.languageCode}
                     variant="outlined"
                   >
                     {state.story.languages.map((option) => (
