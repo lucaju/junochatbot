@@ -5,7 +5,6 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  colors,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   titleHover: {
-    backgroundColor: colors.orange[400],
+    backgroundColor: theme.palette.primary.light,
     color:
       theme.palette.type === 'light'
         ? theme.palette.text.primary

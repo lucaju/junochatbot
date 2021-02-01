@@ -38,8 +38,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '45%',
   },
   error: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.error.dark,
     textAlign: 'center',
+  },
+  forgot: {
+    color: theme.palette.secondary.main,
   },
 }));
 
@@ -104,8 +107,7 @@ const LoginView = () => {
                 variant="subtitle1"
                 className={classes.error}
               >
-                {`Unknown username.
-                Check again or try your email address.`}
+                Sorry, we do not recognize this account.
               </Typography>
             )}
             <Formik
@@ -178,7 +180,12 @@ const LoginView = () => {
                       )}
                     </Button>
                   </Box>
-                  <Link component={RouterLink} to="/register" variant="body1">
+                  <Link
+                    component={RouterLink}
+                    to="/register"
+                    variant="body2"
+                    className={classes.forgot}
+                  >
                     Forgot password?
                   </Link>
                 </form>

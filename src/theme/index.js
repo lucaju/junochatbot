@@ -5,10 +5,10 @@ const theme = (darkMode) =>
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
-        main: colors.orange[800],
+        main: colors.lightBlue[500],
       },
       secondary: {
-        main: colors.indigo[500],
+        main: colors.blueGrey[400],
       },
     },
   });

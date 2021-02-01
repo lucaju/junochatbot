@@ -3,7 +3,6 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  colors,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     marginRight: theme.spacing(1),
-    color: colors.orange[600],
+    color: theme.palette.primary.light,
   },
   uppercase: {
     textTransform: 'uppercase',
