@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const title = 'My Stories';
+const title = 'Stories';
 
 const Stories = () => {
   const classes = useStyles();

@@ -44,8 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const rightMenu = [
   {
     href: '/',
-    title: 'My Stories',
-    restricted: false,
+    title: 'Stories',
   },
   {
     href: '/users',
