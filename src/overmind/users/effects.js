@@ -63,34 +63,4 @@ export const api = {
     const result = await response.json();
     return result;
   },
-
-  async deleteUser(userId, token) {
-    const response = await fetch(`${baseURL}/admin/users`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userId),
-    });
-
-    if (response.status !== 200) {
-      return {
-        error: {
-          status: response.status,
-          statusText: response.statusText,
-        },
-      };
-    }
-
-    const result = await response.json();
-    return result;
-
-    // return await new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     mock.dataUsers = mock.dataUsers.filter((user) => user.id !== userId);
-    //     resolve({ success: true });
-    //   }, 1000);
-    // });
-  },
 };

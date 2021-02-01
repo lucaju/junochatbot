@@ -1,8 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControlLabel,
+  makeStyles,
+  Switch,
+} from '@material-ui/core';
 import { useField, useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 
 const useStyles = makeStyles(() => ({
   buttonProgress: { position: 'absolute' },
@@ -10,36 +17,47 @@ const useStyles = makeStyles(() => ({
 
 const Actions = ({
   dirty,
+  handleBlur,
   handleCancel,
-  handleDelete,
+  handleChange,
   isSubmitting,
-  name,
-  userData,
+  // name,
+  // userData,
+  values,
 }) => {
   const classes = useStyles();
   const { submitForm } = useFormikContext();
-  const [field, meta, helpers] = useField(name);
-  const { value } = meta;
-  const { setValue } = helpers;
-  const [pushedButton, setPushedButton] = useState(null);
+  // const [field, meta, helpers] = useField(name);
+  // const { value } = meta;
+  // const { setValue } = helpers;
 
   const handleSubmit = async (type) => {
-    setPushedButton(type);
-    setValue(type);
+    // setValue(type);
     await submitForm();
-    setPushedButton(null);
   };
 
   return (
     <>
-      {userData.id && userData.roleTypeId !== 1 && (
-        <>
-          <Button color="default" onClick={handleDelete}>
-            Delete
-          </Button>
-          <Box flexGrow={1} />
-        </>
-      )}
+      <FormControlLabel
+        value={values.active}
+        control={
+          <Switch
+            color="primary"
+            checked={values.active}
+            disabled={!values.id || values.roleTypeId === 1}
+            label="Aa"
+            name="active"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.firstName}
+          />
+        }
+        label="Active"
+        labelPlacement="start"
+      />
+
+      <Box flexGrow={1} />
+
       <Button color="primary" onClick={handleCancel}>
         Cancel
       </Button>
@@ -51,7 +69,7 @@ const Actions = ({
         onClick={() => handleSubmit('submit')}
       >
         Save
-        {isSubmitting && pushedButton === 'submit' && (
+        {isSubmitting && (
           <CircularProgress size={24} className={classes.buttonProgress} />
         )}
       </Button>
@@ -61,11 +79,13 @@ const Actions = ({
 
 Actions.propTypes = {
   dirty: PropTypes.bool,
+  handleBlur: PropTypes.func,
   handleCancel: PropTypes.func,
-  handleDelete: PropTypes.func,
+  handleChange: PropTypes.func,
   isSubmitting: PropTypes.bool,
-  name: PropTypes.string,
-  userData: PropTypes.object,
+  // name: PropTypes.string,
+  // userData: PropTypes.object,
+  values: PropTypes.object,
 };
 
 export default Actions;

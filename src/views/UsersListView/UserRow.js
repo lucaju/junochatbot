@@ -60,13 +60,30 @@ const UserRow = ({ user, handleEditClick }) => {
               <AccountCircleIcon className={classes.avatarIcon} />
             )}
           </Avatar>
-          <Typography color="textPrimary" variant="body1">
+          <Typography
+            color={user.active ? 'textPrimary' : 'textSecondary'}
+            variant="body1"
+          >
             {user.firstName} {user.lastName}
           </Typography>
         </Box>
       </TableCell>
-      <TableCell>{user.userName}</TableCell>
-      <TableCell>{user.group}</TableCell>
+      <TableCell>
+        <Typography
+          color={user.active ? 'textPrimary' : 'textSecondary'}
+          variant="body1"
+        >
+          {user.userName}
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography
+          color={user.active ? 'textPrimary' : 'textSecondary'}
+          variant="body1"
+        >
+          {user.group}
+        </Typography>
+      </TableCell>
       <TableCell>
         {user.stories &&
           user.stories.map(({ id, title }) => (

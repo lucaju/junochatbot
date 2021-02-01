@@ -17,7 +17,13 @@ import UserRow from './UserRow';
 
 const useStyles = makeStyles(() => ({}));
 
-const UsersList = ({ handleDetailOpen, className, users, ...rest }) => {
+const UsersList = ({
+  handleDetailOpen,
+  className,
+  users,
+  filters,
+  ...rest
+}) => {
   const classes = useStyles();
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(0);
@@ -50,6 +56,15 @@ const UsersList = ({ handleDetailOpen, className, users, ...rest }) => {
             </TableHead>
             <TableBody>
               {users
+                .filter((user) => {
+                  if (filters.size === 0) return true;
+                  let match = true;
+                  for (const [prop, value] of filters.entries()) {
+                    match = user[prop] === value;
+                    if (match === false) break;
+                  }
+                  return match;
+                })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user) => (
                   <UserRow
@@ -79,6 +94,7 @@ UsersList.propTypes = {
   className: PropTypes.string,
   users: PropTypes.array.isRequired,
   handleDetailOpen: PropTypes.func,
+  filters: PropTypes.object,
 };
 
 export default UsersList;

@@ -10,7 +10,7 @@ import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Details from './details/';
 import UsersList from './UsersList';
-import Toolbar from './Toolbar';
+import MenuBar from './MenuBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +30,7 @@ const UsersListView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
+  const [filters, setFilters] = React.useState(new Map());
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,6 +64,11 @@ const UsersListView = () => {
     setDetailsOpen(false);
   };
 
+  const updateFilters = ({ type, value, reset }) => {
+    reset ? filters.delete(type) : filters.set(type, value);
+    setFilters(new Map(filters));
+  };
+
   return (
     <Page className={classes.root} title={title}>
       <Container maxWidth={false}>
@@ -87,11 +93,15 @@ const UsersListView = () => {
         )}
         {isLoaded && (
           <>
-            <Toolbar handleDetailOpen={handleDetailOpen} />
+            <MenuBar
+              handleDetailOpen={handleDetailOpen}
+              updateFilters={updateFilters}
+            />
             <Box mt={3}>
               <UsersList
                 users={state.users.list}
                 handleDetailOpen={handleDetailOpen}
+                filters={filters}
               />
             </Box>
           </>

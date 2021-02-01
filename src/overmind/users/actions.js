@@ -19,17 +19,6 @@ export const save = async ({ state, effects }, userData) => {
   }
 };
 
-export const deleteUser = async ({ state, effects }, userId) => {
-  const token = state.session.user.token;
-  const response = await effects.users.api.deleteUser(userId, token);
-
-  if (response.error) return response;
-
-  state.users.list = state.users.list.filter((user) => user.id !== userId);
-
-  return response;
-};
-
 const createUser = async ({ state, effects, userData, token }) => {
   const response = await effects.users.api.addUser(userData, token);
   if (response.error) return response;
