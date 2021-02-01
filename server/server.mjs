@@ -11,7 +11,6 @@ const app = express();
 app.use(bodyParser.json({ limit: '5mb' })); // support json encoded bodies
 
 // dev tools
-//dev
 const loadDevTools = async () => {
   const { devTools } = await import('./dev/dev.mjs');
   devTools(app);
@@ -24,11 +23,14 @@ app.use(express.static('./dist'));
 // app.use('/assets', express.static('./dist/assets'));
 
 // catch all
+// * turno off on dev. reason HMR doesn't work with this on.
+// if (process.env.NODE_ENV !== 'development') {
 app.get('*', (req, res) => {
   // console.log('catch all');
   // res.set('Content-Type', 'text/event-stream');
   res.status(200).sendFile(path.join(publicPath, 'index.html'));
 });
+// }
 
 // error
 // app.use((req, res) => res.status(404).send('404: Page not Found'));

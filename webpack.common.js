@@ -9,10 +9,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'none', // all mode defaults for dev and prod and set in the respective configs
   entry: { app: ['./src/index.js'] },
-  // output: {
-  // filename: '[name].js',
-  // path: path.resolve(__dirname, 'dist'),
-  // },
+  output: {
+    // filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
+  },
   resolve: {
     alias: {
       src: path.resolve(__dirname, 'src/'),
