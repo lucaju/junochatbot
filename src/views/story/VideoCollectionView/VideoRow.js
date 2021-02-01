@@ -11,7 +11,6 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import VimeoIcon from './assets/VimeoIcon';
 import YoutubeIcon from './assets/YoutubeIcon';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +58,6 @@ const VideoRow = ({ video, handleEditClick }) => {
       <TableCell>{video.title}</TableCell>
       <TableCell className={classes.textCenter}>
         {video.provider === 'youtube' && <YoutubeIcon fontSize="large" />}
-        {video.provider === 'vimeo' && <VimeoIcon fontSize="large" />}
       </TableCell>
       <TableCell>
         {video.tags &&

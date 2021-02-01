@@ -1,7 +1,6 @@
 import { useField } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import VimeoIcon from '../assets/VimeoIcon';
 import YoutubeIcon from '../assets/YoutubeIcon';
 
 const Provider = ({ name, videoProvider }) => {
@@ -15,12 +14,7 @@ const Provider = ({ name, videoProvider }) => {
     return () => {};
   }, [videoProvider]);
 
-  return (
-    <>
-      {value === 'youtube' && <YoutubeIcon fontSize="large" />}
-      {value === 'vimeo' && <VimeoIcon fontSize="large" />}
-    </>
-  );
+  return <>{value === 'youtube' && <YoutubeIcon fontSize="large" />}</>;
 };
 
 Provider.propTypes = {
