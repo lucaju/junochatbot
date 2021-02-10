@@ -8,7 +8,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'none', // all mode defaults for dev and prod and set in the respective configs
-  entry: { app: ['./src/index.js'] },
+  entry: {
+    app: [path.resolve(__dirname, 'src', 'index.js')],
+  },
   output: {
     // filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
@@ -17,14 +19,15 @@ module.exports = {
     alias: {
       src: path.resolve(__dirname, 'src/'),
     },
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
     new webpack.ProgressPlugin(),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: path.resolve(__dirname, 'src', 'index.html'),
       chunks: ['app'],
-      inject: 'body',
+      inject: 'head',
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
@@ -41,24 +44,28 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
         use: [
           {
             loader: 'babel-loader',
             options: {
-              // sourceType: 'unambiguous',
               presets: ['@babel/preset-env', '@babel/preset-react'],
               plugins: [
                 '@babel/plugin-proposal-class-properties',
                 [
                   '@babel/plugin-transform-runtime',
                   {
-                    corejs: 3,
-                    proposals: true,
-                    // 'helpers': false,
+                    corejs: { version: 3, proposals: true },
+                    helpers: true, //false
+                    regenerator: true,
                     useESModules: true,
-                    version: '^7.12.10',
+                    version: '^7.12.15',
                   },
                 ],
               ],
@@ -80,15 +87,21 @@ module.exports = {
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         type: 'asset',
+        generator: {
+          filename: 'fonts/[name][ext][query]',
+        },
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
+        generator: {
+          filename: 'images/[name][ext][query]',
+        },
       },
-      {
-        test: /\.svg$/,
-        loader: 'svg-inline-loader',
-      },
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'svg-inline-loader',
+      // },
     ],
   },
 };

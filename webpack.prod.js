@@ -1,13 +1,13 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
+  mode: 'production',
   devtool: false,
-  performance: { hints: 'warning' },
   output: { pathinfo: false },
   optimization: {
     checkWasmTypes: true,
@@ -18,19 +18,16 @@ module.exports = merge(common, {
     sideEffects: true,
     usedExports: true,
     minimize: true,
-    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
   },
+  performance: { hints: 'warning' },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new webpack.SourceMapDevToolPlugin({
-      filename: 'js/app.js.map',
-      module: true,
-      columns: true,
-      noSources: false,
-      namespace: '',
-      exclude: [/luxon/, /react/],
+      exclude: ['js/vendor.js'],
+      filename: 'js/[name].js.map',
     }),
   ],
 });

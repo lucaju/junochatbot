@@ -11,12 +11,11 @@ const __dirname = path.dirname(__filename);
 export default Merge.merge(common, {
   mode: 'development',
   cache: true,
-  devtool: false,
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     historyApiFallback: true,
   },
-  performance: { hints: false },
+  devtool: false,
   output: {
     pathinfo: true,
     publicPath: '/',
@@ -32,14 +31,15 @@ export default Merge.merge(common, {
     sideEffects: false,
     usedExports: false,
   },
+  performance: { hints: false },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new webpack.EvalSourceMapDevToolPlugin({
-      module: true,
       columns: true,
       exclude: [/luxon/, /react/],
+      module: true,
     }),
   ],
 });
