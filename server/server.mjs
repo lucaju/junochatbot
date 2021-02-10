@@ -3,6 +3,9 @@ import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import express from 'express';
 
+import user from './routers/user.mjs';
+import story from './routers/story.mjs';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicPath = path.join(__dirname, '..', 'dist');
@@ -18,9 +21,11 @@ const loadDevTools = async () => {
 
 if (process.env.NODE_ENV === 'development') loadDevTools();
 
+app.use('/user', user);
+app.use('/story', story);
+
 // static
 app.use(express.static('./dist'));
-// app.use('/assets', express.static('./dist/assets'));
 
 // catch all
 // * turno off on dev. reason HMR doesn't work with this on.

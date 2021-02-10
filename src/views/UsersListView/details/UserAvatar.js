@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     height: 80,
     width: 80,
   },
-  button: { marginTop: theme.spacing(0.5) },
+  button: { top: -3 },
   hide: { display: 'none' },
   show: { display: 'block' },
   dropzone: {
@@ -48,19 +48,20 @@ const UserAvatar = ({ name }) => {
   const [showDropzone, setShowDropzone] = useState(false);
 
   useEffect(() => {
-    uploadedImage ? setImage(uploadedImage) : setImage(value);
-    value === '' ? setShowDropzone(true) : setShowDropzone(false);
+    const avatarFile = typeof value === 'string' ? value : value?.file?.name;
+    uploadedImage ? setImage(uploadedImage) : setImage(avatarFile);
+    value === null ? setShowDropzone(true) : setShowDropzone(false);
     return () => {};
   }, [value]);
 
   const handleUpdateAvatar = (files) => {
     setUploadedImage(files[0].data);
-    setValue(files[0].file.name);
+    setValue(files[0].file);
     setShowDropzone(false);
   };
 
   const handleDeleteAvatar = () => {
-    setValue('');
+    setValue(null);
     setUploadedImage(null);
     setShowDropzone(true);
   };
@@ -88,11 +89,11 @@ const UserAvatar = ({ name }) => {
           showPreviewsInDropzone={false}
         />
       </Box>
-      {image !== '' && (
+      {image && (
         <>
           <Avatar
             className={classes.avatar}
-            src={!uploadedImage ? `/assets/users/images/${image}` : ''}
+            src={!uploadedImage ? `/user/avatar/${image}` : ''}
           >
             {uploadedImage && <img src={image} className={classes.dropzone} />}
           </Avatar>
@@ -101,6 +102,7 @@ const UserAvatar = ({ name }) => {
             component="span"
             className={classes.button}
             onClick={handleDeleteAvatar}
+            size="small"
           >
             <HighlightOffIcon />
           </IconButton>

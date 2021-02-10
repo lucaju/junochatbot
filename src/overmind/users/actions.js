@@ -20,6 +20,13 @@ export const save = async ({ state, effects }, userData) => {
 };
 
 const createUser = async ({ state, effects, userData, token }) => {
+  //Check avatar
+  if (userData.avatar?.name || userData.removeAvatar) {
+    const avatar = await manageAvatar(effects, userData);
+    if (avatar.error) userData.avatar = '';
+    if (avatar.filename) userData.avatar = avatar.name;
+  }
+
   const response = await effects.users.api.addUser(userData, token);
   if (response.error) return response;
 
@@ -31,6 +38,16 @@ const createUser = async ({ state, effects, userData, token }) => {
 };
 
 const updateUser = async ({ state, effects, userData, token }) => {
+  //Check avatar
+  if (userData.avatar.name || userData.removeAvatar) {
+    const avatar = await manageAvatar(effects, userData);
+    if (avatar.error) userData.avatar = '';
+    if (avatar.filename) {
+      userData.avatar = avatar.filename;
+      if (userData.removeAvatar) delete userData.removeAvatar;
+    }
+  }
+
   const response = await effects.users.api.updateUser(userData, token);
   if (response.error) return response;
 
@@ -40,6 +57,57 @@ const updateUser = async ({ state, effects, userData, token }) => {
   });
 
   return response;
+};
+
+const manageAvatar = async (effects, { avatar, removeAvatar }) => {
+  let avatarManager;
+  if (avatar?.name && removeAvatar) {
+    avatarManager = await updateAvatar(effects, { avatar, removeAvatar });
+  } else if (avatar?.name) {
+    avatarManager = await uploadAvatar(effects, avatar);
+  } else if (removeAvatar) {
+    avatarManager = await deleteAvatar(effects, removeAvatar);
+  }
+  return avatarManager;
+};
+
+const uploadAvatar = async (effects, avatar) => {
+  const uniqueFileName = createUniqueFileName(avatar.type);
+  const avatarData = { avatar, uniqueFileName };
+
+  const response = await effects.users.api.uploadAvatar(avatarData);
+  if (response.error) return response;
+
+  return {
+    filename: uniqueFileName,
+  };
+};
+
+const updateAvatar = async (effects, { avatar, removeAvatar }) => {
+  const uniqueFileName = createUniqueFileName(avatar.type);
+  const avatarData = { avatar, removeAvatar, uniqueFileName };
+
+  const response = await effects.users.api.updateAvatar(avatarData);
+  if (response.error) return response;
+
+  return {
+    filename: uniqueFileName,
+  };
+};
+
+const deleteAvatar = async (effects, removeAvatar) => {
+  const response = await effects.users.api.deleteAvatar(removeAvatar);
+  if (response.error) return response;
+
+  return {
+    filename: '',
+  };
+};
+
+const createUniqueFileName = (mimeType) => {
+  const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  const extension = mimeType.split('/')[1];
+  return `${uniqueName}.${extension}`;
 };
 
 const sortBy = (items, prop) => {

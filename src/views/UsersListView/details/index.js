@@ -46,7 +46,7 @@ const Details = ({ open, handleDetailClose, user }) => {
   const [isAdmin] = useState(state.session.isAdmin);
 
   const initialValues = {
-    avatar: '',
+    avatar: null,
     firstName: '',
     lastName: '',
     userName: '',
@@ -78,7 +78,7 @@ const Details = ({ open, handleDetailClose, user }) => {
   }, [open]);
 
   const formValidation = Yup.object().shape({
-    newAvatar: Yup.string(),
+    avatar: Yup.mixed(),
     firstName: Yup.string().trim().required('First name is required'),
     lastName: Yup.string().trim().required('Last name is required'),
     userName: Yup.string().email().required('Email is required'),
@@ -96,7 +96,12 @@ const Details = ({ open, handleDetailClose, user }) => {
   };
 
   const submit = async (values) => {
-    //remove unnecessary  info
+    //if avatar changed, send oldFile to be removed.
+    if (userData.avatar && (values.avatar?.name || !values.avatar)) {
+      values = { ...values, removeAvatar: userData.avatar };
+    }
+
+    // remove unnecessary  info
     const cleandedValues = { ...values };
     delete cleandedValues.stories;
 
