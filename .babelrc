@@ -1,14 +1,22 @@
 {
-	"presets": ["@babel/preset-env", "@babel/preset-react"],
+	"presets": [
+        [
+          "@babel/preset-env",
+          {
+            "useBuiltIns": "usage", // or "entry"
+            "corejs": 3
+          }
+        ],
+        "@babel/preset-react"
+      ],
 	"plugins": [[
         "@babel/plugin-transform-runtime",
         {
-            "corejs": 3,
-            "helpers": false,
-            "proposals": true,
+            "corejs": { "version": 3, "proposals": true },
+            "helpers": true,
             "regenerator": true,
             "useESModules": true,
-            "version": "^7.12.5"
+            "version": "^7.12.15"
         }
     ]]
 }
