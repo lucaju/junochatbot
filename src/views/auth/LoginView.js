@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(8),
     width: 256,
   },
+  submitButton: { color: '#FFFFFF' },
   buttonProgress: {
     position: 'absolute',
     marginLeft: '45%',
@@ -137,19 +138,21 @@ const LoginView = () => {
               }) => (
                 <form onSubmit={handleSubmit}>
                   <TextField
+                    autoComplete="username"
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
                     helperText={touched.email && errors.email}
-                    label="Email Address"
+                    label="Email"
                     margin="normal"
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     type="email"
                     value={values.email}
-                    variant="outlined"
+                    // variant="outlined"
                   />
                   <TextField
+                    autoComplete="current-password"
                     error={Boolean(touched.password && errors.password)}
                     fullWidth
                     helperText={touched.password && errors.password}
@@ -160,7 +163,7 @@ const LoginView = () => {
                     onChange={handleChange}
                     type="password"
                     value={values.password}
-                    variant="outlined"
+                    // variant="outlined"
                   />
                   <Box my={2}>
                     <Button
@@ -170,6 +173,8 @@ const LoginView = () => {
                       size="large"
                       type="submit"
                       variant="contained"
+                      disableElevation
+                      classes={{ containedPrimary: classes.submitButton }}
                     >
                       Sign in
                       {isSubmitting && (
