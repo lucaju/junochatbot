@@ -6,6 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 
 /dist
+/config/config.js
+/volume
 
 # Runtime data
 pids

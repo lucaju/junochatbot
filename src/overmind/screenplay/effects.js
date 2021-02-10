@@ -1,4 +1,5 @@
 import mock from 'src/mockData';
+import { API_URL } from '../../../config/config.js';
 
 export const api = {
   async getCollection(storyId) {

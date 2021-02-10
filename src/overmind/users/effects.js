@@ -1,9 +1,9 @@
 // import mock from 'src/mockData';
-const baseURL = 'https://api.junochatbot.ca';
+import { API_URL } from '../../../config/config.js';
 
 export const api = {
   async getUsers(token) {
-    const response = await fetch(`${baseURL}/admin/users/all`, {
+    const response = await fetch(`${API_URL}/admin/users/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
@@ -11,7 +11,7 @@ export const api = {
   },
 
   async getUser(userId, token) {
-    const response = await fetch(`${baseURL}/admin/users/id/${userId}`, {
+    const response = await fetch(`${API_URL}/admin/users/id/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
@@ -19,7 +19,7 @@ export const api = {
   },
 
   async addUser(userData, token) {
-    const response = await fetch(`${baseURL}/admin/users`, {
+    const response = await fetch(`${API_URL}/admin/users`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,13 +28,9 @@ export const api = {
       body: JSON.stringify(userData),
     });
 
-    if (response.status !== 200) {
-      return {
-        error: {
-          status: response.status,
-          statusText: response.statusText,
-        },
-      };
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
     }
 
     const result = await response.json();
@@ -42,7 +38,7 @@ export const api = {
   },
 
   async updateUser(userData, token) {
-    const response = await fetch(`${baseURL}/admin/users`, {
+    const response = await fetch(`${API_URL}/admin/users`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -51,13 +47,9 @@ export const api = {
       body: JSON.stringify(userData),
     });
 
-    if (response.status !== 200) {
-      return {
-        error: {
-          status: response.status,
-          statusText: response.statusText,
-        },
-      };
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
     }
 
     const result = await response.json();

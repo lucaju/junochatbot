@@ -1,7 +1,6 @@
 // import mock from 'src/mockData';
 import base64 from 'base-64';
-
-const baseURL = 'https://api.junochatbot.ca';
+import { API_URL } from '../../../config/config.js';
 
 export const api = {
   authenticateWithCredentials: async ({ email, password }) => {
@@ -10,18 +9,14 @@ export const api = {
     headers.append('Authorization', `Basic ${credentials}`);
 
     //access endpoint
-    const response = await fetch(`${baseURL}/authentication/login`, {
+    const response = await fetch(`${API_URL}/authentication/login`, {
       method: 'POST',
       headers,
     });
 
-    if (response.status !== 200) {
-      return {
-        error: {
-          status: response.status,
-          statusText: response.statusText,
-        },
-      };
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
     }
 
     const result = await response.json();
@@ -29,17 +24,13 @@ export const api = {
   },
 
   getUserDetails: async (token) => {
-    const response = await fetch(`${baseURL}/student/users`, {
+    const response = await fetch(`${API_URL}/application/users`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (response.status !== 200) {
-      return {
-        error: {
-          status: response.status,
-          statusText: response.statusText,
-        },
-      };
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
     }
 
     const result = await response.json();
