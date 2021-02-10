@@ -99,9 +99,9 @@ const UsersListView = () => {
             />
             <Box mt={3}>
               <UsersList
-                users={state.users.list}
-                handleDetailOpen={handleDetailOpen}
                 filters={filters}
+                handleDetailOpen={handleDetailOpen}
+                users={state.users.list}
               />
             </Box>
           </>

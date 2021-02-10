@@ -9,22 +9,17 @@ import {
   TablePagination,
   TableRow,
 } from '@material-ui/core';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { useApp } from 'src/overmind';
 import UserRow from './UserRow';
 
 const useStyles = makeStyles(() => ({}));
 
-const UsersList = ({
-  handleDetailOpen,
-  className,
-  users,
-  filters,
-  ...rest
-}) => {
+const UsersList = ({ filters, handleDetailOpen, users, ...rest }) => {
   const classes = useStyles();
+  const { state } = useApp();
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(0);
 
@@ -41,7 +36,7 @@ const UsersList = ({
   };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={classes.root} {...rest}>
       <PerfectScrollbar>
         <Box minWidth={750}>
           <Table>
@@ -56,6 +51,10 @@ const UsersList = ({
             </TableHead>
             <TableBody>
               {users
+                .filter((user) => {
+                  if (state.session.isAdmin) return true;
+                  if (user.active === true) return true;
+                })
                 .filter((user) => {
                   if (filters.size === 0) return true;
                   let match = true;
@@ -91,10 +90,9 @@ const UsersList = ({
 };
 
 UsersList.propTypes = {
-  className: PropTypes.string,
-  users: PropTypes.array.isRequired,
-  handleDetailOpen: PropTypes.func,
   filters: PropTypes.object,
+  handleDetailOpen: PropTypes.func,
+  users: PropTypes.array.isRequired,
 };
 
 export default UsersList;

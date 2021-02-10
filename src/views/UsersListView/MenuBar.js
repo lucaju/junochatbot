@@ -10,6 +10,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import { useApp } from 'src/overmind';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +37,7 @@ const filterActiveOptions = [
 
 const MenuBar = ({ handleDetailOpen, updateFilters }) => {
   const classes = useStyles();
+  const { state } = useApp();
   const [filterRole, setFilterRole] = useState('all');
   const [filterActive, setFilterActive] = useState('all');
 
@@ -85,22 +87,24 @@ const MenuBar = ({ handleDetailOpen, updateFilters }) => {
         ))}
       </TextField>
 
-      <TextField
-        className={classes.filterActive}
-        label="Active"
-        name="filterAcitve"
-        onChange={(e) => handleFilterActive(e.target.value)}
-        select
-        value={filterActive}
-        variant="outlined"
-        size="small"
-      >
-        {filterActiveOptions.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.name}
-          </MenuItem>
-        ))}
-      </TextField>
+      {state.session.isAdmin && (
+        <TextField
+          className={classes.filterActive}
+          label="Active"
+          name="filterAcitve"
+          onChange={(e) => handleFilterActive(e.target.value)}
+          select
+          size="small"
+          variant="outlined"
+          value={filterActive}
+        >
+          {filterActiveOptions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
+      )}
     </Toolbar>
   );
 };
