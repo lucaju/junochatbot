@@ -8,6 +8,7 @@ yarn-error.log*
 /dist
 /config/config.js
 /volume
+/server_
 
 # Runtime data
 pids
