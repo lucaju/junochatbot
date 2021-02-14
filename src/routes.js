@@ -5,8 +5,10 @@ import BlankLayout from './layouts/BlankLayout';
 import StoryLayout from './layouts/StoryLayout';
 import MainLayout from './layouts/MainLayout';
 
-import LoginView from './views/auth/LoginView';
+import { LoginView, ForgotView, ResetPasswordView } from './views/auth';
+
 import NotFoundView from './views/errors/NotFoundView';
+
 import StoriesView from './views/StoriesView';
 import UsersListView from './views/UsersListView';
 
@@ -50,6 +52,9 @@ const routes = [
     element: <BlankLayout />,
     children: [
       { path: 'login', element: <LoginView /> },
+      { path: 'forgot', element: <ForgotView /> },
+      { path: 'newuser', element: <ResetPasswordView /> },
+      { path: 'reset-password', element: <ResetPasswordView /> },
       { path: '404', element: <NotFoundView /> },
       { path: '*', element: <Navigate to="/404" /> },
     ],
