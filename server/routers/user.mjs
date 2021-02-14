@@ -1,7 +1,6 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs-extra';
-import { sendEmail } from '../emails/index.mjs';
 
 const router = new express.Router();
 router.use(express.json());
@@ -56,13 +55,6 @@ router.put('/avatar', upload.single('avatar'), async (req, res) => {
 
 router.delete('/avatar', async (req, res) => {
   await fs.remove(`${BASE_FOLDER}${req.body.removeAvatar}`);
-  res.status(200).send();
-});
-
-//--------------
-
-router.post('/emailnotification', async ({ body: { notification } }, res) => {
-  await sendEmail(notification);
   res.status(200).send();
 });
 
