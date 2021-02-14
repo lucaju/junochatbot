@@ -23,10 +23,10 @@ export const save = async ({ state, effects }, userData) => {
 
 const createUser = async ({ state, effects, userData, token }) => {
   // Check avatar
-  if (userData.avatar?.name || userData.removeAvatar) {
-    const avatar = await manageAvatar(effects, userData);
-    if (avatar.error) userData.avatar = '';
-    if (avatar.filename) userData.avatar = avatar.name;
+  if (userData.avatarUrl?.name || userData.removeAvatar) {
+    const avatarApi = await manageAvatar(effects, userData);
+    if (avatarApi.error) userData.avatarUrl = '';
+    if (avatarApi.filename) userData.avatarUrl = avatarApi.name;
   }
 
   const response = await effects.users.api.addUser(userData, token);
@@ -43,11 +43,11 @@ const createUser = async ({ state, effects, userData, token }) => {
 
 const updateUser = async ({ state, effects, userData, token }) => {
   //Check avatar
-  if (userData.avatar.name || userData.removeAvatar) {
-    const avatar = await manageAvatar(effects, userData);
-    if (avatar.error) userData.avatar = '';
-    if (avatar.filename) {
-      userData.avatar = avatar.filename;
+  if (userData.avatarUrl.name || userData.removeAvatar) {
+    const avatarApi = await manageAvatar(effects, userData);
+    if (avatarApi.error) userData.avatarUrl = '';
+    if (avatarApi.filename) {
+      userData.avatarUrl = avatarApi.filename;
       if (userData.removeAvatar) delete userData.removeAvatar;
     }
   }
@@ -97,21 +97,21 @@ export const resetPassword = async ({ effects }, { password, resetToken }) => {
 
 //***** AVATAR */
 
-const manageAvatar = async (effects, { avatar, removeAvatar }) => {
+const manageAvatar = async (effects, { avatarUrl, removeAvatar }) => {
   let avatarManager;
-  if (avatar?.name && removeAvatar) {
-    avatarManager = await updateAvatar(effects, { avatar, removeAvatar });
-  } else if (avatar?.name) {
-    avatarManager = await uploadAvatar(effects, avatar);
+  if (avatarUrl?.name && removeAvatar) {
+    avatarManager = await updateAvatar(effects, { avatarUrl, removeAvatar });
+  } else if (avatar?.avatarUrl) {
+    avatarManager = await uploadAvatar(effects, avatarUrl);
   } else if (removeAvatar) {
     avatarManager = await deleteAvatar(effects, removeAvatar);
   }
   return avatarManager;
 };
 
-const uploadAvatar = async (effects, avatar) => {
-  const uniqueFileName = createUniqueFileName(avatar.type);
-  const avatarData = { avatar, uniqueFileName };
+const uploadAvatar = async (effects, avatarUrl) => {
+  const uniqueFileName = createUniqueFileName(avatarUrl.type);
+  const avatarData = { avatarUrl, uniqueFileName };
 
   const response = await effects.users.api.uploadAvatar(avatarData);
   if (response.error) return response;
@@ -121,9 +121,9 @@ const uploadAvatar = async (effects, avatar) => {
   };
 };
 
-const updateAvatar = async (effects, { avatar, removeAvatar }) => {
-  const uniqueFileName = createUniqueFileName(avatar.type);
-  const avatarData = { avatar, removeAvatar, uniqueFileName };
+const updateAvatar = async (effects, { avatarUrl, removeAvatar }) => {
+  const uniqueFileName = createUniqueFileName(avatarUrl.type);
+  const avatarData = { avatarUrl, removeAvatar, uniqueFileName };
 
   const response = await effects.users.api.updateAvatar(avatarData);
   if (response.error) return response;

@@ -4,7 +4,7 @@ export const authUser = {
   lastName: 'Frizzera',
   roleTypeId: 'Admin',
   userName: 'lucaju@gmail.com',
-  avatar: 'lucaju.jpg',
+  avatarUrl: 'lucaju.jpg',
   token: 'TOKEN-123',
 };
 

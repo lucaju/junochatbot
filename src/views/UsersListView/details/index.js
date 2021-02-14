@@ -45,7 +45,7 @@ const Details = ({ open, handleDetailClose, user }) => {
 
   const initialValues = {
     id: null,
-    avatar: null,
+    avatarUrl: null,
     firstName: '',
     lastName: '',
     userName: '',
@@ -76,7 +76,7 @@ const Details = ({ open, handleDetailClose, user }) => {
   }, [open]);
 
   const formValidation = Yup.object().shape({
-    avatar: Yup.mixed(),
+    avatarUrl: Yup.mixed(),
     firstName: Yup.string().trim().required('First name is required'),
     lastName: Yup.string().trim().required('Last name is required'),
     userName: Yup.string().email().required('Email is required'),
@@ -94,8 +94,8 @@ const Details = ({ open, handleDetailClose, user }) => {
 
   const submit = async (values) => {
     //if avatar changed, send oldFile to be removed.
-    if (userData.avatar && (values.avatar?.name || !values.avatar)) {
-      values = { ...values, removeAvatar: userData.avatar };
+    if (userData.avatarUrl && (values.avatarUrl?.name || !values.avatarUrl)) {
+      values = { ...values, removeAvatar: userData.avatarUrl };
     }
 
     // remove unnecessary  info

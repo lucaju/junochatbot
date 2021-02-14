@@ -91,29 +91,31 @@ const Authors = ({ handleBlur, handleChange, values }) => {
             )}
           />
         )}
-        {values.general.authors.map(({ id, firstName, lastName, avatar }) => (
-          <Chip
-            key={id}
-            avatar={
-              avatar ? (
-                <Avatar
-                  alt={`${firstName} ${lastName}`}
-                  src={`/assets/users/images/${avatar}`}
-                />
-              ) : null
-            }
-            icon={!avatar ? <AccountCircleIcon /> : null}
-            variant="outlined"
-            size="small"
-            label={`${firstName} ${lastName}`}
-            onDelete={
-              state.session.user.id === id || state.session.isStudent === id
-                ? null
-                : () => handleAuthorsChange('delete', { id })
-            }
-            className={classes.chip}
-          />
-        ))}
+        {values.general.authors.map(
+          ({ id, firstName, lastName, avatarUrl }) => (
+            <Chip
+              key={id}
+              avatar={
+                avatar ? (
+                  <Avatar
+                    alt={`${firstName} ${lastName}`}
+                    src={`/assets/users/images/${avatarUrl}`}
+                  />
+                ) : null
+              }
+              icon={!avatarUrl ? <AccountCircleIcon /> : null}
+              variant="outlined"
+              size="small"
+              label={`${firstName} ${lastName}`}
+              onDelete={
+                state.session.user.id === id || state.session.isStudent === id
+                  ? null
+                  : () => handleAuthorsChange('delete', { id })
+              }
+              className={classes.chip}
+            />
+          )
+        )}
       </Box>
     </Box>
   );

@@ -56,10 +56,10 @@ export const api = {
     return result;
   },
 
-  async uploadAvatar({ avatar, uniqueFileName }) {
+  async uploadAvatar({ avatarUrl, uniqueFileName }) {
     const formData = new FormData();
     formData.append('uniqueFileName', uniqueFileName);
-    formData.append('avatar', avatar);
+    formData.append('avatar', avatarUrl);
 
     const response = await fetch('/user/avatar', {
       method: 'POST',
@@ -74,10 +74,10 @@ export const api = {
     return true;
   },
 
-  async updateAvatar({ avatar, removeAvatar, uniqueFileName }) {
+  async updateAvatar({ avatarUrl, removeAvatar, uniqueFileName }) {
     const formData = new FormData();
     formData.append('uniqueFileName', uniqueFileName);
-    formData.append('avatar', avatar);
+    formData.append('avatar', avatarUrl);
     formData.append('removeAvatar', removeAvatar);
 
     const response = await fetch('/user/avatar', {
