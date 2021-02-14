@@ -9,6 +9,8 @@ yarn-error.log*
 /config/config.js
 /volume
 /server_
+/server-ts
+/asset
 
 # Runtime data
 pids
