@@ -12,12 +12,13 @@ const Personal = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <>
       <Grid item md={3} xs={12}>
-        <UserAvatar name="avatar" />
+        <UserAvatar name="avatar" active={values.active} />
       </Grid>
       <Grid item md={9} xs={12}>
         <TextField
           error={Boolean(touched.firstName && errors.firstName)}
           fullWidth
+          disabled={values.id && !values.active}
           helperText={touched.firstName && errors.firstName}
           label="First name"
           name="firstName"
@@ -30,6 +31,7 @@ const Personal = ({ errors, handleBlur, handleChange, touched, values }) => {
         <TextField
           error={Boolean(touched.lastName && errors.lastName)}
           fullWidth
+          disabled={values.id && !values.active}
           helperText={touched.lastName && errors.lastName}
           label="Last name"
           name="lastName"

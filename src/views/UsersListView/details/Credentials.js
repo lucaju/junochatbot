@@ -25,9 +25,10 @@ const Credentials = ({ errors, handleBlur, handleChange, touched, values }) => {
 
   return (
     <>
-      <Grid item md={6} xs={12}>
+      <Grid item md={12} xs={12}>
         <TextField
           error={Boolean(touched.userName && errors.userName)}
+          disabled={!!values.id}
           fullWidth
           helperText={touched.userName && errors.userName}
           label="Email"
@@ -35,10 +36,9 @@ const Credentials = ({ errors, handleBlur, handleChange, touched, values }) => {
           onBlur={handleBlur}
           onChange={handleChange}
           value={values.userName}
-          variant="outlined"
         />
       </Grid>
-      <Grid item md={6} xs={12}>
+      {/* <Grid item md={6} xs={12}>
         <FormControl variant="outlined">
           <InputLabel htmlFor="password">Password</InputLabel>
           <OutlinedInput
@@ -64,7 +64,7 @@ const Credentials = ({ errors, handleBlur, handleChange, touched, values }) => {
             labelWidth={70}
           />
         </FormControl>
-      </Grid>
+      </Grid> */}
     </>
   );
 };

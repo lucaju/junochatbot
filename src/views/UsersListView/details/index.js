@@ -17,26 +17,24 @@ import Credentials from './Credentials';
 import Personal from './Personal';
 import Stories from './Stories';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette, spacing }) => ({
   dialogContent: {
     paddingRight: 0,
     paddingLeft: 0,
-    marginBottom: theme.spacing(1),
+    marginBottom: spacing(1),
   },
   section: {
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(1),
+    paddingRight: spacing(2),
+    paddingLeft: spacing(2),
+    paddingTop: spacing(2),
+    paddingBottom: spacing(1),
   },
   credentialsSection: {
+    marginBottom: spacing(2),
+    marginTop: spacing(2),
+    paddingBottom: spacing(1),
     backgroundColor:
-      theme.palette.type === 'light'
-        ? theme.palette.grey[100]
-        : theme.palette.grey[700],
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    paddingBottom: theme.spacing(1),
+      palette.type === 'light' ? palette.grey[100] : palette.grey[700],
   },
 }));
 
@@ -46,6 +44,7 @@ const Details = ({ open, handleDetailClose, user }) => {
   const [isAdmin] = useState(state.session.isAdmin);
 
   const initialValues = {
+    id: null,
     avatar: null,
     firstName: '',
     lastName: '',
@@ -53,7 +52,7 @@ const Details = ({ open, handleDetailClose, user }) => {
     password: '',
     roleTypeId: state.users.defaultRoleType,
     group: state.users.defaultGroup,
-    active: true,
+    active: false,
     stories: [],
   };
 
@@ -118,6 +117,22 @@ const Details = ({ open, handleDetailClose, user }) => {
 
     handleDetailClose();
     open = false;
+  };
+
+  const handleRestoreUser = async () => {
+    const data = { id: userData.id, active: true };
+    // const response = await actions.users.save(data);
+
+    // if (response.error) {
+    //   actions.ui.showNotification({
+    //     type: 'error',
+    //     message: 'Something went wrong!',
+    //   });
+    //   return;
+    // }
+
+    userData.active = true;
+    actions.ui.showNotification({ type: 'success', message: 'User restored' });
   };
 
   return (
@@ -190,7 +205,8 @@ const Details = ({ open, handleDetailClose, user }) => {
                 handleChange={handleChange}
                 isSubmitting={isSubmitting}
                 values={values}
-                // userData={userData}
+                userData={userData}
+                name="active"
               />
             </DialogActions>
           </form>

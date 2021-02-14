@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UserAvatar = ({ name }) => {
+const UserAvatar = ({ name, active }) => {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
@@ -79,6 +79,7 @@ const UserAvatar = ({ name }) => {
             root: classes.dropzone,
             icon: classes.icon,
           }}
+          disabled={!active}
           acceptedFiles={['image/*']}
           dropzoneText={''}
           Icon={AccountCircleIcon}
@@ -98,6 +99,7 @@ const UserAvatar = ({ name }) => {
             {uploadedImage && <img src={image} className={classes.dropzone} />}
           </Avatar>
           <IconButton
+            disabled={!active}
             aria-label="remove picture"
             component="span"
             className={classes.button}
@@ -114,6 +116,7 @@ const UserAvatar = ({ name }) => {
 
 UserAvatar.propTypes = {
   name: PropTypes.string,
+  active: PropTypes.bool,
 };
 
 export default UserAvatar;

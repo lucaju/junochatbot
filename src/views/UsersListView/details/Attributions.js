@@ -25,7 +25,7 @@ const Attributions = ({
           onChange={handleChange}
           select
           value={values.roleTypeId}
-          disabled={!isAdmin}
+          disabled={!isAdmin || (values.id && !values.active)}
           variant="outlined"
         >
           {state.users.roleTypes.map((option) => (
@@ -45,7 +45,7 @@ const Attributions = ({
           onChange={handleChange}
           select
           value={values.group}
-          disabled={!isAdmin}
+          disabled={!isAdmin || (values.id && !values.active)}
           variant="outlined"
         >
           {state.users.groups.map((option) => (
