@@ -3,7 +3,7 @@ import base64 from 'base-64';
 import { API_URL } from '../../../config/config.js';
 
 export const api = {
-  authenticateWithCredentials: async ({ email, password }) => {
+  authenticate: async ({ email, password }) => {
     const headers = new Headers();
     const credentials = base64.encode(`${email}:${password}`);
     headers.append('Authorization', `Basic ${credentials}`);

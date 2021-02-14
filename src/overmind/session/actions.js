@@ -14,7 +14,7 @@ export const signedIn = async ({ state, effects }) => {
 };
 
 export const authenticate = async ({ state, effects }, { email, password }) => {
-  const response = await effects.session.api.authenticateWithCredentials({
+  const response = await effects.session.api.authenticate({
     email,
     password,
   });
