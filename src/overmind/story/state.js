@@ -5,11 +5,6 @@ export const state = {
     { value: 'en-CA', name: 'English' },
     { value: 'fr-CA', name: 'French' },
   ],
-  genres: [
-    { value: 'documentary', name: 'Documentary' },
-    { value: 'drama', name: 'Drama' },
-    { value: 'scifi', name: 'Sci-Fi' },
-  ],
   icons: [
     { value: 'adb', name: 'face' },
     { value: 'face', name: 'face' },

@@ -36,26 +36,6 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
             className={classes.marginBottom}
           />
         </Box>
-        <Box width="150px" mr={2}>
-          <TextField
-            error={Boolean(
-              touched['general.genre'] && errors.general['general.genre']
-            )}
-            fullWidth
-            label="Genre"
-            name="general.genre"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            select
-            value={values.general.genre}
-          >
-            {state.story.genres.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box>
         <Box width="100px">
           <TextField
             disabled
@@ -78,20 +58,20 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
       <Box p={1} width="100%">
         <TextField
           error={Boolean(
-            touched['general.description'] && errors['general.description']
+            touched['general.synopsis'] && errors['general.synopsis']
           )}
           fullWidth
           helperText={
-            touched['general.description'] && errors['general.description']
+            touched['general.synopsis'] && errors['general.synopsis']
           }
-          label="Description"
-          name="general.description"
+          label="synopsis"
+          name="general.synopsis"
           multiline
           rowsMax={2}
           rows={2}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.general.description}
+          value={values.general.synopsis}
           variant="outlined"
           className={classes.marginBottom}
         />

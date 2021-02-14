@@ -36,12 +36,11 @@ export const storyAPI = {
           slug: story.slug,
           icon: story.general.bot.avatar,
           image: story.general.featuredImage,
-          genre: story.general.genre,
           authors: ['Luciano Frizzera'],
           year: 2020,
           published: story.general.publish,
           public: story.general.public,
-          description: story.general.description,
+          synopsis: story.general.synopsis,
         };
 
         mock.dataStories.unshift(storyToList);
@@ -69,12 +68,11 @@ export const storyAPI = {
           slug: story.slug,
           icon: story.general.bot.avatar,
           image: story.general.featuredImage,
-          genre: story.general.genre,
           authors: ['Luciano Frizzera'],
           year: 2020,
           published: story.general.publish,
           public: story.general.public,
-          description: story.general.description,
+          synopsis: story.general.synopsis,
         };
 
         mock.dataStories = mock.dataStories.map((story) => {

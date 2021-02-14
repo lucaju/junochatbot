@@ -117,7 +117,7 @@ const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {
           </Typography>
         </Box>
         <Box mt={1} display="flex" alignItems="center">
-          <Typography variant="body2">{story.description}</Typography>
+          <Typography variant="body2">{story.synopsis}</Typography>
         </Box>
       </CardContent>
       {hover && (

@@ -28,7 +28,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Bot
+        Character - Bot
       </Typography>
       <Box
         p={1}
@@ -92,17 +92,17 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
       <Box p={1} width="100%">
         <TextField
           error={Boolean(
-            touched['general.bot.biography'] && errors['general.bot.biography']
+            touched['general.bot.persona'] && errors['general.bot.persona']
           )}
           fullWidth
-          label="Biography"
-          name="general.bot.biography"
+          label="persona"
+          name="general.bot.persona"
           multiline
           rowsMax={2}
           rows={2}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.general.bot.biography}
+          value={values.general.bot.persona}
           variant="outlined"
           className={classes.marginBottom}
         />
@@ -114,7 +114,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
             gutterBottom
             className={classes.label}
           >
-            Typing speed
+            Typing speed (Miliiseconds per word)
           </Typography>
           <SliderFormik name="general.bot.speed" />
         </Box>

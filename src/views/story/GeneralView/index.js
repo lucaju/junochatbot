@@ -67,15 +67,14 @@ const GeneralView = () => {
     title: Yup.string().trim().max(125).required('Title is required'),
     languageCode: Yup.string().required(),
     general: Yup.object().shape({
-      genre: Yup.string(),
-      description: Yup.string().max(255),
+      synopsis: Yup.string().max(255),
       featuredImage: Yup.string(),
       // authors: Yup.array(),
       published: Yup.bool().required(),
       public: Yup.bool().required(),
       bot: Yup.object().shape({
         name: Yup.string().max(125),
-        biography: Yup.string().max(255),
+        persona: Yup.string().max(255),
         avatar: Yup.string().required(),
         speed: Yup.number().required(),
         balloon: Yup.string().required(),

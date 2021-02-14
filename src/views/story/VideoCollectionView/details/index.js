@@ -46,7 +46,6 @@ const initialValues = {
   title: '',
   author: '',
   year: '',
-  genre: '',
   description: '',
   tags: [],
   submitType: 'submit',
@@ -59,7 +58,6 @@ const formValidation = Yup.object().shape({
   title: Yup.string().max(255),
   author: Yup.string().max(255),
   year: Yup.string(),
-  genre: Yup.string(),
   description: Yup.string(),
   tags: Yup.array(),
 });
