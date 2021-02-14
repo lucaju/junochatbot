@@ -1,24 +1,22 @@
 import {
   Box,
-  Button,
   CircularProgress,
   Container,
   Link,
   makeStyles,
-  TextField,
   Typography,
 } from '@material-ui/core';
-import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import Logo from 'src/components/Logo';
-import Page from 'src/components/Page';
-import { useApp } from 'src/overmind';
-import * as Yup from 'yup';
+import Logo from '../../components/Logo';
+import Page from '../../components/Page';
+import { useApp } from '../../overmind';
+import ErrorMessage from './components/ErrorMessage';
+import LoginForm from './components/LoginForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
+    backgroundColor: theme.palette.background.default,
     height: '100%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
@@ -33,15 +31,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(8),
     width: 256,
   },
-  submitButton: { color: '#FFFFFF' },
-  buttonProgress: {
-    position: 'absolute',
-    marginLeft: '45%',
-  },
-  error: {
-    color: theme.palette.error.dark,
-    textAlign: 'center',
-  },
   forgot: {
     color: theme.palette.secondary.main,
   },
@@ -51,7 +40,7 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state, actions } = useApp();
-  const [isAuthenticating, setIsAuthenticating] = useState(null);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState();
 
   const hasToken = actions.session.getUserToken();
@@ -78,14 +67,6 @@ const LoginView = () => {
     }
   }, [state.session.isSignedIn]);
 
-  const formValidation = Yup.object().shape({
-    email: Yup.string()
-      .email('Must be a valid email')
-      .max(255)
-      .required('Email is required'),
-    password: Yup.string().max(255).required('Password is required'),
-  });
-
   return (
     <Page className={classes.root} title="Login">
       <Container maxWidth="xs" className={classes.container}>
@@ -97,13 +78,10 @@ const LoginView = () => {
             justifyContent="center"
             alignItems="center"
           >
-            {isAuthenticating && (
-              <CircularProgress
-                className={classes.spinner}
-                size={60}
-                thickness={4}
-              />
-            )}
+            <>
+              {isAuthenticating && <CircularProgress size={60} thickness={4} />}
+              {error && <ErrorMessage message={error} />}
+            </>
           </Box>
         ) : (
           <>
@@ -111,91 +89,20 @@ const LoginView = () => {
               Sign in
             </Typography>
             {error && (
-              <Typography
-                component="h2"
-                variant="subtitle1"
-                className={classes.error}
-              >
-                Sorry, we do not recognize this account.
-              </Typography>
+              <ErrorMessage message="Sorry, we do not recognize this account." />
             )}
-            <Formik
-              initialValues={{ email: '', password: '' }}
-              validationSchema={formValidation}
-              onSubmit={async (values) => {
-                setIsAuthenticating(true);
-                await authenticate(values);
-              }}
+            <LoginForm
+              authenticate={authenticate}
+              setIsAuthenticating={setIsAuthenticating}
+            />
+            <Link
+              component={RouterLink}
+              to="/forgot"
+              variant="body2"
+              className={classes.forgot}
             >
-              {({
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                touched,
-                values,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <TextField
-                    autoComplete="username"
-                    error={Boolean(touched.email && errors.email)}
-                    fullWidth
-                    helperText={touched.email && errors.email}
-                    label="Email"
-                    margin="normal"
-                    name="email"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    type="email"
-                    value={values.email}
-                    // variant="outlined"
-                  />
-                  <TextField
-                    autoComplete="current-password"
-                    error={Boolean(touched.password && errors.password)}
-                    fullWidth
-                    helperText={touched.password && errors.password}
-                    label="Password"
-                    margin="normal"
-                    name="password"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    type="password"
-                    value={values.password}
-                    // variant="outlined"
-                  />
-                  <Box my={2}>
-                    <Button
-                      color="primary"
-                      disabled={isSubmitting}
-                      fullWidth
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                      disableElevation
-                      classes={{ containedPrimary: classes.submitButton }}
-                    >
-                      Sign in
-                      {isSubmitting && (
-                        <CircularProgress
-                          size={24}
-                          className={classes.buttonProgress}
-                        />
-                      )}
-                    </Button>
-                  </Box>
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="body2"
-                    className={classes.forgot}
-                  >
-                    Forgot password?
-                  </Link>
-                </form>
-              )}
-            </Formik>
+              Forgot password?
+            </Link>
           </>
         )}
       </Container>
