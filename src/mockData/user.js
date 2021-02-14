@@ -6,7 +6,6 @@ export const dataUsers = [
     avatar: 'lucaju.jpg',
     userName: 'lucaju@gmail.com',
     roleTypeId: 'Admin',
-    languageCode: 'en-CA',
     group: 'None',
     stories: [
       {
@@ -26,7 +25,6 @@ export const dataUsers = [
     avatar: '',
     userName: 'cao.yu@userName.io',
     roleTypeId: 'Student',
-    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -46,7 +44,6 @@ export const dataUsers = [
     avatar: '',
     userName: 'alex.ri@userName.io',
     roleTypeId: 'Student',
-    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -66,7 +63,6 @@ export const dataUsers = [
     avatar: '',
     userName: 'anje.keizer@userName.io',
     roleTypeId: 'Student',
-    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -86,7 +82,6 @@ export const dataUsers = [
     avatar: '',
     userName: 'clarke.gillebert@userName.io',
     roleTypeId: 'Student',
-    languageCode: 'en-CA',
     group: 'St. Lawrence Cegep',
     stories: [
       {
@@ -106,7 +101,6 @@ export const dataUsers = [
     avatar: '',
     userName: 'adam.denisov@userName.io',
     roleTypeId: 'Student',
-    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {
@@ -126,7 +120,6 @@ export const dataUsers = [
     avatar: '',
     userName: 'ava.gregoraci@userName.io',
     roleTypeId: 'Student',
-    languageCode: 'en-CA',
     group: 'St. Lawrence Cegep',
     stories: [
       {
@@ -146,7 +139,6 @@ export const dataUsers = [
     avatar: '',
     userName: 'emilee.simchenko@userName.io',
     roleTypeId: 'Student',
-    languageCode: 'en-CA',
     group: 'Dawson Cegep',
     stories: [
       {

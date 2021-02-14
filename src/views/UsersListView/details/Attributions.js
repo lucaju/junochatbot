@@ -15,26 +15,7 @@ const Attributions = ({
 
   return (
     <>
-      <Grid item md={3} xs={12}>
-        <TextField
-          error={Boolean(touched.languageCode && errors.languageCode)}
-          fullWidth
-          label="Language"
-          name="languageCode"
-          onBlur={handleBlur}
-          onChange={handleChange}
-          select
-          value={values.languageCode}
-          variant="outlined"
-        >
-          {state.users.languages.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.name}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Grid>
-      <Grid item md={4} xs={12}>
+      <Grid item md={5} xs={12}>
         <TextField
           error={Boolean(touched.roleTypeId && errors.roleTypeId)}
           fullWidth
@@ -54,7 +35,7 @@ const Attributions = ({
           ))}
         </TextField>
       </Grid>
-      <Grid item md={5} xs={12}>
+      <Grid item md={7} xs={12}>
         <TextField
           error={Boolean(touched.group && errors.group)}
           fullWidth

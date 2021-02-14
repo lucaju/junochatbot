@@ -5,7 +5,6 @@ export const authUser = {
   roleTypeId: 'Admin',
   userName: 'lucaju@gmail.com',
   avatar: 'lucaju.jpg',
-  languageCode: 'en-CA',
   token: 'TOKEN-123',
 };
 
