@@ -109,4 +109,69 @@ export const api = {
 
     return true;
   },
+
+  forgotPassword: async ({email}) => {
+    // const headers = new Headers();
+    // const credentials = base64.encode(`${email}:${password}`);
+    // headers.append('Authorization', `Basic ${credentials}`);
+
+    // //access endpoint
+    // const response = await fetch(`${API_URL}/authentication/forgotpassword`, {
+    //   method: 'POST',
+    //   headers,
+    // });
+
+    // const { status, statusText } = response;
+    // if (status !== 200) {
+    //   return { error: { status, statusText } };
+    // }
+
+    // const result = await response.json();
+    // return result;
+    //mock
+    return {
+      firstName: 'Luciano',
+      lastName: 'Frizzera',
+      email,
+      token: 'Token 12345',
+    };
+  },
+
+  resetPassword: async ({ password, resetToken }) => {
+    // const headers = new Headers();
+    // const credentials = base64.encode(`${email}:${password}`);
+    // headers.append('Authorization', `Basic ${credentials}`);
+
+    // //access endpoint
+    // const response = await fetch(`${API_URL}/authentication/forgotpassword`, {
+    //   method: 'POST',
+    //   headers,
+    // });
+
+    // const { status, statusText } = response;
+    // if (status !== 200) {
+    //   return { error: { status, statusText } };
+    // }
+
+    // const result = await response.json();
+    // return result;
+    return {};
+  },
+
+  async emailNotification(notification) {
+    const response = await fetch('/user/emailnotification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ notification }),
+    });
+
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
+    }
+
+    return response;
+  },
 };

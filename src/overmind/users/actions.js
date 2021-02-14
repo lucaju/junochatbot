@@ -19,8 +19,10 @@ export const save = async ({ state, effects }, userData) => {
   }
 };
 
+//***** USERS */
+
 const createUser = async ({ state, effects, userData, token }) => {
-  //Check avatar
+  // Check avatar
   if (userData.avatar?.name || userData.removeAvatar) {
     const avatar = await manageAvatar(effects, userData);
     if (avatar.error) userData.avatar = '';
@@ -33,6 +35,8 @@ const createUser = async ({ state, effects, userData, token }) => {
   // userData.id = response.id;
   state.users.list.unshift(response);
   sortBy(state.users.list, 'firstName');
+
+  await sendWelcomeEmail(effects, response);
 
   return response;
 };
@@ -58,6 +62,40 @@ const updateUser = async ({ state, effects, userData, token }) => {
 
   return response;
 };
+
+const sortBy = (items, prop) => {
+  items.sort((a, b) => {
+    const propA = a[prop].toUpperCase(); // ignore upper and lowercase
+    const propB = b[prop].toUpperCase(); // ignore upper and lowercase
+    if (propA < propB) return -1;
+    if (propA > propB) return 1;
+    return 0;
+  });
+  return items;
+};
+
+//***** PASSWORD */
+
+export const forgotPassword = async ({ effects }, { email }) => {
+  // console.log(email)
+  const response = await effects.users.api.forgotPassword({
+    email,
+  });
+  if (response.error) return response;
+  await sendRequestPasswordEmail(effects, response);
+  return {};
+};
+
+export const resetPassword = async ({ effects }, { password, resetToken }) => {
+  const response = await effects.users.api.resetPassword({
+    password,
+    resetToken,
+  });
+  if (response.error) return response;
+  return {};
+};
+
+//***** AVATAR */
 
 const manageAvatar = async (effects, { avatar, removeAvatar }) => {
   let avatarManager;
@@ -98,10 +136,7 @@ const updateAvatar = async (effects, { avatar, removeAvatar }) => {
 const deleteAvatar = async (effects, removeAvatar) => {
   const response = await effects.users.api.deleteAvatar(removeAvatar);
   if (response.error) return response;
-
-  return {
-    filename: '',
-  };
+  return { filename: '' };
 };
 
 const createUniqueFileName = (mimeType) => {
@@ -110,13 +145,18 @@ const createUniqueFileName = (mimeType) => {
   return `${uniqueName}.${extension}`;
 };
 
-const sortBy = (items, prop) => {
-  items.sort((a, b) => {
-    const propA = a[prop].toUpperCase(); // ignore upper and lowercase
-    const propB = b[prop].toUpperCase(); // ignore upper and lowercase
-    if (propA < propB) return -1;
-    if (propA > propB) return 1;
-    return 0;
-  });
-  return items;
+//***** EMAIL */
+const sendWelcomeEmail = async (effects, user) => {
+  user.email = user.username;
+  const notification = { user, type: 'invitation' };
+  const response = await effects.users.api.emailNotification(notification);
+  if (response.error) return response;
+  return {};
+};
+
+const sendRequestPasswordEmail = async (effects, user) => {
+  const notification = { user, type: 'requestPassword' };
+  const response = await effects.users.api.emailNotification(notification);
+  if (response.error) return response;
+  return {};
 };
