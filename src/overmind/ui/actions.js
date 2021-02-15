@@ -6,6 +6,10 @@ export const setDarkMode = ({ state }, value) => {
   state.ui.darkMode = value;
   localStorage.setItem('darkMode', JSON.stringify(value));
 };
+
+export const switchLanguage = ({ state }, value) => {
+  state.ui.languageCode = value;
+  localStorage.setItem('language', value);
 };
 
 export const showNotification = ({ state }, { type, message }) => {
