@@ -110,52 +110,37 @@ export const api = {
     return true;
   },
 
-  forgotPassword: async ({email}) => {
-    // const headers = new Headers();
-    // const credentials = base64.encode(`${email}:${password}`);
-    // headers.append('Authorization', `Basic ${credentials}`);
+  requestPassword: async ({ email }) => {
+    const response = await fetch(
+      `${API_URL}/authentication/users/sendresetpassword/${email}`
+    );
 
-    // //access endpoint
-    // const response = await fetch(`${API_URL}/authentication/forgotpassword`, {
-    //   method: 'POST',
-    //   headers,
-    // });
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
+    }
 
-    // const { status, statusText } = response;
-    // if (status !== 200) {
-    //   return { error: { status, statusText } };
-    // }
-
-    // const result = await response.json();
-    // return result;
-    //mock
-    return {
-      firstName: 'Luciano',
-      lastName: 'Frizzera',
-      email,
-      token: 'Token 12345',
-    };
+    return response;
   },
 
-  resetPassword: async ({ password, resetToken }) => {
-    // const headers = new Headers();
-    // const credentials = base64.encode(`${email}:${password}`);
-    // headers.append('Authorization', `Basic ${credentials}`);
+  resetPassword: async ({ password, token }) => {
+    const response = await fetch(
+      `${API_URL}/authentication/users/setpassword`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ password }),
+      }
+    );
 
-    // //access endpoint
-    // const response = await fetch(`${API_URL}/authentication/forgotpassword`, {
-    //   method: 'POST',
-    //   headers,
-    // });
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
+    }
 
-    // const { status, statusText } = response;
-    // if (status !== 200) {
-    //   return { error: { status, statusText } };
-    // }
-
-    // const result = await response.json();
-    // return result;
-    return {};
+    return response;
   },
 
   async emailNotification(notification) {

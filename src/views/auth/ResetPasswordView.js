@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Button, Container, makeStyles, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
@@ -43,88 +36,58 @@ const ResetPasswordView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state, actions } = useApp();
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState();
 
   const query = new URLSearchParams(location.search);
   const resetToken = query.get('token');
+  // const email = query.get('username');
 
-  let action = location.pathname.slice(1);
-  action = action === 'newuser' ? 'create' : 'reset';
+  useEffect(() => {
+    if (state.session.isSignedIn || !resetToken) {
+      navigate('/', { replace: true });
+    }
+    return () => {};
+  }, []);
 
-  const hasToken = actions.session.getUserToken();
-
-  const authenticate = async (values) => {
+  const resetPassword = async (values) => {
     values = { ...values, resetToken };
     const result = await actions.users.resetPassword(values);
     if (result.error) setError(result.error);
     setRequestSent(true);
   };
 
-  useEffect(() => {
-    if (state.session.isSignedIn) navigate('/', { replace: true });
-    if (hasToken) {
-      setIsAuthenticating(true);
-      const token = actions.session.getUserToken();
-      authenticate({ token });
-    }
-    return () => {};
-  }, []);
-
-  useEffect(() => {
-    if (state.session.isSignedIn) {
-      setIsAuthenticating(false);
-      navigate('/', { replace: true });
-    }
-  }, [state.session.isSignedIn]);
-
   return (
-    <Page className={classes.root} title="Login">
-      <Container maxWidth="xs" className={classes.container}>
-        <Logo type="full" className={classes.logo} />
-        {hasToken ? (
-          <Box
-            display="flex"
-            height="100%"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {isAuthenticating && <CircularProgress size={60} thickness={4} />}
-            {error && <ErrorMessage message={error} />}
-          </Box>
-        ) : (
-          <>
-            {requestSent ? (
-              <Typography component="h1" variant="body1" color="textPrimary">
-                New password set. Visit the login page to sign in.
+    <Page className={classes.root} title="Set Password">
+      <Container className={classes.container} maxWidth="xs">
+        <Logo className={classes.logo} type="full" />
+        <>
+          {requestSent ? (
+            <Typography color="textPrimary" component="h1" variant="body1">
+              New password set. Visit the login page to sign in.
+            </Typography>
+          ) : (
+            <>
+              <Typography color="textPrimary" component="h1" variant="h6">
+                Set Password
               </Typography>
-            ) : (
-              <>
-                <Typography component="h1" variant="h6" color="textPrimary">
-                  {action} password
-                </Typography>
-                {error && (
-                  <ErrorMessage
-                    message={`Sorry, it is not possible to ${action} your password at this time.`}
-                  />
-                )}
-                <ResetPasswordForm
-                  authenticate={authenticate}
-                  setIsAuthenticating={setIsAuthenticating}
+              {error && (
+                <ErrorMessage
+                  message={`Sorry, it is not possible to set your password at this time.`}
                 />
-              </>
-            )}
-            <Button
-              component={RouterLink}
-              to="/login"
-              className={classes.login}
-              startIcon={<ArrowBackIcon />}
-            >
-              Login
-            </Button>
-          </>
-        )}
+              )}
+              <ResetPasswordForm resetPassword={resetPassword} />
+            </>
+          )}
+          <Button
+            className={classes.login}
+            component={RouterLink}
+            startIcon={<ArrowBackIcon />}
+            to="/login"
+          >
+            Login
+          </Button>
+        </>
       </Container>
     </Page>
   );

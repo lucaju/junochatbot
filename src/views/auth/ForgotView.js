@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Button, Container, makeStyles, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -42,81 +35,51 @@ const ForgotView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state, actions } = useApp();
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState();
 
-  const hasToken = actions.session.getUserToken();
+  useEffect(() => {
+    if (state.session.isSignedIn) navigate('/', { replace: true });
+    return () => {};
+  }, []);
 
-  const authenticate = async (values) => {
-    const result = await actions.users.forgotPassword(values);
+  const requestPassword = async (values) => {
+    const result = await actions.users.requestPassword(values);
     if (result.error) setError(result.error);
     setRequestSent(true);
   };
 
-  useEffect(() => {
-    if (state.session.isSignedIn) navigate('/', { replace: true });
-    if (hasToken) {
-      setIsAuthenticating(true);
-      const token = actions.session.getUserToken();
-      authenticate({ token });
-    }
-    return () => {};
-  }, []);
-
-  useEffect(() => {
-    if (state.session.isSignedIn) {
-      setIsAuthenticating(false);
-      navigate('/', { replace: true });
-    }
-  }, [state.session.isSignedIn]);
-
   return (
     <Page className={classes.root} title="Login">
-      <Container maxWidth="xs" className={classes.container}>
-        <Logo type="full" className={classes.logo} />
-        {hasToken ? (
-          <Box
-            display="flex"
-            height="100%"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {isAuthenticating && <CircularProgress size={60} thickness={4} />}
-            {error && <ErrorMessage message={error} />}
-          </Box>
-        ) : (
-          <>
-            {requestSent ? (
-              <Typography component="h1" variant="body1" color="textPrimary">
-                Check your email for the confirmation link, then visit the login
-                page.
+      <Container className={classes.container} maxWidth="xs">
+        <Logo className={classes.logo} type="full" />
+        <>
+          {requestSent ? (
+            <Typography color="textPrimary" component="h1" variant="body1">
+              Check your email for the confirmation link, then visit the login
+              page.
+            </Typography>
+          ) : (
+            <>
+              <Typography color="textPrimary" component="h1" variant="body1">
+                Please enter your email address. You will receive an email
+                message with instructions on how to reset your password.
               </Typography>
-            ) : (
-              <>
-                <Typography component="h1" variant="body1" color="textPrimary">
-                  Please enter your email address. You will receive an email
-                  message with instructions on how to reset your password.
-                </Typography>
-                {error && (
-                  <ErrorMessage message="Sorry, we do not recognize this account." />
-                )}
-                <ForgotForm
-                  authenticate={authenticate}
-                  setIsAuthenticating={setIsAuthenticating}
-                />
-              </>
-            )}
-            <Button
-              component={RouterLink}
-              to="/login"
-              className={classes.login}
-              startIcon={<ArrowBackIcon />}
-            >
-              Login
-            </Button>
-          </>
-        )}
+              {error && (
+                <ErrorMessage message="Sorry, we do not recognize this account." />
+              )}
+              <ForgotForm requestPassword={requestPassword} />
+            </>
+          )}
+          <Button
+            className={classes.login}
+            component={RouterLink}
+            startIcon={<ArrowBackIcon />}
+            to="/login"
+          >
+            Login
+          </Button>
+        </>
       </Container>
     </Page>
   );

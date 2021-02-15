@@ -36,8 +36,6 @@ const createUser = async ({ state, effects, userData, token }) => {
   state.users.list.unshift(response);
   sortBy(state.users.list, 'firstName');
 
-  await sendWelcomeEmail(effects, response);
-
   return response;
 };
 
@@ -76,20 +74,16 @@ const sortBy = (items, prop) => {
 
 //***** PASSWORD */
 
-export const forgotPassword = async ({ effects }, { email }) => {
-  // console.log(email)
-  const response = await effects.users.api.forgotPassword({
-    email,
-  });
+export const requestPassword = async ({ effects }, { email }) => {
+  const response = await effects.users.api.requestPassword({ email });
   if (response.error) return response;
-  await sendRequestPasswordEmail(effects, response);
   return {};
 };
 
-export const resetPassword = async ({ effects }, { password, resetToken }) => {
+export const resetPassword = async ({ effects }, { password, token }) => {
   const response = await effects.users.api.resetPassword({
     password,
-    resetToken,
+    token,
   });
   if (response.error) return response;
   return {};
@@ -101,7 +95,7 @@ const manageAvatar = async (effects, { avatarUrl, removeAvatar }) => {
   let avatarManager;
   if (avatarUrl?.name && removeAvatar) {
     avatarManager = await updateAvatar(effects, { avatarUrl, removeAvatar });
-  } else if (avatar?.avatarUrl) {
+  } else if (avatarUrl?.name) {
     avatarManager = await uploadAvatar(effects, avatarUrl);
   } else if (removeAvatar) {
     avatarManager = await deleteAvatar(effects, removeAvatar);
@@ -143,20 +137,4 @@ const createUniqueFileName = (mimeType) => {
   const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
   const extension = mimeType.split('/')[1];
   return `${uniqueName}.${extension}`;
-};
-
-//***** EMAIL */
-const sendWelcomeEmail = async (effects, user) => {
-  user.email = user.username;
-  const notification = { user, type: 'invitation' };
-  const response = await effects.users.api.emailNotification(notification);
-  if (response.error) return response;
-  return {};
-};
-
-const sendRequestPasswordEmail = async (effects, user) => {
-  const notification = { user, type: 'requestPassword' };
-  const response = await effects.users.api.emailNotification(notification);
-  if (response.error) return response;
-  return {};
 };

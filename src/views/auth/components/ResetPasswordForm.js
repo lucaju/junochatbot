@@ -10,8 +10,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import * as Yup from 'yup';
 
-const useStyles = makeStyles((theme) => ({
-  submitButton: { color: theme.palette.common.white },
+const useStyles = makeStyles(({ palette }) => ({
+  submitButton: { color: palette.common.white },
   buttonProgress: {
     position: 'absolute',
     marginLeft: '45%',
@@ -22,15 +22,14 @@ const formValidation = Yup.object().shape({
   password: Yup.string().max(255).required('Password is required'),
 });
 
-const ResetPasswordForm = ({ authenticate, setIsAuthenticating }) => {
+const ResetPasswordForm = ({ resetPassword }) => {
   const classes = useStyles();
   return (
     <Formik
       initialValues={{ password: '' }}
       validationSchema={formValidation}
       onSubmit={async (values) => {
-        setIsAuthenticating(true);
-        await authenticate(values);
+        await resetPassword(values);
       }}
     >
       {({
@@ -58,20 +57,20 @@ const ResetPasswordForm = ({ authenticate, setIsAuthenticating }) => {
           />
           <Box my={2}>
             <Button
+              classes={{ containedPrimary: classes.submitButton }}
               color="primary"
               disabled={isSubmitting}
+              disableElevation
               fullWidth
               size="large"
               type="submit"
               variant="contained"
-              disableElevation
-              classes={{ containedPrimary: classes.submitButton }}
             >
               Submit
               {isSubmitting && (
                 <CircularProgress
-                  size={24}
                   className={classes.buttonProgress}
+                  size={24}
                 />
               )}
             </Button>
@@ -83,8 +82,7 @@ const ResetPasswordForm = ({ authenticate, setIsAuthenticating }) => {
 };
 
 ResetPasswordForm.propTypes = {
-  authenticate: PropTypes.func,
-  setIsAuthenticating: PropTypes.func,
+  resetPassword: PropTypes.func,
 };
 
 export default ResetPasswordForm;
