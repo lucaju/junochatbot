@@ -1,12 +1,11 @@
-import Cookies from 'js-cookie';
-
 export const updateTitle = ({ state }, title) => {
   state.ui.title = title;
 };
 
 export const setDarkMode = ({ state }, value) => {
   state.ui.darkMode = value;
-  Cookies.set('JunoDarkMode', state.ui.darkMode);
+  localStorage.setItem('darkMode', JSON.stringify(value));
+};
 };
 
 export const showNotification = ({ state }, { type, message }) => {

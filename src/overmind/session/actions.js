@@ -40,7 +40,7 @@ export const getUserDetails = async ({ state, effects }, token) => {
 
 export const signOut = ({ state }) => {
   Cookies.remove('JunoToken');
-  Cookies.remove('JunoDarkMode');
+  localStorage.clear();
   state.session.user = null;
   state.session.stories = null;
   state.session.story = null;
