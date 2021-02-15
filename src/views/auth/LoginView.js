@@ -42,21 +42,26 @@ const LoginView = () => {
   const { state, actions } = useApp();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState();
-
-  const hasToken = actions.session.getUserToken();
+  const [hasToken, setHasToken] = useState(actions.session.getUserToken());
 
   const authenticate = async (values) => {
-    const result = await actions.session.authenticate(values);
-    if (result.error) setError(result.error);
+    let response;
+    if (hasToken) {
+      const token = actions.session.getUserToken();
+      response = await actions.session.getUserDetails(token);
+    } else {
+      response = await actions.session.authenticate(values);
+    }
+
+    if (response.error) {
+      setError(response.error.statusText);
+      setIsAuthenticating(false);
+      setHasToken(false);
+    }
   };
 
   useEffect(() => {
     if (state.session.isSignedIn) navigate('/', { replace: true });
-    if (hasToken) {
-      setIsAuthenticating(true);
-      const token = actions.session.getUserToken();
-      authenticate({ token });
-    }
     return () => {};
   }, []);
 
@@ -80,7 +85,7 @@ const LoginView = () => {
           >
             <>
               {isAuthenticating && <CircularProgress size={60} thickness={4} />}
-              {error && <ErrorMessage message={error} />}
+              {error && <ErrorMessage message={error.statu} />}
             </>
           </Box>
         ) : (

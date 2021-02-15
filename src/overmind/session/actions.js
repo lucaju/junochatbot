@@ -30,7 +30,10 @@ export const authenticate = async ({ state, effects }, { email, password }) => {
 
 export const getUserDetails = async ({ state, effects }, token) => {
   const response = await effects.session.api.getUserDetails(token);
-  if (response.error) return response;
+  if (response.error) {
+    signOut({ state });
+    return response;
+  }
   state.session.user = { ...response, token };
   return state.session.user;
 };
