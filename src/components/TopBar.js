@@ -15,47 +15,34 @@ import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useApp } from 'src/overmind';
 import Logo from './Logo';
-import Profile from './Profile';
-import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import Profile from './profile/Profile';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   root: {},
   toolbarGutters: {
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1.5),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingLeft: spacing(1.5),
+    paddingRight: spacing(1.5),
+    paddingTop: spacing(1),
+    paddingBottom: spacing(1),
   },
   sideSpace: { width: 300 },
   logo: {
     maxHeight: 32,
-    marginLeft: theme.spacing(2),
-    marginTop: theme.spacing(1),
+    marginLeft: spacing(2),
+    marginTop: spacing(1),
   },
-  rightMenu: { marginRight: theme.spacing(2) },
+  marginRight: { marginRight: spacing(2) },
   avatar: {
     cursor: 'pointer',
-    width: 32,
     height: 32,
+    width: 32,
   },
 }));
 
-const rightMenu = [
-  {
-    href: '/',
-    title: 'Stories',
-    restricted: [1, 2],
-  },
-  {
-    href: '/users',
-    title: 'Users',
-    restricted: [1, 2],
-  },
-];
-
-const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
+const TopBar = ({ className, handleMenuClick, appMode, ...rest }) => {
   const classes = useStyles();
-  const { state, actions } = useApp();
+  const { state } = useApp();
   const [anchorProfileEl, setAnchorProfileEl] = useState(null);
 
   const handleProfileClick = (event) => {
@@ -66,10 +53,6 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
     setAnchorProfileEl(null);
   };
 
-  const handleClick = () => {
-    actions.story.setCurrentStory(null);
-  };
-
   return (
     <div>
       <AppBar
@@ -78,67 +61,44 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
         elevation={0}
         {...rest}
       >
-        <Toolbar
-          classes={{
-            gutters: classes.toolbarGutters,
-          }}
-        >
+        <Toolbar classes={{ gutters: classes.toolbarGutters }}>
           <Box
-            alignItems="center"
-            justify="center"
             display="flex"
             flexDirection="row"
-            className={classes.sideSpace}
+            alignItems="center"
+            justify="center"
+            // className={classes.sideSpace}
           >
-            {storyEditMode && (
+            {appMode && (
               <IconButton color="inherit" onClick={handleMenuClick}>
                 <MenuIcon />
               </IconButton>
             )}
             <RouterLink to="/">
-              <Logo type="simplified" className={classes.logo} />
+              <Logo className={classes.logo} type="simplified" />
             </RouterLink>
           </Box>
           <Box flexGrow={1} />
-          <Typography component="h1" variant="h5" noWrap>
+          <Typography component="h1" noWrap variant="h5">
             {state.ui.title}
           </Typography>
           <Box flexGrow={1} />
           <Box
             display="flex"
             flexDirection="row"
-            justifyContent="flex-end"
             alignItems="center"
-            className={clsx(classes.sideSpace, classes.rightMenu)}
+            justifyContent="flex-end"
+            className={classes.marginRight}
           >
-            <Box className={classes.rightMenu}>
-              {rightMenu.map((item) => {
-                if (
-                  item.restricted &&
-                  !item.restricted.includes(state.session.user.roleTypeId)
-                )
-                  return;
-                return (
-                  <Button
-                    component={RouterLink}
-                    key={item.title}
-                    to={item.href}
-                    onClick={handleClick}
-                  >
-                    {item.title}
-                  </Button>
-                );
-              })}
-            </Box>
             <Avatar
               className={classes.avatar}
+              onClick={handleProfileClick}
               src={
-                state.session.user.avatar &&
+                state.session.user.avatarUrl &&
                 `/assets/users/images/${state.session.user.avatarUrl}`
               }
-              onClick={handleProfileClick}
             >
-              {!state.session.user.avatarUrl && <PersonRoundedIcon />}
+              {!state.session.user.avatarUrl && <AccountCircleIcon />}
             </Avatar>
           </Box>
         </Toolbar>
@@ -151,7 +111,7 @@ const TopBar = ({ className, handleMenuClick, storyEditMode, ...rest }) => {
 TopBar.propTypes = {
   className: PropTypes.string,
   handleMenuClick: PropTypes.func,
-  storyEditMode: PropTypes.bool,
+  appMode: PropTypes.bool,
 };
 
 export default TopBar;

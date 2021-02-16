@@ -5,9 +5,9 @@ import { Container, makeStyles } from '@material-ui/core';
 import TopBar from 'src/components/TopBar';
 import { useApp } from 'src/overmind';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette }) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
+    backgroundColor: palette.background.default,
     display: 'flex',
     height: '100%',
     overflow: 'hidden',
@@ -44,8 +44,8 @@ const MainLayout = () => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const isSignIn = await actions.session.signedIn();
-      if (!isSignIn) navigate('/login', { replace: true });
+      const signIn = await actions.session.signedIn();
+      if (!signIn) navigate('/login', { replace: true });
     };
     checkUser();
     return () => {};

@@ -61,9 +61,7 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
             touched['general.synopsis'] && errors['general.synopsis']
           )}
           fullWidth
-          helperText={
-            touched['general.synopsis'] && errors['general.synopsis']
-          }
+          helperText={touched['general.synopsis'] && errors['general.synopsis']}
           label="synopsis"
           name="general.synopsis"
           multiline

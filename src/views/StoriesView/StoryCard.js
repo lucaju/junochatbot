@@ -14,45 +14,34 @@ import { useRefresh } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 325,
-  },
-  noMedia: {
-    backgroundColor: theme.palette.background.default,
-  },
-  media: {
-    height: 180,
-  },
-  title: {
-    marginLeft: -theme.spacing(2.5),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.text.secondary,
-  },
-  titleHover: {
-    backgroundColor: theme.palette.primary.light,
-    color:
-      theme.palette.type === 'light'
-        ? theme.palette.text.primary
-        : theme.palette.grey[800],
-  },
+const useStyles = makeStyles(({ palette, shape, spacing }) => ({
+  root: { width: 325 },
+  authors: { textTransform: 'uppercase' },
+  icon: { marginRight: spacing(1) },
   label: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    borderRadius: theme.shape.borderRadius,
+    paddingLeft: spacing(1),
+    paddingRight: spacing(1),
+    borderRadius: shape.borderRadius,
     borderStyle: 'solid',
     borderWidth: '1px',
     borderColor:
-      theme.palette.type === 'light'
-        ? theme.palette.background.default
-        : theme.palette.grey[700],
-    color: theme.palette.text.secondary,
-    marginRight: -theme.spacing(1),
+      palette.type === 'light' ? palette.background.default : palette.grey[700],
+    color: palette.text.secondary,
+    marginRight: -spacing(1),
   },
-  authors: { textTransform: 'uppercase' },
-  icon: { marginRight: theme.spacing(1) },
+  media: { height: 180 },
+  noMedia: { backgroundColor: palette.background.default },
+  title: {
+    marginLeft: -spacing(2.5),
+    paddingLeft: spacing(2),
+    paddingRight: spacing(1),
+    borderRadius: shape.borderRadius,
+    color: palette.type === 'light' ? palette.grey[800] : palette.common.white,
+  },
+  titleHover: {
+    backgroundColor: palette.primary.light,
+    color: palette.type === 'light' ? palette.common.white : palette.grey[800],
+  },
 }));
 
 const StoryCard = ({ story, triggerEditStory, className, ...rest }) => {

@@ -39,7 +39,7 @@ const ForgotView = () => {
   const [error, setError] = useState();
 
   useEffect(() => {
-    if (state.session.isSignedIn) navigate('/', { replace: true });
+    if (state.session.isSignedIn) navigate('/app', { replace: true });
     return () => {};
   }, []);
 

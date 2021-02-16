@@ -28,7 +28,7 @@ const ContextView = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!state.story.currentStory.id) navigate('/', { replace: true });
+    if (!state.story.currentStory.id) navigate('/app', { replace: true });
     const getCollection = async () => {
       await actions.intentContext.getCollection();
       setIsLoading(false);

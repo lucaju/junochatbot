@@ -61,14 +61,17 @@ const LoginView = () => {
   };
 
   useEffect(() => {
-    if (state.session.isSignedIn) navigate('/', { replace: true });
+    if (hasToken) {
+      setIsAuthenticating(true);
+      authenticate();
+    }
     return () => {};
   }, []);
 
   useEffect(() => {
     if (state.session.isSignedIn) {
       setIsAuthenticating(false);
-      navigate('/', { replace: true });
+      navigate('/app', { replace: true });
     }
   }, [state.session.isSignedIn]);
 

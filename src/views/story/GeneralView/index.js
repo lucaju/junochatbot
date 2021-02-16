@@ -40,7 +40,7 @@ const GeneralView = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
-    if (!state.story.currentStory.id) navigate('/', { replace: true });
+    if (!state.story.currentStory.id) navigate('/app', { replace: true });
 
     const getStory = async () => {
       await actions.story.getStory(state.story.currentStory.id);
@@ -123,7 +123,7 @@ const GeneralView = () => {
       message: 'Story deleted.',
     });
 
-    navigate('/', { replace: true });
+    navigate('/app', { replace: true });
   };
 
   return (

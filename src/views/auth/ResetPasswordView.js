@@ -45,7 +45,7 @@ const ResetPasswordView = () => {
 
   useEffect(() => {
     if (state.session.isSignedIn || !resetToken) {
-      navigate('/', { replace: true });
+      navigate('/app', { replace: true });
     }
     return () => {};
   }, []);

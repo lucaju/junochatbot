@@ -74,7 +74,7 @@ const Stories = () => {
 
   const triggerEditStory = (story) => {
     if (!story.new) actions.story.setCurrentStory(story.id);
-    navigate('/story/general', { replace: true });
+    navigate('app/story/general', { replace: true });
   };
 
   return (

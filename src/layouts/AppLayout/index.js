@@ -1,14 +1,14 @@
 import { makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import TopBar from 'src/components/TopBar';
 import { useApp } from 'src/overmind';
 import NavBar from './NavBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
     display: 'flex',
     height: '100%',
     overflow: 'hidden',
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StoryLayout = () => {
+const AppLayout = ({ showStoryMenu }) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -68,11 +68,12 @@ const StoryLayout = () => {
     <div className={classes.root}>
       {isSignedIn && (
         <>
-          <TopBar handleMenuClick={handleMenuClick} storyEditMode={true} />
+          <TopBar appMode={true} handleMenuClick={handleMenuClick} />
           <NavBar
+            compactMode={isCompactNav}
             onMobileClose={() => setMobileNavOpen(false)}
             openMobile={isMobileNavOpen}
-            compactMode={isCompactNav}
+            showStoryMenu={showStoryMenu}
           />
           <div
             className={clsx(
@@ -94,4 +95,12 @@ const StoryLayout = () => {
   );
 };
 
-export default StoryLayout;
+AppLayout.defaultProps = {
+  showStoryMenu: false,
+};
+
+AppLayout.propTypes = {
+  showStoryMenu: PropTypes.bool,
+};
+
+export default AppLayout;

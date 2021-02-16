@@ -32,7 +32,7 @@ const VideoCollectionView = () => {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   useEffect(() => {
-    if (!state.story.currentStory.id) navigate('/', { replace: true });
+    if (!state.story.currentStory.id) navigate('/app', { replace: true });
     const getCollection = async () => {
       await actions.video.getCollection();
       setIsLoading(false);
