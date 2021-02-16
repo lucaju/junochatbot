@@ -1,7 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 import {
+  Avatar,
   Box,
   Button,
   Divider,
@@ -10,33 +8,38 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Switch,
   makeStyles,
   MenuItem,
   Popover,
   Select,
+  Switch,
+  Typography,
 } from '@material-ui/core';
-import { useApp } from 'src/overmind';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
-import LockIcon from '@material-ui/icons/Lock';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LanguageIcon from '@material-ui/icons/Language';
+import LockIcon from '@material-ui/icons/Lock';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useApp } from 'src/overmind';
+import AvatarDialog from './AvatarDialog';
+import PasswordDialog from './PasswordDialog';
 
 const useStyles = makeStyles(({ spacing }) => ({
   root: { width: 240 },
   listItemIconRoot: { minWidth: 40 },
-  signOutArea: {
-    marginTop: spacing(1),
-    marginBottom: spacing(1),
-  },
 }));
 
 const Profile = ({ anchor, handleClose }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
+
   const open = Boolean(anchor);
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
+  const [avatardDialogOpen, setAvatardDialogOpen] = useState(false);
 
   const switchAppearenceMode = () => {
     actions.ui.setDarkMode(!state.ui.darkMode);
@@ -45,14 +48,6 @@ const Profile = ({ anchor, handleClose }) => {
   const switchLanguage = (e) => {
     actions.ui.switchLanguage(e.value);
     //TODO: USE I18n
-  };
-
-  const handleChangeAvatar = () => {
-    //TODO
-  };
-
-  const handleChangePassword = () => {
-    //TODO
   };
 
   const handleSignOut = () => {
@@ -75,6 +70,43 @@ const Profile = ({ anchor, handleClose }) => {
         horizontal: 'right',
       }}
     >
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        alignContent="flex-start"
+        p={2}
+      >
+        <Avatar
+          className={classes.avatar}
+          // onClick={handleProfileClick}
+          src={
+            state.session.user.avatarUrl &&
+            `/assets/users/images/${state.session.user.avatarUrl}`
+          }
+        >
+          {!state.session.user.avatarUrl && <AccountCircleIcon />}
+        </Avatar>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-start"
+          alignContent="flex-start"
+          ml={2}
+          pt={0}
+        >
+          <Typography variant="button">
+            {state.session.user.firstName} {state.session.user.lastName}
+          </Typography>
+          <Typography variant="body2">{state.session.user.userName}</Typography>
+          <Typography variant="caption">Dawson College</Typography>
+          {state.session.user.groups.length > 0 && (
+            <Typography>{state.session.user.groups[0].name}</Typography>
+          )}
+        </Box>
+      </Box>
+
+      <Divider />
       <List className={classes.root}>
         <ListItem>
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
@@ -111,13 +143,13 @@ const Profile = ({ anchor, handleClose }) => {
       </List>
       <Divider />
       <List className={classes.root}>
-        <ListItem button>
+        <ListItem button onClick={() => setAvatardDialogOpen(true)}>
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
             <AccountCircleIcon />
           </ListItemIcon>
           <ListItemText primary="Change Avatar" />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => setPasswordDialogOpen(true)}>
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
             <LockIcon />
           </ListItemIcon>
@@ -125,15 +157,19 @@ const Profile = ({ anchor, handleClose }) => {
         </ListItem>
       </List>
       <Divider />
-      <Box
-        className={classes.signOutArea}
-        display="flex"
-        justifyContent="center"
-      >
+      <Box display="flex" justifyContent="center" mt={2} mb={2}>
         <Button onClick={handleSignOut} size="small" variant="outlined">
           Sign Out
         </Button>
       </Box>
+      <AvatarDialog
+        handleClose={() => setAvatardDialogOpen(false)}
+        open={avatardDialogOpen}
+      />
+      <PasswordDialog
+        handleClose={() => setPasswordDialogOpen(false)}
+        open={passwordDialogOpen}
+      />
     </Popover>
   );
 };
