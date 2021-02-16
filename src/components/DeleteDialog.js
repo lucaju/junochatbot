@@ -11,12 +11,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const useStyles = makeStyles(() => ({
-  buttonProgress: { position: 'absolute' },
+  progress: { position: 'absolute' },
 }));
 
 const DeleteDialog = ({
-  handleYes,
   handleNo,
+  handleYes,
   isSubmitting,
   message,
   open,
@@ -26,27 +26,28 @@ const DeleteDialog = ({
 
   return (
     <Dialog
+      aria-labelledby={title}
       disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
-      aria-labelledby={title}
       open={open}
     >
       <DialogTitle id={title}>{title}</DialogTitle>
       <DialogContent dividers>{message}</DialogContent>
       <DialogActions>
         <Button
-          disabled={isSubmitting}
           autoFocus
-          onClick={handleNo}
           color="primary"
+          disabled={isSubmitting}
+          onClick={handleNo}
+          variant="outlined"
         >
           No
         </Button>
-        <Button onClick={handleYes} disabled={isSubmitting} color="primary">
+        <Button color="secondary" disabled={isSubmitting} onClick={handleYes}>
           Yes
           {isSubmitting && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
+            <CircularProgress className={classes.progress} size={24} />
           )}
         </Button>
       </DialogActions>
@@ -55,8 +56,8 @@ const DeleteDialog = ({
 };
 
 DeleteDialog.propTypes = {
-  handleYes: PropTypes.func.isRequired,
   handleNo: PropTypes.func.isRequired,
+  handleYes: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool,
   message: PropTypes.string,
   open: PropTypes.bool.isRequired,
