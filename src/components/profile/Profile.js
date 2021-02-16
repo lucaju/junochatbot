@@ -26,9 +26,12 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from 'src/overmind';
 import AvatarDialog from './AvatarDialog';
 import PasswordDialog from './PasswordDialog';
+import { useTranslation } from 'react-i18next';
 
-const useStyles = makeStyles(({ spacing }) => ({
-  root: { width: 240 },
+const useStyles = makeStyles(() => ({
+  root: {
+    width: 280,
+  },
   listItemIconRoot: { minWidth: 40 },
 }));
 
@@ -36,6 +39,7 @@ const Profile = ({ anchor, handleClose }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation('profile');
 
   const open = Boolean(anchor);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
@@ -47,7 +51,7 @@ const Profile = ({ anchor, handleClose }) => {
 
   const switchLanguage = (e) => {
     actions.ui.switchLanguage(e.value);
-    //TODO: USE I18n
+    i18n.changeLanguage(e.value);
   };
 
   const handleSignOut = () => {
@@ -112,7 +116,7 @@ const Profile = ({ anchor, handleClose }) => {
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
             {state.ui.darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </ListItemIcon>
-          <ListItemText id="dark-mode" primary="Dark Mode" />
+          <ListItemText id="dark-mode" primary={t('darkMode')} />
           <ListItemSecondaryAction>
             <Switch
               checked={state.ui.darkMode}
@@ -126,7 +130,10 @@ const Profile = ({ anchor, handleClose }) => {
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
             <LanguageIcon />
           </ListItemIcon>
-          <ListItemText id="switch-list-label-bluetooth" primary="Language" />
+          <ListItemText
+            id="switch-list-label-bluetooth"
+            primary={t('language')}
+          />
           <ListItemSecondaryAction>
             <Select
               onChange={(e) => switchLanguage(e.target)}
@@ -147,19 +154,19 @@ const Profile = ({ anchor, handleClose }) => {
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
             <AccountCircleIcon />
           </ListItemIcon>
-          <ListItemText primary="Change Avatar" />
+          <ListItemText primary={t('changeAvatar')} />
         </ListItem>
         <ListItem button onClick={() => setPasswordDialogOpen(true)}>
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
             <LockIcon />
           </ListItemIcon>
-          <ListItemText primary="Change Password" />
+          <ListItemText primary={t('changePassword')} />
         </ListItem>
       </List>
       <Divider />
       <Box display="flex" justifyContent="center" mt={2} mb={2}>
         <Button onClick={handleSignOut} size="small" variant="outlined">
-          Sign Out
+          {t('signOut')}
         </Button>
       </Box>
       <AvatarDialog

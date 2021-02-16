@@ -1,0 +1,24 @@
+{
+	"common": {
+		"anErrorOccurred": "An error occurred",
+		"cancel": "Cancel",
+		"create": "Create",
+		"forkSaveAsPullRequest": "Fork and Pull Request",
+		"ok": "Ok",
+		"save": "Save",
+		"saveAsPullRequest": "Save As Pull Request",
+		"yes": "Yes"
+	},
+	"profile": {
+		"darkMode": "Mode sombre",
+		"language": "Langue",
+		"changeAvatar": "Changer d'avatar",
+		"changePassword": "Changer le mot de passe",
+		"signOut": "Se déconnecter"
+	},
+	"navMenu": {
+		"stories": "Recít",
+		"users": "Utilisateurs",
+		"usersGroups": "Groupes d'Utilisateurs"
+	}
+}

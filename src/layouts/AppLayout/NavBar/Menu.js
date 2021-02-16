@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import NavItem from './NavItem';
 import { useApp } from 'src/overmind';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(({ spacing }) => ({
   listCompacted: { padding: spacing(0) },
@@ -15,11 +16,12 @@ const useStyles = makeStyles(({ spacing }) => ({
 const Menu = ({ compactMode, items }) => {
   const classes = useStyles();
   const { state } = useApp();
+  const { t } = useTranslation('navMenu');
 
   return (
     <Box className={compactMode ? classes.listCompacted : classes.listExanded}>
       <List>
-        {items.map(({ href, icon, restricted, title }, i) => {
+        {items.map(({ href, icon, restricted, title, tKey }, i) => {
           if (icon === 'divider') return <Divider key={i} />;
           if (
             restricted &&
@@ -33,7 +35,8 @@ const Menu = ({ compactMode, items }) => {
               isCompact={compactMode}
               icon={icon}
               href={href}
-              title={title}
+              // title={title}
+              title={t(tKey)}
             />
           );
         })}

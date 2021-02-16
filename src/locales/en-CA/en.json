@@ -1,0 +1,14 @@
+{
+	"profile": {
+		"darkMode": "Dark Mode",
+		"language": "Language",
+		"changeAvatar": "Change Avatar",
+		"changePassword": "Change Password",
+		"signOut": "Sign Out"
+	},
+	"navMenu": {
+		"Stories": "Stories",
+		"Users": "Users",
+		"UsersGroups": "Users Groups"
+	}
+}
