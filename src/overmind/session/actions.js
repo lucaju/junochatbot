@@ -29,13 +29,37 @@ export const authenticate = async ({ state, effects }, { email, password }) => {
 };
 
 export const getUserDetails = async ({ state, effects }, token) => {
-  const response = await effects.session.api.getUserDetails(token);
-  if (response.error) {
+  //details
+  const responseDetails = await effects.session.api.getUserDetails(token);
+  if (responseDetails.error) {
     signOut({ state });
-    return response;
+    return responseDetails;
   }
-  state.session.user = { ...response, token };
+
+  const user = { ...responseDetails, token };
+
+  //groups
+  const responseGroups = await effects.session.api.getUserGroups(token);
+  if (!responseGroups.error) {
+    user.groups = responseGroups;
+  }
+
+  state.session.user = user;
+
   return state.session.user;
+};
+
+export const changePassword = async ({ state, effects }, password) => {
+  const token = state.session.user.token;
+  const response = await effects.session.api.changePassword(password, token);
+  if (response.error) return { error: response.statusText };
+  return response;
+};
+
+export const uploadAvatar = async ({ state, effects }, avatar) => {
+  const user = state.session.user;
+  const response = await effects.session.api.uploadAvatar(avatar, user);
+  return response;
 };
 
 export const signOut = ({ state }) => {

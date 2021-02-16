@@ -36,4 +36,62 @@ export const api = {
     const result = await response.json();
     return result;
   },
+
+  getUserGroups: async (token) => {
+    const response = await fetch(`${API_URL}/application/groups`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
+    }
+
+    const result = await response.json();
+    return result;
+  },
+
+  async changePassword(password, token) {
+    const response = await fetch(
+      `${API_URL}/application/users/changepassword`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(password),
+      }
+    );
+
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
+    }
+
+    const result = await response.json();
+    return result;
+  },
+
+  async uploadAvatar(avatar, user) {
+    console.log(avatar, user);
+    const formData = new FormData();
+    formData.append('file', avatar);
+
+    const response = await fetch(`${API_URL}/application/users/avatar`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        'content-type': 'multipart/form-data',
+      },
+      body: formData,
+    });
+
+    console.log(response);
+
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
+
+    return response;
+  },
 };
