@@ -12,7 +12,7 @@ const Personal = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <>
       <Grid item md={3} xs={12}>
-        <UserAvatar name="avatarUrl" active={values.active} />
+        <UserAvatar name="avatarUrl" active={values.active} values={values} />
       </Grid>
       <Grid item md={9} xs={12}>
         <TextField

@@ -6,7 +6,7 @@ import { DropzoneAreaBase } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette }) => ({
   avatar: {
     height: 80,
     width: 80,
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     height: 80,
     width: 80,
     minHeight: 80,
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: palette.background.default,
   },
   dropzoneText: {
     // marginTop: 0,
@@ -30,14 +30,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -20,
     height: 70,
     width: 70,
-    color:
-      theme.palette.type === 'light'
-        ? theme.palette.grey[300]
-        : theme.palette.grey[700],
+    color: palette.type === 'light' ? palette.grey[300] : palette.grey[700],
   },
 }));
 
-const UserAvatar = ({ name, active }) => {
+const UserAvatar = ({ name, active, values }) => {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
@@ -50,7 +47,9 @@ const UserAvatar = ({ name, active }) => {
   useEffect(() => {
     const avatarFile = typeof value === 'string' ? value : value?.file?.name;
     uploadedImage ? setImage(uploadedImage) : setImage(avatarFile);
-    value === null ? setShowDropzone(true) : setShowDropzone(false);
+    value === null || value === ''
+      ? setShowDropzone(true)
+      : setShowDropzone(false);
     return () => {};
   }, [value]);
 
@@ -75,18 +74,18 @@ const UserAvatar = ({ name, active }) => {
     >
       <Box className={showDropzone ? classes.show : classes.hide}>
         <DropzoneAreaBase
+          acceptedFiles={['image/*']}
           classes={{
             root: classes.dropzone,
             icon: classes.icon,
           }}
           disabled={!active}
-          acceptedFiles={['image/*']}
           dropzoneText={''}
-          Icon={AccountCircleIcon}
           dropzoneParagraphClass={classes.dropzoneText}
           filesLimit={1}
-          showAlerts={['error']}
+          Icon={AccountCircleIcon}
           onAdd={(files) => handleUpdateAvatar(files)}
+          showAlerts={['error']}
           showPreviewsInDropzone={false}
         />
       </Box>
@@ -96,13 +95,13 @@ const UserAvatar = ({ name, active }) => {
             className={classes.avatar}
             src={!uploadedImage ? `/user/avatar/${image}` : ''}
           >
-            {uploadedImage && <img src={image} className={classes.dropzone} />}
+            {uploadedImage && <img className={classes.dropzone} src={image} />}
           </Avatar>
           <IconButton
-            disabled={!active}
             aria-label="remove picture"
             component="span"
             className={classes.button}
+            disabled={values.id && !active}
             onClick={handleDeleteAvatar}
             size="small"
           >
@@ -117,6 +116,7 @@ const UserAvatar = ({ name, active }) => {
 UserAvatar.propTypes = {
   name: PropTypes.string,
   active: PropTypes.bool,
+  values: PropTypes.object,
 };
 
 export default UserAvatar;

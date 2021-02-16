@@ -3,19 +3,17 @@ import {
   Box,
   Button,
   CircularProgress,
-  FormControlLabel,
   makeStyles,
-  Switch,
   Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import { useField, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import BlockIcon from '@material-ui/icons/Block';
 
 const useStyles = makeStyles(({ palette }) => ({
-  buttonProgress: { position: 'absolute' },
+  progress: { position: 'absolute' },
   uppercase: { textTransform: 'uppercase' },
   warning: {
     color:
@@ -25,31 +23,24 @@ const useStyles = makeStyles(({ palette }) => ({
 
 const Actions = ({
   dirty,
-  handleBlur,
   handleCancel,
-  handleChange,
+  handleDelete,
   isSubmitting,
-  name,
   userData,
   values,
 }) => {
   const classes = useStyles();
   const { submitForm } = useFormikContext();
-  const [field, meta, helpers] = useField(name);
-  const { value } = meta;
-  const { setValue } = helpers;
+  const [buttonClicked, setButtonClicked] = useState(null);
 
-  const handleSubmit = async (type) => {
+  const handleSubmit = async (source) => {
+    setButtonClicked(source);
     await submitForm();
   };
 
-  const handleRestore = async (type) => {
-    setValue(true);
-    await submitForm();
-  };
-
-  const handleDelete = async (type) => {
-    setValue(false);
+  const handleRestore = async (source) => {
+    setButtonClicked(source);
+    values.submitType = 'restore';
     await submitForm();
   };
 
@@ -57,23 +48,26 @@ const Actions = ({
     <>
       {userData.id && !userData.active ? (
         <>
-          <Box flexGrow={1.5} />
+          <Button color="primary" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Box flexGrow={1} />
           <BlockIcon className={classes.warning} />
           <Typography
-            variant="subtitle1"
             className={clsx(classes.uppercase, classes.warning)}
+            variant="subtitle1"
           >
             User inative
           </Typography>
           <Box flexGrow={1} />
           <Button
             disabled={isSubmitting}
+            onClick={() => handleRestore('restore')}
             variant="outlined"
-            onClick={() => handleRestore()}
           >
             Restore
-            {isSubmitting && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
+            {isSubmitting && buttonClicked === 'restore' && (
+              <CircularProgress className={classes.progress} size={24} />
             )}
           </Button>
         </>
@@ -88,14 +82,11 @@ const Actions = ({
               <Button
                 color="primary"
                 disabled={isSubmitting}
-                onClick={() => handleDelete()}
+                onClick={() => handleDelete('delete')}
               >
                 Delete
-                {isSubmitting && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
+                {isSubmitting && buttonClicked === 'delete' && (
+                  <CircularProgress className={classes.progress} size={24} />
                 )}
               </Button>
             </>
@@ -104,12 +95,12 @@ const Actions = ({
           <Button
             color="primary"
             disabled={isSubmitting || !dirty}
+            onClick={() => handleSubmit('submit')}
             variant="outlined"
-            onClick={() => handleSubmit()}
           >
             Save
-            {isSubmitting && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
+            {isSubmitting && buttonClicked === 'submit' && (
+              <CircularProgress className={classes.progress} size={24} />
             )}
           </Button>
         </>
@@ -120,11 +111,9 @@ const Actions = ({
 
 Actions.propTypes = {
   dirty: PropTypes.bool,
-  handleBlur: PropTypes.func,
   handleCancel: PropTypes.func,
-  handleChange: PropTypes.func,
+  handleDelete: PropTypes.func,
   isSubmitting: PropTypes.bool,
-  name: PropTypes.string,
   userData: PropTypes.object,
   values: PropTypes.object,
 };
