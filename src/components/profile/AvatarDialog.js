@@ -152,7 +152,7 @@ const AvatarDialog = ({ handleClose, open }) => {
                     <>
                       <Avatar
                         className={classes.avatar}
-                        src={!uploadedImage ? `/user/avatar/${image}` : ''}
+                        src={!uploadedImage ? `/uploads${image}` : ''}
                       >
                         {uploadedImage && (
                           <img className={classes.dropzone} src={image} />

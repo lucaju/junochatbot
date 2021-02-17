@@ -59,6 +59,8 @@ export const changePassword = async ({ state, effects }, password) => {
 export const uploadAvatar = async ({ state, effects }, avatar) => {
   const user = state.session.user;
   const response = await effects.session.api.uploadAvatar(avatar, user);
+  if (response.error) return { error: response.statusText };
+  state.session.user.avatarUrl = response.fileName;
   return response;
 };
 

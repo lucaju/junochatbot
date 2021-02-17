@@ -42,14 +42,13 @@ export const saveUser = async ({ state, effects }, data) => {
     firstName: data.firstName,
     lastName: data.lastName,
     roleTypeId: data.roleTypeId,
-    // avatarUrl: data.avatarUrl,
     avatarUrl: 'none',
     active: data.active,
     password: 'password',
   };
 
   const groupId = data?.groupId;
-  // const avatarUrl = data.avatarUrl;
+  const avatarUrl = data?.avatarUrl;
 
   let user;
   if (userData.id) {
@@ -58,6 +57,16 @@ export const saveUser = async ({ state, effects }, data) => {
     user = await createUser({ state, effects }, { userData, token });
   }
 
+  //avatar
+  if (user && avatarUrl) {
+    const avatarFile = await uploadAvatar(
+      { state, effects },
+      { avatar: avatarUrl, userId: user.id }
+    );
+    if (!avatarFile.error) user.avatarURL = avatarFile;
+  }
+
+  //group
   if (user && groupId) {
     await addUserToGroup({ state, effects }, { groupId, userId: user.id });
   }
@@ -66,13 +75,6 @@ export const saveUser = async ({ state, effects }, data) => {
 };
 
 const createUser = async ({ state, effects }, { userData, token }) => {
-  // Check avatar
-  if (userData.avatarUrl?.name || userData.removeAvatar) {
-    const avatarApi = await manageAvatar(effects, userData);
-    if (avatarApi.error) userData.avatarUrl = '';
-    if (avatarApi.filename) userData.avatarUrl = avatarApi.name;
-  }
-
   const response = await effects.users.api.createUser(userData, token);
   if (response.error) return response;
 
@@ -83,16 +85,6 @@ const createUser = async ({ state, effects }, { userData, token }) => {
 };
 
 const updateUser = async ({ state, effects }, { userData, token }) => {
-  //Check avatar
-  if (userData.avatarUrl.name || userData.removeAvatar) {
-    const avatarApi = await manageAvatar(effects, userData);
-    if (avatarApi.error) userData.avatarUrl = '';
-    if (avatarApi.filename) {
-      userData.avatarUrl = avatarApi.filename;
-      if (userData.removeAvatar) delete userData.removeAvatar;
-    }
-  }
-
   const response = await effects.users.api.updateUser(userData, token);
   if (response.error) return response;
 
@@ -184,52 +176,12 @@ export const resetPassword = async ({ effects }, { password, token }) => {
 
 //***** AVATAR */
 
-const manageAvatar = async (effects, { avatarUrl, removeAvatar }) => {
-  let avatarManager;
-  if (avatarUrl?.name && removeAvatar) {
-    avatarManager = await updateAvatar(effects, { avatarUrl, removeAvatar });
-  } else if (avatarUrl?.name) {
-    avatarManager = await uploadAvatar(effects, avatarUrl);
-  } else if (removeAvatar) {
-    avatarManager = await deleteAvatar(effects, removeAvatar);
-  }
-  return avatarManager;
-};
-
-const uploadAvatar = async (effects, avatarUrl) => {
-  const uniqueFileName = createUniqueFileName(avatarUrl.type);
-  const avatarData = { avatarUrl, uniqueFileName };
-
-  const response = await effects.users.api.uploadAvatar(avatarData);
-  if (response.error) return response;
-
-  return {
-    filename: uniqueFileName,
-  };
-};
-
-const updateAvatar = async (effects, { avatarUrl, removeAvatar }) => {
-  const uniqueFileName = createUniqueFileName(avatarUrl.type);
-  const avatarData = { avatarUrl, removeAvatar, uniqueFileName };
-
-  const response = await effects.users.api.updateAvatar(avatarData);
-  if (response.error) return response;
-
-  return {
-    filename: uniqueFileName,
-  };
-};
-
-const deleteAvatar = async (effects, removeAvatar) => {
-  const response = await effects.users.api.deleteAvatar(removeAvatar);
-  if (response.error) return response;
-  return { filename: '' };
-};
-
-const createUniqueFileName = (mimeType) => {
-  const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-  const extension = mimeType.split('/')[1];
-  return `${uniqueName}.${extension}`;
+export const uploadAvatar = async ({ state, effects }, { avatar, userID }) => {
+  const token = state.session.user.token;
+  const response = await effects.users.api.uploadAvatar(avatar, userID, token);
+  if (response.error) return { error: response.statusText };
+  state.session.user.avatarUrl = response.fileName;
+  return response;
 };
 
 //***** UTIL */

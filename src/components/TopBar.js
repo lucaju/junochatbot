@@ -2,7 +2,6 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   IconButton,
   makeStyles,
   Toolbar,
@@ -20,6 +19,17 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles(({ spacing }) => ({
   root: {},
+  avatar: {
+    cursor: 'pointer',
+    height: 32,
+    width: 32,
+  },
+  logo: {
+    maxHeight: 32,
+    marginLeft: spacing(2),
+    marginTop: spacing(1),
+  },
+  marginRight: { marginRight: spacing(2) },
   toolbarGutters: {
     paddingLeft: spacing(1.5),
     paddingRight: spacing(1.5),
@@ -27,20 +37,9 @@ const useStyles = makeStyles(({ spacing }) => ({
     paddingBottom: spacing(1),
   },
   sideSpace: { width: 300 },
-  logo: {
-    maxHeight: 32,
-    marginLeft: spacing(2),
-    marginTop: spacing(1),
-  },
-  marginRight: { marginRight: spacing(2) },
-  avatar: {
-    cursor: 'pointer',
-    height: 32,
-    width: 32,
-  },
 }));
 
-const TopBar = ({ className, handleMenuClick, appMode, ...rest }) => {
+const TopBar = ({ appMode, className, handleMenuClick, ...rest }) => {
   const classes = useStyles();
   const { state } = useApp();
   const [anchorProfileEl, setAnchorProfileEl] = useState(null);
@@ -95,7 +94,7 @@ const TopBar = ({ className, handleMenuClick, appMode, ...rest }) => {
               onClick={handleProfileClick}
               src={
                 state.session.user.avatarUrl &&
-                `/assets/users/images/${state.session.user.avatarUrl}`
+                `/uploads${state.session.user.avatarUrl}`
               }
             >
               {!state.session.user.avatarUrl && <AccountCircleIcon />}
@@ -109,9 +108,9 @@ const TopBar = ({ className, handleMenuClick, appMode, ...rest }) => {
 };
 
 TopBar.propTypes = {
+  appMode: PropTypes.bool,
   className: PropTypes.string,
   handleMenuClick: PropTypes.func,
-  appMode: PropTypes.bool,
 };
 
 export default TopBar;

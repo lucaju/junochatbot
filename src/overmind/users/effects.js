@@ -49,7 +49,6 @@ export const api = {
   },
 
   async createUser(userData, token) {
-    console.log(userData)
     const response = await fetch(`${API_URL}/admin/users`, {
       method: 'POST',
       headers: {
@@ -160,59 +159,23 @@ export const api = {
     return result;
   },
 
-  // async uploadAvatar({ avatarUrl, uniqueFileName }) {
-  //   const formData = new FormData();
-  //   formData.append('uniqueFileName', uniqueFileName);
-  //   formData.append('avatar', avatarUrl);
+  async uploadAvatar(avatar, userId, token) {
+    const formData = new FormData();
+    formData.append('file', avatar);
 
-  //   const response = await fetch('/user/avatar', {
-  //     method: 'POST',
-  //     body: formData,
-  //   });
+    const response = await fetch(`${API_URL}/admin/users/${userId}/avatar`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
-  //   const { status, statusText } = response;
-  //   if (status !== 200) {
-  //     return { error: { status, statusText } };
-  //   }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
-  //   return true;
-  // },
-
-  // async updateAvatar({ avatarUrl, removeAvatar, uniqueFileName }) {
-  //   const formData = new FormData();
-  //   formData.append('uniqueFileName', uniqueFileName);
-  //   formData.append('avatar', avatarUrl);
-  //   formData.append('removeAvatar', removeAvatar);
-
-  //   const response = await fetch('/user/avatar', {
-  //     method: 'PUT',
-  //     body: formData,
-  //   });
-
-  //   const { status, statusText } = response;
-  //   if (status !== 200) {
-  //     return { error: { status, statusText } };
-  //   }
-
-  //   return true;
-  // },
-
-  // async deleteAvatar(removeAvatar) {
-  //   const response = await fetch('/user/avatar', {
-  //     method: 'DELETE',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ removeAvatar }),
-  //   });
-
-  //   const { status, statusText } = response;
-  //   if (status !== 200) {
-  //     return { error: { status, statusText } };
-  //   }
-
-  //   return true;
-  // },
+    return response;
+  },
 
   requestPassword: async ({ email }) => {
     const response = await fetch(

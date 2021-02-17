@@ -50,8 +50,8 @@ const Profile = ({ anchor, handleClose }) => {
   };
 
   const switchLanguage = (e) => {
-    actions.ui.switchLanguage(e.value);
     i18n.changeLanguage(e.value);
+    actions.ui.switchLanguage(e.value);
   };
 
   const handleSignOut = () => {
@@ -86,7 +86,7 @@ const Profile = ({ anchor, handleClose }) => {
           // onClick={handleProfileClick}
           src={
             state.session.user.avatarUrl &&
-            `/assets/users/images/${state.session.user.avatarUrl}`
+            `/uploads${state.session.user.avatarUrl}`
           }
         >
           {!state.session.user.avatarUrl && <AccountCircleIcon />}

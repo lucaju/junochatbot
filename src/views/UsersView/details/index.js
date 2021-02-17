@@ -74,7 +74,8 @@ const Details = ({ open, handleDetailClose, user }) => {
         const userGroups = await actions.users.getUserGroups(user.id);
 
         const selectedUserData = Object.assign(user);
-        selectedUserData.groupId = userGroups ? userGroups[0].id : -1;
+        selectedUserData.groupId =
+          userGroups?.length > 0 ? userGroups[0].id : -1;
 
         setUserData(selectedUserData);
         setLoaded(true);
@@ -101,17 +102,17 @@ const Details = ({ open, handleDetailClose, user }) => {
   };
 
   const submit = async (values) => {
-    // if avatar changed, send oldFile to be removed.
-    if (userData.avatarUrl && (values.avatarUrl?.name || !values.avatarUrl)) {
-      values = { ...values, removeAvatar: userData.avatarUrl };
-    }
-
     // remove unnecessary  info
     const cleandedValues = { ...values };
     delete cleandedValues.stories;
 
     //check group Change
     if (cleandedValues.groupId === user.groupId) delete cleandedValues.groupId;
+
+    //check avatar Change
+    if (cleandedValues.avatarUrl === user.avatarUrl) {
+      delete cleandedValues.avatarUrl;
+    }
 
     const response = await actions.users.saveUser(cleandedValues);
 

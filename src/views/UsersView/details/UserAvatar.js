@@ -93,7 +93,7 @@ const UserAvatar = ({ name, active, values }) => {
         <>
           <Avatar
             className={classes.avatar}
-            src={!uploadedImage ? `/user/avatar/${image}` : ''}
+            src={!uploadedImage ? `/uploads${image}` : ''}
           >
             {uploadedImage && <img className={classes.dropzone} src={image} />}
           </Avatar>
