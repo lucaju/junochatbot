@@ -18,7 +18,6 @@ const options = {
   defaultNS: 'common',
   // debug: true,
   react: {
-    wait: false,
     bindI18n: 'languageChanged loaded',
     bindStore: 'added removed',
     nsMode: 'default',
