@@ -19,6 +19,9 @@
 	"navMenu": {
 		"stories": "Recít",
 		"users": "Utilisateurs",
-		"usersGroups": "Groupes d'Utilisateurs"
+		"usersGroups": "Groupes d'Utilisateurs",
+		"general": "General",
+		"videoCollection": "Video Collection",
+		"narrativeDesign": "Narrarive Design"
 	}
 }

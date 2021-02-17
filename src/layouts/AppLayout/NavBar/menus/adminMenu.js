@@ -21,7 +21,7 @@ export const adminMenu = [
     restricted: [1, 2],
   },
   {
-    title: 'User Groups',
+    title: 'Users Groups',
     tKey: 'usersGroups',
     href: `${PATH}/groups`,
     icon: GroupWorkIcon,

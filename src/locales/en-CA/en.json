@@ -7,8 +7,11 @@
 		"signOut": "Sign Out"
 	},
 	"navMenu": {
-		"Stories": "Stories",
-		"Users": "Users",
-		"UsersGroups": "Users Groups"
+		"stories": "Stories",
+		"users": "Users",
+		"usersGroups": "Users Groups",
+		"general": "General",
+		"videoCollection": "Video Collection",
+		"narrativeDesign": "Narrarive Design"
 	}
 }
