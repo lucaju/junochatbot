@@ -78,7 +78,7 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
       <Formik
         initialValues={{
           title: '',
-          languageCode: state.session.user.languageCode,
+          languageCode: state.ui.languageCode,
         }}
         validationSchema={formValidation}
         onSubmit={async (values) => await submit(values)}

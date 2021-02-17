@@ -1,29 +1,30 @@
 import {
+  Chip,
   Box,
   makeStyles,
-  MenuItem,
   TextField,
   Typography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useApp } from 'src/overmind';
 
 const useStyles = makeStyles((theme) => ({
-  marginBottom: { marginBottom: theme.spacing(1) },
+  marginRight: { marginRight: theme.spacing(1) },
 }));
 
 const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
-  const { state } = useApp();
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
-        Story
-      </Typography>
       <Box p={1} display="flex" flexDirection="row" width="100%">
-        <Box flexGrow={1} mr={2}>
+        <Typography className={classes.marginRight} gutterBottom variant="h6">
+          Story
+        </Typography>
+        <Chip label={values.languageCode} />
+      </Box>
+      <Box p={1} display="flex" flexDirection="row" width="100%">
+        <Box flexGrow={1} mr={2} mt={1}>
           <TextField
             error={Boolean(touched.title && errors.title)}
             fullWidth
@@ -33,29 +34,10 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.title}
-            className={classes.marginBottom}
           />
         </Box>
-        <Box width="100px">
-          <TextField
-            disabled
-            fullWidth
-            label="language"
-            name="languageCode"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            select
-            value={values.languageCode}
-          >
-            {state.story.languageCodes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box>
       </Box>
-      <Box p={1} width="100%">
+      <Box p={1} width="100%" mt={1}>
         <TextField
           error={Boolean(
             touched['general.synopsis'] && errors['general.synopsis']
@@ -71,7 +53,6 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
           onChange={handleChange}
           value={values.general.synopsis}
           variant="outlined"
-          className={classes.marginBottom}
         />
       </Box>
     </>

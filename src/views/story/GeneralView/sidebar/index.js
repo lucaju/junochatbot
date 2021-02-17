@@ -4,7 +4,7 @@ import React from 'react';
 // import Visibility sfrom './Visibility';
 // import Authors from './Authors';
 import FeaturedImage from './FeaturedImage';
-import Permalink from './Permalink';
+// import Permalink from './Permalink';
 
 const SideBar = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
@@ -14,13 +14,13 @@ const SideBar = ({ errors, handleBlur, handleChange, touched, values }) => {
       justify="flex-start"
       alignItems="flex-start"
     >
-      <Permalink
+      {/* <Permalink
         errors={errors}
         handleBlur={handleBlur}
         handleChange={handleChange}
         touched={touched}
         values={values}
-      />
+      /> */}
       {/* {values.general_published && (
         <Visibility
           errors={errors}

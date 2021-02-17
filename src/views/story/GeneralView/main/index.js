@@ -31,7 +31,7 @@ const Main = ({ errors, handleBlur, handleChange, touched, values }) => {
           values={values}
         />
       </Box>
-      <Box width={'100%'}>
+      {/* <Box width={'100%'}>
         <Ui
           errors={errors}
           handleBlur={handleBlur}
@@ -39,7 +39,7 @@ const Main = ({ errors, handleBlur, handleChange, touched, values }) => {
           touched={touched}
           values={values}
         />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

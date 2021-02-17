@@ -28,7 +28,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Character - Bot
+        Character Bot
       </Typography>
       <Box
         p={1}
@@ -51,7 +51,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
             className={classes.marginBottom}
           />
         </Box>
-        <Box width="100px" mr={2}>
+        {/* <Box width="100px" mr={2}>
           <TextField
             fullWidth
             label="Balloon"
@@ -67,7 +67,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
               </MenuItem>
             ))}
           </TextField>
-        </Box>
+        </Box> */}
         <Box width="50px" className={classes.avatarSelectBox}>
           <TextField
             fullWidth
@@ -95,7 +95,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
             touched['general.bot.persona'] && errors['general.bot.persona']
           )}
           fullWidth
-          label="persona"
+          label="Persona"
           name="general.bot.persona"
           multiline
           rowsMax={2}
@@ -107,8 +107,14 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
           className={classes.marginBottom}
         />
       </Box>
-      <Box p={1} display="flex" flexDirection="row" width="100%">
-        <Box width="200px" mr={2}>
+      <Box
+        p={1}
+        display="flex"
+        flexDirection="row"
+        width="100%"
+        alignContent="flex-end"
+      >
+        <Box mr={2}>
           <Typography
             id="discrete-slider"
             gutterBottom
@@ -116,8 +122,8 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
           >
             Typing speed (Miliiseconds per word)
           </Typography>
-          <SliderFormik name="general.bot.speed" />
         </Box>
+        <SliderFormik name="general.bot.speed" />
       </Box>
     </>
   );
