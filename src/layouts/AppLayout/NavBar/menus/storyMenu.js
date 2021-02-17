@@ -18,18 +18,18 @@ export const storyMenu = [
     icon: VideoLibraryIcon,
   },
   {
-    title: 'Screen Play',
-    href: `${PATH}}/screenplay`,
+    title: 'Narrative Design',
+    href: `${PATH}}/narrative`,
     icon: QuestionAnswerIcon,
   },
-  {
-    title: 'Contexts',
-    href: `${PATH}}/contexts`,
-    icon: LabelIcon,
-  },
-  {
-    title: 'Tags',
-    href: `${PATH}}/tags`,
-    icon: LocalOfferIcon,
-  },
+  // {
+  //   title: 'Contexts',
+  //   href: `${PATH}}/contexts`,
+  //   icon: LabelIcon,
+  // },
+  // {
+  //   title: 'Tags',
+  //   href: `${PATH}}/tags`,
+  //   icon: LocalOfferIcon,
+  // },
 ];

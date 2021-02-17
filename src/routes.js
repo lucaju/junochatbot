@@ -16,7 +16,7 @@ import GroupsView from './views/GroupsView';
 import {
   GeneralView,
   VideoCollectionView,
-  ScreenplayView,
+  NarrativeView,
   ContextsView,
   TagsView,
 } from './views/story';
@@ -34,7 +34,7 @@ const routes = [
     children: [
       { path: 'general', element: <GeneralView /> },
       { path: 'video-collection', element: <VideoCollectionView /> },
-      { path: 'screenplay', element: <ScreenplayView /> },
+      { path: 'narrative', element: <NarrativeView /> },
       { path: 'contexts', element: <ContextsView /> },
       { path: 'tags', element: <TagsView /> },
       { path: '*', element: <Navigate to="/app/story/general" /> },

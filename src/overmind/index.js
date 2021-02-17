@@ -7,7 +7,7 @@ import * as story from './story';
 import * as video from './video';
 import * as tag from './tag';
 import * as intentContext from './intentContext';
-import * as screenplay from './screenplay';
+import * as narrative from './narrative';
 
 export const useApp = createHook();
 
@@ -19,5 +19,5 @@ export const config = namespaced({
   video,
   tag,
   intentContext,
-  screenplay,
+  narrative,
 });

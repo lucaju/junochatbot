@@ -1,14 +1,8 @@
-export const dataScreenplay = [
+export const dataNarrative = [
   {
     id: 1,
     order: 1,
     title: 'Welcome',
-    tags: [
-      {
-        id: 1,
-        name: 'Welcome',
-      },
-    ],
     context: [
       {
         id: 1,
@@ -48,5 +42,5 @@ export const dataScreenplay = [
 ];
 
 export default {
-  dataScreenplay,
+  dataNarrative,
 };

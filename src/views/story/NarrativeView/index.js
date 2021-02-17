@@ -23,9 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const title = 'Screenplay';
+const title = 'Narrative Design';
 
-const ScreenplayView = () => {
+const NarrativeView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -88,4 +88,4 @@ const ScreenplayView = () => {
   );
 };
 
-export default ScreenplayView;
+export default NarrativeView;

@@ -156,7 +156,7 @@ export const storyDefault = {
     },
   },
   videoCollection: [],
-  screenplay: [],
+  narrative: [],
   tags: [],
   contexts: [],
 };
@@ -198,7 +198,7 @@ export const storyExample = {
     },
   },
   videoCollection: [],
-  screenplay: [],
+  narrative: [],
   tags: [],
   contexts: [],
 };
