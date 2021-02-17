@@ -73,21 +73,17 @@ export const api = {
     return result;
   },
 
-  async uploadAvatar(avatar, user) {
-    console.log(avatar, user);
+  async uploadAvatar(avatar, { token }) {
     const formData = new FormData();
     formData.append('file', avatar);
 
     const response = await fetch(`${API_URL}/application/users/avatar`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${user.token}`,
-        'content-type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     });
-
-    console.log(response);
 
     const { ok, status, statusText } = response;
     if (!ok) return { error: { status, statusText } };
