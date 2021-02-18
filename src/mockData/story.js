@@ -128,79 +128,37 @@ export const dataStories = [
 export const storyDefault = {
   id: null,
   title: '',
-  languageCode: '',
-  owner: {
+  languageCode: 'en-CA',
+  ownerId: 4,
+  synopsis: '',
+  featuredImage: '',
+  published: false,
+  bot: {
     name: '',
-    userName: '',
-  },
-  general: {
-    synopsis: '',
-    featuredImage: '',
-    authors: [],
-    published: false,
-    public: true,
-    bot: {
-      name: '',
-      persona: '',
-      avatar: 'adb',
-      speed: 120,
-      balloon: 'white',
-    },
-    user: {
-      inputPlacehold: 'Type here',
-      balloon: 'blue',
-    },
-    ui: {
-      sidebar: 'right',
-      showVideoController: false,
-    },
+    persona: '',
+    avatar: 'adb',
+    speed: 120,
   },
   videoCollection: [],
-  narrative: [],
-  tags: [],
-  contexts: [],
+  dialogFlowCredentials: '',
 };
 
 export const storyExample = {
   id: 1,
-  slug: 'after-life',
   title: 'After Life',
   languageCode: 'en-CA',
-  owner: {
-    name: 4,
-    userName: 'lucaju@gmail.com',
-  },
-  general: {
-    synopsis: 'A history beyond this world',
-    featuredImage: 'image1.jpg',
-    collaborators: [
-      {
-        name: 7,
-        userName: 'spedraca@gme.com',
-      },
-    ],
-    published: false,
-    public: true,
-    bot: {
-      name: 'Swiss',
-      persona: 'Your soul',
-      avatar: 'adb',
-      speed: 120,
-      balloon: 'white',
-    },
-    user: {
-      inputPlacehold: 'Type here',
-      balloon: 'blue',
-    },
-    ui: {
-      sidebar: 'right',
-      showVideoController: false,
-    },
+  ownerId: 4,
+  synopsis: 'A history beyond this world',
+  featuredImage: 'image1.jpg',
+  published: false,
+  bot: {
+    name: 'Swiss',
+    persona: 'Your soul',
+    avatar: 'adb',
+    speed: 120,
   },
   videoCollection: [],
-  narrative: [],
-  tags: [],
-  contexts: [],
+  dialogFlowCredentials: '',
 };
 
 export default {

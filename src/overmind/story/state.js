@@ -12,8 +12,4 @@ export const state = {
     { value: 'bug', name: 'bug' },
     { value: 'child', name: 'child' },
   ],
-  colors: [
-    { value: 'white', name: 'White' },
-    { value: 'blue', name: 'Blue' },
-  ],
 };
