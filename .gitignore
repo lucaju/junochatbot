@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 
 /dist
-/config/config.js
 /volume
 /server_
 /server-ts

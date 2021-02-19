@@ -1,6 +1,6 @@
 // import mock from 'src/mockData';
 import base64 from 'base-64';
-import { API_URL } from '../../../config/config.js';
+import { API_URL } from '../../config/config.js';
 
 export const api = {
   authenticate: async ({ email, password }) => {
