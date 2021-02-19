@@ -43,11 +43,11 @@ const LoginForm = ({ authenticate, setIsAuthenticating }) => {
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
-      validationSchema={formValidation}
       onSubmit={async (values) => {
         setIsAuthenticating(true);
         await authenticate(values);
       }}
+      validationSchema={formValidation}
     >
       {({
         errors,
@@ -75,6 +75,7 @@ const LoginForm = ({ authenticate, setIsAuthenticating }) => {
           <FormControl fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Input
+              autoComplete="password"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
