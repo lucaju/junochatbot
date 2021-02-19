@@ -19,8 +19,8 @@ const loadDevTools = async () => {
 if (process.env.NODE_ENV === 'development') loadDevTools();
 
 // static
-app.use(express.static('./dist'));
 app.use('/uploads', express.static('./volumes/assets'));
+app.use(express.static('./dist'));
 
 // catch all
 // * turno off on dev. reason HMR doesn't work with this on.
