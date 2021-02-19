@@ -10,6 +10,7 @@ yarn-error.log*
 /server_
 /server-ts
 /asset
+/volumes
 
 # Runtime data
 pids
