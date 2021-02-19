@@ -17,8 +17,8 @@ export const showNotification = ({ state }, { type, message }) => {
 
 export const closeNotification = ({ state }) => {
   state.ui.notification = {
-    type: state.ui.notification.type,
     messsage: '',
     open: false,
+    type: state.ui.notification.type,
   };
 };

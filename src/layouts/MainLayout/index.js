@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
 import { Container, makeStyles } from '@material-ui/core';
-// import TopBar from './Topbar';
+import React, { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import TopBar from 'src/components/TopBar';
 import { useApp } from 'src/overmind';
 
@@ -13,25 +12,22 @@ const useStyles = makeStyles(({ palette }) => ({
     overflow: 'hidden',
     width: '100%',
   },
-  wrapper: {
-    display: 'flex',
+  content: {
     flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: 64,
-    maxWidth: 1200,
-    // [theme.breakpoints.up('lg')]: {
-    //   paddingLeft: 256,
-    // },
+    height: '100%',
+    overflow: 'auto',
   },
   contentContainer: {
     display: 'flex',
     flex: '1 1 auto',
     overflow: 'hidden',
   },
-  content: {
+  wrapper: {
+    display: 'flex',
     flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
+    overflow: 'hidden',
+    paddingTop: 64,
+    maxWidth: 1200,
   },
 }));
 

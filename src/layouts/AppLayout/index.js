@@ -14,6 +14,16 @@ const useStyles = makeStyles(() => ({
     overflow: 'hidden',
     width: '100%',
   },
+  content: {
+    flex: '1 1 auto',
+    height: '100%',
+    overflow: 'auto',
+  },
+  contentContainer: {
+    display: 'flex',
+    flex: '1 1 auto',
+    overflow: 'hidden',
+  },
   wrapper: {
     display: 'flex',
     flex: '1 1 auto',
@@ -23,16 +33,6 @@ const useStyles = makeStyles(() => ({
   wrapperMobile: { paddingLeft: 0 },
   wrapperCompact: { paddingLeft: 72 },
   wrapperExpaned: { paddingLeft: 256 },
-  contentContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-  },
-  content: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
-  },
 }));
 
 const AppLayout = ({ showStoryMenu }) => {

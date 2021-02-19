@@ -7,8 +7,8 @@ export const state = {
     { value: 'fr-CA', name: 'French' },
   ],
   notification: {
-    type: '',
     message: '',
     open: false,
+    type: 'info',
   },
 };

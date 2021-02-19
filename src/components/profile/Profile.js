@@ -22,16 +22,14 @@ import LanguageIcon from '@material-ui/icons/Language';
 import LockIcon from '@material-ui/icons/Lock';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from 'src/overmind';
 import AvatarDialog from './AvatarDialog';
 import PasswordDialog from './PasswordDialog';
-import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
-  root: {
-    width: 280,
-  },
+  root: { width: 280 },
   listItemIconRoot: { minWidth: 40 },
 }));
 

@@ -1,30 +1,30 @@
+import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette }) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: palette.background.default,
     display: 'flex',
     height: '100%',
     overflow: 'hidden',
     width: '100%',
   },
-  wrapper: {
-    display: 'flex',
+  content: {
     flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: 64,
+    height: '100%',
+    overflow: 'auto',
   },
   contentContainer: {
     display: 'flex',
     flex: '1 1 auto',
     overflow: 'hidden',
   },
-  content: {
+  wrapper: {
+    display: 'flex',
     flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
+    overflow: 'hidden',
+    paddingTop: 64,
   },
 }));
 

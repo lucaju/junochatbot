@@ -86,14 +86,14 @@ const AvatarDialog = ({ handleClose, open }) => {
 
     if (response.error) {
       actions.ui.showNotification({
-        type: 'error',
         message: 'Something went wrong!',
+        type: 'error',
       });
       return;
     }
     actions.ui.showNotification({
-      type: 'success',
       message: 'Avatar changed',
+      type: 'success',
     });
 
     handleClosePanel();
