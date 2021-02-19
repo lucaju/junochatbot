@@ -1,19 +1,13 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-// import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 import { en, fr } from './locales';
 
 const options = {
-  interpolation: {
-    escapeValue: false, // not needed for react!!
-  },
-  resources: {
-    en,
-    fr,
-  },
-  lng: 'en-CA',
-  fallbackLng: 'en-CA',
+  interpolation: { escapeValue: false /* not needed for react!! */ },
+  resources: { en, fr },
+  // lng: 'en-CA',
+  // fallbackLng: 'en-CA',
   ns: ['common'],
   defaultNS: 'common',
   // debug: true,
@@ -22,10 +16,6 @@ const options = {
     bindStore: 'added removed',
     nsMode: 'default',
   },
-  // backend: {
-  // 	// for all available options read the backend's repository readme file
-  // 	loadPath: './locales/{{lng}}/{{ns}}.json',
-  // },
 };
 
 i18n

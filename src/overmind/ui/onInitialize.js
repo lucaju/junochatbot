@@ -1,11 +1,7 @@
 export const onInitialize = ({ state }) => {
   //LANGUAGE
-  let prefLanguage = localStorage.getItem('language');
-  if (!prefLanguage) {
-    prefLanguage = navigator.language;
-    localStorage.setItem('language', prefLanguage);
-  }
-  state.ui.languageCode = prefLanguage;
+  const prefLanguage = localStorage.getItem('i18nextLng');
+  if (prefLanguage) state.ui.languageCode = prefLanguage;
 
   //DARK MODE
   const prefDarkMode = localStorage.getItem('darkMode');
