@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') loadDevTools();
 
 // static
 app.use(express.static('./dist'));
-app.use('/uploads', express.static('./volume/assets'));
+app.use('/uploads', express.static('./volumes/assets'));
 
 // catch all
 // * turno off on dev. reason HMR doesn't work with this on.
