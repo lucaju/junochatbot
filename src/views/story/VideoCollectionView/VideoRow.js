@@ -50,7 +50,7 @@ const VideoRow = ({ video, handleEditClick }) => {
           <Card className={classes.card}>
             <CardMedia
               component="img"
-              image={`/assets/stories/images/${video.image}`}
+              image={`/uploads/assets${video.image}`}
             />
           </Card>
         </Box>

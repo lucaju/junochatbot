@@ -71,11 +71,7 @@ const FeaturedImage = ({ name }) => {
           <Card className={classes.Card}>
             <CardMedia
               component="img"
-              image={
-                file
-                  ? imageToDisplay
-                  : `/assets/stories/images/${imageToDisplay}`
-              }
+              image={file ? imageToDisplay : `/uploads/assets${imageToDisplay}`}
             />
           </Card>
           <Button
