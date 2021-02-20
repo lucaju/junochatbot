@@ -27,7 +27,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'index.html'),
       chunks: ['app'],
-      inject: 'head',
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
