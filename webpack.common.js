@@ -14,6 +14,7 @@ module.exports = {
   output: {
     // filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
   },
   resolve: {
     alias: {
@@ -42,11 +43,6 @@ module.exports = {
   ],
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
