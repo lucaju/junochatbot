@@ -99,7 +99,7 @@ const Authors = ({ handleBlur, handleChange, values }) => {
                 avatar ? (
                   <Avatar
                     alt={`${firstName} ${lastName}`}
-                    src={`/assets/users/images/${avatarUrl}`}
+                    src={`/uploads/assets${avatarUrl}`}
                   />
                 ) : null
               }

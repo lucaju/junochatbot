@@ -19,7 +19,7 @@ const loadDevTools = async () => {
 if (process.env.NODE_ENV === 'development') loadDevTools();
 
 // static
-app.use('/assets', express.static('./assets'));
+app.use('/uploads', express.static('./uploads'));
 app.use(express.static('./dist'));
 
 // catch all

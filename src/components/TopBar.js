@@ -94,7 +94,7 @@ const TopBar = ({ appMode, className, handleMenuClick, ...rest }) => {
               onClick={handleProfileClick}
               src={
                 state.session.user.avatarUrl &&
-                `/assets${state.session.user.avatarUrl}`
+                `/uploads/assets${state.session.user.avatarUrl}`
               }
             >
               {!state.session.user.avatarUrl && <AccountCircleIcon />}
