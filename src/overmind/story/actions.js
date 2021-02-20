@@ -1,12 +1,9 @@
-const slugify = require('slugify');
-
 export const getStories = async ({ state, effects }) => {
   state.story.stories = await effects.story.storyAPI.getStories();
 };
 
 export const createStory = async ({ state, effects }, newStory) => {
   const story = newStory;
-  story.slug = slugify(newStory.title, { lower: true });
   const userSession = state.session.user;
   story.owner = {
     id: userSession.id,
