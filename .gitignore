@@ -6,11 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 
 /dist
-/volume
+/assets
 /server_
 /server-ts
-/asset
-/volumes
+/templates
 
 # Runtime data
 pids

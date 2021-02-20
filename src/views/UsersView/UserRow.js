@@ -54,7 +54,7 @@ const UserRow = ({ user, handleEditClick }) => {
         <Box alignItems="center" display="flex">
           <Avatar
             className={classes.avatar}
-            src={user.avatarUrl && `/uploads${user.avatarUrl}`}
+            src={user.avatarUrl && `/assets${user.avatarUrl}`}
           >
             {!user.avatarUrl && (
               <AccountCircleIcon className={classes.avatarIcon} />

@@ -84,7 +84,7 @@ const Profile = ({ anchor, handleClose }) => {
           // onClick={handleProfileClick}
           src={
             state.session.user.avatarUrl &&
-            `/uploads${state.session.user.avatarUrl}`
+            `/assets${state.session.user.avatarUrl}`
           }
         >
           {!state.session.user.avatarUrl && <AccountCircleIcon />}
