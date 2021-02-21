@@ -82,7 +82,9 @@ const AvatarDialog = ({ handleClose, open }) => {
   };
 
   const submit = async ({ avatar }) => {
-    const response = await actions.session.uploadAvatar(avatar);
+    const response = avatar
+      ? await actions.session.uploadAvatar(avatar)
+      : actions.session.deleteAvatar();
 
     if (response.error) {
       actions.ui.showNotification({
@@ -91,10 +93,9 @@ const AvatarDialog = ({ handleClose, open }) => {
       });
       return;
     }
-    actions.ui.showNotification({
-      message: 'Avatar changed',
-      type: 'success',
-    });
+
+    const message = avatar ? 'Avatar changed' : 'Avatar removed';
+    actions.ui.showNotification({ message, type: 'success' });
 
     handleClosePanel();
   };

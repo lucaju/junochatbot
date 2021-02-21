@@ -38,19 +38,13 @@ const PasswordDialog = ({ handleClose, open }) => {
   const handleMouseDownPassword = (event) => event.preventDefault();
 
   const submit = async (values) => {
-    const response = await actions.users.changePassword(values);
+    const response = await actions.session.changePassword(values);
 
     if (response.error) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Something went wrong!',
-      });
+      actions.ui.showNotification({ message: 'Something went wrong!', type: 'error' });
       return;
     }
-    actions.ui.showNotification({
-      type: 'success',
-      message: 'Password changed',
-    });
+    actions.ui.showNotification({ message: 'Password changed', type: 'success' });
 
     handleClose();
   };
@@ -65,8 +59,8 @@ const PasswordDialog = ({ handleClose, open }) => {
     >
       <Formik
         initialValues={{ password: '' }}
-        validationSchema={formValidation}
         onSubmit={async (values) => await submit(values)}
+        validationSchema={formValidation}
       >
         {({
           errors,

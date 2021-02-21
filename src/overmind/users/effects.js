@@ -93,7 +93,6 @@ export const api = {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
       }
     );
@@ -105,6 +104,25 @@ export const api = {
 
     const result = await response.json();
     return result;
+  },
+
+  async deleteUserFromGroup({ groupId, userId, token }) {
+    const response = await fetch(
+      `${API_URL}/admin/groups${groupId}/users${userId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const { status, statusText } = response;
+    if (status !== 200) {
+      return { error: { status, statusText } };
+    }
+
+    return response;
   },
 
   async getGroups(token) {
@@ -169,6 +187,20 @@ export const api = {
         Authorization: `Bearer ${token}`,
       },
       body: formData,
+    });
+
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
+
+    return response;
+  },
+
+  async deleteAvatar(userId, token) {
+    const response = await fetch(`${API_URL}/admin/users/${userId}/avatar`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const { ok, status, statusText } = response;

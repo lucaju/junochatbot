@@ -14,10 +14,8 @@ export const api = {
       headers,
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
@@ -28,10 +26,8 @@ export const api = {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
@@ -42,32 +38,25 @@ export const api = {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
   },
 
   async changePassword(password, token) {
-    const response = await fetch(
-      `${API_URL}/application/users/changepassword`,
-      {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(password),
-      }
-    );
+    const response = await fetch(`${API_URL}/application/users/changepassword`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(password),
+    });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
@@ -79,10 +68,20 @@ export const api = {
 
     const response = await fetch(`${API_URL}/application/users/avatar`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
       body: formData,
+    });
+
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
+
+    return response;
+  },
+
+  async deleteAvatar({ token }) {
+    const response = await fetch(`${API_URL}/application/users/avatar`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const { ok, status, statusText } = response;

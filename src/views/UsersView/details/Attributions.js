@@ -1,7 +1,10 @@
-import { Grid, MenuItem, TextField } from '@material-ui/core';
+import { Chip, Grid, MenuItem, TextField } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useApp } from 'src/overmind';
+import { json } from 'overmind';
+import { useField } from 'formik';
 
 const Attributions = ({
   errors,
@@ -14,6 +17,10 @@ const Attributions = ({
   const [isAdmin] = useState(state.session.isAdmin);
   const [groups, setGroups] = useState([]);
 
+  const [field, meta, helpers] = useField('groups');
+  const { value } = meta;
+  const { setValue } = helpers;
+
   useEffect(() => {
     const fetchData = async () => await actions.users.getGroups();
     if (state.users.groups.length === 0) fetchData();
@@ -21,7 +28,9 @@ const Attributions = ({
   }, []);
 
   useEffect(() => {
-    setGroups([{ id: -1, name: 'None', active: true }, ...state.users.groups]);
+    const _groups = [...state.users.groups];
+    const activeGroups = _groups.filter(({ active }) => active);
+    setGroups(activeGroups);
     return () => {};
   }, [state.users.groups]);
 
@@ -49,26 +58,28 @@ const Attributions = ({
       </Grid>
       <Grid item md={7} xs={12}>
         {groups.length > 0 && (
-          <TextField
-            error={Boolean(touched.groupId && errors.groupId)}
-            fullWidth
-            label="Group"
-            name="groupId"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            select
-            value={values.groupId}
+          <Autocomplete
             disabled={!isAdmin || (values.id && !values.active)}
-            variant="outlined"
-          >
-            {groups
-              .filter(({ active }) => active)
-              .map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.name}
-                </MenuItem>
-              ))}
-          </TextField>
+            filterSelectedOptions
+            getOptionLabel={(groups) => groups.name}
+            getOptionSelected={(option, value) => option.id === value.id}
+            id="groups"
+            multiple
+            onChange={(event, value, reason) => {
+              if (reason === 'blur') return handleBlur();
+              setValue(json(value));
+            }}
+            options={groups}
+            value={values.groups}
+            renderInput={(params) => (
+              <TextField
+                fullWidth
+                label="Groups"
+                variant="outlined"
+                {...params}
+              />
+            )}
+          />
         )}
       </Grid>
     </>

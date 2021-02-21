@@ -23,95 +23,167 @@ export const getUsers = async ({ state, effects }, groupId) => {
 export const getUser = async ({ state, effects }, userId) => {
   const token = state.session.user.token;
   const user = await effects.users.api.getUser(userId, token);
+
+  const responseGroups = await effects.users.api.getUserGroups(userId, token);
+  if (!responseGroups.error) {
+    user.groups = responseGroups;
+  }
   return user;
 };
 
 export const getUserGroups = async ({ state, effects }, userId) => {
   const token = state.session.user.token;
-  const user = await effects.users.api.getUserGroups(userId, token);
-  return user;
+  const groups = await effects.users.api.getUserGroups(userId, token);
+  return groups;
 };
 
-export const saveUser = async ({ state, effects }, data) => {
-  console.log(data);
+export const createUser = async ({ state, effects }, values) => {
   const token = state.session.user.token;
 
-  //Split data
-  const userData = {
-    userName: data.userName,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    roleTypeId: data.roleTypeId,
-    avatarUrl: 'none',
-    active: data.active,
-    password: 'password',
-  };
+  //1. Split data
+  const newUserData = { ...values };
 
-  const groupId = data?.groupId;
-  const avatarUrl = data?.avatarUrl;
+  const avatar = newUserData.avatarUrl ?? null;
+  delete newUserData.avatarUrl;
 
-  let user;
-  if (userData.id) {
-    user = await updateUser({ state, effects }, { userData, token });
-  } else {
-    user = await createUser({ state, effects }, { userData, token });
+  const groups = newUserData.groups.length > 0 ? newUserData.groups : null;
+  delete newUserData.groups;
+
+  console.log({ newUserData, avatar, groups });
+
+  //2. Create user
+  const user = await effects.users.api.createUser(newUserData, token);
+  if (user.error) return user;
+
+  //3. Assign groups
+  if (user && groups) {
+    user.groups = [];
+    //assign each group to user
+    for await (const group of groups) {
+      const newGroup = await effects.users.api.addUserToGroup({
+        groupId: group.id,
+        userId: user.id,
+        token,
+      });
+      if (!newGroup.error) user.groups.push(group);
+    }
   }
 
-  //avatar
-  if (user && avatarUrl) {
-    const avatarFile = await uploadAvatar(
+  //4. Upload avatar
+  if (user && avatar) {
+    const responseUploadAvatar = await uploadAvatar(
       { state, effects },
-      { avatar: avatarUrl, userId: user.id }
+      { avatar, userId: user.id }
     );
-    if (!avatarFile.error) user.avatarURL = avatarFile;
+    if (!responseUploadAvatar.error) user.avatarURL = responseUploadAvatar;
   }
 
-  //group
-  if (user && groupId) {
-    await addUserToGroup({ state, effects }, { groupId, userId: user.id });
-  }
+  //5. add to state
+  state.users.list.unshift(user);
+  sortBy(state.users.list, 'firstName');
 
   return user;
 };
 
-const createUser = async ({ state, effects }, { userData, token }) => {
-  const response = await effects.users.api.createUser(userData, token);
-  if (response.error) return response;
+export const updateUser = async ({ state, effects }, { userData, values }) => {
+  const token = state.session.user.token;
 
-  state.users.list.unshift(response);
-  sortBy(state.users.list, 'firstName');
+  //1. Split data
+  let newValues = { ...values };
 
-  return response;
-};
+  const avatar =
+    typeof newValues.avatarUrl !== 'string' ? newValues.avatarUrl : null;
+  delete newValues.avatarUrl;
 
-const updateUser = async ({ state, effects }, { userData, token }) => {
-  const response = await effects.users.api.updateUser(userData, token);
-  if (response.error) return response;
+  const userGroupsSet = new Set(userData.groups.map(({ id }) => id));
+  const valuesGroupsSet = new Set(values.groups.map(({ id }) => id));
 
+  const groupsToAdd = values.groups.filter(({ id }) => !userGroupsSet.has(id));
+  const groupsToRemove = userData.groups.filter(
+    ({ id }) => !valuesGroupsSet.has(id)
+  );
+  delete newValues.groups;
+
+  //2. Check if usre date changed
+  if (
+    newValues.firstName === userData.firstName &&
+    newValues.lastName === userData.lastName &&
+    newValues.roleTypeId === userData.roleTypeId &&
+    newValues.active === userData.active
+  ) {
+    newValues = null;
+  }
+
+  console.log({ newValues, groupsToAdd, groupsToRemove, avatar });
+
+  //3. update User
+  if (newValues) {
+    const response = await effects.users.api.updateUser(newValues, token);
+    if (response.error) return response;
+  }
+
+  //4. Add to group
+  if (groupsToAdd?.length > 0) {
+    //assign each group to user
+    for await (const group of groupsToAdd) {
+      const grp = await effects.users.api.addUserToGroup({
+        groupId: group.id,
+        userId: newValues.id,
+        token,
+      });
+      if (!grp.error) userData.groups.push(group);
+    }
+  }
+
+  //5. remove from group
+  if (groupsToRemove?.length > 0) {
+    //assign each group to user
+    for await (const group of groupsToRemove) {
+      const grp = await effects.users.api.deleteUserFromGroup({
+        groupId: group.id,
+        userId: newValues.id,
+        token,
+      });
+      if (!grp.error) {
+        userData.groups.filter((userGroup) => userGroup.id !== group.id);
+      }
+    }
+  }
+
+  //6. Upload avatar
+  if (avatar) {
+    const responseUploadAvatar = await uploadAvatar(
+      { state, effects },
+      { avatar, userId: userData.id }
+    );
+    if (!responseUploadAvatar.error) userData.avatarURL = responseUploadAvatar;
+  } else if (!avatar && userData.avatarUrl) {
+    const responseUploadAvatar = await deleteAvatar(
+      { state, effects },
+      userData.id
+    );
+    if (!responseUploadAvatar.error) userData.avatarURL = null;
+  }
+
+  //7. update state;
   state.users.list = state.users.list.map((user) => {
     if (user.id === userData.id) user = userData;
     return user;
   });
 
-  return response;
+  return userData;
 };
 
-export const addUserToGroup = async (
-  { state, effects },
-  { groupId, userId }
-) => {
+export const updateUserStatus = async ({ state, effects }, values) => {
   const token = state.session.user.token;
 
-  const response = await effects.users.api.addUserToGroup({
-    groupId,
-    userId,
-    token,
-  });
+  //clean data
+  delete values.avatarUrl;
+  delete values.groups;
 
+  const response = await effects.users.api.updateUser(values, token);
   if (response.error) return response;
-
-  const result = await response.json();
-  return result;
+  return response;
 };
 
 //***** GROUPS */
@@ -180,8 +252,14 @@ export const uploadAvatar = async ({ state, effects }, { avatar, userID }) => {
   const token = state.session.user.token;
   const response = await effects.users.api.uploadAvatar(avatar, userID, token);
   if (response.error) return { error: response.statusText };
-  state.session.user.avatarUrl = response.fileName;
-  return response;
+  return response.fileName;
+};
+
+export const deleteAvatar = async ({ state, effects }, userID) => {
+  const token = state.session.user.token;
+  const response = await effects.users.api.deleteAvatar(userID, token);
+  if (response.error) return { error: response.statusText };
+  return response.fileName;
 };
 
 //***** UTIL */

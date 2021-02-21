@@ -53,7 +53,7 @@ const Details = ({ open, handleDetailClose, user }) => {
     lastName: '',
     userName: '',
     roleTypeId: state.users.defaultRoleType,
-    groupId: -1,
+    groups: [],
     active: true,
   };
 
@@ -63,7 +63,7 @@ const Details = ({ open, handleDetailClose, user }) => {
     if (open && user.id === undefined) {
       const selectedUserData = Object.assign(initialValues);
       if (!state.session.isAdmin) {
-        selectedUserData.groupId = state.session.user.groups[0];
+        selectedUserData.groups = state.session.user.groups;
       }
       setUserData(selectedUserData);
       setLoaded(true);
@@ -74,8 +74,7 @@ const Details = ({ open, handleDetailClose, user }) => {
         const userGroups = await actions.users.getUserGroups(user.id);
 
         const selectedUserData = Object.assign(user);
-        selectedUserData.groupId =
-          userGroups?.length > 0 ? userGroups[0].id : -1;
+        selectedUserData.groups = userGroups;
 
         setUserData(selectedUserData);
         setLoaded(true);
@@ -92,7 +91,7 @@ const Details = ({ open, handleDetailClose, user }) => {
     lastName: Yup.string().trim().required('Last name is required'),
     userName: Yup.string().email().required('Email is required'),
     roleTypeId: Yup.number().required(),
-    groupId: Yup.number(),
+    groups: Yup.mixed(),
     active: Yup.bool(),
   });
 
@@ -102,20 +101,12 @@ const Details = ({ open, handleDetailClose, user }) => {
   };
 
   const submit = async (values) => {
-    // remove unnecessary  info
-    const cleandedValues = { ...values };
-    delete cleandedValues.stories;
+    //create update
+    const response = values.id
+      ? await actions.users.updateUser({ userData, values })
+      : actions.users.createUser(values);
 
-    //check group Change
-    if (cleandedValues.groupId === user.groupId) delete cleandedValues.groupId;
-
-    //check avatar Change
-    if (cleandedValues.avatarUrl === user.avatarUrl) {
-      delete cleandedValues.avatarUrl;
-    }
-
-    const response = await actions.users.saveUser(cleandedValues);
-
+    //error
     if (response.error) {
       actions.ui.showNotification({
         type: 'error',
@@ -131,14 +122,16 @@ const Details = ({ open, handleDetailClose, user }) => {
     open = false;
   };
 
-  const restoreUser = async (values) => {
+  const updateUserStatus = async (values, active) => {
     if (!values.id) return;
 
+    //Since the API is PUT not PATCH, we need to send all fields
     const data = user;
-    data.active = true;
+    data.active = active; //change user status
 
-    const response = await actions.users.saveUser(data);
+    const response = await actions.users.updateUserStatus(data);
 
+    //error
     if (response.error) {
       actions.ui.showNotification({
         type: 'error',
@@ -147,30 +140,13 @@ const Details = ({ open, handleDetailClose, user }) => {
       return response;
     }
 
-    userData.active = true;
-    actions.ui.showNotification({ type: 'success', message: 'User restored' });
+    //success
+    userData.active = active;
+    const message = active ? 'User restored' : 'User deleted';
+    actions.ui.showNotification({ type: 'success', message });
 
-    return response;
-  };
-
-  const deleteUser = async (values) => {
-    if (!values.id) return;
-
-    const data = user;
-    data.active = false;
-
-    const response = await actions.users.saveUser(data);
-    setDeleteDialogOpen(false);
-
-    if (response.error) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Something went wrong!',
-      });
-      return;
-    }
-
-    actions.ui.showNotification({ type: 'success', message: 'User deleted' });
+    //end
+    if (active) return response;
 
     handleDetailClose();
     open = false;
@@ -188,14 +164,16 @@ const Details = ({ open, handleDetailClose, user }) => {
           enableReinitialize={true}
           initialValues={userData}
           onSubmit={async (values) => {
-            if (values.submitType === 'delete') {
-              await deleteUser(values);
-            } else if (values.submitType === 'restore') {
-              const response = await restoreUser(values);
-              if (!response.error) values.active = true;
-            } else {
-              await submit(values);
+            //change status submission
+            if (values.submitType) {
+              const active = values.submitType === 'delete' ? false : true;
+              const response = await updateUserStatus(values, active);
+              if (!response.error) values.active = active;
+              return;
             }
+
+            //normal submission
+            await submit(values);
           }}
           validationSchema={formValidation}
         >

@@ -64,6 +64,14 @@ export const uploadAvatar = async ({ state, effects }, avatar) => {
   return response;
 };
 
+export const deleteAvatar = async ({ state, effects }) => {
+  const user = state.session.user;
+  const response = await effects.users.api.deleteAvatar(user);
+  if (response.error) return { error: response.statusText };
+  state.session.user.avatarUrl = null;
+  return response;
+};
+
 export const signOut = ({ state }) => {
   Cookies.remove('JunoToken');
   localStorage.clear();
