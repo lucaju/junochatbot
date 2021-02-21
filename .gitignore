@@ -6,10 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 
 /dist
-
-/server_
-/server-ts
-
 /templates
 /uploads
 
