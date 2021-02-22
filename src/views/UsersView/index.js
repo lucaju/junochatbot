@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(1),
     paddingTop: theme.spacing(3),
   },
 }));
@@ -65,7 +65,6 @@ const UsersView = () => {
           user={currentUser}
         />
         <MenuBar
-          handleDetailOpen={handleDetailOpen}
           handleFilterByGroup={handleFilterByGroup}
           updateFilters={updateFilters}
         />

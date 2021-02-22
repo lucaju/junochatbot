@@ -6,27 +6,20 @@ export const api = {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
   },
 
   async getUsersByGroup(groupId, token) {
-    const response = await fetch(
-      `${API_URL}/admin/groups${groupId}/users/all`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/admin/groups${groupId}/users/all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
@@ -58,10 +51,8 @@ export const api = {
       body: JSON.stringify(userData),
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
@@ -77,50 +68,37 @@ export const api = {
       body: JSON.stringify(userData),
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
   },
 
   async addUserToGroup({ groupId, userId, token }) {
-    const response = await fetch(
-      `${API_URL}/admin/groups${groupId}/users${userId}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${API_URL}/admin/groups${groupId}/users${userId}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
   },
 
   async deleteUserFromGroup({ groupId, userId, token }) {
-    const response = await fetch(
-      `${API_URL}/admin/groups${groupId}/users${userId}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    console.log( {groupId, userId, token })
+    const response = await fetch(`${API_URL}/admin/groups${groupId}/users${userId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    console.log(response)
+
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     return response;
   },
@@ -130,10 +108,8 @@ export const api = {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
@@ -149,10 +125,8 @@ export const api = {
       body: JSON.stringify(groupData),
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
@@ -168,39 +142,34 @@ export const api = {
       body: JSON.stringify(groupData),
     });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     const result = await response.json();
     return result;
   },
 
-  async uploadAvatar(avatar, userId, token) {
+  async uploadAvatar({ avatar, userId, token }) {
     const formData = new FormData();
     formData.append('file', avatar);
 
     const response = await fetch(`${API_URL}/admin/users/${userId}/avatar`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
 
     const { ok, status, statusText } = response;
     if (!ok) return { error: { status, statusText } };
 
-    return response;
+    const result = await response.json();
+    return result;
   },
 
   async deleteAvatar(userId, token) {
     const response = await fetch(`${API_URL}/admin/users/${userId}/avatar`, {
       method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const { ok, status, statusText } = response;
@@ -210,34 +179,26 @@ export const api = {
   },
 
   requestPassword: async ({ email }) => {
-    const response = await fetch(
-      `${API_URL}/authentication/users/sendresetpassword/${email}`
-    );
+    const response = await fetch(`${API_URL}/authentication/users/sendresetpassword/${email}`);
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     return response;
   },
 
   resetPassword: async ({ password, token }) => {
-    const response = await fetch(
-      `${API_URL}/authentication/users/setpassword`,
-      {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ password }),
-      }
-    );
+    const response = await fetch(`${API_URL}/authentication/users/setpassword`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password }),
+    });
 
-    const { status, statusText } = response;
-    if (status !== 200) {
-      return { error: { status, statusText } };
-    }
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
 
     return response;
   },

@@ -1,5 +1,3 @@
-import { derived } from 'overmind';
-
 export const state = {
   list: [],
   groups: [],
@@ -8,5 +6,4 @@ export const state = {
     { value: 2, name: 'Instructor' },
     { value: 3, name: 'Student' },
   ],
-  defaultRoleType: derived((state) => state.roleTypes[2].value),
 };

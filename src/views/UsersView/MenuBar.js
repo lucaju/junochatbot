@@ -1,22 +1,18 @@
-import {
-  Box,
-  Button,
-  makeStyles,
-  MenuItem,
-  TextField,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { makeStyles, MenuItem, TextField, Toolbar } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useApp } from 'src/overmind';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   filterActive: { width: 110 },
   filterRole: { width: 110 },
-  marginRight: { marginRight: theme.spacing(2) },
+  filterIcon: {
+    marginLeft: -spacing(1),
+    marginRight: spacing(2.5),
+  },
+  marginRight: { marginRight: spacing(2) },
 }));
 
 const filterActiveOptions = [
@@ -25,7 +21,7 @@ const filterActiveOptions = [
   { value: false, name: 'Inactive' },
 ];
 
-const MenuBar = ({ handleDetailOpen, handleFilterByGroup, updateFilters }) => {
+const MenuBar = ({ handleFilterByGroup, updateFilters }) => {
   const classes = useStyles();
   const { state } = useApp();
   const [groups, setGroups] = useState([{ id: -1, name: 'All', active: true }]);
@@ -62,21 +58,7 @@ const MenuBar = ({ handleDetailOpen, handleFilterByGroup, updateFilters }) => {
 
   return (
     <Toolbar className={classes.root} variant="dense">
-      <Button
-        color="primary"
-        variant="outlined"
-        startIcon={<AddCircleOutlineIcon />}
-        onClick={() => handleDetailOpen({})}
-      >
-        Add user
-      </Button>
-
-      <Box flexGrow={1} />
-
-      <Typography variant="subtitle1" className={classes.marginRight}>
-        Filters
-      </Typography>
-
+      <FilterListIcon className={classes.filterIcon} />
       {state.session.isAdmin && (
         <TextField
           className={clsx(classes.filterRole, classes.marginRight)}
@@ -145,7 +127,6 @@ const MenuBar = ({ handleDetailOpen, handleFilterByGroup, updateFilters }) => {
 
 MenuBar.propTypes = {
   className: PropTypes.string,
-  handleDetailOpen: PropTypes.func,
   handleFilterByGroup: PropTypes.func,
   updateFilters: PropTypes.func,
 };

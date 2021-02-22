@@ -17,7 +17,7 @@ export const getUsers = async ({ state, effects }, groupId) => {
     list = await effects.users.api.getAllUsers(token);
   }
 
-  state.users.list = sortBy(list, 'firstName');
+  state.users.list = list.reverse();
 };
 
 export const getUser = async ({ state, effects }, userId) => {
@@ -49,8 +49,6 @@ export const createUser = async ({ state, effects }, values) => {
   const groups = newUserData.groups.length > 0 ? newUserData.groups : null;
   delete newUserData.groups;
 
-  console.log({ newUserData, avatar, groups });
-
   //2. Create user
   const user = await effects.users.api.createUser(newUserData, token);
   if (user.error) return user;
@@ -75,12 +73,11 @@ export const createUser = async ({ state, effects }, values) => {
       { state, effects },
       { avatar, userId: user.id }
     );
-    if (!responseUploadAvatar.error) user.avatarURL = responseUploadAvatar;
+    if (!responseUploadAvatar.error) user.avatarUrl = responseUploadAvatar;
   }
 
   //5. add to state
   state.users.list.unshift(user);
-  sortBy(state.users.list, 'firstName');
 
   return user;
 };
@@ -91,17 +88,16 @@ export const updateUser = async ({ state, effects }, { userData, values }) => {
   //1. Split data
   let newValues = { ...values };
 
-  const avatar =
-    typeof newValues.avatarUrl !== 'string' ? newValues.avatarUrl : null;
+  let newAvatar;
+  if (newValues.avatarUrl?.name) newAvatar = newValues.avatarUrl;
+  if (userData.avatarUrl !== null && newValues.avatarUrl === null) newAvatar = null;
   delete newValues.avatarUrl;
 
   const userGroupsSet = new Set(userData.groups.map(({ id }) => id));
   const valuesGroupsSet = new Set(values.groups.map(({ id }) => id));
 
   const groupsToAdd = values.groups.filter(({ id }) => !userGroupsSet.has(id));
-  const groupsToRemove = userData.groups.filter(
-    ({ id }) => !valuesGroupsSet.has(id)
-  );
+  const groupsToRemove = userData.groups.filter(({ id }) => !valuesGroupsSet.has(id));
   delete newValues.groups;
 
   //2. Check if usre date changed
@@ -114,15 +110,17 @@ export const updateUser = async ({ state, effects }, { userData, values }) => {
     newValues = null;
   }
 
-  console.log({ newValues, groupsToAdd, groupsToRemove, avatar });
-
   //3. update User
   if (newValues) {
     const response = await effects.users.api.updateUser(newValues, token);
     if (response.error) return response;
+  } else {
+    newValues = userData
   }
 
   //4. Add to group
+  newValues.groups = userData.groups;
+
   if (groupsToAdd?.length > 0) {
     //assign each group to user
     for await (const group of groupsToAdd) {
@@ -131,43 +129,45 @@ export const updateUser = async ({ state, effects }, { userData, values }) => {
         userId: newValues.id,
         token,
       });
-      if (!grp.error) userData.groups.push(group);
+      if (!grp.error) newValues.groups.push(group);
     }
   }
 
   //5. remove from group
+  console.log(groupsToRemove)
   if (groupsToRemove?.length > 0) {
     //assign each group to user
+    
     for await (const group of groupsToRemove) {
+      console.log(group)
       const grp = await effects.users.api.deleteUserFromGroup({
         groupId: group.id,
         userId: newValues.id,
         token,
       });
       if (!grp.error) {
-        userData.groups.filter((userGroup) => userGroup.id !== group.id);
+        newValues.groups.filter((userGroup) => userGroup.id !== group.id);
       }
     }
   }
 
   //6. Upload avatar
-  if (avatar) {
-    const responseUploadAvatar = await uploadAvatar(
+  if (newAvatar?.name) {
+    const respUploadAvatar = await uploadAvatar(
       { state, effects },
-      { avatar, userId: userData.id }
+      { avatar: newAvatar, userId: userData.id }
     );
-    if (!responseUploadAvatar.error) userData.avatarURL = responseUploadAvatar;
-  } else if (!avatar && userData.avatarUrl) {
-    const responseUploadAvatar = await deleteAvatar(
-      { state, effects },
-      userData.id
-    );
-    if (!responseUploadAvatar.error) userData.avatarURL = null;
+    if (!respUploadAvatar.error) newValues.avatarUrl = respUploadAvatar;
+  } else if (newAvatar === null) {
+    const resDelAvatar = await deleteAvatar({ state, effects }, userData.id);
+    if (!resDelAvatar.error) newValues.avatarUrl = null;
+  } else {
+    newValues.avatarUrl = userData.avatarUrl
   }
 
   //7. update state;
   state.users.list = state.users.list.map((user) => {
-    if (user.id === userData.id) user = userData;
+    if (user.id === userData.id) user = newValues;
     return user;
   });
 
@@ -178,12 +178,20 @@ export const updateUserStatus = async ({ state, effects }, values) => {
   const token = state.session.user.token;
 
   //clean data
-  delete values.avatarUrl;
-  delete values.groups;
+  const newValues = { ...values };
+  delete newValues.avatarUrl;
+  delete newValues.groups;
 
-  const response = await effects.users.api.updateUser(values, token);
+  const response = await effects.users.api.updateUser(newValues, token);
   if (response.error) return response;
-  return response;
+
+  // update state;
+  state.users.list = state.users.list.map((user) => {
+    if (user.id === values.id) user.active = values.active;
+    return user;
+  });
+
+  return values;
 };
 
 //***** GROUPS */
@@ -238,28 +246,25 @@ export const requestPassword = async ({ effects }, { email }) => {
 };
 
 export const resetPassword = async ({ effects }, { password, token }) => {
-  const response = await effects.users.api.resetPassword({
-    password,
-    token,
-  });
+  const response = await effects.users.api.resetPassword({ password, token });
   if (response.error) return response;
   return {};
 };
 
 //***** AVATAR */
 
-export const uploadAvatar = async ({ state, effects }, { avatar, userID }) => {
+export const uploadAvatar = async ({ state, effects }, { avatar, userId }) => {
   const token = state.session.user.token;
-  const response = await effects.users.api.uploadAvatar(avatar, userID, token);
+  const response = await effects.users.api.uploadAvatar({ avatar, userId, token });
   if (response.error) return { error: response.statusText };
   return response.fileName;
 };
 
-export const deleteAvatar = async ({ state, effects }, userID) => {
+export const deleteAvatar = async ({ state, effects }, userId) => {
   const token = state.session.user.token;
-  const response = await effects.users.api.deleteAvatar(userID, token);
+  const response = await effects.users.api.deleteAvatar(userId, token);
   if (response.error) return { error: response.statusText };
-  return response.fileName;
+  return response;
 };
 
 //***** UTIL */

@@ -16,6 +16,7 @@ import { useApp } from 'src/overmind';
 import Logo from './Logo';
 import Profile from './profile/Profile';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { APP_URL } from '../config/config.js';
 
 const useStyles = makeStyles(({ spacing }) => ({
   root: {},
@@ -94,7 +95,8 @@ const TopBar = ({ appMode, className, handleMenuClick, ...rest }) => {
               onClick={handleProfileClick}
               src={
                 state.session.user.avatarUrl &&
-                `/uploads/assets${state.session.user.avatarUrl}`
+                // `/uploads/assets${state.session.user.avatarUrl}`
+                `${APP_URL}/uploads/assets${state.session.user.avatarUrl}`
               }
             >
               {!state.session.user.avatarUrl && <AccountCircleIcon />}

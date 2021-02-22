@@ -57,19 +57,37 @@ export const changePassword = async ({ state, effects }, password) => {
 };
 
 export const uploadAvatar = async ({ state, effects }, avatar) => {
-  const user = state.session.user;
-  const response = await effects.session.api.uploadAvatar(avatar, user);
+  const token = state.session.user.token;
+  const response = await effects.session.api.uploadAvatar(avatar, token);
   if (response.error) return { error: response.statusText };
   state.session.user.avatarUrl = response.fileName;
+
+  //update user list
+  if (state.users.list.length > 0) updateSelfAvatarOnUserList(state);
+
   return response;
 };
 
 export const deleteAvatar = async ({ state, effects }) => {
-  const user = state.session.user;
-  const response = await effects.users.api.deleteAvatar(user);
+  const token = state.session.user.token;
+  const response = await effects.session.api.deleteAvatar(token);
   if (response.error) return { error: response.statusText };
   state.session.user.avatarUrl = null;
+
+  //update user list
+  if (state.users.list.length > 0) updateSelfAvatarOnUserList(state);
+
   return response;
+};
+
+const updateSelfAvatarOnUserList = (state) => {
+  const currentUser = state.session.user;
+  state.users.list = state.users.list.map((user) => {
+    if (user.id === currentUser.id) {
+      user.avatarUrl = state.session.user.avatarUrl;
+    }
+    return user;
+  });
 };
 
 export const signOut = ({ state }) => {

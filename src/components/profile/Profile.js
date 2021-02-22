@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from 'src/overmind';
 import AvatarDialog from './AvatarDialog';
 import PasswordDialog from './PasswordDialog';
+import { APP_URL } from '../../config/config.js';
 
 const useStyles = makeStyles(() => ({
   root: { width: 280 },
@@ -80,11 +81,11 @@ const Profile = ({ anchor, handleClose }) => {
         p={2}
       >
         <Avatar
-          className={classes.avatar}
           // onClick={handleProfileClick}
+          // src={state.session.user.avatarUrl && `/uploads/assets${state.session.user.avatarUrl}`}
           src={
             state.session.user.avatarUrl &&
-            `/uploads/assets${state.session.user.avatarUrl}`
+            `${APP_URL}/uploads/assets${state.session.user.avatarUrl}`
           }
         >
           {!state.session.user.avatarUrl && <AccountCircleIcon />}
@@ -101,9 +102,10 @@ const Profile = ({ anchor, handleClose }) => {
             {state.session.user.firstName} {state.session.user.lastName}
           </Typography>
           <Typography variant="body2">{state.session.user.userName}</Typography>
-          <Typography variant="caption">Dawson College</Typography>
           {state.session.user.groups.length > 0 && (
-            <Typography>{state.session.user.groups[0].name}</Typography>
+            <Typography variant="caption">
+              {state.session.user.groups.map((group) => group.name).join(' • ')}
+            </Typography>
           )}
         </Box>
       </Box>

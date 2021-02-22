@@ -174,6 +174,7 @@ const Details = ({ open, handleDetailClose, group }) => {
             </DialogActions>
             <DeleteDialog
               handleYes={() => {
+                setDeleteDialogOpen(false)
                 values.submitType = 'delete';
                 handleSubmit();
               }}

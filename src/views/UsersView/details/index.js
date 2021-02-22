@@ -40,23 +40,32 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
   },
 }));
 
-const Details = ({ open, handleDetailClose, user }) => {
+const initialValues = {
+  id: null,
+  avatarUrl: null,
+  firstName: '',
+  lastName: '',
+  userName: '',
+  roleTypeId: 2, // student
+  groups: [],
+  active: true,
+};
+
+const formValidation = Yup.object().shape({
+  avatarUrl: Yup.mixed(),
+  firstName: Yup.string().trim().required('First name is required'),
+  lastName: Yup.string().trim().required('Last name is required'),
+  userName: Yup.string().email().required('Email is required'),
+  roleTypeId: Yup.number().required(),
+  groups: Yup.mixed(),
+  active: Yup.bool(),
+});
+
+const Details = ({ handleDetailClose, open, user }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
-
-  const initialValues = {
-    id: null,
-    avatarUrl: null,
-    firstName: '',
-    lastName: '',
-    userName: '',
-    roleTypeId: state.users.defaultRoleType,
-    groups: [],
-    active: true,
-  };
-
   const [userData, setUserData] = useState(initialValues);
 
   useEffect(() => {
@@ -84,16 +93,6 @@ const Details = ({ open, handleDetailClose, user }) => {
     }
     return () => {};
   }, [open]);
-
-  const formValidation = Yup.object().shape({
-    avatarUrl: Yup.mixed(),
-    firstName: Yup.string().trim().required('First name is required'),
-    lastName: Yup.string().trim().required('Last name is required'),
-    userName: Yup.string().email().required('Email is required'),
-    roleTypeId: Yup.number().required(),
-    groups: Yup.mixed(),
-    active: Yup.bool(),
-  });
 
   const handleCancelButton = () => {
     handleDetailClose();
@@ -168,7 +167,7 @@ const Details = ({ open, handleDetailClose, user }) => {
             if (values.submitType) {
               const active = values.submitType === 'delete' ? false : true;
               const response = await updateUserStatus(values, active);
-              if (!response.error) values.active = active;
+              if (!response?.error) values.active = active;
               return;
             }
 
@@ -238,6 +237,7 @@ const Details = ({ open, handleDetailClose, user }) => {
               </DialogActions>
               <DeleteDialog
                 handleYes={() => {
+                  setDeleteDialogOpen(false)
                   values.submitType = 'delete';
                   handleSubmit();
                 }}

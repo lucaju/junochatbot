@@ -18,16 +18,14 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
+import { APP_URL } from '../../config/config.js';
 
 const useStyles = makeStyles(({ palette }) => ({
-  progress: { position: 'absolute' },
   avatar: {
     height: 80,
     width: 80,
   },
   button: { top: -3 },
-  hide: { display: 'none' },
-  show: { display: 'block' },
   dropzone: {
     borderWidth: 1,
     borderRadius: 40,
@@ -40,12 +38,15 @@ const useStyles = makeStyles(({ palette }) => ({
     // marginTop: 0,
     // marginBottom: 0,
   },
+  hide: { display: 'none' },
   icon: {
     marginTop: -20,
     height: 70,
     width: 70,
     color: palette.type === 'light' ? palette.grey[300] : palette.grey[700],
   },
+  progress: { position: 'absolute' },
+  show: { display: 'block' },
 }));
 
 const formValidation = Yup.object().shape({
@@ -97,16 +98,25 @@ const AvatarDialog = ({ handleClose, open }) => {
     const message = avatar ? 'Avatar changed' : 'Avatar removed';
     actions.ui.showNotification({ message, type: 'success' });
 
-    handleClosePanel();
+    // handleClosePanel();
+    handleClose();
   };
 
   const handleClosePanel = () => {
-    setValue(null);
-    setImage(null);
+    setValue(state.session.user.avatarUrl);
+    setImage(typeof value === 'string' ? value : null);
     setUploadedImage(null);
-    setShowDropzone(false);
+    // setShowDropzone(false);
     handleClose();
   };
+
+  // const handleClosePanel = () => {
+  //   setValue('');
+  //   setImage(null);
+  //   setUploadedImage(null);
+  //   // setShowDropzone(false);
+  //   handleClose();
+  // };
 
   return (
     <Dialog
@@ -153,7 +163,8 @@ const AvatarDialog = ({ handleClose, open }) => {
                     <>
                       <Avatar
                         className={classes.avatar}
-                        src={!uploadedImage ? `/uploads/assets${image}` : ''}
+                        // src={!uploadedImage ? `/uploads/assets${image}` : ''}
+                        src={!uploadedImage && image && typeof value === 'string'? `${APP_URL}/uploads/assets${image}` : ''}
                       >
                         {uploadedImage && (
                           <img className={classes.dropzone} src={image} />

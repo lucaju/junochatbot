@@ -5,18 +5,7 @@ export const dataUsers = [
     lastName: 'Frizzera',
     avatarUrl: 'lucaju.jpg',
     userName: 'lucaju@gmail.com',
-    roleTypeId: 'Admin',
-    group: 'None',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 0,
   },
   {
     id: 2,
@@ -24,18 +13,7 @@ export const dataUsers = [
     lastName: 'Yu',
     avatarUrl: '',
     userName: 'cao.yu@userName.io',
-    roleTypeId: 'Student',
-    group: 'Dawson Cegep',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 2,
   },
   {
     id: 3,
@@ -43,18 +21,7 @@ export const dataUsers = [
     lastName: 'Richardson',
     avatarUrl: '',
     userName: 'alex.ri@userName.io',
-    roleTypeId: 'Student',
-    group: 'Dawson Cegep',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 2,
   },
   {
     id: 4,
@@ -62,18 +29,7 @@ export const dataUsers = [
     lastName: 'Keizer',
     avatarUrl: '',
     userName: 'anje.keizer@userName.io',
-    roleTypeId: 'Student',
-    group: 'Dawson Cegep',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 2,
   },
   {
     id: 5,
@@ -81,18 +37,7 @@ export const dataUsers = [
     lastName: 'Gillebert',
     avatarUrl: '',
     userName: 'clarke.gillebert@userName.io',
-    roleTypeId: 'Student',
-    group: 'St. Lawrence Cegep',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 2,
   },
   {
     id: 6,
@@ -100,18 +45,7 @@ export const dataUsers = [
     lastName: 'Denisov',
     avatarUrl: '',
     userName: 'adam.denisov@userName.io',
-    roleTypeId: 'Student',
-    group: 'Dawson Cegep',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 2,
   },
   {
     id: 7,
@@ -119,18 +53,7 @@ export const dataUsers = [
     lastName: 'Gregoraci',
     avatarUrl: '',
     userName: 'ava.gregoraci@userName.io',
-    roleTypeId: 'Student',
-    group: 'St. Lawrence Cegep',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 2,
   },
   {
     id: 8,
@@ -138,18 +61,7 @@ export const dataUsers = [
     lastName: 'Simchenko',
     avatarUrl: '',
     userName: 'emilee.simchenko@userName.io',
-    roleTypeId: 'Student',
-    group: 'Dawson Cegep',
-    stories: [
-      {
-        id: 1,
-        title: 'After Life',
-      },
-      {
-        id: 2,
-        title: 'Silicon',
-      },
-    ],
+    roleTypeId: 2,
   },
 ];
 

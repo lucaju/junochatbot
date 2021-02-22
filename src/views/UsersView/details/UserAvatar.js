@@ -5,6 +5,7 @@ import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { APP_URL } from '../../../config/config.js';
 
 const useStyles = makeStyles(({ palette }) => ({
   avatar: {
@@ -93,7 +94,8 @@ const UserAvatar = ({ name, active, values }) => {
         <>
           <Avatar
             className={classes.avatar}
-            src={!uploadedImage ? `/uploads/assets${image}` : ''}
+            // src={!uploadedImage ? `/uploads/assets${image}` : ''}
+            src={!uploadedImage ? `${APP_URL}/uploads/assets${image}` : ''}
           >
             {uploadedImage && <img className={classes.dropzone} src={image} />}
           </Avatar>

@@ -78,6 +78,7 @@ const PasswordDialog = ({ handleClose, open }) => {
                 <FormControl fullWidth>
                   <InputLabel htmlFor="password">New Password</InputLabel>
                   <Input
+                    autoComplete="new-password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton

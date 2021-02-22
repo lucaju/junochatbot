@@ -1,35 +1,61 @@
 import {
   Box,
-  Card,
   CircularProgress,
   makeStyles,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
-  TableRow,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useApp } from 'src/overmind';
-import UserRow from './UserRow';
+import UserCard from './UserCard';
+import UsersListHeader from './UsersListHeader';
+
+const userTableWidth = 425;
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxHeight: '70vh',
+    maxHeight: '75vh',
     overflowY: 'scroll',
+    maxWidth: userTableWidth,
   },
+  pagination: { maxWidth: userTableWidth },
 }));
 
-const UsersList = ({ filters, groupId, handleDetailOpen, ...rest }) => {
+const descendingComparator = (a, b, orderBy) => {
+  if (b[orderBy] < a[orderBy]) return -1;
+  if (b[orderBy] > a[orderBy]) return 1;
+  return 0;
+};
+
+const getComparator = (order, orderBy) => {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+};
+
+const stableSort = (array, comparator) => {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+};
+
+const UsersList = ({ filters, groupId, handleDetailOpen }) => {
   const classes = useStyles();
   const { actions, state } = useApp();
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -52,17 +78,9 @@ const UsersList = ({ filters, groupId, handleDetailOpen, ...rest }) => {
     setIsLoading(false);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-  };
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleEditClick = (userID) => {
-    handleDetailOpen(userID);
-  };
+  const handleChangeRowsPerPage = (event) => setRowsPerPage(event.target.value);
+  const handlePageChange = (event, newPage) => setPage(newPage);
+  const handleEditClick = (userID) => handleDetailOpen(userID);
 
   const filterItems = () => {
     return state.users.list
@@ -81,8 +99,14 @@ const UsersList = ({ filters, groupId, handleDetailOpen, ...rest }) => {
       });
   };
 
+  const onRequestSort = (property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   return (
-    <Card className={classes.root} {...rest}>
+    <>
       {isLoading ? (
         <Box
           display="flex"
@@ -98,44 +122,42 @@ const UsersList = ({ filters, groupId, handleDetailOpen, ...rest }) => {
         </Box>
       ) : (
         <PerfectScrollbar>
-          <Box minWidth={750}>
-            <TableContainer className={classes.container}>
-              <Table stickyHeader>
-                <TableHead>
-                  <TableRow>
-                    <TableCell padding="checkbox"></TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Group</TableCell>
-                    <TableCell>Stories</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filterItems()
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((user) => (
-                      <UserRow
-                        key={user.id}
-                        user={user}
-                        handleEditClick={handleEditClick}
-                      />
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader>
+              <UsersListHeader
+                handleDetailOpen={handleDetailOpen}
+                onRequestSort={onRequestSort}
+                order={order}
+                orderBy={orderBy}
+              />
+              <TableBody>
+                {stableSort(filterItems(), getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((user) => (
+                    <UserCard
+                      key={user.id}
+                      user={user}
+                      handleEditClick={handleEditClick}
+                      tabIndex={-1}
+                    />
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
           <TablePagination
+            className={classes.pagination}
             component="div"
             count={filterItems().length}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handleChangeRowsPerPage}
             page={page}
             rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25, 50]}
           />
         </PerfectScrollbar>
       )}
-    </Card>
+    </>
   );
 };
 

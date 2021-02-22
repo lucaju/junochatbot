@@ -1,4 +1,3 @@
-// import mock from 'src/mockData';
 import base64 from 'base-64';
 import { API_URL } from '../../config/config.js';
 
@@ -62,7 +61,7 @@ export const api = {
     return result;
   },
 
-  async uploadAvatar(avatar, { token }) {
+  async uploadAvatar(avatar, token) {
     const formData = new FormData();
     formData.append('file', avatar);
 
@@ -75,10 +74,11 @@ export const api = {
     const { ok, status, statusText } = response;
     if (!ok) return { error: { status, statusText } };
 
-    return response;
+    const result = await response.json();
+    return result;
   },
 
-  async deleteAvatar({ token }) {
+  async deleteAvatar(token) {
     const response = await fetch(`${API_URL}/application/users/avatar`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },

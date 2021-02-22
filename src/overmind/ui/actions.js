@@ -11,7 +11,7 @@ export const switchLanguage = ({ state }, value) => {
   state.ui.languageCode = value;
 };
 
-export const showNotification = ({ state }, { type, message }) => {
+export const showNotification = ({ state }, { message, type }) => { 
   state.ui.notification = { type, message, open: true };
 };
 
