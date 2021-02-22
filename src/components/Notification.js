@@ -20,16 +20,16 @@ const Notification = () => {
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       autoHideDuration={6000}
       onClose={handleInternalClose}
-      open={state.ui.open}
+      open={state.ui.notification.open}
       TransitionComponent={TransitionRight}
     >
       <MuiAlert
         elevation={6}
         onClose={handleInternalClose}
-        severity={state.ui.type}
+        severity={state.ui.notification.type}
         variant="filled"
       >
-        {state.ui.message}
+        {state.ui.notification.message}
       </MuiAlert>
     </Snackbar>
   );
