@@ -27,12 +27,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  forgot: { color: theme.palette.secondary.main },
   logo: {
     marginBottom: theme.spacing(8),
-    width: 256,
-  },
-  forgot: {
-    color: theme.palette.secondary.main,
+    width: 400,
   },
 }));
 
@@ -77,8 +75,8 @@ const LoginView = () => {
 
   return (
     <Page className={classes.root} title="Login">
-      <Container maxWidth="xs" className={classes.container}>
-        <Logo type="full" className={classes.logo} />
+      <Container className={classes.container} maxWidth="xs">
+        <Logo className={classes.logo} type="full" />
         {hasToken ? (
           <Box
             display="flex"
@@ -93,7 +91,7 @@ const LoginView = () => {
           </Box>
         ) : (
           <>
-            <Typography component="h1" variant="h5" color="textPrimary">
+            <Typography color="textPrimary" component="h1" variant="h5" >
               Sign in
             </Typography>
             {error && (
@@ -104,10 +102,10 @@ const LoginView = () => {
               setIsAuthenticating={setIsAuthenticating}
             />
             <Link
+              className={classes.forgot}
               component={RouterLink}
               to="/forgot"
               variant="body2"
-              className={classes.forgot}
             >
               Forgot password?
             </Link>

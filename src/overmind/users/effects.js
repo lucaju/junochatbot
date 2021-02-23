@@ -178,7 +178,7 @@ export const api = {
     return response;
   },
 
-  requestPassword: async ({ email }) => {
+  requestPassword: async (email) => {
     const response = await fetch(`${API_URL}/authentication/users/sendresetpassword/${email}`);
 
     const { ok, status, statusText } = response;
@@ -187,7 +187,7 @@ export const api = {
     return response;
   },
 
-  resetPassword: async ({ password, token }) => {
+  resetPassword: async (password, token) => {
     const response = await fetch(`${API_URL}/authentication/users/setpassword`, {
       method: 'PUT',
       headers: {

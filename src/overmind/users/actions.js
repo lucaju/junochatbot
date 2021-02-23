@@ -240,13 +240,13 @@ const updateGroup = async ({ state, effects, groupData, token }) => {
 //***** PASSWORD */
 
 export const requestPassword = async ({ effects }, { email }) => {
-  const response = await effects.users.api.requestPassword({ email });
+  const response = await effects.users.api.requestPassword(email);
   if (response.error) return response;
   return {};
 };
 
 export const resetPassword = async ({ effects }, { password, token }) => {
-  const response = await effects.users.api.resetPassword({ password, token });
+  const response = await effects.users.api.resetPassword(password, token);
   if (response.error) return response;
   return {};
 };

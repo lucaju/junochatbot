@@ -30,10 +30,8 @@ const ForgotForm = ({ requestPassword }) => {
   return (
     <Formik
       initialValues={{ email: '' }}
+      onSubmit={async (values) => await requestPassword(values)}
       validationSchema={formValidation}
-      onSubmit={async (values) => {
-        await requestPassword(values);
-      }}
     >
       {({
         errors,
@@ -58,7 +56,7 @@ const ForgotForm = ({ requestPassword }) => {
             type="email"
             value={values.email}
           />
-          <Box my={2}>
+          <Box mt={2}>
             <Button
               classes={{ containedPrimary: classes.submitButton }}
               color="primary"

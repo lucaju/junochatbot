@@ -1,4 +1,4 @@
-import { Button, Container, makeStyles, Typography } from '@material-ui/core';
+import { Container, Link, makeStyles, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
@@ -8,26 +8,30 @@ import { useApp } from '../../overmind';
 import ErrorMessage from './components/ErrorMessage';
 import ResetPasswordForm from './components/ResetPasswordForm';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette, spacing }) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: palette.background.default,
     height: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
+    paddingBottom: spacing(3),
+    paddingTop: spacing(3),
+  },
+  backArrowIcon: {
+    marginBottom: -spacing(0.5),
+    marginRight: spacing(0.5),
   },
   container: {
-    marginTop: theme.spacing(8),
+    marginTop: spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
-  logo: {
-    marginBottom: theme.spacing(8),
-    width: 256,
-  },
   login: {
-    marginTop: theme.spacing(4),
-    color: theme.palette.secondary.main,
+    marginTop: spacing(4),
+    color: palette.secondary.main,
+  },
+  logo: {
+    marginBottom: spacing(8),
+    width: 256,
   },
 }));
 
@@ -41,7 +45,6 @@ const ResetPasswordView = () => {
 
   const query = new URLSearchParams(location.search);
   const resetToken = query.get('token');
-  // const email = query.get('username');
 
   useEffect(() => {
     if (state.session.isSignedIn || !resetToken) {
@@ -79,14 +82,15 @@ const ResetPasswordView = () => {
               <ResetPasswordForm resetPassword={resetPassword} />
             </>
           )}
-          <Button
+          <Link
             className={classes.login}
             component={RouterLink}
-            startIcon={<ArrowBackIcon />}
             to="/login"
+            variant="body2"
           >
-            Login
-          </Button>
+            <ArrowBackIcon className={classes.backArrowIcon} fontSize="small" />
+            LOGIN
+          </Link>
         </>
       </Container>
     </Page>
