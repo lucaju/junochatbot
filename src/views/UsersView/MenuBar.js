@@ -21,6 +21,8 @@ const filterActiveOptions = [
   { value: false, name: 'Inactive' },
 ];
 
+const defaultfilterActive = true;
+
 const MenuBar = ({ handleFilterByGroup, updateFilters }) => {
   const classes = useStyles();
   const { state } = useApp();
@@ -36,6 +38,7 @@ const MenuBar = ({ handleFilterByGroup, updateFilters }) => {
 
   useEffect(() => {
     setGroups([{ id: -1, name: 'All', active: true }, ...state.users.groups]);
+    handleFilterActive(defaultfilterActive);
     return () => {};
   }, [state.users.groups]);
 

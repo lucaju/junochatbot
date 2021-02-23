@@ -22,12 +22,14 @@ const filterActiveOptions = [
   { value: false, name: 'Inactive' },
 ];
 
+const defaultfilterActive = true;
+
 const MenuBar = ({ handleDetailOpen, updateFilters }) => {
   const classes = useStyles();
   const [filterActive, setFilterActive] = useState(true);
 
   useEffect(() => {
-    handleFilterActive(true);
+    handleFilterActive(defaultfilterActive);
     return () => {};
   }, []);
 

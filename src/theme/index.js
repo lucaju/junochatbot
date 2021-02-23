@@ -6,9 +6,11 @@ const theme = (darkMode) =>
       type: darkMode ? 'dark' : 'light',
       primary: {
         main: colors.lightBlue[500],
+        // main: '#00aeef',
       },
       secondary: {
         main: colors.blueGrey[400],
+        // main: '#687988',
       },
     },
   });
