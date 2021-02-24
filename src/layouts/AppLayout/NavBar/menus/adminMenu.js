@@ -5,7 +5,6 @@ import GroupWorkIcon from '@material-ui/icons/GroupWork';
 const PATH = '/app';
 
 export const adminMenu = [
-  { icon: 'divider' },
   {
     title: 'Stories',
     tKey: 'stories',

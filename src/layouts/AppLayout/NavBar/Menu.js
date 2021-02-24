@@ -1,4 +1,4 @@
-import { Box, Divider, List, makeStyles } from '@material-ui/core';
+import { Box, List, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import NavItem from './NavItem';
@@ -21,21 +21,14 @@ const Menu = ({ compactMode, items }) => {
   return (
     <Box className={compactMode ? classes.listCompacted : classes.listExanded}>
       <List>
-        {items.map(({ href, icon, restricted, title, tKey }, i) => {
-          if (icon === 'divider') return <Divider key={i} />;
-          if (
-            restricted &&
-            !restricted.includes(state.session.user.roleTypeId)
-          ) {
-            return;
-          }
+        {items.map(({ href, icon, restricted, title, tKey }) => {
+          if (!restricted.includes(state.session.user.roleTypeId)) return;
           return (
             <NavItem
               key={title}
               isCompact={compactMode}
               icon={icon}
               href={href}
-              // title={title}
               title={t(tKey)}
             />
           );

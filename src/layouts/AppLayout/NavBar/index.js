@@ -1,4 +1,12 @@
-import { Box, Drawer, Hidden, IconButton, makeStyles } from '@material-ui/core';
+import {
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  makeStyles,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -34,6 +42,8 @@ const NavBar = ({ compactMode, onMobileClose, openMobile, showStoryMenu }) => {
   const classes = useStyles();
   const location = useLocation();
   const { state } = useApp();
+  const theme = useTheme();
+  const breakpointsUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -42,63 +52,43 @@ const NavBar = ({ compactMode, onMobileClose, openMobile, showStoryMenu }) => {
   }, [location.pathname]);
 
   return (
-    <>
-      <Hidden mdUp>
-        <Drawer
-          anchor="left"
-          classes={{ paper: clsx(classes.mobileDrawer) }}
-          onClose={onMobileClose}
-          open={openMobile}
-          variant="temporary"
+    <Drawer
+      anchor="left"
+      classes={{
+        paper: clsx(
+          breakpointsUpMd && classes.desktopDrawer,
+          compactMode && classes.desktopDrawerCompact,
+          !breakpointsUpMd && classes.mobileDrawer
+        ),
+      }}
+      onClose={breakpointsUpMd ? null : onMobileClose}
+      open={breakpointsUpMd ? true : openMobile}
+      variant={breakpointsUpMd ? 'persistent' : 'temporary'}
+    >
+      {!breakpointsUpMd && (
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          className={classes.topBar}
         >
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            className={classes.topBar}
-          >
-            <IconButton color="inherit" onClick={onMobileClose}>
-              <MenuIcon />
-            </IconButton>
-            <RouterLink to="/">
-              <Logo className={classes.logo} type="simplified" />
-            </RouterLink>
-          </Box>
-          {showStoryMenu && (
-            <Menu compactMode={compactMode} items={storyMenu} />
-          )}
-          {state.session.user.roleTypeId <= 2 && (
-            <>
-              <Box flexGrow={1} />
-              <Menu compactMode={compactMode} items={adminMenu} />
-            </>
-          )}
-        </Drawer>
-      </Hidden>
-      <Hidden smDown>
-        <Drawer
-          anchor="left"
-          classes={{
-            paper: clsx(
-              classes.desktopDrawer,
-              compactMode && classes.desktopDrawerCompact
-            ),
-          }}
-          open
-          variant="persistent"
-        >
-          {showStoryMenu && (
-            <Menu compactMode={compactMode} items={storyMenu} />
-          )}
-          {state.session.user.roleTypeId <= 2 && (
-            <>
-              <Box flexGrow={1} />
-              <Menu compactMode={compactMode} items={adminMenu} />
-            </>
-          )}
-        </Drawer>
-      </Hidden>
-    </>
+          <IconButton color="inherit" onClick={onMobileClose}>
+            <MenuIcon />
+          </IconButton>
+          <RouterLink to="/">
+            <Logo className={classes.logo} type="simplified" />
+          </RouterLink>
+        </Box>
+      )}
+      {showStoryMenu && <Menu compactMode={compactMode} items={storyMenu} />}
+      {state.session.user.roleTypeId <= 2 && (
+        <>
+          <Box flexGrow={1} />
+          <Divider />
+          <Menu compactMode={compactMode} items={adminMenu} />
+        </>
+      )}
+    </Drawer>
   );
 };
 
