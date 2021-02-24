@@ -29,12 +29,8 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-box-sizing': 'content-box',
     boxSizing: 'content-box',
   },
-  item: {
-    margin: 20,
-  },
-  spinner: {
-    marginTop: '25%',
-  },
+  item: { margin: 20 },
+  spinner: { marginTop: '25%' },
 }));
 
 const title = 'Stories';
@@ -64,13 +60,8 @@ const Stories = () => {
       ? [AddStoryCard, ...state.story.stories]
       : state.story.stories;
 
-  const handleAddDialogOpen = () => {
-    setAddDialogOpen(true);
-  };
-
-  const handleAddDiaglogClose = () => {
-    setAddDialogOpen(false);
-  };
+  const handleAddDialogOpen = () => setAddDialogOpen(true);
+  const handleAddDiaglogClose = () => setAddDialogOpen(false);
 
   const triggerEditStory = (story) => {
     if (!story.new) actions.story.setCurrentStory(story.id);
