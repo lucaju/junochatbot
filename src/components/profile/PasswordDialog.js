@@ -26,7 +26,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 const formValidation = Yup.object().shape({
-  password: Yup.string().min(5).max(255).required('Password is required'),
+  password: Yup.string()
+    .min(8)
+    .max(255)
+    .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
+    .required(
+      'Password must have at least 8 characters and contain at least 2 numbers'
+    ),
 });
 
 const PasswordDialog = ({ handleClose, open }) => {
@@ -41,10 +47,16 @@ const PasswordDialog = ({ handleClose, open }) => {
     const response = await actions.session.changePassword(values);
 
     if (response.error) {
-      actions.ui.showNotification({ message: 'Something went wrong!', type: 'error' });
+      actions.ui.showNotification({
+        message: 'Something went wrong!',
+        type: 'error',
+      });
       return;
     }
-    actions.ui.showNotification({ message: 'Password changed', type: 'success' });
+    actions.ui.showNotification({
+      message: 'Password changed',
+      type: 'success',
+    });
 
     handleClose();
   };

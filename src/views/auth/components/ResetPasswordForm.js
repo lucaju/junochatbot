@@ -25,7 +25,13 @@ const useStyles = makeStyles(({ palette }) => ({
 }));
 
 const formValidation = Yup.object().shape({
-  password: Yup.string().min(5).max(255).required('Password is required'),
+  password: Yup.string()
+    .min(8)
+    .max(255)
+    .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
+    .required(
+      'Password must have at least 8 characters and contain at least 2 numbers'
+    ),
 });
 
 const ResetPasswordForm = ({ resetPassword }) => {
