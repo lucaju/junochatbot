@@ -10,12 +10,12 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import AdbIcon from '@material-ui/icons/Adb';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { useRefresh } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { getIcon } from 'src/util/icons';
 
 const useStyles = makeStyles(({ palette, shape, spacing }) => ({
   root: { width: 325 },
@@ -24,12 +24,8 @@ const useStyles = makeStyles(({ palette, shape, spacing }) => ({
     right: 0,
   },
   actionPanelMarginTop: { marginTop: spacing(4) },
-  botNme: {
-    borderRadius: shape.borderRadius,
-    color: palette.type === 'light' ? palette.grey[800] : palette.common.white,
-  },
-  icon: { marginRight: spacing(1) },
   divider: { width: '30%' },
+  icon: { marginRight: spacing(1) },
   label: {
     paddingLeft: spacing(1),
     paddingRight: spacing(1),
@@ -66,6 +62,8 @@ const StoryCard = ({
   const [elevation, setElevation] = useState(0);
 
   useRefresh([hover]);
+
+  const BotAvatar = getIcon(story.botAvatar);
 
   const mouseOver = () => {
     setHover(true);
@@ -164,9 +162,11 @@ const StoryCard = ({
             By {story.owner.firstName} {story.owner.lastName}
           </Typography>
         </Box>
-        <Box mt={1} display="flex" alignItems="center">
-          <Typography variant="body2">{story.synopsis}</Typography>
-        </Box>
+        {story.synopsis && (
+          <Box mt={1} display="flex" alignItems="center">
+            <Typography variant="body2">{story.synopsis}</Typography>
+          </Box>
+        )}
         {story.botName && (
           <>
             <Box
@@ -184,12 +184,14 @@ const StoryCard = ({
               <Divider className={classes.divider} />
             </Box>
             <Box display="flex" alignItems="center" flexDirection="row" pl={2}>
-              <AdbIcon fontSize="small" className={classes.icon} />
+              <BotAvatar fontSize="small" className={classes.icon} />
               <Typography variant="h6">{story.botName}</Typography>
             </Box>
-            <Box display="flex" alignItems="center" mt={1} pl={2}>
-              <Typography variant="body2">{story.botPersona}</Typography>
-            </Box>
+            {story.botPersona && (
+              <Box display="flex" alignItems="center" mt={1} pl={2}>
+                <Typography variant="body2">{story.botPersona}</Typography>
+              </Box>
+            )}
           </>
         )}
       </CardContent>
