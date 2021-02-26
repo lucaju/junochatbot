@@ -76,7 +76,7 @@ export const api = {
   },
 
   async addUserToGroup({ groupId, userId, token }) {
-    const response = await fetch(`${API_URL}/admin/groups${groupId}/users${userId}`, {
+    const response = await fetch(`${API_URL}/admin/groups/${groupId}/users/${userId}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -89,8 +89,9 @@ export const api = {
   },
 
   async deleteUserFromGroup({ groupId, userId, token }) {
+
     console.log( {groupId, userId, token })
-    const response = await fetch(`${API_URL}/admin/groups${groupId}/users${userId}`, {
+    const response = await fetch(`${API_URL}/admin/groups/${groupId}/users/${userId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     });
