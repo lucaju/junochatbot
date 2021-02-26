@@ -22,7 +22,7 @@ const Menu = ({ compactMode, items }) => {
     <Box className={compactMode ? classes.listCompacted : classes.listExanded}>
       <List>
         {items.map(({ href, icon, restricted, title, tKey }) => {
-          if (!restricted.includes(state.session.user.roleTypeId)) return;
+          if (restricted && !restricted.includes(state.session.user.roleTypeId)) return;
           return (
             <NavItem
               key={title}
