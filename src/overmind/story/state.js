@@ -6,10 +6,10 @@ export const state = {
     { value: 'fr-CA', name: 'French' },
   ],
   icons: [
-    { value: 'adb', name: 'face' },
-    { value: 'face', name: 'face' },
-    { value: 'account', name: 'account' },
-    { value: 'bug', name: 'bug' },
-    { value: 'child', name: 'child' },
+    { value: 'adb' },
+    { value: 'face' },
+    { value: 'account' },
+    { value: 'bug' },
+    { value: 'child' },
   ],
 };
