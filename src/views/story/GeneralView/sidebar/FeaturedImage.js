@@ -1,35 +1,37 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardMedia,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Box, CardMedia, IconButton, makeStyles } from '@material-ui/core';
 import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-const useStyles = makeStyles((theme) => ({
-  card: {
-    maxWidth: 330,
-    maxHeight: 140,
+const useStyles = makeStyles(({ spacing, palette }) => ({
+  buttonRemove: {
+    position: 'relative',
+    top: spacing(1),
+    left: 296,
+    // backgroundColor: palette.type === 'light' ? palette.common.white : 
+    backgroundColor: palette.background.paper
   },
-  marginTop: { marginTop: theme.spacing(1) },
+  media: { height: 180 },
   hide: { display: 'none' },
   show: { display: 'block' },
   dropzone: {
-    borderWidth: '2px',
-    maxWidth: 330,
-    minHeight: 140,
-    backgroundColor: theme.palette.background.default,
+    borderWidth: 2,
+    maxWidth: 314,
+    minHeight: 60,
+    backgroundColor: palette.background.paper,
+    margin: spacing(1),
   },
-  dropzoneText: { fontSize: 16 },
-  icon: { width: 40 },
+  dropzoneText: { fontSize: 14 },
+  icon: {
+    width: 0,
+    height: 0,
+    display: 'none'
+  },
 }));
 
-const FeaturedImage = ({ name }) => {
+const FeaturedImage = ({ name, title }) => {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
@@ -62,49 +64,46 @@ const FeaturedImage = ({ name }) => {
   };
 
   return (
-    <Box p={2} mt={1} width={'100%'}>
-      <Typography variant="h6" gutterBottom>
-        Featured Image
-      </Typography>
+    <>
       {imageToDisplay && (
-        <>
-          <Card className={classes.Card}>
-            <CardMedia
-              component="img"
-              image={file ? imageToDisplay : `/uploads/assets${imageToDisplay}`}
-            />
-          </Card>
-          <Button
-            className={classes.marginTop}
-            size="small"
+        <CardMedia
+          className={classes.media}
+          image={file ? imageToDisplay : `/uploads/assets${imageToDisplay}`}
+          title={title}
+        >
+          <IconButton
+            aria-label="delete"
+            className={classes.buttonRemove}
             onClick={handleRemoveImage}
+            size="small"
           >
-            Remove featured image
-          </Button>
-        </>
+            <DeleteIcon fontSize="inherit" />
+          </IconButton>
+        </CardMedia>
       )}
 
       <Box className={showDropzone ? classes.show : classes.hide}>
         <DropzoneAreaBase
+          acceptedFiles={['image/*']}
           classes={{
             root: classes.dropzone,
             icon: classes.icon,
           }}
-          acceptedFiles={['image/*']}
-          dropzoneText={'Drag and drop an image here or click'}
+          dropzoneText={'Add Featured Image'}
           dropzoneParagraphClass={classes.dropzoneText}
           filesLimit={1}
-          showAlerts={['error']}
           onAdd={(files) => handleDropZoneChange(files)}
+          showAlerts={['error']}
           showPreviewsInDropzone={false}
         />
       </Box>
-    </Box>
+    </>
   );
 };
 
 FeaturedImage.propTypes = {
   name: PropTypes.string,
+  title: PropTypes.string,
 };
 
 export default FeaturedImage;

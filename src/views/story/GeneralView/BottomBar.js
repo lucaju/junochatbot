@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
   },
+  buttonProgress: { position: 'absolute' },
   divider: {
     paddingLeft: theme.spacing(2),
     paddingright: theme.spacing(2),
   },
-  buttonProgress: { position: 'absolute' },
   marginLeft: { marginLeft: theme.spacing(2) },
 }));
 
@@ -67,9 +67,9 @@ const BottomBar = ({
         flexDirection="row"
         className={classes.bar}
       >
-        <Button color="default" disabled={isSubmitting} onClick={handleDelete}>
+        {/* <Button color="default" disabled={isSubmitting} onClick={handleDelete}>
           Delete Story
-        </Button>
+        </Button> */}
         <Box flexGrow={1} />
         <Button
           color="primary"

@@ -8,17 +8,16 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useApp } from 'src/overmind';
-import { getIcon } from './icons';
-import SliderFormik from './SliderFormik';
+import { getIcon } from 'src/util/icons';
+import BotSpeedTypeSlider from './BotSpeedTypeSlider';
 
-const useStyles = makeStyles((theme) => ({
-  marginBottom: { marginBottom: theme.spacing(1) },
+const useStyles = makeStyles(({ spacing, palette }) => ({
+  avatarSelectBox: { marginTop: '-5px' },
+  marginBottom: { marginBottom: spacing(1) },
   label: {
     fontSize: '0.75rem',
-    color: theme.palette.text.secondary,
-    marginBottom: theme.spacing(2) - 1,
+    color: palette.text.secondary,
   },
-  avatarSelectBox: { marginTop: '-5px' },
 }));
 
 const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
@@ -39,49 +38,30 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
       >
         <Box flexGrow={1} mr={2}>
           <TextField
-            error={Boolean(
-              touched['general.bot.name'] && errors['general.bot.name']
-            )}
+            className={classes.marginBottom}
+            error={Boolean(touched['botName'] && errors['botName'])}
             fullWidth
             label="Name"
-            name="general.bot.name"
+            name="botName"
             onBlur={handleBlur}
             onChange={handleChange}
-            value={values.general.bot.name}
-            className={classes.marginBottom}
+            value={values.botName}
           />
         </Box>
-        {/* <Box width="100px" mr={2}>
-          <TextField
-            fullWidth
-            label="Balloon"
-            name="general.bot.balloon"
-            select
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.general.bot.balloon}
-          >
-            {state.story.colors.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box> */}
         <Box width="50px" className={classes.avatarSelectBox}>
           <TextField
             fullWidth
             label="Avatar"
-            name="general.bot.avatar"
+            name="botAvatar"
             select
             onBlur={handleBlur}
             onChange={handleChange}
-            value={values.general.bot.avatar}
+            value={values.botAvatar}
           >
-            {state.story.icons.map((option) => {
-              const Icon = getIcon(option.value);
+            {state.story.icons.map(({ value }) => {
+              const Icon = getIcon(value);
               return (
-                <MenuItem key={option.value} value={option.value}>
+                <MenuItem key={value} value={value}>
                   <Icon fontSize="small" />
                 </MenuItem>
               );
@@ -91,39 +71,27 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
       </Box>
       <Box p={1} width="100%">
         <TextField
-          error={Boolean(
-            touched['general.bot.persona'] && errors['general.bot.persona']
-          )}
+          className={classes.marginBottom}
+          error={Boolean(touched['botPersona'] && errors['botPersona'])}
           fullWidth
           label="Persona"
-          name="general.bot.persona"
+          name="botPersona"
           multiline
           rowsMax={2}
           rows={2}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.general.bot.persona}
+          value={values.botPersona}
           variant="outlined"
-          className={classes.marginBottom}
         />
       </Box>
-      <Box
-        p={1}
-        display="flex"
-        flexDirection="row"
-        width="100%"
-        alignContent="flex-end"
-      >
-        <Box mr={2}>
-          <Typography
-            id="discrete-slider"
-            gutterBottom
-            className={classes.label}
-          >
-            Typing speed (Miliiseconds per word)
+      <Box p={1} width="50%" minWidth={'330px'}>
+        <Box>
+          <Typography className={classes.label}>
+            {`Message Delay (characters per millissecond)`}
           </Typography>
         </Box>
-        <SliderFormik name="general.bot.speed" />
+        <BotSpeedTypeSlider name="botSpeed" />
       </Box>
     </>
   );

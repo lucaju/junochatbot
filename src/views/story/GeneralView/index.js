@@ -2,7 +2,7 @@ import {
   Box,
   CircularProgress,
   Container,
-  makeStyles,
+  makeStyles
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -15,22 +15,34 @@ import BottomBar from './BottomBar';
 import Main from './main';
 import SideBar from './sidebar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
+    backgroundColor: palette.background.dark,
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
+    paddingBottom: spacing(3),
+    paddingTop: spacing(3),
   },
   container: { height: 'calc(100vh - 64px - 68px - 36px)' },
 }));
 
 const title = 'Juno Chatbot';
 
+const formValidation = Yup.object().shape({
+  title: Yup.string().trim().max(125).required('Title is required'),
+  languageCode: Yup.string(),
+  synopsis: Yup.string(),
+  featuredImage: Yup.mixed(),
+  published: Yup.bool(),
+  botAvatar: Yup.string(),
+  botName: Yup.string(),
+  botPersona: Yup.string(),
+  botSpeed: Yup.number(),
+});
+
 const GeneralView = () => {
   const classes = useStyles();
-  const { state, actions } = useApp();
   const navigate = useNavigate();
+  const { state, actions } = useApp();
   const [isLoading, setIsLoading] = useState(true);
   const [storyData, setStoryData] = useState(null);
   const [submitType, setSubmitType] = useState(null);
@@ -60,70 +72,25 @@ const GeneralView = () => {
     return () => {};
   }, []);
 
-  const formValidation = Yup.object().shape({
-    slug: Yup.string()
-      .required()
-      .required('Slug is required to create the permalink'),
-    title: Yup.string().trim().max(125).required('Title is required'),
-    languageCode: Yup.string().required(),
-    general: Yup.object().shape({
-      synopsis: Yup.string().max(255),
-      featuredImage: Yup.string(),
-      // authors: Yup.array(),
-      published: Yup.bool().required(),
-      public: Yup.bool().required(),
-      bot: Yup.object().shape({
-        name: Yup.string().max(125),
-        persona: Yup.string().max(255),
-        avatar: Yup.string().required(),
-        speed: Yup.number().required(),
-        balloon: Yup.string().required(),
-      }),
-      user: Yup.object().shape({
-        inputPlacehold: Yup.string().required(),
-        balloon: Yup.string().required(),
-      }),
-      ui: Yup.object().shape({
-        sidebar: Yup.string().required(),
-        // showVideoController: Yup.bool().required(),
-      }),
-    }),
-  });
-
   const submit = async (values) => {
-    setSubmitSuccess(null);
-    const res = await actions.story.updateStory(values);
-    setSubmitSuccess(!!res);
-    if (res) {
-      actions.ui.showNotification({
-        type: 'success',
-        message: 'Story Updated',
-      });
-    } else {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Error: Something went wrong!',
-      });
-    }
+    console.log(values);
+    // setSubmitSuccess(null);
+    // const res = await actions.story.updateStory(values);
+    // setSubmitSuccess(!!res);
+
+    // //
+    // const message = (res) ? 'Story Updated' : 'Error: Something went wrong!';
+    // const type = (res) ? 'success' : 'error';
+    // actions.ui.showNotification({ message, type });
   };
 
   const deleteStory = async () => {
-    const res = await actions.story.deleteStory(state.story.currentStory.id);
-    if (!res) {
-      setDeleteDialogOpen(false);
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Error: Something went wrong!',
-      });
-      return;
-    }
+    //TODO
+  };
 
-    actions.ui.showNotification({
-      type: 'success',
-      message: 'Story deleted.',
-    });
-
-    navigate('/app', { replace: true });
+  // eslint-disable-next-line no-unused-vars
+  const updateFeaturedImage = async () => {
+    //TODO
   };
 
   return (
@@ -144,15 +111,16 @@ const GeneralView = () => {
       ) : (
         <>
           <Formik
-            initialValues={storyData}
-            validationSchema={formValidation}
             enableReinitialize={true}
+            initialValues={storyData}
             onSubmit={async (values) => {
-              submitType === 'delete'
-                ? await deleteStory(values)
-                : await submit(values);
-              setSubmitType(null);
+              console.log(values)
+              // submitType === 'delete'
+              //   ? await deleteStory(values)
+              //   : await submit(values);
+              // setSubmitType(null);
             }}
+            validationSchema={formValidation}
           >
             {({
               dirty,
@@ -166,14 +134,14 @@ const GeneralView = () => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box flexGrow={1} height="100%">
-                  <Container maxWidth={false} className={classes.container}>
+                  <Container className={classes.container} maxWidth={false}>
                     <Box
                       alignItems="flex-start"
                       display="flex"
                       flexDirection="row"
                       className={classes.bar}
                     >
-                      <Box flexGrow={1} pr={2}>
+                      <Box flexGrow={1} maxWidth="800px" pr={2}>
                         <Main
                           errors={errors}
                           handleBlur={handleBlur}
@@ -183,13 +151,7 @@ const GeneralView = () => {
                         />
                       </Box>
                       <Box width="330px">
-                        <SideBar
-                          errors={errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                          touched={touched}
-                          values={values}
-                        />
+                        <SideBar values={values} />
                       </Box>
                     </Box>
                   </Container>
@@ -199,12 +161,13 @@ const GeneralView = () => {
                     dirty={dirty}
                     handleDelete={() => setDeleteDialogOpen(true)}
                     isSubmitting={isSubmitting}
-                    name={'general.published'}
+                    name={'published'}
                     submitSuccess={submitSuccess}
                   />
                 </Box>
                 <DeleteDialog
                   handleYes={() => {
+                    setDeleteDialogOpen(false)
                     setSubmitType('delete');
                     handleSubmit();
                   }}

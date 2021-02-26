@@ -3,12 +3,22 @@ import { useField } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-const SliderFormik = ({ name }) => {
+const marks = [
+  { value: 0, label: '0' },
+  { value: 80, label: '80' },
+  { value: 100, label: '100' },
+  { value: 120, label: '120' },
+  { value: 140, label: '140' },
+  { value: 160, label: '160' },
+  { value: 180, label: '180' },
+];
+
+const BotSpeedTypeSlider = ({ name }) => {
   // This isn't an input, so instead of using the values in 'field' directly,
   // we'll use 'meta' and 'helpers'.
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
-  const [initialValue, setInitialValue] = useState(null);
+  const [initialValue, setInitialValue] = useState(0);
 
   const { value } = meta;
   const { setValue } = helpers;
@@ -22,22 +32,21 @@ const SliderFormik = ({ name }) => {
     <>
       {initialValue && (
         <Slider
-          defaultValue={initialValue}
           aria-labelledby="discrete-slider"
+          defaultValue={initialValue}
+          onChangeCommitted={(event, newValue) => setValue(newValue)}
+          marks={marks}
+          max={180}
+          step={null}
           valueLabelDisplay="auto"
-          onChange={(event, newValue) => setValue(newValue)}
-          step={10}
-          marks
-          min={80}
-          max={200}
         />
       )}
     </>
   );
 };
 
-SliderFormik.propTypes = {
+BotSpeedTypeSlider.propTypes = {
   name: PropTypes.string,
 };
 
-export default SliderFormik;
+export default BotSpeedTypeSlider;

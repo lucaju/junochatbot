@@ -1,6 +1,6 @@
 import {
-  Chip,
   Box,
+  Chip,
   makeStyles,
   TextField,
   Typography,
@@ -8,8 +8,11 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({
-  marginRight: { marginRight: theme.spacing(1) },
+const useStyles = makeStyles(({ spacing }) => ({
+  languageChip: {
+    marginTop: spacing(.75),
+    marginLeft: spacing(1),
+  },
 }));
 
 const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
@@ -18,10 +21,14 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <>
       <Box p={1} display="flex" flexDirection="row" width="100%">
-        <Typography className={classes.marginRight} gutterBottom variant="h6">
+        <Typography gutterBottom variant="h6">
           Story
         </Typography>
-        <Chip label={values.languageCode} />
+        <Chip
+          className={classes.languageChip}
+          label={values.languageCode.substring(0, 2).toUpperCase()}
+          size="small"
+        />
       </Box>
       <Box p={1} display="flex" flexDirection="row" width="100%">
         <Box flexGrow={1} mr={2} mt={1}>
@@ -39,19 +46,17 @@ const Story = ({ errors, handleBlur, handleChange, touched, values }) => {
       </Box>
       <Box p={1} width="100%" mt={1}>
         <TextField
-          error={Boolean(
-            touched['general.synopsis'] && errors['general.synopsis']
-          )}
+          error={Boolean(touched['synopsis'] && errors['synopsis'])}
           fullWidth
-          helperText={touched['general.synopsis'] && errors['general.synopsis']}
-          label="synopsis"
-          name="general.synopsis"
+          helperText={touched['synopsis'] && errors['synopsis']}
+          label="Synopsis"
+          name="synopsis"
           multiline
           rowsMax={2}
           rows={2}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.general.synopsis}
+          value={values.synopsis}
           variant="outlined"
         />
       </Box>
