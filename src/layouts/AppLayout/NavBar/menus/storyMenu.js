@@ -10,19 +10,19 @@ export const storyMenu = [
   {
     title: 'General',
     tKey: 'general',
-    href: `${PATH}}/general`,
+    href: `/app/story/general`,
     icon: AdbIcon,
   },
   {
     title: 'Video Collection',
     tKey: 'videoCollection',
-    href: `${PATH}}/video-collection`,
+    href: `/app/story/videos`,
     icon: VideoLibraryIcon,
   },
   {
     title: 'Narrative Design',
     tKey: 'narrativeDesign',
-    href: `${PATH}}/narrative`,
+    href: `/app/story/narrative`,
     icon: QuestionAnswerIcon,
   },
   // {

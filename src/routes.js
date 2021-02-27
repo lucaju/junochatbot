@@ -33,7 +33,7 @@ const routes = [
     element: <AppLayout showStoryMenu={true} />,
     children: [
       { path: 'general', element: <GeneralView /> },
-      { path: 'video-collection', element: <VideoCollectionView /> },
+      { path: 'videos', element: <VideoCollectionView /> },
       { path: 'narrative', element: <NarrativeView /> },
       { path: 'contexts', element: <ContextsView /> },
       { path: 'tags', element: <TagsView /> },
