@@ -2,6 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import express from 'express';
+import youtube from './routes/youtube.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +18,8 @@ const loadDevTools = async () => {
 };
 
 if (process.env.NODE_ENV === 'development') loadDevTools();
+
+app.use('/youtube', youtube);
 
 // static
 app.use('/uploads', express.static('./uploads'));
