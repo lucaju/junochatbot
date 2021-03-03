@@ -34,7 +34,7 @@ const formValidation = Yup.object().shape({
     ),
 });
 
-const ResetPasswordForm = ({ resetPassword }) => {
+const ResetPasswordForm = ({ newUser, resetPassword }) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -60,8 +60,9 @@ const ResetPasswordForm = ({ resetPassword }) => {
       }) => (
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="password">New Password</InputLabel>
+            <InputLabel htmlFor="password">{!newUser && 'New '}Password</InputLabel>
             <Input
+              autoComplete="new-password"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -107,6 +108,7 @@ const ResetPasswordForm = ({ resetPassword }) => {
 };
 
 ResetPasswordForm.propTypes = {
+  newUser: PropTypes.bool,
   resetPassword: PropTypes.func,
 };
 

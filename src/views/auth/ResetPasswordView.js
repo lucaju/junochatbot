@@ -23,7 +23,6 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     marginTop: spacing(8),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
   },
   login: {
     marginTop: spacing(4),
@@ -43,15 +42,18 @@ const ResetPasswordView = () => {
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState();
 
-  const query = new URLSearchParams(location.search);
-  const resetToken = query.get('token');
-
   useEffect(() => {
     if (state.session.isSignedIn || !resetToken) {
       navigate('/app', { replace: true });
     }
     return () => {};
   }, []);
+
+  const query = new URLSearchParams(location.search);
+  const resetToken = query.get('token');
+  const fullName = `${query.get('firstName')} ${query.get('lastName')}`;
+  let newUser = query.get('newUser');
+  newUser = newUser === 'true' ? true : false;
 
   const resetPassword = async (values) => {
     values = { ...values, resetToken };
@@ -67,19 +69,35 @@ const ResetPasswordView = () => {
         <>
           {requestSent ? (
             <Typography color="textPrimary" component="h1" variant="body1">
-              New password set. Visit the login page to sign in.
+              {!newUser ? 'New password' : 'Password'} set. Visit the login page
+              to sign in.
             </Typography>
           ) : (
             <>
-              <Typography color="textPrimary" component="h1" variant="h6">
-                Set Password
-              </Typography>
+              {newUser ? (
+                <>
+                  <Typography component="h1" variant="h6">
+                    Welcome {fullName}
+                  </Typography>
+                  <Typography component="h2" gutterBottom variant="subtitle2">
+                    You must set up your password before starting with Juno
+                    Chatbot.
+                  </Typography>
+                </>
+              ) : (
+                <Typography component="h1" variant="h6">
+                  Set up new password for {fullName}
+                </Typography>
+              )}
               {error && (
                 <ErrorMessage
                   message={`Sorry, it is not possible to set your password at this time.`}
                 />
               )}
-              <ResetPasswordForm resetPassword={resetPassword} />
+              <ResetPasswordForm
+                newUser={newUser}
+                resetPassword={resetPassword}
+              />
             </>
           )}
           <Link
