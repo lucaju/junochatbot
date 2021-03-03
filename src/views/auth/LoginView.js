@@ -50,9 +50,8 @@ const LoginView = () => {
     } else {
       response = await actions.session.authenticate(values);
     }
-
     if (response.error) {
-      setError(response.error.statusText);
+      setError(response.error);
       setIsAuthenticating(false);
       setHasToken(false);
     }
@@ -86,7 +85,7 @@ const LoginView = () => {
           >
             <>
               {isAuthenticating && <CircularProgress size={60} thickness={4} />}
-              {error && <ErrorMessage message={error.statu} />}
+              {error && <ErrorMessage message={error.statusText} />}
             </>
           </Box>
         ) : (
