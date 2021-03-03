@@ -1,10 +1,10 @@
 module.exports = {
 	development: {
 		NODE_ENV: 'development',
-		YT_API: 'AIzaSyD3TNv47XoDCrzkBlk9TzueiTBni6bwmzc',
+		YT_API: '{YOUR_YOUTUBE_API}',
 	},
 	production: {
 		NODE_ENV: 'production',
-		YT_API: 'AIzaSyD3TNv47XoDCrzkBlk9TzueiTBni6bwmzc',
+		YT_API: '{YOUR_YOUTUBE_API}',
 	},
 };
