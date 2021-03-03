@@ -2,7 +2,7 @@ export const dataStories = [
   {
     id: 1,
     title: 'After Life2',
-    featuredimage: 'image1.jpg',
+    image: 'image1.jpg',
     owner: {
       id: 1,
       firstName: 'Luciano',
@@ -11,6 +11,7 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '2022-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
     botAvatar: 'adb',
@@ -29,6 +30,7 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '',
     published: false,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
@@ -36,7 +38,7 @@ export const dataStories = [
     id: 3,
     title: 'Hey I',
     botAvatar: 'adb',
-    featuredimage: 'image6.jpg',
+    image: 'image6.jpg',
     owner: {
       id: 1,
       firstName: 'Luciano',
@@ -45,6 +47,7 @@ export const dataStories = [
     languageCode: 'fr-CA',
     publishedAt: '2022-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
@@ -52,7 +55,7 @@ export const dataStories = [
     id: 4,
     title: 'After Life',
     botAvatar: 'adb',
-    featuredimage: 'image2.jpg',
+    image: 'image2.jpg',
     owner: {
       id: 3,
       firstName: 'Samia',
@@ -61,6 +64,7 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '2021-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
@@ -68,7 +72,7 @@ export const dataStories = [
     id: 5,
     title: 'The Post-Human 2',
     botAvatar: 'adb',
-    featuredimage: 'image3.png',
+    image: 'image3.png',
     owner: {
       id: 3,
       firstName: 'Samia',
@@ -77,6 +81,7 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '2021-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
@@ -92,6 +97,7 @@ export const dataStories = [
     languageCode: 'fr-CA',
     publishedAt: '2021-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
@@ -99,7 +105,7 @@ export const dataStories = [
     id: 7,
     title: 'Circuits',
     botAvatar: 'adb',
-    featuredimage: 'image4.png',
+    image: 'image4.png',
     owner: {
       id: 3,
       firstName: 'Samia',
@@ -108,6 +114,7 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '2021-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis: '',
   },
   {
@@ -122,13 +129,14 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '2021-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis: '',
   },
   {
     id: 9,
     title: 'SilbotAvatar',
     botAvatar: 'adb',
-    featuredimage: 'image5.png',
+    image: 'image5.png',
     owner: {
       id: 3,
       firstName: 'Samia',
@@ -137,6 +145,7 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '2020-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
@@ -152,6 +161,7 @@ export const dataStories = [
     languageCode: 'en-CA',
     publishedAt: '2020-01-01T00:00:00',
     published: true,
+    active : true,
     synopsis:
       'Bacon ipsum dolor amet pastrami turducken fatback pig short ribs ham hock, drumstick cow filet mignon sirloin. Doner rump pastrami chislic short loin. Ribeye corned beef spare ribs short ribs frankfurter cow leberkas picanha.',
   },
@@ -167,14 +177,13 @@ export const storyDefault = {
     lastName: 'Salles',
   },
   synopsis: '',
-  featuredImage: '',
+  image: '',
   published: false,
+  active : true,
   botAvatar: '',
   botName: '',
   botPersona: '',
-  botSpeed: 120,
-  videoCollection: [],
-  dialogFlowCredentials: '',
+  botDelay: 120,
 };
 
 export const storyExample = {
@@ -187,15 +196,14 @@ export const storyExample = {
     lastName: 'Salles',
   },
   synopsis: 'A history beyond this world',
-  featuredImage: '/images/image1.jpg',
+  image: '/images/image1.jpg',
   publishedAt: '2022-01-01T00:00:00',
   published: false,
+  active: true,
   botAvatar: 'adb',
   botName: 'Daft Punk',
   botPersona: 'A Duo Bacon ipsum dolor amet pastrami turducken fatback pig',
-  botSpeed: 100,
-  videoCollection: [],
-  dialogFlowCredentials: '',
+  botDelay: 100,
 };
 
 export default {
