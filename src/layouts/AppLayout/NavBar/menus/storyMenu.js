@@ -1,40 +1,38 @@
 import AdbIcon from '@material-ui/icons/Adb';
 // import LabelIcon from '@material-ui/icons/Label';
-// import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
-
-const PATH = '/app/story';
 
 export const storyMenu = [
   {
     title: 'General',
     tKey: 'general',
-    href: `/app/story/general`,
+    href: '/app/story/general',
     icon: AdbIcon,
   },
   {
     title: 'Video Collection',
     tKey: 'videoCollection',
-    href: `/app/story/videos`,
+    href: '/app/story/videos',
     icon: VideoLibraryIcon,
+  },
+  {
+    title: 'Tags',
+    tKey: 'tags',
+    href: '/app/story/tags',
+    icon: LocalOfferIcon,
   },
   {
     title: 'Narrative Design',
     tKey: 'narrativeDesign',
-    href: `/app/story/narrative`,
+    href: '/app/story/narrative',
     icon: QuestionAnswerIcon,
   },
   // {
   //   title: 'Contexts',
   //   tKey: 'contexts',
-  //   href: `${PATH}}/contexts`,
+  //   href: '/app/story/contexts',
   //   icon: LabelIcon,
-  // },
-  // {
-  //   title: 'Tags',
-  //   tKey: 'tags',
-  //   href: `${PATH}}/tags`,
-  //   icon: LocalOfferIcon,
   // },
 ];
