@@ -1,23 +1,17 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
-import Toolbar from './Toolbar';
 import Details from './details';
+import MenuBar from './menubar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
+    backgroundColor: palette.background.default,
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
+    paddingTop: spacing(3),
   },
 }));
 
@@ -25,65 +19,58 @@ const title = 'Juno Chatbot';
 
 const TagsView = () => {
   const classes = useStyles();
-  const { state, actions } = useApp();
+  const { state } = useApp();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentTagId, setCurrentTagId] = useState(0);
+  const [currentTag, setCurrentTag] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [filters, setFilters] = useState(new Map());
+  const [searchQuery, setSearchQuery] = useState(null);
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
-    const getCollection = async () => {
-      await actions.tag.getCollection();
-      setIsLoading(false);
-    };
-    getCollection();
     return () => {};
   }, []);
 
-  const handleDetailOpen = (id) => {
-    setCurrentTagId(id);
+  const handleDetailOpen = (tag) => {
+    setCurrentTag(tag);
     setDetailsOpen(true);
   };
 
   const handleDetailClose = () => {
-    setCurrentTagId(0);
+    setCurrentTag(undefined);
     setDetailsOpen(false);
+  };
+
+  const updateFilters = ({ type, value, reset }) => {
+    reset ? filters.delete(type) : filters.set(type, value);
+    setFilters(new Map(filters));
+  };
+
+  const handleSearch = async (value) => {
+    if (value === '') value = null;
+    setSearchQuery(value);
   };
 
   return (
     <Page className={classes.root} title={title}>
       <Container maxWidth={false}>
         <Details
-          open={detailsOpen}
           handleDetailClose={handleDetailClose}
-          tagId={currentTagId}
+          open={detailsOpen}
+          tag={currentTag}
         />
-        {isLoading && (
-          <Box
-            display="flex"
-            height="100%"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <CircularProgress
-              className={classes.spinner}
-              size={60}
-              thickness={4}
-            />
-          </Box>
-        )}
-        {!isLoading && (
-          <>
-            <Toolbar handleDetailOpen={handleDetailOpen} />
-            <Box mt={3}>
-              <Collection
-                tags={state.tag.collection}
-                handleDetailOpen={handleDetailOpen}
-              />
-            </Box>
-          </>
-        )}
+        <MenuBar
+          handleDetailOpen={handleDetailOpen}
+          handleSearch={handleSearch}
+          updateFilter={updateFilters}
+        />
+        <Box mt={3}>
+          <Collection
+            filters={filters}
+            handleDetailOpen={handleDetailOpen}
+            searchQuery={searchQuery}
+          />
+        </Box>
       </Container>
     </Page>
   );

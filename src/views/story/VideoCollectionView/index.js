@@ -1,23 +1,17 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
 import Details from './details';
-import Toolbar from './Toolbar';
+import MenuBar from './menubar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
+    backgroundColor: palette.background.default,
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
+    paddingTop: spacing(3),
   },
 }));
 
@@ -25,65 +19,66 @@ const title = 'Juno Chatbot';
 
 const VideoCollectionView = () => {
   const classes = useStyles();
-  const { state, actions } = useApp();
+  const { state } = useApp();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentVideoId, setCurrentVideoId] = React.useState(0);
+  const [currentVideo, setCurrentVideo] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [filters, setFilters] = useState(new Map());
+  const [tagId, setTagId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(null);
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
-    const getCollection = async () => {
-      await actions.video.getCollection();
-      setIsLoading(false);
-    };
-    getCollection();
     return () => {};
   }, []);
 
-  const handleDetailOpen = (id) => {
-    setCurrentVideoId(id);
+  const handleDetailOpen = (video = {}) => {
+    setCurrentVideo(video);
     setDetailsOpen(true);
   };
 
   const handleDetailClose = () => {
-    setCurrentVideoId(0);
+    setCurrentVideo(undefined);
     setDetailsOpen(false);
+  };
+
+  const updateFilters = ({ type, value, reset }) => {
+    reset ? filters.delete(type) : filters.set(type, value);
+    setFilters(new Map(filters));
+  };
+
+  const handleFilterByTag = async (value) => {
+    if (value === -1) value = null;
+    setTagId(value);
+  };
+
+  const handleSearch = async (value) => {
+    if (value === '') value = null;
+    setSearchQuery(value);
   };
 
   return (
     <Page className={classes.root} title={title}>
       <Container maxWidth={false}>
         <Details
-          open={detailsOpen}
           handleDetailClose={handleDetailClose}
-          videoId={currentVideoId}
+          open={detailsOpen}
+          video={currentVideo}
         />
-        {isLoading && (
-          <Box
-            display="flex"
-            height="100%"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <CircularProgress
-              className={classes.spinner}
-              size={60}
-              thickness={4}
-            />
-          </Box>
-        )}
-        {!isLoading && (
-          <>
-            <Toolbar handleDetailOpen={handleDetailOpen} />
-            <Box mt={3}>
-              <Collection
-                videos={state.video.collection}
-                handleDetailOpen={handleDetailOpen}
-              />
-            </Box>
-          </>
-        )}
+        <MenuBar
+          handleDetailOpen={handleDetailOpen}
+          handleFilterByTag={handleFilterByTag}
+          handleSearch={handleSearch}
+          updateFilter={updateFilters}
+        />
+        <Box mt={3}>
+          <Collection
+            filters={filters}
+            handleDetailOpen={handleDetailOpen}
+            searchQuery={searchQuery}
+            tagId={tagId}
+          />
+        </Box>
       </Container>
     </Page>
   );

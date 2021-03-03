@@ -17,7 +17,7 @@ export const getIntent = async ({ state, effects }, intentId) => {
 };
 
 export const createIntent = async ({ state, effects }, intent) => {
-  const res = await effects.video.api.createVideo({
+  const res = await effects.videos.api.createVideo({
     storyId: state.story.currentStory.id,
     intent,
   });
@@ -61,7 +61,7 @@ export const deleteIntent = async ({ state, effects }, intentId) => {
 const addTags = (actions, tags) => {
   return Promise.all(
     tags.map((tag) => {
-      if (tag.new) return actions.tag.createTag({ name: tag.name });
+      if (tag.new) return actions.videos.createTag({ name: tag.name });
       return tag;
     })
   );

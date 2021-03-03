@@ -23,10 +23,10 @@ const useStyles = makeStyles(({ palette }) => ({
 
 const Actions = ({
   dirty,
+  groupData,
   handleCancel,
   handleDelete,
   isSubmitting,
-  groupData,
   values,
 }) => {
   const classes = useStyles();

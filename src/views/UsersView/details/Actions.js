@@ -6,11 +6,11 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import BlockIcon from '@material-ui/icons/Block';
 import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import BlockIcon from '@material-ui/icons/Block';
 
 const useStyles = makeStyles(({ palette }) => ({
   progress: { position: 'absolute' },
@@ -85,9 +85,6 @@ const Actions = ({
                 onClick={() => handleDelete('delete')}
               >
                 Delete
-                {isSubmitting && buttonClicked === 'delete' && (
-                  <CircularProgress className={classes.progress} size={24} />
-                )}
               </Button>
             </>
           )}

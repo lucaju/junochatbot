@@ -4,33 +4,52 @@ import { MuuriComponent } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useApp } from 'src/overmind';
-import VideoCard from './VideoCard';
+import UserCard from './UserCard';
 
 const useStyles = makeStyles(({ spacing }) => ({
-  card: { margin: spacing(1.5) },
+  card: {
+    minHeight: 80,
+    width: '90%',
+    margin: spacing(1),
+  },
   container: {
     maxHeight: '83vh',
     overflowY: 'scroll',
   },
 }));
 
-const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
+const Collection = ({ filters, groupId, handleDetailOpen, searchQuery }) => {
   const classes = useStyles();
-  const { state, actions } = useApp();
+  const { actions, state } = useApp();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const getCollection = async () => {
-      await actions.videos.getVideos();
-      await actions.videos.getTags();
-      setIsLoading(false);
+      if (state.session.isAdmin) await actions.users.getGroups();
+      fetchUsers();
     };
     getCollection();
     return () => {};
-  }, []);
+  }, [state.session.user.group]);
+
+  useEffect(() => {
+    fetchUsers();
+    return () => {};
+  }, [groupId]);
+
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    await actions.users.getUsers(groupId);
+    setIsLoading(false);
+  };
 
   const fileredItems = () => {
-    return state.videos.collection
+    return state.users.list
+      .filter((item) => {
+        if (state.session.isAdmin) return true;
+        if (item.active === true) return true;
+      })
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;
@@ -41,13 +60,9 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
         return match;
       })
       .filter((item) => {
-        if (!tagId) return item;
-        const match = item.tags.some((tag) => tag.id === tagId);
-        return match;
-      })
-      .filter((item) => {
         if (!searchQuery) return item;
-        const match = item.title.toLowerCase().match(searchQuery.toLowerCase());
+        const fullName = `${item.firstName} ${item.lastName}`;
+        const match = fullName.toLowerCase().match(searchQuery.toLowerCase());
         return match;
       });
   };
@@ -55,13 +70,7 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
   const showSkeleton = (qty = 5) => {
     const skels = new Array(qty).fill(0);
     return skels.map((sk, i) => (
-      <Skeleton
-        key={i}
-        className={classes.card}
-        height={288}
-        width={320}
-        variant="rect"
-      />
+      <Skeleton key={i} className={classes.card} height={80} variant="rect" />
     ));
   };
 
@@ -73,12 +82,12 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
         </Box>
       ) : (
         <MuuriComponent>
-          {fileredItems().map((video) => (
-            <VideoCard
-              key={video.id}
+          {fileredItems().map((user) => (
+            <UserCard
+              key={user.id}
               className={classes.card}
+              user={user}
               handleEditClick={handleDetailOpen}
-              video={video}
             />
           ))}
         </MuuriComponent>
@@ -89,9 +98,9 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
 
 Collection.propTypes = {
   filters: PropTypes.object,
+  groupId: PropTypes.any,
   handleDetailOpen: PropTypes.func,
   searchQuery: PropTypes.string,
-  tagId: PropTypes.any,
 };
 
 export default Collection;

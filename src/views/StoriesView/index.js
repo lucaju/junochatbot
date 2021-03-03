@@ -1,118 +1,82 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
-import { MuuriComponent } from 'muuri-react';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
-import AddStoryCard from './AddStoryCard';
 import AddStoryDialog from './AddStoryDialog';
-import NoStories from './NoStories';
-import StoryCard from './StoryCard';
+import Collection from './Collection';
+import MenuBar from './menubar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: palette.background.default,
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
+    paddingTop: spacing(3),
   },
-  grid: {
-    position: 'relative',
-    maxWidth: 1280,
-    margin: '0 -10px',
-    '-moz-box-sizing': 'content-box',
-    '-webkit-box-sizing': 'content-box',
-    boxSizing: 'content-box',
-  },
-  item: { margin: 20 },
-  spinner: { marginTop: '25%' },
 }));
 
 const title = 'Stories';
 
 const Stories = () => {
   const classes = useStyles();
-  const { state, actions } = useApp();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [addDialogOpen, setAddDialogOpen] = React.useState(false);
+  const { actions } = useApp();
+  const [addStoryOpen, setAddStoryOpenn] = React.useState(false);
   const navigate = useNavigate();
+  const [filters, setFilters] = useState(new Map());
+  const [groupId, setGroupId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    const fetchData = async () => {
-      await actions.story.getStories();
-      setIsLoaded(true);
-      setIsLoading(false);
-    };
-    fetchData();
     actions.ui.updateTitle(title);
     return () => {};
   }, []);
 
-  const stories =
-    state.story.stories.length > 0 && !state.story.isStudent
-      ? [AddStoryCard, ...state.story.stories]
-      : state.story.stories;
-
-  const handleAddDialogOpen = () => setAddDialogOpen(true);
-  const handleAddDiaglogClose = () => setAddDialogOpen(false);
+  const handleAddDialogOpen = () => setAddStoryOpenn(true);
+  const handleAddDiaglogClose = () => setAddStoryOpenn(false);
 
   const triggerEditStory = (story) => {
     if (!story.new) actions.story.setCurrentStory(story.id);
     navigate('/app/story/general', { replace: true });
   };
 
+  const updateFilters = ({ type, value, reset }) => {
+    reset ? filters.delete(type) : filters.set(type, value);
+    setFilters(new Map(filters));
+  };
+
+  const handleFilterByGroup = async (value) => {
+    if (value === -1) value = null;
+    setGroupId(value);
+  };
+
+  const handleSearch = async (value) => {
+    if (value === '') value = null;
+    setSearchQuery(value);
+  };
+
   return (
     <Page className={classes.root} title={title}>
-      <AddStoryDialog
-        open={addDialogOpen}
-        handleClose={handleAddDiaglogClose}
-        triggerEditStory={triggerEditStory}
-      />
       <Container maxWidth={false}>
-        {!isLoaded && isLoading && (
-          <Box
-            display="flex"
-            height="100%"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <CircularProgress
-              className={classes.spinner}
-              size={60}
-              thickness={4}
-            />
-          </Box>
-        )}
-        {isLoaded && stories.length > 0 && (
-          <MuuriComponent>
-            {stories.map((story, index) => {
-              return index === 0 && !state.session.isStudent ? (
-                <AddStoryCard
-                  className={classes.item}
-                  key="addCard"
-                  openDialog={handleAddDialogOpen}
-                />
-              ) : (
-                <StoryCard
-                  className={classes.item}
-                  key={story.title}
-                  story={story}
-                  triggerEditStory={triggerEditStory}
-                />
-              );
-            })}
-          </MuuriComponent>
-        )}
-        {isLoaded && stories.length === 0 && (
-          <NoStories openDialog={handleAddDialogOpen} />
-        )}
+        <AddStoryDialog
+          open={addStoryOpen}
+          handleClose={handleAddDiaglogClose}
+          triggerEditStory={triggerEditStory}
+        />
+        <MenuBar
+          handleDetailOpen={handleAddDialogOpen}
+          handleFilterByGroup={handleFilterByGroup}
+          handleSearch={handleSearch}
+          updateFilter={updateFilters}
+        />
+        <Box mt={3}>
+          <Collection
+            filters={filters}
+            groupId={groupId}
+            handleDetailOpen={handleAddDialogOpen}
+            searchQuery={searchQuery}
+            triggerEditStory={triggerEditStory}
+          />
+        </Box>
       </Container>
     </Page>
   );

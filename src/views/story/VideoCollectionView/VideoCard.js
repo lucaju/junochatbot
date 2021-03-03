@@ -8,21 +8,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
-// import { Duration, DateTime } from 'luxon';
-// import { useRefresh } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-// import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-// import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
-  root: { width: 300 },
+  root: { width: 320 },
   cardHover: { cursor: 'pointer' },
-  icon: {
-    opacity: .7,
-    paddingRight: spacing(0.5),
-    fontSize: '.9rem'
-  },
+  inactive: { filter: 'grayscale(100%)' },
   media: { height: 180 },
   meta: {
     backgroundColor: palette.background.default,
@@ -47,12 +39,10 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   },
 }));
 
-const VideoCard = ({ className, triggerEditVideo, video, ...rest }) => {
+const VideoCard = ({ className, handleEditClick, video, ...rest }) => {
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(1);
-
-  // useRefresh([hover]);
 
   const mouseOver = () => {
     setHover(true);
@@ -64,49 +54,34 @@ const VideoCard = ({ className, triggerEditVideo, video, ...rest }) => {
     setElevation(1);
   };
 
-  const truncateString = (str, num) => {
-    if (str.length <= num) return str
-    return `${str.slice(0, num)}...`;
-  }
-
-  const handleEditClick = () => triggerEditVideo(video);
+  // const truncateString = (str, num) => {
+  //   if (str.length <= num) return str;
+  //   return `${str.slice(0, num)}...`;
+  // };
 
   return (
     <Card
       className={clsx(classes.root, className, hover && classes.cardHover)}
       elevation={elevation}
-      onClick={handleEditClick}
+      onClick={() => handleEditClick(video)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
       {...rest}
     >
       <CardMedia
-        className={classes.media}
-        // image={`/assets/stories/images/${video.image}`}
+        className={clsx(
+          classes.media,
+          !video.active && classes.inactive
+        )}
         image={video.image}
         title={video.title}
       />
       <CardContent>
         <Box className={classes.title}>
-          <Typography gutterBottom variant="subtitle1">{truncateString(video.title, 68)}</Typography>
-        </Box>
-        {/* <Typography gutterBottom variant="button">{video.channelTitle}</Typography>
-        <Box display="flex" alignItems="center" className={classes.meta}>
-          <CalendarTodayIcon className={classes.icon} />
-          <Typography variant="overline">
-            {DateTime.fromISO(video.publishedAt).toFormat('yyyy')}
-          </Typography>
-          <Box flexGrow={1} />
-          <AccessTimeIcon className={classes.icon} />
-          <Typography variant="overline">
-            {Duration.fromISO(video.duration).toFormat('hh:mm:ss')}
+          <Typography gutterBottom noWrap variant="subtitle1">
+            {video.title}
           </Typography>
         </Box>
-        {video.description && (
-          <Box mt={1} display="flex" alignItems="center">
-            <Typography variant="body2">{video.description}</Typography>
-          </Box>
-        )} */}
         {video.tags.length > 0 && (
           <Box
             display="flex"
@@ -132,7 +107,7 @@ const VideoCard = ({ className, triggerEditVideo, video, ...rest }) => {
 
 VideoCard.propTypes = {
   className: PropTypes.string,
-  triggerEditVideo: PropTypes.func,
+  handleEditClick: PropTypes.func,
   video: PropTypes.object,
 };
 

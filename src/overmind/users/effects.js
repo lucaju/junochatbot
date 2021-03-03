@@ -14,7 +14,7 @@ export const api = {
   },
 
   async getUsersByGroup(groupId, token) {
-    const response = await fetch(`${API_URL}/admin/groups${groupId}/users/all`, {
+    const response = await fetch(`${API_URL}/admin/groups/${groupId}/users/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -106,6 +106,17 @@ export const api = {
 
   async getGroups(token) {
     const response = await fetch(`${API_URL}/admin/groups/all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const { ok, status, statusText } = response;
+    if (!ok) return { error: { status, statusText } };
+
+    const result = await response.json();
+    return result;
+  },
+  async getGroup({ groupId, token }) {
+    const response = await fetch(`${API_URL}/admin/groups/${groupId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

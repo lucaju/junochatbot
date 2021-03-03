@@ -1,4 +1,4 @@
-import { Grid, makeStyles, TextField } from '@material-ui/core';
+import { makeStyles, TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -9,7 +9,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 const Fields = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
   return (
-    <Grid item>
+    <>
       <TextField
         error={Boolean(touched.name && errors.name)}
         fullWidth
@@ -20,20 +20,6 @@ const Fields = ({ errors, handleBlur, handleChange, touched, values }) => {
         onBlur={handleBlur}
         onChange={handleChange}
         value={values.name}
-        variant="outlined"
-        className={classes.marginBottom}
-      />
-      <TextField
-        error={Boolean(touched.description && errors.description)}
-        fullWidth
-        disabled={values.id && !values.active}
-        helperText={touched.description && errors.description}
-        label="Description"
-        name="description"
-        onBlur={handleBlur}
-        onChange={handleChange}
-        value={values.description}
-        variant="outlined"
         className={classes.marginBottom}
       />
       <TextField
@@ -46,10 +32,21 @@ const Fields = ({ errors, handleBlur, handleChange, touched, values }) => {
         onBlur={handleBlur}
         onChange={handleChange}
         value={values.institution}
-        variant="outlined"
         className={classes.marginBottom}
       />
-    </Grid>
+      <TextField
+        error={Boolean(touched.description && errors.description)}
+        fullWidth
+        disabled={values.id && !values.active}
+        helperText={touched.description && errors.description}
+        label="Description"
+        name="description"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.description}
+        className={classes.marginBottom}
+      />
+    </>
   );
 };
 

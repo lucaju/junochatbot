@@ -3,114 +3,97 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
+import { json } from 'overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
 import Fields from './Fields';
 
 const initialValues = {
-  id: null,
   name: '',
   description: '',
   institution: '',
   active: true,
 };
 
-const Details = ({ open, handleDetailClose, group }) => {
+const formValidation = Yup.object().shape({
+  name: Yup.string().trim().required('Name is required'),
+  description: Yup.string().trim(),
+  institution: Yup.string().trim(),
+  active: Yup.bool(),
+});
+
+const Details = ({ group, open, handleDetailClose }) => {
   const { actions } = useApp();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [groupData, setGroupData] = useState(initialValues);
 
   useEffect(() => {
-    if (open && group.id === undefined) {
-      const selectedGroupData = Object.assign(initialValues);
-      setGroupData(selectedGroupData);
+    if (open && group.id) {
+      const fetch = async () => {
+        const selectedTag = await actions.users.getGroup(group.id);
+        setGroupData(json(selectedTag));
+      };
+      fetch();
     }
-
-    if (open && group.id !== undefined) {
-      const selectedGroupData = Object.assign(group);
-      setGroupData(selectedGroupData);
-    }
+    if (open && !group.id) setGroupData(initialValues);
     return () => {};
   }, [open]);
 
-  const formValidation = Yup.object().shape({
-    name: Yup.string().trim().required('Name is required'),
-    description: Yup.string().trim(),
-    institution: Yup.string().trim(),
-    active: Yup.bool(),
-  });
-
-  const handleCancelButton = () => {
-    handleDetailClose();
-    open = false;
-  };
-
   const submit = async (values) => {
-    const response = await actions.users.saveGroup(values);
+    const res = !values.id
+      ? await actions.users.createGroup(values)
+      : await actions.users.updateGroup(values);
 
-    if (response.error) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Something went wrong!',
-      });
+    const type = !res ? 'error' : 'success';
+
+    if (!res) {
+      const message = 'Error: Something went wrong!';
+      actions.ui.showNotification({ message, type });
       return;
     }
 
     const message = values.id ? 'Group updated' : 'Group created';
-    actions.ui.showNotification({ type: 'success', message });
+    actions.ui.showNotification({ message, type });
 
-    handleDetailClose();
-    open = false;
+    handleClose();
   };
 
-  const restoreGroup = async (values) => {
+  const updateStatus = async (values, active) => {
     if (!values.id) return;
 
-    const data = group;
-    data.active = true;
+    //Since the API is PUT not PATCH, we need to send all fields
+    const data = { ...group };
+    data.active = active; //change user status
 
-    const response = await actions.users.saveGroup(data);
+    const res = await actions.users.updateGroupStatus(data);
 
-    if (response.error) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Something went wrong!',
-      });
-      return response;
+    const type = !res ? 'error' : 'success';
+
+    //error
+    if (res.error) {
+      const message = 'Something went wrong!';
+      actions.ui.showNotification({ message, type });
+      return res;
     }
 
-    groupData.active = true;
-    actions.ui.showNotification({ type: 'success', message: 'Group restored' });
+    //success
+    setGroupData(data);
+    const message = active ? 'Group restored' : 'Group deleted';
+    actions.ui.showNotification({ message, type });
 
-    return response;
+    if (!res) return;
+
+    handleClose();
   };
 
-  const deleteGroup = async (values) => {
-    if (!values.id) return;
-
-    const data = group;
-    data.active = false;
-
-    const response = await actions.users.saveGroup(data);
-    setDeleteDialogOpen(false);
-
-    if (response.error) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Something went wrong!',
-      });
-      return;
-    }
-
-    actions.ui.showNotification({ type: 'success', message: 'Group deleted' });
-
+  const handleClose = () => {
+    setGroupData(initialValues);
     handleDetailClose();
     open = false;
   };
@@ -119,40 +102,43 @@ const Details = ({ open, handleDetailClose, group }) => {
     <Dialog
       aria-labelledby="group-details-dialog"
       maxWidth="xs"
+      onBackdropClick={handleClose}
       onClose={handleDetailClose}
       open={open}
     >
-      <Formik
-        enableReinitialize={true}
-        initialValues={groupData}
-        onSubmit={async (values) => {
-          if (values.submitType === 'delete') {
-            await deleteGroup(values);
-          } else if (values.submitType === 'restore') {
-            const response = await restoreGroup(values);
-            if (!response.error) values.active = true;
-          } else {
+      {groupData && (
+        <Formik
+          enableReinitialize={true}
+          initialValues={groupData}
+          onSubmit={async (values) => {
+            //change status submission
+            if (values.submitType) {
+              const active = values.submitType === 'delete' ? false : true;
+              const response = await updateStatus(values, active);
+              if (!response?.error) values.active = active;
+              return;
+            }
+
+            //normal submission
             await submit(values);
-          }
-        }}
-        validationSchema={formValidation}
-      >
-        {({
-          errors,
-          dirty,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <DialogTitle>
-              {group.id === undefined ? 'New Group' : 'Edit Group'}
-            </DialogTitle>
-            <DialogContent dividers>
-              <Grid container spacing={3}>
+          }}
+          validationSchema={formValidation}
+        >
+          {({
+            errors,
+            dirty,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <DialogTitle>
+                {!groupData.id ? 'New Group' : 'Edit Group'}
+              </DialogTitle>
+              <DialogContent dividers>
                 <Fields
                   errors={errors}
                   handleBlur={handleBlur}
@@ -160,33 +146,33 @@ const Details = ({ open, handleDetailClose, group }) => {
                   touched={touched}
                   values={values}
                 />
-              </Grid>
-            </DialogContent>
-            <DialogActions>
-              <Actions
-                dirty={dirty}
-                groupData={groupData}
-                handleCancel={handleCancelButton}
-                handleDelete={() => setDeleteDialogOpen(true)}
+              </DialogContent>
+              <DialogActions>
+                <Actions
+                  dirty={dirty}
+                  groupData={groupData}
+                  handleCancel={handleClose}
+                  handleDelete={() => setDeleteDialogOpen(true)}
+                  isSubmitting={isSubmitting}
+                  values={values}
+                />
+              </DialogActions>
+              <DeleteDialog
+                handleNo={() => setDeleteDialogOpen(false)}
+                handleYes={() => {
+                  setDeleteDialogOpen(false);
+                  values.submitType = 'delete';
+                  handleSubmit();
+                }}
                 isSubmitting={isSubmitting}
-                values={values}
+                message="Are you sure you want to delete this group?"
+                open={deleteDialogOpen}
+                title="Delete Group"
               />
-            </DialogActions>
-            <DeleteDialog
-              handleYes={() => {
-                setDeleteDialogOpen(false)
-                values.submitType = 'delete';
-                handleSubmit();
-              }}
-              handleNo={() => setDeleteDialogOpen(false)}
-              isSubmitting={isSubmitting}
-              message="Are you sure you want to delete this group?"
-              open={deleteDialogOpen}
-              title="Delete Group"
-            />
-          </form>
-        )}
-      </Formik>
+            </form>
+          )}
+        </Formik>
+      )}
     </Dialog>
   );
 };

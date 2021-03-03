@@ -4,8 +4,7 @@ import * as ui from './ui';
 import * as session from './session';
 import * as users from './users';
 import * as story from './story';
-import * as video from './video';
-import * as tag from './tag';
+import * as videos from './videos';
 import * as intentContext from './intentContext';
 import * as narrative from './narrative';
 
@@ -16,8 +15,7 @@ export const config = namespaced({
   session,
   users,
   story,
-  video,
-  tag,
+  videos,
   intentContext,
   narrative,
 });

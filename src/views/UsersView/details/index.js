@@ -46,7 +46,7 @@ const initialValues = {
   firstName: '',
   lastName: '',
   userName: '',
-  roleTypeId: 2, // student
+  roleTypeId: 3, // student
   groups: [],
   active: true,
 };
@@ -71,8 +71,9 @@ const Details = ({ handleDetailClose, open, user }) => {
   useEffect(() => {
     if (open && user.id === undefined) {
       const selectedUserData = Object.assign(initialValues);
+      selectedUserData.groups = null;
       if (!state.session.isAdmin) {
-        selectedUserData.groups = state.session.user.groups;
+        selectedUserData.groups = state.session.user.groups[0];
       }
       setUserData(selectedUserData);
       setLoaded(true);
@@ -105,17 +106,18 @@ const Details = ({ handleDetailClose, open, user }) => {
       ? await actions.users.updateUser({ userData, values })
       : actions.users.createUser(values);
 
+    const type = response.error ? 'error' : 'success';
+
     //error
     if (response.error) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Something went wrong!',
-      });
-      return;
+      const message = 'Something went wrong!';
+      actions.ui.showNotification({ message, type });
+      return response;
     }
 
+    //success
     const message = values.id ? 'User updated' : 'User created';
-    actions.ui.showNotification({ type: 'success', message });
+    actions.ui.showNotification({ message, type });
 
     handleDetailClose();
     open = false;
@@ -130,19 +132,19 @@ const Details = ({ handleDetailClose, open, user }) => {
 
     const response = await actions.users.updateUserStatus(data);
 
+    const type = response.error ? 'error' : 'success';
+
     //error
     if (response.error) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Something went wrong!',
-      });
+      const message = 'Something went wrong!';
+      actions.ui.showNotification({ message, type });
       return response;
     }
 
     //success
     userData.active = active;
     const message = active ? 'User restored' : 'User deleted';
-    actions.ui.showNotification({ type: 'success', message });
+    actions.ui.showNotification({ message, type });
 
     //end
     if (active) return response;
@@ -236,12 +238,12 @@ const Details = ({ handleDetailClose, open, user }) => {
                 />
               </DialogActions>
               <DeleteDialog
+                handleNo={() => setDeleteDialogOpen(false)}
                 handleYes={() => {
                   setDeleteDialogOpen(false)
                   values.submitType = 'delete';
                   handleSubmit();
                 }}
-                handleNo={() => setDeleteDialogOpen(false)}
                 isSubmitting={isSubmitting}
                 message="Are you sure you want to delete this user?"
                 open={deleteDialogOpen}

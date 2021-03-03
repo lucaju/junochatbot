@@ -13,7 +13,7 @@ const marks = [
   { value: 180, label: '180' },
 ];
 
-const BotSpeedTypeSlider = ({ name }) => {
+const BotDelaySlider = ({ name }) => {
   // This isn't an input, so instead of using the values in 'field' directly,
   // we'll use 'meta' and 'helpers'.
   // eslint-disable-next-line no-unused-vars
@@ -45,8 +45,8 @@ const BotSpeedTypeSlider = ({ name }) => {
   );
 };
 
-BotSpeedTypeSlider.propTypes = {
+BotDelaySlider.propTypes = {
   name: PropTypes.string,
 };
 
-export default BotSpeedTypeSlider;
+export default BotDelaySlider;

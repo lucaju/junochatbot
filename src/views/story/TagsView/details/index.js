@@ -3,7 +3,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
   makeStyles,
   TextField,
 } from '@material-ui/core';
@@ -14,203 +13,182 @@ import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
-import List from './List';
 
-const useStyles = makeStyles((theme) => ({
-  dialog: {
-    // width: 500,
-  },
+const useStyles = makeStyles(({ spacing, palette }) => ({
+  dialogContent: { width: 400 },
   header: {
-    color: theme.palette.primary.light,
+    color: palette.primary.light,
     textAlign: 'center',
   },
-  marginBottom: { marginBottom: theme.spacing(1) },
-  section: {
-    paddingBottom: theme.spacing(1),
-  },
+  marginBottom: { marginBottom: spacing(1) },
+  section: { paddingBottom: spacing(1) },
 }));
 
-const Details = ({ open, handleDetailClose, tagId }) => {
+const initialValues = {
+  name: '',
+  active: true,
+};
+
+const formValidation = Yup.object().shape({
+  name: Yup.string().required(),
+  active: Yup.bool(),
+});
+
+const Details = ({ handleDetailClose, open, tag }) => {
   const classes = useStyles();
   const { actions } = useApp();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [submitType, setSubmitType] = useState(null);
   const [tagData, setTagData] = useState(initialValues);
 
-  const initialValues = {
-    id: null,
-    name: '',
-    intents: [],
-    videos: [],
-    submitType: 'submit',
-  };
-
   useEffect(() => {
-    if (open && tagId !== 0) {
-      const fetch = async (id) => {
-        const selectedTag = await actions.tag.getTag(id);
-        selectedTag.submitType = 'submit';
+    if (open && tag.id) {
+      const fetch = async () => {
+        const selectedTag = await actions.videos.getTag(tag.id);
         setTagData(selectedTag);
       };
-      fetch(tagId);
+      fetch();
     }
-    if (open && tagId === 0) {
-      setTagData(initialValues);
-    }
+    if (open && !tag.id) setTagData(initialValues);
     return () => {};
   }, [open]);
 
-  const formValidation = Yup.object().shape({
-    name: Yup.string().required(),
-    intents: Yup.array(),
-    videos: Yup.array(),
-  });
-
-  const handleCancelButton = () => {
-    handleDetailClose();
-    open = false;
-  };
-
   const submit = async (values) => {
     const res = !values.id
-      ? await actions.tag.createTag(values)
-      : await actions.tag.updateTag(values);
+      ? await actions.videos.createTag(values)
+      : await actions.videos.updateTag(values);
+
+    const type = !res ? 'error' : 'success';
 
     if (!res) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Error: Something went wrong!',
-      });
+      const message = 'Error: Something went wrong!';
+      actions.ui.showNotification({ message, type });
       return;
     }
 
     const message = values.id ? 'Tag updated' : 'Tag created';
-    actions.ui.showNotification({
-      type: 'success',
-      message,
-    });
-    handleDetailClose();
-    open = false;
+    actions.ui.showNotification({ message, type });
+
+    handleClose();
   };
 
-  const deleteTag = async (values) => {
+  const updateStatus = async (values, active) => {
     if (!values.id) return;
-    const res = await actions.tag.deleteTag(tagId);
-    setDeleteDialogOpen(false);
 
-    if (!res) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Error: Something went wrong!',
-      });
-      return;
+    //Since the API is PUT not PATCH, we need to send all fields
+    const data = { ...tag };
+    data.active = active; //change user status
+
+    const res = await actions.videos.updateTagStatus(data);
+
+    const type = !res ? 'error' : 'success';
+
+    //error
+    if (res.error) {
+      const message = 'Something went wrong!';
+      actions.ui.showNotification({ message, type });
+      return res;
     }
 
-    actions.ui.showNotification({
-      type: 'success',
-      message: 'Tag removed',
-    });
+    //success
+    setTagData(data);
+    const message = active ? 'Tag restored' : 'Tag deleted';
+    actions.ui.showNotification({ message, type });
+
+    if (!res) return;
+
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setTagData(initialValues);
     handleDetailClose();
     open = false;
   };
 
   return (
-    <>
+    <Dialog
+      aria-labelledby="tag-details-dialog"
+      maxWidth="md"
+      onBackdropClick={handleClose}
+      onClose={handleDetailClose}
+      open={open}
+    >
       {tagData && (
-        <Dialog
-          open={open}
-          onClose={handleDetailClose}
-          maxWidth="md"
-          aria-labelledby="user-details-dialog"
+        <Formik
+          enableReinitialize={true}
+          initialValues={tagData}
+          onSubmit={async (values) => {
+            //change status submission
+            if (values.submitType) {
+              const active = values.submitType === 'delete' ? false : true;
+              const response = await updateStatus(values, active);
+              if (!response?.error) values.active = active;
+              return;
+            }
+
+            //normal submission
+            await submit(values);
+          }}
+          validationSchema={formValidation}
         >
-          <DialogTitle className={classes.header}>Tag</DialogTitle>
-          <Formik
-            initialValues={tagData}
-            validationSchema={formValidation}
-            enableReinitialize={true}
-            onSubmit={async (values) => {
-              if (submitType === 'delete') values.submitType = 'delete';
-              values.submitType === 'delete'
-                ? await deleteTag(values)
-                : await submit(values);
-              setSubmitType(null);
-            }}
-          >
-            {({
-              errors,
-              dirty,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              touched,
-              values,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <DialogContent dividers className={classes.dialog}>
-                  <Grid container spacing={3} className={classes.marginBottom}>
-                    <Grid item xs>
-                      <TextField
-                        error={Boolean(touched.name && errors.name)}
-                        fullWidth
-                        helperText={touched.name && errors.name}
-                        label="Name"
-                        name="name"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values.name}
-                        variant="outlined"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={3}>
-                    <>
-                      {values.intents.length > 0 && (
-                        <Grid item md={6} sm={6}>
-                          <List name="intents" title="Intents" />
-                        </Grid>
-                      )}
-                      {values.videos.length > 0 && (
-                        <Grid item md={6} sm={6}>
-                          <List name="videos" title="Videos" />
-                        </Grid>
-                      )}
-                    </>
-                  </Grid>
-                </DialogContent>
-                <DialogActions>
-                  <Actions
-                    dirty={dirty}
-                    handleCancel={handleCancelButton}
-                    handleDelete={() => setDeleteDialogOpen(true)}
-                    isSubmitting={isSubmitting}
-                    name="submitType"
-                  />
-                </DialogActions>
-                <DeleteDialog
-                  handleYes={() => {
-                    setSubmitType('delete');
-                    handleSubmit();
-                  }}
-                  handleNo={() => setDeleteDialogOpen(false)}
-                  isSubmitting={isSubmitting}
-                  message="Are you sure you want to delete this tag?"
-                  open={deleteDialogOpen}
-                  title="Delete Tag"
+          {({
+            errors,
+            dirty,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <DialogTitle>{!tagData.id ? 'New Tag' : 'Edit Tag'}</DialogTitle>
+              <DialogContent className={classes.dialogContent} dividers>
+                <TextField
+                  error={Boolean(touched.name && errors.name)}
+                  fullWidth
+                  helperText={touched.name && errors.name}
+                  label="Name"
+                  name="name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.name}
                 />
-              </form>
-            )}
-          </Formik>
-        </Dialog>
+              </DialogContent>
+              <DialogActions>
+                <Actions
+                  dirty={dirty}
+                  handleCancel={handleClose}
+                  handleDelete={() => setDeleteDialogOpen(true)}
+                  isSubmitting={isSubmitting}
+                  tagData={tagData}
+                  values={values}
+                />
+              </DialogActions>
+              <DeleteDialog
+                handleNo={() => setDeleteDialogOpen(false)}
+                handleYes={() => {
+                  setDeleteDialogOpen(false);
+                  values.submitType = 'delete';
+                  handleSubmit();
+                }}
+                isSubmitting={isSubmitting}
+                message="Are you sure you want to delete this tag?"
+                open={deleteDialogOpen}
+                title="Delete Tag"
+              />
+            </form>
+          )}
+        </Formik>
       )}
-    </>
+    </Dialog>
   );
 };
 
 Details.propTypes = {
   handleDetailClose: PropTypes.func,
   open: PropTypes.bool,
-  tagId: PropTypes.any,
+  tag: PropTypes.object,
 };
 
 export default Details;

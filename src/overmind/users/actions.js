@@ -1,32 +1,33 @@
-//***** USERS */
-
 export const getUsers = async ({ state, effects }, groupId) => {
   const token = state.session.user.token;
-  let list;
+  let response;
 
   if (groupId) {
-    list = await effects.users.api.getUsersByGroup(groupId, token);
+    response = await effects.users.api.getUsersByGroup(groupId, token);
   }
 
   if (!groupId && state.session.isInstructor) {
     groupId = state.session.user.groups[0].id;
-    list = await effects.users.api.getUsersByGroup(groupId, token);
+    response = await effects.users.api.getUsersByGroup(groupId, token);
   }
 
   if (!groupId && state.session.isAdmin) {
-    list = await effects.users.api.getAllUsers(token);
+    response = await effects.users.api.getAllUsers(token);
   }
+  
+  if (response.error) return response;
 
-  state.users.list = list.reverse();
+  state.users.list = response.reverse();
 };
 
 export const getUser = async ({ state, effects }, userId) => {
   const token = state.session.user.token;
   const user = await effects.users.api.getUser(userId, token);
 
-  const responseGroups = await effects.users.api.getUserGroups(userId, token);
-  if (!responseGroups.error) {
-    user.groups = responseGroups;
+  const userGroups = await effects.users.api.getUserGroups(userId, token);
+  if (!userGroups.error) {
+    // const activeGroups = userGroups.filter(({  active }) => active === true);
+    user.groups = userGroups;
   }
   return user;
 };
@@ -34,6 +35,9 @@ export const getUser = async ({ state, effects }, userId) => {
 export const getUserGroups = async ({ state, effects }, userId) => {
   const token = state.session.user.token;
   const groups = await effects.users.api.getUserGroups(userId, token);
+  // const activeGroups = groups.filter(({  active }) => active === true);
+  console.log(groups);
+
   return groups;
 };
 
@@ -63,7 +67,7 @@ export const createUser = async ({ state, effects }, values) => {
         userId: user.id,
         token,
       });
-      if (!newGroup.error) user.groups.push(group);
+      if (!newGroup.error) user.groups = [...user.groups, group];
     }
   }
 
@@ -100,7 +104,7 @@ export const updateUser = async ({ state, effects }, { userData, values }) => {
   const groupsToRemove = userData.groups.filter(({ id }) => !valuesGroupsSet.has(id));
   delete newValues.groups;
 
-  //2. Check if usre date changed
+  //2. Check if user data changed
   if (
     newValues.firstName === userData.firstName &&
     newValues.lastName === userData.lastName &&
@@ -122,24 +126,19 @@ export const updateUser = async ({ state, effects }, { userData, values }) => {
   newValues.groups = userData.groups;
 
   if (groupsToAdd?.length > 0) {
-    //assign each group to user
     for await (const group of groupsToAdd) {
       const grp = await effects.users.api.addUserToGroup({
         groupId: group.id,
         userId: newValues.id,
         token,
       });
-      if (!grp.error) newValues.groups.push(group);
+      if (!grp.error) newValues.groups = [ ...newValues.groups, group ];
     }
   }
 
   //5. remove from group
-  console.log(groupsToRemove)
   if (groupsToRemove?.length > 0) {
-    //assign each group to user
-    
     for await (const group of groupsToRemove) {
-      console.log(group)
       const grp = await effects.users.api.deleteUserFromGroup({
         groupId: group.id,
         userId: newValues.id,
@@ -167,7 +166,7 @@ export const updateUser = async ({ state, effects }, { userData, values }) => {
 
   //7. update state;
   state.users.list = state.users.list.map((user) => {
-    if (user.id === userData.id) user = newValues;
+    if (user.id === newValues.id) user = newValues;
     return user;
   });
 
@@ -201,31 +200,55 @@ export const getGroups = async ({ state, effects }) => {
   let groups = await effects.users.api.getGroups(token);
 
   groups = sortBy(groups, 'name');
-  state.users.groups = groups;
+  state.users.groups = [...groups];
 
   return state.users.groups;
 };
 
-export const saveGroup = async ({ state, effects }, groupData) => {
-  const token = state.session.user.token;
-  if (groupData.id) {
-    return await updateGroup({ state, effects, groupData, token });
-  } else {
-    return await createGroup({ state, effects, groupData, token });
+export const getGroup = async ({ state, effects }, groupId) => {
+  let selectedGroup = state.users.groups.find((group) => group.id === groupId);
+
+  if (!selectedGroup) {
+    const token = state.session.user.token;
+
+    selectedGroup = await effects.users.api.getGroup({ groupId, token });
+    if (selectedGroup?.error) return { error: selectedGroup.error };
+
+    const updatedGroup = [...state.users.groups, selectedGroup];
+    state.users.groups = [...sortBy(updatedGroup, 'name')];
   }
+  
+  return selectedGroup;
 };
 
-const createGroup = async ({ state, effects, groupData, token }) => {
+export const createGroup = async ({ state, effects }, groupData) => {
+  const token = state.session.user.token;
+
   const response = await effects.users.api.createGroup(groupData, token);
   if (response.error) return response;
 
   state.users.groups.unshift(response);
-  sortBy(state.users.groups, 'name');
 
   return response;
 };
 
-const updateGroup = async ({ state, effects, groupData, token }) => {
+export const updateGroup = async ({ state, effects }, groupData) => {
+  const token = state.session.user.token;
+
+  const response = await effects.users.api.updateGroup(groupData, token);
+  if (response.error) return response;
+
+  state.users.groups = state.users.groups.map((group) => {
+    if (group.id === groupData.id) group = groupData;
+    return group;
+  });
+
+  return response;
+};
+
+export const updateGroupStatus = async ({ state, effects }, groupData) => {
+  const token = state.session.user.token;
+
   const response = await effects.users.api.updateGroup(groupData, token);
   if (response.error) return response;
 

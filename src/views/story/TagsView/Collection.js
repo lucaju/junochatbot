@@ -1,74 +1,93 @@
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-} from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { MuuriComponent } from 'muuri-react';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import TagRow from './TagRow';
+import React, { useEffect, useState } from 'react';
+import TagCard from './TagCard';
+import { useApp } from 'src/overmind';
 
-const Collection = ({ handleDetailOpen, tags }) => {
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
+const useStyles = makeStyles(({ spacing }) => ({
+  card: {
+    margin: spacing(1),
+  },
+  container: {
+    maxHeight: '83vh',
+    overflowY: 'scroll',
+  },
+}));
 
-  const handleLimitChange = (event) => {
-    setLimit(event.target.value);
+const Collection = ({ filters, handleDetailOpen, searchQuery }) => {
+  const classes = useStyles();
+  const { state, actions } = useApp();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getCollection = async () => {
+      await actions.videos.getTags();
+      setIsLoading(false);
+    };
+    getCollection();
+    return () => {};
+  }, []);
+
+  const fileredItems = () => {
+    return state.videos.tagCollection
+      .filter((tag) => {
+        if (filters.size === 0) return true;
+        let match = true;
+        for (const [prop, value] of filters.entries()) {
+          match = tag[prop] === value;
+          if (match === false) break;
+        }
+        return match;
+      })
+      .filter((tag) => {
+        if (!searchQuery) return tag;
+        const match = tag.name.toLowerCase().match(searchQuery.toLowerCase());
+        return match;
+      });
   };
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleEditClick = (userID) => {
-    handleDetailOpen(userID);
+  const showSkeleton = (qty = 5) => {
+    const skels = new Array(qty).fill(0);
+    return skels.map((sk, i) => (
+      <Skeleton
+        key={i}
+        className={classes.card}
+        height={44}
+        width={30 + Math.random() * 100}
+        variant="rect"
+      />
+    ));
   };
 
   return (
-    <>
-      <PerfectScrollbar>
-        <Box minWidth={750}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox"></TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Intents</TableCell>
-                <TableCell>Videos</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tags.slice(0, limit).map((tag) => (
-                <TagRow
-                  key={tag.id}
-                  tag={tag}
-                  handleEditClick={handleEditClick}
-                />
-              ))}
-            </TableBody>
-          </Table>
+    <Box className={classes.container}>
+      {isLoading ? (
+        <Box display="flex" flexDirection="row" flexWrap="wrap">
+          {showSkeleton(4)}
         </Box>
-        <TablePagination
-          component="div"
-          count={tags.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleLimitChange}
-          page={page}
-          rowsPerPage={limit}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </PerfectScrollbar>
-    </>
+      ) : (
+        <MuuriComponent>
+          {fileredItems().map((tag) => (
+            <TagCard
+              key={tag.id}
+              className={classes.card}
+              handleEditClick={(tag) => handleDetailOpen(tag)}
+              tag={tag}
+            />
+          ))}
+        </MuuriComponent>
+      )}
+    </Box>
   );
 };
 
 Collection.propTypes = {
-  tags: PropTypes.array.isRequired,
+  filters: PropTypes.object,
   handleDetailOpen: PropTypes.func,
+  searchQuery: PropTypes.string,
 };
 
 export default Collection;

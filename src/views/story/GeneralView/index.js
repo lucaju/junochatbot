@@ -31,12 +31,13 @@ const formValidation = Yup.object().shape({
   title: Yup.string().trim().max(125).required('Title is required'),
   languageCode: Yup.string(),
   synopsis: Yup.string(),
-  featuredImage: Yup.mixed(),
+  image: Yup.mixed(),
   published: Yup.bool(),
+  active: Yup.bool(),
   botAvatar: Yup.string(),
   botName: Yup.string(),
   botPersona: Yup.string(),
-  botSpeed: Yup.number(),
+  botDelay: Yup.number(),
 });
 
 const GeneralView = () => {
@@ -72,6 +73,7 @@ const GeneralView = () => {
     return () => {};
   }, []);
 
+  // eslint-disable-next-line no-unused-vars
   const submit = async (values) => {
     console.log(values);
     // setSubmitSuccess(null);
@@ -84,7 +86,8 @@ const GeneralView = () => {
     // actions.ui.showNotification({ message, type });
   };
 
-  const deleteStory = async () => {
+  // eslint-disable-next-line no-unused-vars
+  const updateStoryStatus = async () => {
     //TODO
   };
 

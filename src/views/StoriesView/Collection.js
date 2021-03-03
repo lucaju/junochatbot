@@ -4,25 +4,25 @@ import { MuuriComponent } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useApp } from 'src/overmind';
-import VideoCard from './VideoCard';
+import StoryCard from './StoryCard';
+import NoStories from './NoStories';
 
 const useStyles = makeStyles(({ spacing }) => ({
-  card: { margin: spacing(1.5) },
+  card: { margin: spacing(2.5) },
   container: {
     maxHeight: '83vh',
     overflowY: 'scroll',
   },
 }));
 
-const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
+const Collection = ({ filters, groupId, searchQuery, triggerEditStory }) => {
   const classes = useStyles();
-  const { state, actions } = useApp();
+  const { actions, state } = useApp();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getCollection = async () => {
-      await actions.videos.getVideos();
-      await actions.videos.getTags();
+      await actions.story.getStories();
       setIsLoading(false);
     };
     getCollection();
@@ -30,7 +30,7 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
   }, []);
 
   const fileredItems = () => {
-    return state.videos.collection
+    return state.story.stories
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;
@@ -38,11 +38,6 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
           match = item[prop] === value;
           if (match === false) break;
         }
-        return match;
-      })
-      .filter((item) => {
-        if (!tagId) return item;
-        const match = item.tags.some((tag) => tag.id === tagId);
         return match;
       })
       .filter((item) => {
@@ -58,8 +53,8 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
       <Skeleton
         key={i}
         className={classes.card}
-        height={288}
-        width={320}
+        width={300}
+        height={200}
         variant="rect"
       />
     ));
@@ -71,14 +66,16 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {showSkeleton(4)}
         </Box>
+      ) : fileredItems().length === 0 ? (
+        <NoStories />
       ) : (
         <MuuriComponent>
-          {fileredItems().map((video) => (
-            <VideoCard
-              key={video.id}
+          {fileredItems().map((story) => (
+            <StoryCard
+              key={story.id}
               className={classes.card}
-              handleEditClick={handleDetailOpen}
-              video={video}
+              story={story}
+              triggerEditStory={triggerEditStory}
             />
           ))}
         </MuuriComponent>
@@ -89,9 +86,9 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
 
 Collection.propTypes = {
   filters: PropTypes.object,
-  handleDetailOpen: PropTypes.func,
+  groupId: PropTypes.any,
   searchQuery: PropTypes.string,
-  tagId: PropTypes.any,
+  triggerEditStory: PropTypes.func,
 };
 
 export default Collection;

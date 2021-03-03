@@ -1,71 +1,120 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
-import { useField, useFormikContext } from 'formik';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+import BlockIcon from '@material-ui/icons/Block';
+import clsx from 'clsx';
+import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const useStyles = makeStyles(() => ({
-  buttonProgress: { position: 'absolute' },
+const useStyles = makeStyles(({ palette }) => ({
+  progress: { position: 'absolute' },
+  uppercase: { textTransform: 'uppercase' },
+  warning: {
+    color:
+      palette.type === 'light' ? palette.warning.light : palette.warning.dark,
+  },
 }));
 
 const Actions = ({
   dirty,
+  dirtyFromYoutube,
   handleCancel,
   handleDelete,
   isSubmitting,
-  name,
-  videoId,
+  values,
+  videoData,
 }) => {
   const classes = useStyles();
   const { submitForm } = useFormikContext();
-  const [field, meta, helpers] = useField(name);
-  const { value } = meta;
-  const { setValue } = helpers;
-  const [pushedButton, setPushedButton] = useState(null);
+  const [buttonClicked, setButtonClicked] = useState(null);
 
-  const handleSubmit = async (type) => {
-    setPushedButton(type);
-    setValue(type);
+  const handleSubmit = async (source) => {
+    setButtonClicked(source);
     await submitForm();
-    setPushedButton(null);
+  };
+
+  const handleRestore = async (source) => {
+    setButtonClicked(source);
+    values.submitType = 'restore';
+    await submitForm();
   };
 
   return (
     <>
-      {videoId !== 0 && (
+      {videoData.id && !videoData.active ? (
         <>
-          <Button color="default" onClick={handleDelete}>
-            Delete
+          <Button color="primary" onClick={handleCancel}>
+            Cancel
           </Button>
           <Box flexGrow={1} />
+          <BlockIcon className={classes.warning} />
+          <Typography
+            className={clsx(classes.uppercase, classes.warning)}
+            variant="subtitle1"
+          >
+            Video inative
+          </Typography>
+          <Box flexGrow={1} />
+          <Button
+            disabled={isSubmitting}
+            onClick={() => handleRestore('restore')}
+            variant="outlined"
+          >
+            Restore
+            {isSubmitting && buttonClicked === 'restore' && (
+              <CircularProgress className={classes.progress} size={24} />
+            )}
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button color="primary" onClick={handleCancel}>
+            Cancel
+          </Button>
+          {values.id && (
+            <>
+              <Box flexGrow={1} />
+              <Button
+                color="primary"
+                disabled={isSubmitting || (!dirty && !dirtyFromYoutube)}
+                onClick={() => handleDelete('delete')}
+              >
+                Delete
+              </Button>
+            </>
+          )}
+          <Box flexGrow={1} />
+          <Button
+            color="primary"
+            disabled={isSubmitting || (!dirty && !dirtyFromYoutube)}
+            onClick={() => handleSubmit('submit')}
+            variant="outlined"
+          >
+            Save
+            {isSubmitting && buttonClicked === 'submit' && (
+              <CircularProgress className={classes.progress} size={24} />
+            )}
+          </Button>
         </>
       )}
-      <Button color="primary" onClick={handleCancel}>
-        Cancel
-      </Button>
-      <Box flexGrow={1} />
-      <Button
-        color="primary"
-        disabled={isSubmitting || !dirty}
-        variant="outlined"
-        onClick={() => handleSubmit('submit')}
-      >
-        Save
-        {isSubmitting && pushedButton === 'submit' && (
-          <CircularProgress size={24} className={classes.buttonProgress} />
-        )}
-      </Button>
     </>
   );
 };
 
 Actions.propTypes = {
   dirty: PropTypes.bool,
+  dirtyFromYoutube: PropTypes.bool,
   handleCancel: PropTypes.func,
   handleDelete: PropTypes.func,
   isSubmitting: PropTypes.bool,
-  name: PropTypes.string,
-  videoId: PropTypes.number,
+  values: PropTypes.object,
+  videoData: PropTypes.object,
 };
 
 export default Actions;

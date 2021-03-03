@@ -1,97 +1,119 @@
-import { Grid, makeStyles, TextField } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { DateTime, Duration } from 'luxon';
 import PropTypes from 'prop-types';
-import React from 'react';
-import Tags from './Tags';
+import React, { useEffect, useState } from 'react';
 
-const useStyles = makeStyles((theme) => ({
-  marginBottom: { marginBottom: theme.spacing(1.5) },
+const useStyles = makeStyles(({ spacing }) => ({
+  extraInfo: { marginTop: spacing(2.5) },
+  icon: {
+    marginTop: spacing(0.5),
+    marginRight: spacing(0.5),
+    opacity: 0.7,
+    fontSize: '12px',
+  },
+  refreshButton: { marginTop: spacing(1) },
 }));
 
-const Meta = ({ errors, handleBlur, handleChange, touched, values }) => {
+const Meta = ({ handleRefresh, values, youtubeVideoId }) => {
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
+  const [refreshed, setRefreshed] = useState(false);
+
+  useEffect(() => {
+    if (youtubeVideoId && values.title === '') fetchData()
+    if (youtubeVideoId) setLoading(false);
+    return () => {};
+  }, [values.title]);
+
+  const fetchData = async () => {
+    await handleRefresh();
+    setRefreshed(true);
+    setLoading(false);
+  };
 
   return (
-    <>
-      <Grid item md={6} xs={6}>
-        <TextField
-          className={classes.marginBottom}
-          error={Boolean(touched.title && errors.title)}
-          fullWidth
-          helperText={touched.title && errors.title}
-          label="Title"
-          name="title"
-          onBlur={handleBlur}
-          onChange={handleChange}
-          value={values.title}
-        />
-        <TextField
-          className={classes.marginBottom}
-          error={Boolean(touched.author && errors.author)}
-          fullWidth
-          helperText={touched.author && errors.author}
-          label="Author"
-          name="author"
-          onBlur={handleBlur}
-          onChange={handleChange}
-          value={values.author}
-        />
-        <Grid container spacing={2}>
-          <Grid item md={3}>
-            <TextField
-              className={classes.marginBottom}
-              error={Boolean(touched.year && errors.year)}
-              fullWidth
-              helperText={touched.year && errors.year}
-              inputProps={{ maxLength: 4 }}
-              label="Year"
-              name="year"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.year}
-            />
-          </Grid>
-          <Grid item md={9}>
-            <TextField
-              className={classes.marginBottom}
-              error={Boolean(touched.genre && errors.genre)}
-              fullWidth
-              helperText={touched.genre && errors.genre}
-              label="Genre"
-              name="genre"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.genre}
-            />
-          </Grid>
+    <Box>
+      <Grid container>
+        <Grid item xs={11}>
+          <Typography variant="caption">Title</Typography>
+          <Typography gutterBottom variant="subtitle1">
+            {loading ? <Skeleton /> : <b>{values.title}</b>}
+          </Typography>
+        </Grid>
+        <Grid item xs={1}>
+          <IconButton
+            aria-label="refresh"
+            className={classes.refreshButton}
+            disabled={loading || refreshed}
+            onClick={fetchData}
+          >
+            <RefreshIcon />
+          </IconButton>
         </Grid>
       </Grid>
-      <Grid item md={6} xs={6}>
-        <TextField
-          className={classes.marginBottom}
-          error={Boolean(touched['description'] && errors['description'])}
-          fullWidth
-          label="Description"
-          name="description"
-          multiline
-          onBlur={handleBlur}
-          onChange={handleChange}
-          rowsMax={3}
-          rows={3}
-          value={values.description}
-          variant="outlined"
-        />
-        <Tags name="tags" />
+
+      <Grid container>
+        <Grid item xs={8}>
+          <Typography variant="caption">Channel</Typography>
+          <Typography gutterBottom variant="subtitle2">
+            {loading ? <Skeleton /> : values.channelTitle}
+          </Typography>
+        </Grid>
+
+        <Grid item xs={2}>
+          <Box
+            display="flex"
+            flexDirection="row"
+            className={classes.extraInfo}
+            justifyContent="flex-end"
+          >
+            <CalendarTodayIcon className={classes.icon} fontSize="small" />
+            <Typography gutterBottom variant="subtitle2">
+              {loading ? (
+                <Skeleton width={50} />
+              ) : (
+                DateTime.fromISO(values.publishedAt).toFormat('yyyy')
+              )}
+            </Typography>
+          </Box>
+        </Grid>
+
+        <Grid item xs={2}>
+          <Box
+            display="flex"
+            flexDirection="row"
+            className={classes.extraInfo}
+            justifyContent="flex-end"
+          >
+            <AccessTimeIcon className={classes.icon} fontSize="small" />
+            <Typography gutterBottom variant="subtitle2">
+              {loading ? (
+                <Skeleton width={50} />
+              ) : (
+                Duration.fromISO(values.duration).toFormat('hh:mm:ss')
+              )}
+            </Typography>
+          </Box>
+        </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 
 Meta.propTypes = {
-  errors: PropTypes.object,
-  handleBlur: PropTypes.func,
-  handleChange: PropTypes.func,
-  touched: PropTypes.object,
+  handleRefresh: PropTypes.func,
   values: PropTypes.object,
+  youtubeVideoId: PropTypes.string,
 };
 
 export default Meta;

@@ -87,17 +87,17 @@ const StoryCard = ({
       className={clsx(
         classes.root,
         className,
-        !story.featuredimage && classes.noMedia
+        !story.image && classes.noMedia
       )}
       elevation={elevation}
       {...rest}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
     >
-      {story.featuredimage && (
+      {story.image && (
         <CardMedia
           className={classes.media}
-          image={`/assets/stories/images/${story.featuredimage}`}
+          image={`/assets/stories/images/${story.image}`}
           title={story.title}
         />
       )}
@@ -110,7 +110,7 @@ const StoryCard = ({
               justifyContent="flex-start"
               className={clsx(
                 classes.actionPanel,
-                !story.featuredimage && classes.noMedia,
+                !story.image && classes.noMedia,
                 showEdit && classes.actionPanelMarginTop
               )}
               pr={1}

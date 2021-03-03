@@ -13,8 +13,11 @@ export const api = {
       headers,
     });
 
-    const { ok, status, statusText } = response;
-    if (!ok) return { error: { status, statusText } };
+    const { ok, status } = response;
+    if (!ok) {
+      const statusText = `Sorry, we do not recognize this account.`;
+      return { error: { status, statusText } };
+    }
 
     const result = await response.json();
     return result;

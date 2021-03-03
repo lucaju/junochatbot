@@ -42,7 +42,7 @@ const StoryCard = ({ values, ...rest }) => {
         elevation={theme.palette.type === 'light' ? 1 : 3}
         {...rest}
       >
-        <FeaturedImage name={'featuredImage'} title={values.title} />
+        <FeaturedImage name={'image'} title={values.title} />
         <CardContent>
           <Box display="flex" alignItems="center">
             <Typography variant="h6">{values.title}</Typography>

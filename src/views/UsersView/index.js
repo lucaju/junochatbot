@@ -3,16 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
+import Collection from './Collection';
 import Details from './details/';
-import UsersList from './UsersList';
-import MenuBar from './MenuBar';
+import MenuBar from './menubar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: palette.background.default,
     minHeight: '100%',
-    paddingBottom: theme.spacing(1),
-    paddingTop: theme.spacing(3),
+    paddingTop: spacing(3),
   },
 }));
 
@@ -22,10 +21,11 @@ const UsersView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
   const [filters, setFilters] = useState(new Map());
   const [groupId, setGroupId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(null);
 
   useEffect(() => {
     const userTypeAllowed = [1, 2];
@@ -36,13 +36,13 @@ const UsersView = () => {
     return () => {};
   }, []);
 
-  const handleDetailOpen = (user) => {
+  const handleDetailOpen = (user = {}) => {
     setCurrentUser(user);
     setDetailsOpen(true);
   };
 
   const handleDetailClose = () => {
-    setCurrentUser({});
+    setCurrentUser(undefined);
     setDetailsOpen(false);
   };
 
@@ -56,6 +56,11 @@ const UsersView = () => {
     setGroupId(value);
   };
 
+  const handleSearch = async (value) => {
+    if (value === '') value = null;
+    setSearchQuery(value);
+  };
+
   return (
     <Page className={classes.root} title={title}>
       <Container maxWidth={false}>
@@ -65,14 +70,17 @@ const UsersView = () => {
           user={currentUser}
         />
         <MenuBar
+          handleDetailOpen={handleDetailOpen}
           handleFilterByGroup={handleFilterByGroup}
-          updateFilters={updateFilters}
+          updateFilter={updateFilters}
+          handleSearch={handleSearch}
         />
         <Box mt={3}>
-          <UsersList
+          <Collection
             filters={filters}
             groupId={groupId}
             handleDetailOpen={handleDetailOpen}
+            searchQuery={searchQuery}
           />
         </Box>
       </Container>

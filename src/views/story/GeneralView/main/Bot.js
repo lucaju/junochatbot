@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useApp } from 'src/overmind';
 import { getIcon } from 'src/util/icons';
-import BotSpeedTypeSlider from './BotSpeedTypeSlider';
+import BotDelaySlider from './BotDelaySlider';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
   avatarSelectBox: { marginTop: '-5px' },
@@ -91,7 +91,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
             {`Message Delay (characters per millissecond)`}
           </Typography>
         </Box>
-        <BotSpeedTypeSlider name="botSpeed" />
+        <BotDelaySlider name="botDelay" />
       </Box>
     </>
   );

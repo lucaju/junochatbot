@@ -1,9 +1,9 @@
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
   makeStyles,
 } from '@material-ui/core';
 import { Formik } from 'formik';
@@ -13,228 +13,264 @@ import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
+import Extra from './Extra';
 import Meta from './Meta';
 import Player from './Player';
 import Source from './Source';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ spacing, palette }) => ({
   header: {
-    color: theme.palette.primary.light,
+    color: palette.primary.light,
     textAlign: 'center',
   },
   dialogContent: {
-    paddingRight: 0,
-    paddingLeft: 0,
-    marginBottom: theme.spacing(1),
-    minHeight: 160,
+    // paddingRight: 0,
+    // paddingLeft: 0,
+    // marginBottom: spacing(1),
+    // minHeight: 160,
     maxHeight: '70vh',
   },
-  section: {
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(1),
+  player: {
+    marginTop: -spacing(2),
+    marginBottom: -spacing(3),
+    marginLeft: -spacing(3),
+    marginRight: -spacing(3),
+  },
+  meta: {
+    backgroundColor: palette.background.default,
+    marginTop: -spacing(2),
+    marginBottom: spacing(2),
+    marginLeft: -spacing(3),
+    marginRight: -spacing(3),
+    paddingRight: spacing(3),
+    paddingLeft: spacing(3),
+    paddingTop: spacing(2),
+    paddingBottom: spacing(2),
   },
 }));
 
-const supportProviders = new Set(['youtube', 'vimeo']);
-
 const initialValues = {
-  source: '',
-  provider: '',
+  url: '',
   image: '',
   title: '',
-  author: '',
-  year: '',
+  channelTitle: '',
+  publishedAt: '',
+  duration: '',
   description: '',
   tags: [],
-  submitType: 'submit',
+  active: true,
 };
 
 const formValidation = Yup.object().shape({
-  source: Yup.string().trim().required('Source is required'),
-  provider: Yup.string(),
+  url: Yup.string().trim().required('Url is required'),
   image: Yup.string(),
   title: Yup.string().max(255),
-  author: Yup.string().max(255),
-  year: Yup.string(),
+  channelTitle: Yup.string().max(255),
+  publishedAt: Yup.string(),
+  duration: Yup.string(),
   description: Yup.string(),
   tags: Yup.array(),
+  active: Yup.bool(),
 });
 
-const Details = ({ open, handleDetailClose, videoId }) => {
+const Details = ({ open, handleDetailClose, video }) => {
   const classes = useStyles();
   const { actions } = useApp();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [submitType, setSubmitType] = useState(null);
   const [videoData, setVideoData] = useState(initialValues);
-  const [videoProvider, setVideoProvider] = useState(null);
+  const [youtubeVideoId, setYoutubeVideoId] = useState(null);
+  const [dirtyFromYoutube, setDirtyFromYoutube] = useState(false);
 
   useEffect(() => {
-    if (open && videoId !== 0) {
-      const fetch = async (id) => {
-        const video = await actions.video.getVideo(id);
-        video.submitType = 'submit';
-        setVideoData(video);
-        setVideoProvider(video.provider);
+    if (open && video?.id) {
+      const fetch = async () => {
+        const selectedVideo = await actions.videos.getVideo(video.id);
+        setVideoData(selectedVideo);
+        parseVideoId(selectedVideo.url);
       };
-      fetch(videoId);
+      fetch();
     }
-    if (open && videoId === 0) {
-      setVideoData(initialValues);
-    }
+    if (open && !video?.id) setVideoData(initialValues);
     return () => {};
   }, [open]);
 
-  const parseVideoProvider = (input) => {
-    let result = null;
-    for (const provider of supportProviders) {
-      if (input.includes(provider)) {
-        result = provider;
-        break;
-      }
-    }
-    if (result) setVideoProvider(result);
+  const parseVideoId = (input) => {
+    //REGEX
+    // extract the ID from the url
+    //anything after the character "=", exclusively;
+    //ex: https://www.youtube.com/watch?v=2MQx0SXLCcE&t=4274s -> 2MQx0SXLCcE
+    const regex = /(?<==)((.*)|(.+?)(?=&))/g; //
+    const match = input.match(regex);
+    if (!match) return;
+
+    const id = match[0];
+    videoData.url = input;
+    setYoutubeVideoId(id);
   };
 
-  const handleCancelButton = () => {
+  const fetchYoutubeData = async () => {
+    const ytData = await actions.videos.getYoutubeData(youtubeVideoId);
+    setVideoData({ ...videoData, ...ytData });
+    setDirtyFromYoutube(true);
+  };
+
+  const handleClose = () => {
+    setVideoData(initialValues);
+    setDirtyFromYoutube(false);
+    setYoutubeVideoId(null);
     handleDetailClose();
     open = false;
   };
 
+  // eslint-disable-next-line no-unused-vars
   const submit = async (values) => {
-    const res = !values.id
-      ? await actions.video.createVideo(values)
-      : await actions.video.updateVideo(values);
+    //create update
+    const response = values.id
+      ? await actions.videos.updateVideo({ videoData, values })
+      : actions.videos.createVideo(values);
 
-    if (!res) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Error: Something went wrong!',
-      });
-      return;
+    const type = response.error ? 'error' : 'success';
+
+    //error
+    if (response.error) {
+      const message = 'Something went wrong!';
+      actions.ui.showNotification({ message, type });
+      return response;
     }
 
+    //success
     const message = values.id ? 'Video updated' : 'Video created';
-    actions.ui.showNotification({
-      type: 'success',
-      message,
-    });
-    handleDetailClose();
-    open = false;
+    actions.ui.showNotification({ message, type });
+
+    handleClose();
   };
 
-  const deleteVideo = async (values) => {
+  // eslint-disable-next-line no-unused-vars
+  const updateStatus = async (values, active) => {
     if (!values.id) return;
-    const res = await actions.video.deleteVideo(values.id);
-    setDeleteDialogOpen(false);
 
-    if (!res) {
-      actions.ui.showNotification({
-        type: 'error',
-        message: 'Error: Something went wrong!',
-      });
-      return;
+    //Since the API is PUT not PATCH, we need to send all fields
+    const data = videoData;
+    data.active = active; //change video status
+
+    const response = await actions.videos.updateVideoStatus(data);
+
+    const type = response.error ? 'error' : 'success';
+
+    //error
+    if (response.error) {
+      const message = 'Something went wrong!';
+      actions.ui.showNotification({ message, type });
+      return response;
     }
 
-    actions.ui.showNotification({
-      type: 'success',
-      message: 'Video removed',
-    });
-    handleDetailClose();
-    open = false;
+    //success
+    const message = active ? 'Video restored' : 'Video deleted';
+    actions.ui.showNotification({ message, type });
+
+    //end
+    if (active) return response;
+
+    handleClose();
   };
 
   return (
     <Dialog
-      open={open}
-      onClose={handleDetailClose}
-      maxWidth="sm"
       aria-labelledby="video-details-dialog"
       fullWidth
+      maxWidth="sm"
+      onBackdropClick={handleClose}
+      onClose={handleDetailClose}
+      open={open}
       scroll="body"
     >
-      <DialogTitle className={classes.header}>Video</DialogTitle>
-      <Formik
-        initialValues={videoData}
-        validationSchema={formValidation}
-        enableReinitialize={true}
-        onSubmit={async (values) => {
-          if (submitType === 'delete') values.submitType = 'delete';
-          values.submitType === 'delete'
-            ? await deleteVideo(values)
-            : await submit(values);
-          setSubmitType(null);
-        }}
-      >
-        {({
-          errors,
-          dirty,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <DialogContent className={classes.dialogContent} dividers>
-              <Grid
-                container
-                spacing={3}
-                className={classes.section}
-                justify="center"
-                alignItems="center"
-              >
-                <Source
-                  errors={errors}
-                  handleBlur={handleBlur}
-                  handleChange={handleChange}
-                  touched={touched}
-                  values={values}
-                  parseVideoProvider={parseVideoProvider}
-                  videoProvider={videoProvider}
-                />
-              </Grid>
-              {videoProvider && (
-                <>
-                  <Player provider={values.provider} source={values.source} />
-                  <Grid container spacing={3} className={classes.section}>
-                    <Meta
-                      errors={errors}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                      touched={touched}
-                      values={values}
-                    />
-                  </Grid>
-                </>
+      {!video?.id && !youtubeVideoId ? (
+        <>
+          <DialogTitle className={classes.header}>Add Video</DialogTitle>
+          <DialogContent dividers>
+            <Source parseVideoId={parseVideoId} />
+          </DialogContent>
+        </>
+      ) : (
+        <Formik
+          enableReinitialize={true}
+          initialValues={videoData}
+          onSubmit={async (values) => {
+            //change status submission
+            if (values.submitType) {
+              const active = values.submitType === 'delete' ? false : true;
+              const response = await updateStatus(values, active);
+              if (!response?.error) values.active = active;
+              return;
+            }
+
+            //normal submission
+            await submit(values);
+          }}
+          validationSchema={formValidation}
+        >
+          {({
+            errors,
+            dirty,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              {youtubeVideoId && (
+                <DialogTitle className={classes.player}>
+                  <Player youtubeVideoId={youtubeVideoId} />
+                </DialogTitle>
               )}
-            </DialogContent>
-            <DialogActions>
-              <Actions
-                dirty={dirty}
-                handleCancel={handleCancelButton}
-                handleDelete={() => setDeleteDialogOpen(true)}
+
+              <DialogContent dividers>
+                <Box className={classes.meta}>
+                  <Meta
+                    handleRefresh={fetchYoutubeData}
+                    values={values}
+                    youtubeVideoId={youtubeVideoId}
+                  />
+                </Box>
+                <Box>
+                  <Extra
+                    errors={errors}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    touched={touched}
+                    values={values}
+                  />
+                </Box>
+              </DialogContent>
+              <DialogActions>
+                <Actions
+                  dirty={dirty}
+                  dirtyFromYoutube={dirtyFromYoutube}
+                  handleCancel={handleClose}
+                  handleDelete={() => setDeleteDialogOpen(true)}
+                  isSubmitting={isSubmitting}
+                  values={values}
+                  videoData={videoData}
+                />
+              </DialogActions>
+              <DeleteDialog
+                handleNo={() => setDeleteDialogOpen(false)}
+                handleYes={() => {
+                  setDeleteDialogOpen(false);
+                  values.submitType = 'delete';
+                  handleSubmit();
+                }}
                 isSubmitting={isSubmitting}
-                name="submitType"
-                videoId={videoId}
+                message="Are you sure you want to delete this video?"
+                open={deleteDialogOpen}
+                title="Delete Video"
               />
-            </DialogActions>
-            <DeleteDialog
-              handleYes={() => {
-                setSubmitType('delete');
-                handleSubmit();
-              }}
-              handleNo={() => setDeleteDialogOpen(false)}
-              isSubmitting={isSubmitting}
-              message="Are you sure you want to delete this user?"
-              open={deleteDialogOpen}
-              title="Delete User"
-            />
-          </form>
-        )}
-      </Formik>
+            </form>
+          )}
+        </Formik>
+      )}
     </Dialog>
   );
 };
@@ -242,7 +278,7 @@ const Details = ({ open, handleDetailClose, videoId }) => {
 Details.propTypes = {
   handleDetailClose: PropTypes.func,
   open: PropTypes.bool,
-  videoId: PropTypes.any,
+  video: PropTypes.object,
 };
 
 export default Details;
