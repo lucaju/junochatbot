@@ -34,9 +34,9 @@ const routes = [
     children: [
       { path: 'general', element: <GeneralView /> },
       { path: 'videos', element: <VideoCollectionView /> },
+      { path: 'tags', element: <TagsView /> },
       { path: 'narrative', element: <NarrativeView /> },
       { path: 'contexts', element: <ContextsView /> },
-      { path: 'tags', element: <TagsView /> },
       { path: '*', element: <Navigate to="/app/story/general" /> },
     ],
   },
