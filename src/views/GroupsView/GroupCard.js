@@ -33,7 +33,7 @@ const GroupCard = ({ className, group, handleEditClick, ...rest }) => {
     setSize(cardRef.current.offsetWidth);
   }, []);
 
-  useRefresh([size]);
+  useRefresh([size, group]);
 
   const mouseOver = () => {
     setHover(true);

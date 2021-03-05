@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
+import { useRefresh } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
@@ -43,6 +44,8 @@ const VideoCard = ({ className, handleEditClick, video, ...rest }) => {
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(1);
+
+  useRefresh([video]);
 
   const mouseOver = () => {
     setHover(true);

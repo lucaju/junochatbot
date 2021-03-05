@@ -33,7 +33,7 @@ const TagCard = ({ className, handleEditClick, tag, ...rest }) => {
     setSize(cardRef.current.offsetWidth);
   }, []);
 
-  useRefresh([size]);
+  useRefresh([size, tag]);
 
   const mouseOver = () => {
     setHover(true);

@@ -11,6 +11,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import clsx from 'clsx';
 import { json } from 'overmind';
+import { useRefresh } from 'muuri-react'
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { APP_URL } from '../../config/config.js';
@@ -32,6 +33,8 @@ const UserRow = ({ className, handleEditClick, user, ...rest }) => {
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(1);
+
+  useRefresh([user]);
 
   const { firstName, lastName, userName, active, avatarUrl, groups } = user;
 
