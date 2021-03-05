@@ -33,8 +33,8 @@ const SearchBox = ({ className, handleSearch, value }) => {
         ),
         className: clsx(isOn() && classes.highlight),
       }}
-      label="Title"
-      name="filterTitle"
+      label="Search"
+      name="filterSearch"
       onChange={(e) => handleChange(e.target.value)}
       size="small"
       variant="outlined"
