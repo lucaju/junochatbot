@@ -31,7 +31,7 @@ const TagsView = () => {
     return () => {};
   }, []);
 
-  const handleDetailOpen = (tag) => {
+  const handleDetailOpen = (tag = {}) => {
     setCurrentTag(tag);
     setDetailsOpen(true);
   };
