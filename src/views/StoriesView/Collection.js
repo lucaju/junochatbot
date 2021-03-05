@@ -42,7 +42,10 @@ const Collection = ({ filters, groupId, searchQuery, triggerEditStory }) => {
       })
       .filter((item) => {
         if (!searchQuery) return item;
-        const match = item.title.toLowerCase().match(searchQuery.toLowerCase());
+        const ownerFullName = `${item.owner.firstName} ${item.owner.lastName}`;
+        const match =
+          item.title.toLowerCase().match(searchQuery.toLowerCase()) ||
+          ownerFullName.toLowerCase().match(searchQuery.toLowerCase());
         return match;
       });
   };
