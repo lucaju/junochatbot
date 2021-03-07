@@ -1,14 +1,4 @@
 {
-	"common": {
-		"anErrorOccurred": "An error occurred",
-		"cancel": "Cancel",
-		"create": "Create",
-		"forkSaveAsPullRequest": "Fork and Pull Request",
-		"ok": "Ok",
-		"save": "Save",
-		"saveAsPullRequest": "Save As Pull Request",
-		"yes": "Yes"
-	},
 	"profile": {
 		"darkMode": "Mode sombre",
 		"language": "Langue",
@@ -17,11 +7,12 @@
 		"signOut": "Se déconnecter"
 	},
 	"navMenu": {
-		"stories": "Recít",
+		"stories": "Récit",
 		"users": "Utilisateurs",
 		"usersGroups": "Groupes d'Utilisateurs",
-		"general": "General",
-		"videoCollection": "Video Collection",
-		"narrativeDesign": "Narrarive Design"
+		"general": "Général",
+		"videoCollection": "Collection de vidéos",
+		"tags": "Mots Clés",
+		"conversationDesign": "Conception de conversation"
 	}
 }
