@@ -1,25 +1,20 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-
-import BlankLayout from './layouts/BlankLayout';
 import AppLayout from './layouts/AppLayout';
-// import MainLayout from './layouts/MainLayout';
-
-import { LoginView, ForgotView, ResetPasswordView } from './views/auth';
-
+import BlankLayout from './layouts/BlankLayout';
+import { ForgotView, LoginView, ResetPasswordView } from './views/auth';
 import NotFoundView from './views/errors/NotFoundView';
-
-import StoriesView from './views/StoriesView';
-import UsersView from './views/UsersView';
 import GroupsView from './views/GroupsView';
-
+import StoriesView from './views/StoriesView';
 import {
-  GeneralView,
-  VideoCollectionView,
-  NarrativeView,
   ContextsView,
+  ConversationView,
+  GeneralView,
   TagsView,
+  VideosView
 } from './views/story';
+import UsersView from './views/UsersView';
+
 
 // * react-router-dom REFERENCES:
 // https://medium.com/frontend-digest/whats-new-in-react-router-6-732b06cc83e4
@@ -33,9 +28,9 @@ const routes = [
     element: <AppLayout showStoryMenu={true} />,
     children: [
       { path: 'general', element: <GeneralView /> },
-      { path: 'videos', element: <VideoCollectionView /> },
+      { path: 'videos', element: <VideosView /> },
       { path: 'tags', element: <TagsView /> },
-      { path: 'narrative', element: <NarrativeView /> },
+      { path: 'conversation', element: <ConversationView /> },
       { path: 'contexts', element: <ContextsView /> },
       { path: '*', element: <Navigate to="/app/story/general" /> },
     ],

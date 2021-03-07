@@ -24,9 +24,9 @@ export const storyMenu = [
     icon: LocalOfferIcon,
   },
   {
-    title: 'Narrative Design',
-    tKey: 'narrativeDesign',
-    href: '/app/story/narrative',
+    title: 'Conversation Design',
+    tKey: 'conversationDesign',
+    href: '/app/story/conversation',
     icon: QuestionAnswerIcon,
   },
   // {
