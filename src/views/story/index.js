@@ -1,13 +1,13 @@
-import GeneralView from './GeneralView';
-import VideoCollectionView from './VideoCollectionView';
-import NarrativeView from './NarrativeView';
 import ContextsView from './ContextsView';
+import ConversationView from './ConversationView';
+import GeneralView from './GeneralView';
 import TagsView from './TagsView';
+import VideosView from './VideosView';
 
 export {
-  GeneralView,
-  VideoCollectionView,
-  NarrativeView,
   ContextsView,
+  ConversationView,
+  GeneralView,
   TagsView,
+  VideosView,
 };

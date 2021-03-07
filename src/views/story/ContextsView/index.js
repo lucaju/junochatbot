@@ -30,7 +30,7 @@ const ContextView = () => {
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
     const getCollection = async () => {
-      await actions.intentContext.getCollection();
+      await actions.intents.getContextCollection();
       setIsLoading(false);
     };
     getCollection();
@@ -57,7 +57,7 @@ const ContextView = () => {
         {!isLoading && (
           <>
             <Box mt={3}>
-              <Collection contexts={state.intentContext.collection} />
+              <Collection contexts={state.intents.contextCollection} />
             </Box>
           </>
         )}
