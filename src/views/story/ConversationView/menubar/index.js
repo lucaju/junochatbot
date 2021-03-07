@@ -22,7 +22,7 @@ const MenuBar = ({
         onClick={() => handleDetailOpen()}
         startIcon={<AddCircleOutlineIcon />}
       >
-        Add Video
+        Add Intent
       </Button>
       {!disabledFilters && (
         <>
