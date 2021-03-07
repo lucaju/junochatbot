@@ -1,19 +1,17 @@
+import { dataIntents } from './intents';
 import { authUser } from './session';
-import { dataUsers } from './user';
-import { dataStories, storyExample, storyDefault } from './story';
-import { dataVideoCollection } from './video';
+import { dataStories, storyDefault, storyExample } from './story';
 import { dataTags } from './tag';
-import { dataContexts } from './context';
-import { dataNarrative } from './narrative';
+import { dataUsers } from './user';
+import { dataVideoCollection } from './video';
 
 export default {
   authUser,
-  dataUsers,
+  dataIntents,
   dataStories,
+  dataTags,
+  dataUsers,
+  dataVideoCollection,
   storyDefault,
   storyExample,
-  dataVideoCollection,
-  dataTags,
-  dataContexts,
-  dataNarrative,
 };
