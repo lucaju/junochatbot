@@ -3,6 +3,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import NoMatch from 'src/components/NoMatch';
 import { useApp } from 'src/overmind';
 import UserCard from './UserCard';
 
@@ -80,6 +81,8 @@ const Collection = ({ filters, groupId, handleDetailOpen, searchQuery }) => {
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {showSkeleton(4)}
         </Box>
+      ) : fileredItems().length === 0 ? (
+        <NoMatch />
       ) : (
         <MuuriComponent>
           {fileredItems().map((user) => (

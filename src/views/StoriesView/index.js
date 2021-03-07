@@ -6,6 +6,7 @@ import { useApp } from 'src/overmind';
 import AddStoryDialog from './AddStoryDialog';
 import Collection from './Collection';
 import MenuBar from './menubar';
+import NoStories from './NoStories';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
@@ -19,14 +20,22 @@ const title = 'Stories';
 
 const Stories = () => {
   const classes = useStyles();
-  const { actions } = useApp();
-  const [addStoryOpen, setAddStoryOpenn] = React.useState(false);
+  const { state, actions } = useApp();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasStories, setHasStories] = useState(true);
+  const [addStoryOpen, setAddStoryOpenn] = useState(false);
   const [filters, setFilters] = useState(new Map());
   const [groupId, setGroupId] = useState(null);
   const [searchQuery, setSearchQuery] = useState(null);
 
   useEffect(() => {
+    const getCollection = async () => {
+      await actions.story.getStories();
+      setIsLoading(false);
+      setHasStories(state.story.stories.length > 0);
+    };
+    getCollection();
     actions.ui.updateTitle(title);
     return () => {};
   }, []);
@@ -62,21 +71,30 @@ const Stories = () => {
           handleClose={handleAddDiaglogClose}
           triggerEditStory={triggerEditStory}
         />
-        <MenuBar
-          handleDetailOpen={handleAddDialogOpen}
-          handleFilterByGroup={handleFilterByGroup}
-          handleSearch={handleSearch}
-          updateFilter={updateFilters}
-        />
-        <Box mt={3}>
-          <Collection
-            filters={filters}
-            groupId={groupId}
-            handleDetailOpen={handleAddDialogOpen}
-            searchQuery={searchQuery}
-            triggerEditStory={triggerEditStory}
-          />
-        </Box>
+        {!hasStories ? (
+          <NoStories openDialog={handleAddDialogOpen} />
+        ) : (
+          <>
+            {!isLoading && (
+              <MenuBar
+                handleDetailOpen={handleAddDialogOpen}
+                handleFilterByGroup={handleFilterByGroup}
+                handleSearch={handleSearch}
+                updateFilter={updateFilters}
+              />
+            )}
+            <Box mt={3}>
+              <Collection
+                filters={filters}
+                groupId={groupId}
+                handleDetailOpen={handleAddDialogOpen}
+                isLoading={isLoading}
+                searchQuery={searchQuery}
+                triggerEditStory={triggerEditStory}
+              />
+            </Box>
+          </>
+        )}
       </Container>
     </Page>
   );

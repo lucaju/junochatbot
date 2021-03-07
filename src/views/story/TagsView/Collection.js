@@ -2,7 +2,8 @@ import { Box, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import NoMatch from 'src/components/NoMatch';
 import TagCard from './TagCard';
 import { useApp } from 'src/overmind';
 
@@ -16,20 +17,9 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const Collection = ({ filters, handleDetailOpen, searchQuery }) => {
+const Collection = ({ filters, handleDetailOpen, isLoading, searchQuery }) => {
   const classes = useStyles();
-  const { state, actions } = useApp();
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const getCollection = async () => {
-      await actions.videos.getTags();
-      setIsLoading(false);
-    };
-    getCollection();
-    return () => {};
-  }, []);
+  const { state } = useApp();
 
   const fileredItems = () => {
     return state.videos.tagCollection
@@ -68,6 +58,8 @@ const Collection = ({ filters, handleDetailOpen, searchQuery }) => {
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {showSkeleton(4)}
         </Box>
+      ) : fileredItems().length === 0 ? (
+        <NoMatch />
       ) : (
         <MuuriComponent>
           {fileredItems().map((tag) => (
@@ -87,6 +79,7 @@ const Collection = ({ filters, handleDetailOpen, searchQuery }) => {
 Collection.propTypes = {
   filters: PropTypes.object,
   handleDetailOpen: PropTypes.func,
+  isLoading: PropTypes.bool,
   searchQuery: PropTypes.string,
 };
 

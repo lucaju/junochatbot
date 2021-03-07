@@ -8,7 +8,7 @@ const useStyles = makeStyles(({ palette }) => ({
   highlight: { color: palette.primary.main },
 }));
 
-const SearchBox = ({ className, handleSearch, value }) => {
+const SearchBox = ({ className, handleSearch, disabled, value }) => {
   const classes = useStyles();
   const [filterValue, setFilterValue] = useState(value);
 
@@ -22,6 +22,7 @@ const SearchBox = ({ className, handleSearch, value }) => {
   return (
     <TextField
       className={className}
+      disabled={disabled}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
@@ -44,12 +45,14 @@ const SearchBox = ({ className, handleSearch, value }) => {
 };
 
 SearchBox.defaultProps = {
+  disabled: false,
   value: '',
 }
 
 SearchBox.propTypes = {
   className: PropTypes.string,
   handleSearch: PropTypes.func,
+  disabled: PropTypes.bool,
   value: PropTypes.any
 };
 

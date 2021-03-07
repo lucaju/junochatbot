@@ -1,6 +1,7 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NoMatch from 'src/components/NoMatch';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
@@ -21,6 +22,8 @@ const GroupsView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasGroups, setHasGroups] = useState(true);
   const [currentGroup, setCurrentGroup] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [filters, setFilters] = useState(new Map());
@@ -31,7 +34,16 @@ const GroupsView = () => {
     if (!userTypeAllowed.includes(state.session.user.roleTypeId)) {
       navigate('/app', { replace: true });
     }
+
     actions.ui.updateTitle(title);
+
+    const getCollection = async () => {
+      await actions.users.getGroups();
+      setIsLoading(false);
+      setHasGroups(state.users.groups.length > 0);
+    };
+    getCollection();
+
     return () => {};
   }, []);
 
@@ -63,18 +75,26 @@ const GroupsView = () => {
           handleDetailClose={handleDetailClose}
           open={detailsOpen}
         />
-        <MenuBar
-          handleDetailOpen={handleDetailOpen}
-          handleSearch={handleSearch}
-          updateFilter={updateFilters}
-        />
-        <Box mt={3}>
-          <Collection
-            filters={filters}
+        {!isLoading && (
+          <MenuBar
+            disabledFilters={!hasGroups}
             handleDetailOpen={handleDetailOpen}
-            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+            updateFilter={updateFilters}
           />
-        </Box>
+        )}
+        {!hasGroups ? (
+          <NoMatch heading="No groups yet" />
+        ) : (
+          <Box mt={3}>
+            <Collection
+              filters={filters}
+              handleDetailOpen={handleDetailOpen}
+              isLoading={isLoading}
+              searchQuery={searchQuery}
+            />
+          </Box>
+        )}
       </Container>
     </Page>
   );

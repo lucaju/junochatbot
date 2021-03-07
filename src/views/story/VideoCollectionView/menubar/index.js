@@ -13,6 +13,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 const filterStatus = true;
 
 const MenuBar = ({
+  disabledFilters,
   handleDetailOpen,
   handleFilterByTag,
   handleSearch,
@@ -34,18 +35,30 @@ const MenuBar = ({
       >
         Add Video
       </Button>
-      <Box flexGrow={1} />
-      <SearchBox className={classes.marginRight} handleSearch={handleSearch} />
-      <FilterTag
-        className={classes.marginRight}
-        handleFilter={handleFilterByTag}
-      />
-      <FilterStatus handleFilter={updateFilter} value={filterStatus} />
+      {!disabledFilters && (
+        <>
+          <Box flexGrow={1} />
+          <SearchBox
+            className={classes.marginRight}
+            handleSearch={handleSearch}
+          />
+          <FilterTag
+            className={classes.marginRight}
+            handleFilter={handleFilterByTag}
+          />
+          <FilterStatus handleFilter={updateFilter} value={filterStatus} />
+        </>
+      )}
     </Toolbar>
   );
 };
 
+MenuBar.DefaultProps = {
+  disabledFilters: false,
+};
+
 MenuBar.propTypes = {
+  disabledFilters: PropTypes.bool,
   handleDetailOpen: PropTypes.func,
   handleFilterByTag: PropTypes.func,
   handleSearch: PropTypes.func,

@@ -11,7 +11,12 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 const filterStatus = true;
 
-const MenuBar = ({ handleDetailOpen, handleSearch, updateFilter }) => {
+const MenuBar = ({
+  disabledFilters,
+  handleDetailOpen,
+  handleSearch,
+  updateFilter,
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -28,17 +33,26 @@ const MenuBar = ({ handleDetailOpen, handleSearch, updateFilter }) => {
       >
         Add Tag
       </Button>
-      <Box flexGrow={1} />
-      <SearchBox
-        className={classes.marginRight}
-        handleSearch={handleSearch}
-      />
-      <FilterStatus handleFilter={updateFilter} value={filterStatus} />
+      {!disabledFilters && (
+        <>
+          <Box flexGrow={1} />
+          <SearchBox
+            className={classes.marginRight}
+            handleSearch={handleSearch}
+          />
+          <FilterStatus handleFilter={updateFilter} value={filterStatus} />
+        </>
+      )}
     </Toolbar>
   );
 };
 
+MenuBar.DefaultProps = {
+  disabledFilters: false,
+};
+
 MenuBar.propTypes = {
+  disabledFilters: PropTypes.bool,
   handleDetailOpen: PropTypes.func,
   handleSearch: PropTypes.func,
   updateFilter: PropTypes.func,

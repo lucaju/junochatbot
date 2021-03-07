@@ -2,7 +2,8 @@ import { Box, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import NoMatch from 'src/components/NoMatch';
 import { useApp } from 'src/overmind';
 import VideoCard from './VideoCard';
 
@@ -14,20 +15,15 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
+const Collection = ({
+  filters,
+  handleDetailOpen,
+  isLoading,
+  searchQuery,
+  tagId,
+}) => {
   const classes = useStyles();
-  const { state, actions } = useApp();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const getCollection = async () => {
-      await actions.videos.getVideos();
-      await actions.videos.getTags();
-      setIsLoading(false);
-    };
-    getCollection();
-    return () => {};
-  }, []);
+  const { state } = useApp();
 
   const fileredItems = () => {
     return state.videos.collection
@@ -71,6 +67,8 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {showSkeleton(4)}
         </Box>
+      ) : fileredItems().length === 0 ? (
+        <NoMatch />
       ) : (
         <MuuriComponent>
           {fileredItems().map((video) => (
@@ -90,6 +88,7 @@ const Collection = ({ filters, handleDetailOpen, searchQuery, tagId }) => {
 Collection.propTypes = {
   filters: PropTypes.object,
   handleDetailOpen: PropTypes.func,
+  isLoading: PropTypes.bool,
   searchQuery: PropTypes.string,
   tagId: PropTypes.any,
 };

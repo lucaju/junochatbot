@@ -1,6 +1,7 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NoMatch from 'src/components/NoMatch';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
@@ -19,8 +20,10 @@ const title = 'Juno Chatbot';
 
 const VideoCollectionView = () => {
   const classes = useStyles();
-  const { state } = useApp();
   const navigate = useNavigate();
+  const { state, actions } = useApp();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasVideos, setHasVideos] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [filters, setFilters] = useState(new Map());
@@ -29,6 +32,13 @@ const VideoCollectionView = () => {
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
+    const getCollection = async () => {
+      await actions.videos.getVideos();
+      await actions.videos.getTags();
+      setIsLoading(false);
+      setHasVideos(state.videos.collection.length > 0);
+    };
+    getCollection();
     return () => {};
   }, []);
 
@@ -65,20 +75,28 @@ const VideoCollectionView = () => {
           open={detailsOpen}
           video={currentVideo}
         />
-        <MenuBar
-          handleDetailOpen={handleDetailOpen}
-          handleFilterByTag={handleFilterByTag}
-          handleSearch={handleSearch}
-          updateFilter={updateFilters}
-        />
-        <Box mt={3}>
-          <Collection
-            filters={filters}
+        {!isLoading && (
+          <MenuBar
+            disabledFilters={!hasVideos}
             handleDetailOpen={handleDetailOpen}
-            searchQuery={searchQuery}
-            tagId={tagId}
+            handleFilterByTag={handleFilterByTag}
+            handleSearch={handleSearch}
+            updateFilter={updateFilters}
           />
-        </Box>
+        )}
+        {!hasVideos ? (
+          <NoMatch heading="No videos yet" />
+        ) : (
+          <Box mt={3}>
+            <Collection
+              filters={filters}
+              handleDetailOpen={handleDetailOpen}
+              isLoading={isLoading}
+              searchQuery={searchQuery}
+              tagId={tagId}
+            />
+          </Box>
+        )}
       </Container>
     </Page>
   );

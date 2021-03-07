@@ -1,6 +1,7 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NoMatch from 'src/components/NoMatch';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
@@ -19,8 +20,10 @@ const title = 'Juno Chatbot';
 
 const TagsView = () => {
   const classes = useStyles();
-  const { state } = useApp();
+  const { state, actions } = useApp();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasTags, setHasTags] = useState(true);
   const [currentTag, setCurrentTag] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [filters, setFilters] = useState(new Map());
@@ -28,6 +31,12 @@ const TagsView = () => {
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
+    const getCollection = async () => {
+      await actions.videos.getTags();
+      setIsLoading(false);
+      setHasTags(state.videos.tagCollection.length > 0);
+    };
+    getCollection();
     return () => {};
   }, []);
 
@@ -59,18 +68,26 @@ const TagsView = () => {
           open={detailsOpen}
           tag={currentTag}
         />
-        <MenuBar
-          handleDetailOpen={handleDetailOpen}
-          handleSearch={handleSearch}
-          updateFilter={updateFilters}
-        />
-        <Box mt={3}>
-          <Collection
-            filters={filters}
+        {!isLoading && (
+          <MenuBar
+            disabledFilters={!hasTags}
             handleDetailOpen={handleDetailOpen}
-            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+            updateFilter={updateFilters}
           />
-        </Box>
+        )}
+        {!hasTags ? (
+          <NoMatch heading="No tags yet" />
+        ) : (
+          <Box mt={3}>
+            <Collection
+              filters={filters}
+              handleDetailOpen={handleDetailOpen}
+              isLoading={isLoading}
+              searchQuery={searchQuery}
+            />
+          </Box>
+        )}
       </Container>
     </Page>
   );

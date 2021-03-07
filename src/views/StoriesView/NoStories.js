@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import AddStoryCard from './AddStoryCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette }) => ({
   heading: {
     marginTop: 50,
     textTransform: 'uppercase',
     fontWeight: 700,
-    color: theme.palette.grey[700],
+    color: palette.grey[700],
   },
   image: {
     marginBottom: 50,
@@ -32,7 +32,7 @@ const NoStories = ({ openDialog }) => {
       textAlign="center"
       alignItems="center"
     >
-      <Typography variant="h4" gutterBottom className={classes.heading}>
+      <Typography className={classes.heading} gutterBottom variant="h4">
         No stories yet
       </Typography>
       <img
