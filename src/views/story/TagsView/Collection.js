@@ -3,7 +3,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import NoMatch from 'src/components/NoMatch';
+import NoContent from 'src/components/NoContent';
 import TagCard from './TagCard';
 import { useApp } from 'src/overmind';
 
@@ -59,7 +59,7 @@ const Collection = ({ filters, handleDetailOpen, isLoading, searchQuery }) => {
           {showSkeleton(4)}
         </Box>
       ) : fileredItems().length === 0 ? (
-        <NoMatch />
+        <NoContent />
       ) : (
         <MuuriComponent>
           {fileredItems().map((tag) => (

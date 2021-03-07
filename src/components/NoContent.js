@@ -12,7 +12,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const NoMatch = ({ heading = 'No match' }) => {
+const NoContent = ({ heading = 'No match' }) => {
   const classes = useStyles();
   
   return (
@@ -22,12 +22,12 @@ const NoMatch = ({ heading = 'No match' }) => {
   );
 };
 
-NoMatch.DefaultProps = {
+NoContent.DefaultProps = {
   heading: 'No match',
 };
 
-NoMatch.propTypes = {
+NoContent.propTypes = {
   heading: PropTypes.string,
 };
 
-export default NoMatch;
+export default NoContent;

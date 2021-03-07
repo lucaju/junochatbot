@@ -1,7 +1,7 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NoMatch from 'src/components/NoMatch';
+import NoContent from 'src/components/NoContent';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
 import Collection from './Collection';
@@ -77,7 +77,7 @@ const TagsView = () => {
           />
         )}
         {!hasTags ? (
-          <NoMatch heading="No tags yet" />
+          <NoContent heading="No tags yet" />
         ) : (
           <Box mt={3}>
             <Collection
