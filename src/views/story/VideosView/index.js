@@ -18,7 +18,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 
 const title = 'Juno Chatbot';
 
-const VideoCollectionView = () => {
+const VideosView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state, actions } = useApp();
@@ -102,4 +102,4 @@ const VideoCollectionView = () => {
   );
 };
 
-export default VideoCollectionView;
+export default VideosView;
