@@ -76,8 +76,7 @@ const Attributions = ({
             getOptionLabel={(groups) => groups.name}
             getOptionSelected={(option, value) => option.id === value.id}
             id="groups"
-            // limitTags={3}
-            // multiple={values.roleTypeId === 1 ? true : false}  //todo: allow multiple if admin
+            multiple={values.roleTypeId === 1 ? true : false} //todo: allow multiple if admin
             onChange={(event, value, reason) => {
               if (reason === 'blur') return handleBlur();
               setValue(json(value));

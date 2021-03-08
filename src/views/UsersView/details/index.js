@@ -73,7 +73,7 @@ const Details = ({ handleDetailClose, open, user }) => {
       const selectedUserData = Object.assign(initialValues);
       selectedUserData.groups = null;
       if (!state.session.isAdmin) {
-        selectedUserData.groups = state.session.user.groups[0];
+        selectedUserData.groups = [ ...state.session.user.groups[0]];
       }
       setUserData(selectedUserData);
       setLoaded(true);
