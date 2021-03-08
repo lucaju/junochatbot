@@ -8,6 +8,7 @@ import {
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
@@ -57,21 +58,10 @@ const initialValues = {
   active: true,
 };
 
-const formValidation = Yup.object().shape({
-  url: Yup.string().trim().required('Url is required'),
-  image: Yup.string(),
-  title: Yup.string().max(255),
-  channelTitle: Yup.string().max(255),
-  publishedAt: Yup.string(),
-  duration: Yup.string(),
-  description: Yup.string(),
-  tags: Yup.array(),
-  active: Yup.bool(),
-});
-
 const Details = ({ open, handleDetailClose, intent }) => {
   const classes = useStyles();
   const { actions } = useApp();
+  const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [intentData, setIntentData] = useState(initialValues);
 
@@ -86,6 +76,18 @@ const Details = ({ open, handleDetailClose, intent }) => {
     if (open && !intent?.id) setIntentData(initialValues);
     return () => {};
   }, [open]);
+
+  const formValidation = Yup.object().shape({
+    url: Yup.string().trim().required(t('common:required')),
+    image: Yup.string(),
+    title: Yup.string().max(255),
+    channelTitle: Yup.string().max(255),
+    publishedAt: Yup.string(),
+    duration: Yup.string(),
+    description: Yup.string(),
+    tags: Yup.array(),
+    active: Yup.bool(),
+  });
 
   const handleClose = () => {
     setIntentData(initialValues);
@@ -104,13 +106,13 @@ const Details = ({ open, handleDetailClose, intent }) => {
 
     //error
     if (response.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;
     }
 
     //success
-    const message = values.id ? 'Intent updated' : 'Intent created';
+    const message = values.id ? t('intentUpdated') : t('intentCreated')
     actions.ui.showNotification({ message, type });
 
     handleClose();
@@ -130,13 +132,13 @@ const Details = ({ open, handleDetailClose, intent }) => {
 
     //error
     if (response.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;
     }
 
     //success
-    const message = active ? 'Intent restored' : 'Intent deleted';
+    const message = active ? t('intentRestored') : t('intentDeleted');
     actions.ui.showNotification({ message, type });
 
     //end
@@ -215,9 +217,9 @@ const Details = ({ open, handleDetailClose, intent }) => {
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message="Are you sure you want to delete this intent?"
+                message={t('deleteDialog:message', { object: t('intent')})}
                 open={deleteDialogOpen}
-                title="Delete Video"
+                title={t('deleteDialog:title', { object: t('intent')})}
               />
             </form>
           )}

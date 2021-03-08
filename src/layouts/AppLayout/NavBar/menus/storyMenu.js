@@ -6,7 +6,7 @@ import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 
 export const storyMenu = [
   {
-    title: 'General',
+    title: 'general',
     tKey: 'general',
     href: '/app/story/general',
     icon: AdbIcon,

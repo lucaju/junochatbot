@@ -1,6 +1,7 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import AddStoryCard from './AddStoryCard';
 
 const useStyles = makeStyles(({ palette }) => ({
@@ -22,6 +23,7 @@ const useStyles = makeStyles(({ palette }) => ({
 
 const NoStories = ({ openDialog }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['stories']);
 
   return (
     <Box
@@ -33,10 +35,10 @@ const NoStories = ({ openDialog }) => {
       alignItems="center"
     >
       <Typography className={classes.heading} gutterBottom variant="h4">
-        No stories yet
+        {t('noStoriesYet')}
       </Typography>
       <img
-        alt="No stories yet"
+        alt={t('noStoriesYet')}
         className={classes.image}
         src="/assets/images/undraw_chat_bot_kli5.svg"
       />

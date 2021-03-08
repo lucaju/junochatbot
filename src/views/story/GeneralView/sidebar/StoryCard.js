@@ -11,6 +11,7 @@ import {
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getIcon } from 'src/util/icons';
 import FeaturedImage from './FeaturedImage';
 
@@ -18,12 +19,17 @@ const useStyles = makeStyles(({ spacing }) => ({
   root: { width: 325 },
   botIcon: { marginRight: spacing(1) },
   divider: { width: '30%' },
+  draft: {
+    textTransform: 'uppercase',
+    fontStyle: 'italic',
+  },
   language: { marginLeft: spacing(1) },
   uppercase: { textTransform: 'uppercase' },
 }));
 
 const StoryCard = ({ values, ...rest }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['common']);
   const theme = useTheme();
   const [BotAvatar, setBotAvatar] = useState(getIcon(values.botAvatar));
 
@@ -55,7 +61,7 @@ const StoryCard = ({ values, ...rest }) => {
             <Box flexGrow={1} />
             <Typography variant="overline">
               {values.publishedAt === '' ? (
-                <i>DRAFT</i>
+                <span className={classes.draft}>{t('draft')}</span>
               ) : (
                 DateTime.fromISO(values.publishedAt).toFormat('yyyy')
               )}
@@ -83,7 +89,7 @@ const StoryCard = ({ values, ...rest }) => {
               >
                 <Divider className={classes.divider} />
                 <Typography className={classes.uppercase} variant="caption">
-                  Starring
+                  {t('starring')}
                 </Typography>
                 <Divider className={classes.divider} />
               </Box>

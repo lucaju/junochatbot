@@ -8,9 +8,11 @@ import {
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 const useStyles = makeStyles(({ palette }) => ({
+  capitalize: { textTransform: 'capitalize' },
   submitButton: { color: palette.common.white },
   buttonProgress: {
     position: 'absolute',
@@ -18,15 +20,17 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const formValidation = Yup.object().shape({
-  email: Yup.string()
-    .email('Must be a valid email')
-    .max(255)
-    .required('Email is required'),
-});
-
 const ForgotForm = ({ requestPassword }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['auth','common']);
+
+  const formValidation = Yup.object().shape({
+    email: Yup.string()
+      .email(t('mustBeValidEmail'))
+      .max(255)
+      .required(t('common:required')),
+  });
+
   return (
     <Formik
       initialValues={{ email: '' }}
@@ -45,10 +49,11 @@ const ForgotForm = ({ requestPassword }) => {
         <form onSubmit={handleSubmit}>
           <TextField
             autoComplete="username"
+            className={classes.capitalize}
             error={Boolean(touched.email && errors.email)}
             fullWidth
             helperText={touched.email && errors.email}
-            label="Email"
+            label={t('common:email')}
             margin="normal"
             name="email"
             onBlur={handleBlur}
@@ -67,7 +72,7 @@ const ForgotForm = ({ requestPassword }) => {
               type="submit"
               variant="contained"
             >
-              Get New Password
+              {t('getNewPassowrd')}
               {isSubmitting && (
                 <CircularProgress
                   className={classes.buttonProgress}

@@ -11,42 +11,44 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 
-const useStyles = makeStyles((theme) => ({
-  dialogSection: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
+const useStyles = makeStyles(({ spacing, palette }) => ({
   actionSection: {
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(3),
+    paddingRight: spacing(3),
+    paddingLeft: spacing(3),
+  },
+  capitalize: { textTransform: 'capitalize' },
+  dialogSection: {
+    paddingTop: spacing(2),
+    paddingBottom: spacing(2),
+  },
+  error: {
+    marginTop: spacing(1),
+    color: palette.secondary.light,
+    textAlign: 'center',
   },
   heading: {
     textAlign: 'center',
-    marginBottom: theme.spacing(1.5),
+    marginBottom: spacing(1.5),
   },
-  marginBottom: { marginBottom: theme.spacing(1.5) },
-  buttonProgress: { position: 'absolute' },
-  error: {
-    marginTop: theme.spacing(1),
-    color: theme.palette.secondary.light,
-    textAlign: 'center',
-  },
+  marginBottom: { marginBottom: spacing(1.5) },
+  progress: { position: 'absolute' },
 }));
 
 const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['common']);
   const [error, setError] = useState();
 
-  const handleCancelButton = () => {
-    handleClose();
-  };
+  const handleCancelButton = () => handleClose();
 
   const submit = async (values) => {
     const res = await actions.story.createStory(values);
@@ -100,17 +102,18 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
                     New Story
                   </Typography>
                   <TextField
+                    className={clsx(classes.marginBottom, classes.capitalize)}
                     error={Boolean(touched.title && errors.title)}
                     fullWidth
                     helperText={touched.title && errors.title}
-                    label="Story title"
+                    label={t('title')}
                     margin="normal"
                     name="title"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.title}
                     variant="outlined"
-                    className={classes.marginBottom}
+                    
                   />
                 </Grid>
                 <Grid item md={8}>
@@ -150,7 +153,7 @@ const AddStoryDialog = ({ open, handleClose, triggerEditStory }) => {
                 {isSubmitting && (
                   <CircularProgress
                     size={24}
-                    className={classes.buttonProgress}
+                    className={classes.progress}
                   />
                 )}
               </Button>

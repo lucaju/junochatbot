@@ -1,5 +1,6 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
@@ -15,17 +16,20 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   },
 }));
 
-const title = 'Users';
+
 
 const UsersView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
+  const { t } = useTranslation(['users']);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [filters, setFilters] = useState(new Map());
   const [groupId, setGroupId] = useState(null);
   const [searchQuery, setSearchQuery] = useState(null);
+
+  const title = t('users');
 
   useEffect(() => {
     const userTypeAllowed = [1, 2];

@@ -15,6 +15,7 @@ import { DateTime } from 'luxon';
 import { useRefresh } from 'muuri-react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getIcon } from 'src/util/icons';
 
 const useStyles = makeStyles(({ palette, shape, spacing }) => ({
@@ -25,6 +26,10 @@ const useStyles = makeStyles(({ palette, shape, spacing }) => ({
   },
   actionPanelMarginTop: { marginTop: spacing(4) },
   divider: { width: '30%' },
+  draft: {
+    textTransform: 'uppercase',
+    fontStyle: 'italic',
+  },
   icon: { marginRight: spacing(1) },
   label: {
     paddingLeft: spacing(1),
@@ -58,6 +63,7 @@ const StoryCard = ({
   ...rest
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['common']);
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(0);
 
@@ -84,11 +90,7 @@ const StoryCard = ({
 
   return (
     <Card
-      className={clsx(
-        classes.root,
-        className,
-        !story.image && classes.noMedia
-      )}
+      className={clsx(classes.root, className, !story.image && classes.noMedia)}
       elevation={elevation}
       {...rest}
       onMouseEnter={mouseOver}
@@ -116,7 +118,7 @@ const StoryCard = ({
               pr={1}
             >
               <Button onClick={handlePlayClick} size="small" variant="outlined">
-                Play
+                {t('launch')}
               </Button>
               {showEdit && (
                 <Button
@@ -125,7 +127,7 @@ const StoryCard = ({
                   size="small"
                   variant="outlined"
                 >
-                  Edit
+                  {t('edit')}
                 </Button>
               )}
             </Box>
@@ -149,7 +151,7 @@ const StoryCard = ({
             <Box className={classes.label}>
               <Typography variant="overline">
                 {story.publishedAt === '' ? (
-                  <i>DRAFT</i>
+                  <span className={classes.draft}>{t('draft')}</span>
                 ) : (
                   DateTime.fromISO(story.publishedAt).toFormat('yyyy')
                 )}
@@ -179,7 +181,7 @@ const StoryCard = ({
             >
               <Divider className={classes.divider} />
               <Typography className={classes.uppercase} variant="caption">
-                Starring
+                {t('starring')}
               </Typography>
               <Divider className={classes.divider} />
             </Box>

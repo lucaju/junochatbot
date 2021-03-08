@@ -2,6 +2,7 @@ import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import FilterStatus from 'src/components/menubar/FilterStatus';
 import SearchBox from 'src/components/menubar/SearchBox';
 import FilterTag from './FilterTag';
@@ -20,6 +21,7 @@ const MenuBar = ({
   updateFilter,
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['videos']);
 
   useEffect(() => {
     updateFilter({ type: 'active', value: filterStatus });
@@ -33,7 +35,7 @@ const MenuBar = ({
         onClick={() => handleDetailOpen()}
         startIcon={<AddCircleOutlineIcon />}
       >
-        Add Video
+        {t('addVideo')}
       </Button>
       {!disabledFilters && (
         <>

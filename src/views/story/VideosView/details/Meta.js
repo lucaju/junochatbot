@@ -12,8 +12,10 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { DateTime, Duration } from 'luxon';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(({ spacing }) => ({
+  capitalize: { textTransform: 'capitalize' },
   extraInfo: { marginTop: spacing(2.5) },
   icon: {
     marginTop: spacing(0.5),
@@ -26,11 +28,12 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 const Meta = ({ handleRefresh, values, youtubeVideoId }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['videos', 'common']);
   const [loading, setLoading] = useState(true);
   const [refreshed, setRefreshed] = useState(false);
 
   useEffect(() => {
-    if (youtubeVideoId && values.title === '') fetchData()
+    if (youtubeVideoId && values.title === '') fetchData();
     if (youtubeVideoId) setLoading(false);
     return () => {};
   }, [values.title]);
@@ -45,7 +48,9 @@ const Meta = ({ handleRefresh, values, youtubeVideoId }) => {
     <Box>
       <Grid container>
         <Grid item xs={11}>
-          <Typography variant="caption">Title</Typography>
+          <Typography className={classes.capitalize} variant="caption">
+            {t('common:title')}
+          </Typography>
           <Typography gutterBottom variant="subtitle1">
             {loading ? <Skeleton /> : <b>{values.title}</b>}
           </Typography>
@@ -64,7 +69,9 @@ const Meta = ({ handleRefresh, values, youtubeVideoId }) => {
 
       <Grid container>
         <Grid item xs={8}>
-          <Typography variant="caption">Channel</Typography>
+          <Typography className={classes.capitalize} variant="caption">
+            {t('channel')}
+          </Typography>
           <Typography gutterBottom variant="subtitle2">
             {loading ? <Skeleton /> : values.channelTitle}
           </Typography>

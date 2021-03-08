@@ -7,6 +7,7 @@ import {
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import { json } from 'overmind';
@@ -21,15 +22,9 @@ const initialValues = {
   active: true,
 };
 
-const formValidation = Yup.object().shape({
-  name: Yup.string().trim().required('Name is required'),
-  description: Yup.string().trim(),
-  institution: Yup.string().trim(),
-  active: Yup.bool(),
-});
-
 const Details = ({ group, open, handleDetailClose }) => {
   const { actions } = useApp();
+  const { t } = useTranslation(['groups', 'common', 'errorMessages, deleteDialog']);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [groupData, setGroupData] = useState(initialValues);
 
@@ -45,6 +40,13 @@ const Details = ({ group, open, handleDetailClose }) => {
     return () => {};
   }, [open]);
 
+  const formValidation = Yup.object().shape({
+    name: Yup.string().trim().required(t('common:required')),
+    description: Yup.string().trim(),
+    institution: Yup.string().trim(),
+    active: Yup.bool(),
+  });
+
   const submit = async (values) => {
     const res = !values.id
       ? await actions.users.createGroup(values)
@@ -53,12 +55,12 @@ const Details = ({ group, open, handleDetailClose }) => {
     const type = !res ? 'error' : 'success';
 
     if (!res) {
-      const message = 'Error: Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return;
     }
 
-    const message = values.id ? 'Group updated' : 'Group created';
+    const message = values.id ? t('groupUpdated') : t('groupCreated');
     actions.ui.showNotification({ message, type });
 
     handleClose();
@@ -77,14 +79,14 @@ const Details = ({ group, open, handleDetailClose }) => {
 
     //error
     if (res.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return res;
     }
 
     //success
     setGroupData(data);
-    const message = active ? 'Group restored' : 'Group deleted';
+    const message = values.id ? t('groupRestored') : t('groupDeleted');
     actions.ui.showNotification({ message, type });
 
     if (!res) return;
@@ -136,7 +138,7 @@ const Details = ({ group, open, handleDetailClose }) => {
           }) => (
             <form onSubmit={handleSubmit}>
               <DialogTitle>
-                {!groupData.id ? 'New Group' : 'Edit Group'}
+                {!groupData.id ? t('newGroup') : t('editGroup')}
               </DialogTitle>
               <DialogContent dividers>
                 <Fields
@@ -165,9 +167,9 @@ const Details = ({ group, open, handleDetailClose }) => {
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message="Are you sure you want to delete this group?"
+                message={t('deleteDialog:message', { object: t('group')})}
                 open={deleteDialogOpen}
-                title="Delete Group"
+                title={t('deleteDialog:title', { object: t('group')})}
               />
             </form>
           )}

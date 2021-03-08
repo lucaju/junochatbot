@@ -2,6 +2,7 @@ import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import FilterGroup from 'src/components/menubar/FilterGroup';
 import FilterStatus from 'src/components/menubar/FilterStatus';
 import SearchBox from 'src/components/menubar/SearchBox';
@@ -22,6 +23,7 @@ const MenuBar = ({
 }) => {
   const classes = useStyles();
   const { state } = useApp();
+  const { t } = useTranslation(['users']);
 
   useEffect(() => {
     updateFilter({ type: 'active', value: filterStatus });
@@ -35,7 +37,7 @@ const MenuBar = ({
         onClick={() => handleDetailOpen()}
         startIcon={<AddCircleOutlineIcon />}
       >
-        Add User
+       {t('addUser')}
       </Button>
       <Box flexGrow={1} />
       <SearchBox

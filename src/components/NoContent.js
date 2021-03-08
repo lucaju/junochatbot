@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(({ palette }) => ({
   style: {
@@ -12,18 +13,19 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const NoContent = ({ heading = 'No match' }) => {
+const NoContent = ({ heading = 'noMatch' }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['noContent']);
   
   return (
     <Typography className={classes.style} variant="h4">
-      {heading}
+      {t(heading)}
     </Typography>
   );
 };
 
 NoContent.DefaultProps = {
-  heading: 'No match',
+  heading: 'noMatch',
 };
 
 NoContent.propTypes = {

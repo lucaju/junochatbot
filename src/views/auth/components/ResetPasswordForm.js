@@ -14,9 +14,11 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 const useStyles = makeStyles(({ palette }) => ({
+  capitalize: { textTransform: 'capitalize' },
   submitButton: { color: palette.common.white },
   progress: {
     position: 'absolute',
@@ -24,19 +26,18 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const formValidation = Yup.object().shape({
-  password: Yup.string()
-    .min(8)
-    .max(255)
-    .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
-    .required(
-      'Password must have at least 8 characters and contain at least 2 numbers'
-    ),
-});
-
 const ResetPasswordForm = ({ newUser, resetPassword }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['auth', 'common']);
   const [showPassword, setShowPassword] = useState(false);
+
+  const formValidation = Yup.object().shape({
+    password: Yup.string()
+      .min(8)
+      .max(255)
+      .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
+      .required(t('passwordRequirement', { nCharacters: 8, nNumbers: 2 })),
+  });
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -60,9 +61,11 @@ const ResetPasswordForm = ({ newUser, resetPassword }) => {
       }) => (
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="password">{!newUser && 'New '}Password</InputLabel>
+            <InputLabel className={classes.capitalize} htmlFor="password">
+              {t('common:password')}
+            </InputLabel>
             <Input
-              autoComplete="new-password"
+              autoComplete={t('common:password')}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -95,7 +98,7 @@ const ResetPasswordForm = ({ newUser, resetPassword }) => {
               type="submit"
               variant="contained"
             >
-              Submit
+              {t('common:submit')}
               {isSubmitting && (
                 <CircularProgress className={classes.progress} size={24} />
               )}

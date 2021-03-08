@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
@@ -16,7 +17,6 @@ import Actions from './Actions';
 import Attributions from './Attributions';
 import Credentials from './Credentials';
 import Personal from './Personal';
-import Stories from './Stories';
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
   dialogContent: {
@@ -51,19 +51,10 @@ const initialValues = {
   active: true,
 };
 
-const formValidation = Yup.object().shape({
-  avatarUrl: Yup.mixed(),
-  firstName: Yup.string().trim().required('First name is required'),
-  lastName: Yup.string().trim().required('Last name is required'),
-  userName: Yup.string().email().required('Email is required'),
-  roleTypeId: Yup.number().required(),
-  groups: Yup.mixed(),
-  active: Yup.bool(),
-});
-
 const Details = ({ handleDetailClose, open, user }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['users', 'common', 'errorMessages, deleteDialog']);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [userData, setUserData] = useState(initialValues);
@@ -95,6 +86,16 @@ const Details = ({ handleDetailClose, open, user }) => {
     return () => {};
   }, [open]);
 
+  const formValidation = Yup.object().shape({
+    avatarUrl: Yup.mixed(),
+    firstName: Yup.string().trim().required(t('common:required')),
+    lastName: Yup.string().trim().required(t('common:required')),
+    userName: Yup.string().email().required(t('common:required')),
+    roleTypeId: Yup.number().required(),
+    groups: Yup.mixed(),
+    active: Yup.bool(),
+  });
+
   const handleCancelButton = () => {
     handleDetailClose();
     open = false;
@@ -110,13 +111,13 @@ const Details = ({ handleDetailClose, open, user }) => {
 
     //error
     if (response.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;
     }
 
     //success
-    const message = values.id ? 'User updated' : 'User created';
+    const message = values.id ? t('userUpdated') : t('userCreated');
     actions.ui.showNotification({ message, type });
 
     handleDetailClose();
@@ -136,14 +137,14 @@ const Details = ({ handleDetailClose, open, user }) => {
 
     //error
     if (response.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;
     }
 
     //success
     userData.active = active;
-    const message = active ? 'User restored' : 'User deleted';
+    const message = values.id ? t('userRestored') : t('userDeleted');
     actions.ui.showNotification({ message, type });
 
     //end
@@ -221,11 +222,6 @@ const Details = ({ handleDetailClose, open, user }) => {
                     values={values}
                   />
                 </Grid>
-                {userData.id && userData.stories && (
-                  <Grid container spacing={3} className={classes.section}>
-                    <Stories name="stories" />
-                  </Grid>
-                )}
               </DialogContent>
               <DialogActions>
                 <Actions
@@ -245,9 +241,9 @@ const Details = ({ handleDetailClose, open, user }) => {
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message="Are you sure you want to delete this user?"
+                message={t('deleteDialog:message', { object: t('user')})}
                 open={deleteDialogOpen}
-                title="Delete User"
+                title={t('deleteDialog:title', { object: t('user')})}
               />
             </form>
           )}

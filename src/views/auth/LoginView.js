@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import Page from '../../components/Page';
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
   },
+  capitalize: { textTransform: 'capitalize' },
   container: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -38,6 +40,7 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['auth', 'errorMessages']);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState();
   const [hasToken, setHasToken] = useState(actions.session.getUserToken());
@@ -73,7 +76,7 @@ const LoginView = () => {
   }, [state.session.isSignedIn]);
 
   return (
-    <Page className={classes.root} title="Login">
+    <Page className={classes.root} title={t('signin')}>
       <Container className={classes.container} maxWidth="xs">
         <Logo className={classes.logo} type="full" />
         {hasToken ? (
@@ -90,11 +93,16 @@ const LoginView = () => {
           </Box>
         ) : (
           <>
-            <Typography color="textPrimary" component="h1" variant="h5" >
-              Sign in
+            <Typography
+              className={classes.capitalize}
+              color="textPrimary"
+              component="h1"
+              variant="h5"
+            >
+              {t('signin')}
             </Typography>
             {error && (
-              <ErrorMessage message="Sorry, we do not recognize this account." />
+              <ErrorMessage message={t('errorMessages:accontNotRecognized')} />
             )}
             <LoginForm
               authenticate={authenticate}
@@ -106,7 +114,7 @@ const LoginView = () => {
               to="/forgot"
               variant="body2"
             >
-              Forgot password?
+              {`${t('forgotPassword')}?`}
             </Link>
           </>
         )}

@@ -1,5 +1,6 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import NoContent from 'src/components/NoContent';
 import Page from 'src/components/Page';
@@ -22,6 +23,7 @@ const VideosView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['videos']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasVideos, setHasVideos] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(undefined);
@@ -32,13 +34,17 @@ const VideosView = () => {
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
+
     const getCollection = async () => {
       await actions.videos.getVideos();
       await actions.videos.getTags();
       setIsLoading(false);
       setHasVideos(state.videos.collection.length > 0);
     };
+
     getCollection();
+    actions.ui.updateTitle(state.story.currentStory.title);
+
     return () => {};
   }, []);
 
@@ -85,7 +91,7 @@ const VideosView = () => {
           />
         )}
         {!hasVideos ? (
-          <NoContent heading="No videos yet" />
+          <NoContent heading={t('noVideosYet')} />
         ) : (
           <Box mt={3}>
             <Collection

@@ -31,6 +31,7 @@ import { APP_URL } from '../../config/config.js';
 
 const useStyles = makeStyles(() => ({
   root: { width: 280 },
+  capitalize: { textTransform: 'capitalize' },
   listItemIconRoot: { minWidth: 40 },
 }));
 
@@ -38,7 +39,7 @@ const Profile = ({ anchor, handleClose }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation('profile');
+  const { t, i18n } = useTranslation(['profile', 'common']);
 
   const open = Boolean(anchor);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
@@ -81,7 +82,6 @@ const Profile = ({ anchor, handleClose }) => {
         p={2}
       >
         <Avatar
-          // onClick={handleProfileClick}
           // src={state.session.user.avatarUrl && `/uploads/assets${state.session.user.avatarUrl}`}
           src={
             state.session.user.avatarUrl &&
@@ -136,12 +136,17 @@ const Profile = ({ anchor, handleClose }) => {
           />
           <ListItemSecondaryAction>
             <Select
+              className={classes.capitalize}
               onChange={(e) => switchLanguage(e.target)}
               value={state.ui.languageCode}
             >
               {state.ui.languages.map(({ value, name }) => (
-                <MenuItem key={value} value={value}>
-                  {name}
+                <MenuItem
+                  className={classes.capitalize}
+                  key={value}
+                  value={value}
+                >
+                  {t(`common:${name}`)}
                 </MenuItem>
               ))}
             </Select>

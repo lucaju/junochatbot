@@ -1,6 +1,8 @@
 import { Container, Link, makeStyles, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import Page from '../../components/Page';
@@ -19,6 +21,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     marginBottom: -spacing(0.5),
     marginRight: spacing(0.5),
   },
+  capitalize: { textTransform: 'capitalize' },
   container: {
     marginTop: spacing(8),
     display: 'flex',
@@ -39,6 +42,7 @@ const ForgotView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['auth', 'errorMessages']);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState();
 
@@ -54,35 +58,33 @@ const ForgotView = () => {
   };
 
   return (
-    <Page className={classes.root} title="Login">
+    <Page className={classes.root} title={t('forgotPassword')}>
       <Container className={classes.container} maxWidth="xs">
         <Logo className={classes.logo} type="full" />
         <>
           {requestSent ? (
             <Typography color="textPrimary" component="h1" variant="body1">
-              Check your email for the confirmation link, then visit the login
-              page.
+              {t('checkEmaiConfirmation')}
             </Typography>
           ) : (
             <>
               <Typography color="textPrimary" component="h1" variant="body1">
-                Please enter your email address. You will receive an email
-                message with instructions on how to reset your password.
+                {t('forgotMessage')}
               </Typography>
               {error && (
-                <ErrorMessage message="Sorry, we do not recognize this account." />
+                <ErrorMessage message={t('errorMessages:accontNotRecognized')} />
               )}
               <ForgotForm requestPassword={requestPassword} />
             </>
           )}
           <Link
-            className={classes.login}
+            className={clsx(classes.login, classes.capitalize)}
             component={RouterLink}
             to="/login"
             variant="body2"
           >
             <ArrowBackIcon className={classes.backArrowIcon} fontSize="small" />
-            LOGIN
+            {t('signin')}
           </Link>
         </>
       </Container>

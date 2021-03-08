@@ -15,9 +15,11 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 const useStyles = makeStyles(({ palette }) => ({
+  capitalize: { textTransform: 'capitalize' },
   submitButton: { color: palette.common.white },
   progress: {
     position: 'absolute',
@@ -25,17 +27,18 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const formValidation = Yup.object().shape({
-  email: Yup.string()
-    .email('Must be a valid email')
-    .max(255)
-    .required('Email is required'),
-  password: Yup.string().max(255).required('Password is required'),
-});
-
 const LoginForm = ({ authenticate, setIsAuthenticating }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['auth', 'common']);
   const [showPassword, setShowPassword] = useState(false);
+
+  const formValidation = Yup.object().shape({
+    email: Yup.string()
+      .email(t('mustBeValidEmail'))
+      .max(255)
+      .required(t('common:required')),
+    password: Yup.string().max(255).required(t('common:required')),
+  });
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -61,10 +64,11 @@ const LoginForm = ({ authenticate, setIsAuthenticating }) => {
         <form onSubmit={handleSubmit}>
           <TextField
             autoComplete="username"
+            className={classes.capitalize}
             error={Boolean(touched.email && errors.email)}
             fullWidth
             helperText={touched.email && errors.email}
-            label="Email"
+            label={t('common:email')}
             margin="normal"
             name="email"
             onBlur={handleBlur}
@@ -73,9 +77,11 @@ const LoginForm = ({ authenticate, setIsAuthenticating }) => {
             value={values.email}
           />
           <FormControl fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel className={classes.capitalize} htmlFor="password">
+              {t('common:password')}
+            </InputLabel>
             <Input
-              autoComplete="password"
+              autoComplete={t('common:password')}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -108,7 +114,7 @@ const LoginForm = ({ authenticate, setIsAuthenticating }) => {
               type="submit"
               variant="contained"
             >
-              Sign in
+              {t('signin')}
               {isSubmitting && (
                 <CircularProgress className={classes.progress} size={24} />
               )}

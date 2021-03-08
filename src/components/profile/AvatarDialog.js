@@ -16,6 +16,7 @@ import { DropzoneAreaBase } from 'material-ui-dropzone';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 import { APP_URL } from '../../config/config.js';
@@ -56,6 +57,7 @@ const formValidation = Yup.object().shape({
 const AvatarDialog = ({ handleClose, open }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['common', 'profile', 'errorMessages']);
   const [value, setValue] = useState(state.session.user.avatarUrl);
   const [image, setImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -87,18 +89,17 @@ const AvatarDialog = ({ handleClose, open }) => {
       ? await actions.session.uploadAvatar(avatar)
       : actions.session.deleteAvatar();
 
+    const type = response.error ? 'error' : 'success';
+
     if (response.error) {
-      actions.ui.showNotification({
-        message: 'Something went wrong!',
-        type: 'error',
-      });
+      const message =  t('errorMessages:somethingWentWrong')
+      actions.ui.showNotification({ message, type });
       return;
     }
 
-    const message = avatar ? 'Avatar changed' : 'Avatar removed';
-    actions.ui.showNotification({ message, type: 'success' });
+    const message = avatar ? t('profile:avatarChanged') : t('profile:avatarRemoved');
+    actions.ui.showNotification({ message, type });
 
-    // handleClosePanel();
     handleClose();
   };
 
@@ -106,17 +107,8 @@ const AvatarDialog = ({ handleClose, open }) => {
     setValue(state.session.user.avatarUrl);
     setImage(typeof value === 'string' ? value : null);
     setUploadedImage(null);
-    // setShowDropzone(false);
     handleClose();
   };
-
-  // const handleClosePanel = () => {
-  //   setValue('');
-  //   setImage(null);
-  //   setUploadedImage(null);
-  //   // setShowDropzone(false);
-  //   handleClose();
-  // };
 
   return (
     <Dialog
@@ -134,7 +126,9 @@ const AvatarDialog = ({ handleClose, open }) => {
       >
         {({ handleSubmit, isSubmitting }) => (
           <>
-            <DialogTitle id="change-password">Change Avatar</DialogTitle>
+            <DialogTitle id="change-password">
+              {t('profile:changeAvatar')}
+            </DialogTitle>
             <DialogContent dividers>
               <form onSubmit={handleSubmit}>
                 <Box
@@ -163,8 +157,11 @@ const AvatarDialog = ({ handleClose, open }) => {
                     <>
                       <Avatar
                         className={classes.avatar}
-                        // src={!uploadedImage ? `/uploads/assets${image}` : ''}
-                        src={!uploadedImage && image && typeof value === 'string'? `${APP_URL}/uploads/assets${image}` : ''}
+                        src={
+                          !uploadedImage && image && typeof value === 'string'
+                            ? `${APP_URL}/uploads/assets${image}`
+                            : ''
+                        }
                       >
                         {uploadedImage && (
                           <img className={classes.dropzone} src={image} />
@@ -186,7 +183,7 @@ const AvatarDialog = ({ handleClose, open }) => {
             </DialogContent>
             <DialogActions>
               <Button color="primary" onClick={handleClosePanel}>
-                Cancel
+                {t('cancel')}
               </Button>
               <Box flexGrow={1} />
               <Button
@@ -197,7 +194,7 @@ const AvatarDialog = ({ handleClose, open }) => {
                 onClick={() => handleSubmit()}
                 variant="outlined"
               >
-                Submit
+                {t('submit')}
                 {isSubmitting && (
                   <CircularProgress className={classes.progress} size={24} />
                 )}

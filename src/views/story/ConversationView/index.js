@@ -1,5 +1,6 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import NoContent from 'src/components/NoContent';
 import Page from 'src/components/Page';
@@ -21,6 +22,7 @@ const title = 'Juno Chatbot';
 const ConverastionView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { t } = useTranslation(['intents']);
   const { state, actions } = useApp();
   const [isLoading, setIsLoading] = useState(true);
   const [hasIntents, setHasIntents] = useState(true);
@@ -32,12 +34,16 @@ const ConverastionView = () => {
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
+
     const getCollection = async () => {
       await actions.intents.getIntents();
       setIsLoading(false);
       setHasIntents(state.intents.collection.length > 0);
     };
+
     getCollection();
+    actions.ui.updateTitle(state.story.currentStory.title);
+
     return () => {};
   }, []);
 
@@ -84,7 +90,7 @@ const ConverastionView = () => {
           />
         )}
         {!hasIntents ? (
-          <NoContent heading="No Intents yet" />
+          <NoContent heading={t('noIntentsYet')} />
         ) : (
           <Box mt={3}>
             <Collection

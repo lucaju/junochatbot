@@ -3,6 +3,7 @@ import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
@@ -33,6 +34,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 
 const FeaturedImage = ({ name, title }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['storyGeneral']);
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
   const [imageToDisplay, setImageToDisplay] = useState(null);
@@ -89,7 +91,7 @@ const FeaturedImage = ({ name, title }) => {
             root: classes.dropzone,
             icon: classes.icon,
           }}
-          dropzoneText={'Add Featured Image'}
+          dropzoneText={t('addImage')}
           dropzoneParagraphClass={classes.dropzoneText}
           filesLimit={1}
           onAdd={(files) => handleDropZoneChange(files)}

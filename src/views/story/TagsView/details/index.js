@@ -9,12 +9,14 @@ import {
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
+  capitalize: { textTransform: 'capitalize' },
   dialogContent: { width: 400 },
   header: {
     color: palette.primary.light,
@@ -29,14 +31,10 @@ const initialValues = {
   active: true,
 };
 
-const formValidation = Yup.object().shape({
-  name: Yup.string().required(),
-  active: Yup.bool(),
-});
-
 const Details = ({ handleDetailClose, open, tag }) => {
   const classes = useStyles();
   const { actions } = useApp();
+  const { t } = useTranslation(['tags', 'common', 'errorMessages', 'deleteDialog']);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [tagData, setTagData] = useState(initialValues);
 
@@ -52,6 +50,11 @@ const Details = ({ handleDetailClose, open, tag }) => {
     return () => {};
   }, [open]);
 
+  const formValidation = Yup.object().shape({
+    name: Yup.string().required(t('common:required')),
+    active: Yup.bool(),
+  });
+
   const submit = async (values) => {
     const res = !values.id
       ? await actions.videos.createTag(values)
@@ -60,12 +63,12 @@ const Details = ({ handleDetailClose, open, tag }) => {
     const type = !res ? 'error' : 'success';
 
     if (!res) {
-      const message = 'Error: Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return;
     }
 
-    const message = values.id ? 'Tag updated' : 'Tag created';
+    const message = values.id ? t('tagUpdated') : t('tagAdded');
     actions.ui.showNotification({ message, type });
 
     handleClose();
@@ -84,14 +87,14 @@ const Details = ({ handleDetailClose, open, tag }) => {
 
     //error
     if (res.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return res;
     }
 
     //success
     setTagData(data);
-    const message = active ? 'Tag restored' : 'Tag deleted';
+    const message = active ? t('tagRestored') : t('tagDeleted');
     actions.ui.showNotification({ message, type });
 
     if (!res) return;
@@ -142,13 +145,14 @@ const Details = ({ handleDetailClose, open, tag }) => {
             values,
           }) => (
             <form onSubmit={handleSubmit}>
-              <DialogTitle>{!tagData.id ? 'New Tag' : 'Edit Tag'}</DialogTitle>
+              <DialogTitle>{!tagData.id ? t('newTag') : t('editTag')}</DialogTitle>
               <DialogContent className={classes.dialogContent} dividers>
                 <TextField
+                  className={classes.capitalize}
                   error={Boolean(touched.name && errors.name)}
                   fullWidth
                   helperText={touched.name && errors.name}
-                  label="Name"
+                  label={t('common:name')}
                   name="name"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -173,9 +177,9 @@ const Details = ({ handleDetailClose, open, tag }) => {
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message="Are you sure you want to delete this tag?"
+                message={t('deleteDialog:message', { object: t('tag')})}
                 open={deleteDialogOpen}
-                title="Delete Tag"
+                title={t('deleteDialog:title', { object: t('tag')})}
               />
             </form>
           )}

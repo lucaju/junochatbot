@@ -2,12 +2,14 @@ import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import FilterGroup from 'src/components/menubar/FilterGroup';
 import SearchBox from 'src/components/menubar/SearchBox';
 import { useApp } from 'src/overmind';
 import FilterPublished from './FilterPublished';
 
 const useStyles = makeStyles(({ spacing }) => ({
+  capitalize: { textTransform: 'capitalize' },
   marginRight: { marginRight: spacing(2) },
 }));
 
@@ -19,6 +21,7 @@ const MenuBar = ({
 }) => {
   const classes = useStyles();
   const { state } = useApp();
+  const { t } = useTranslation(['stories']);
 
   return (
     <Toolbar className={classes.root} disableGutters variant="dense">
@@ -27,7 +30,7 @@ const MenuBar = ({
         onClick={() => handleDetailOpen()}
         startIcon={<AddCircleOutlineIcon />}
       >
-        Add Story
+        {t('createStory')}
       </Button>
       <Box flexGrow={1} />
       <SearchBox

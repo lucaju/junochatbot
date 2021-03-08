@@ -1,5 +1,6 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import NoContent from 'src/components/NoContent';
 import Page from 'src/components/Page';
@@ -16,18 +17,19 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   },
 }));
 
-const title = 'User Groups';
-
 const GroupsView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
+  const { t } = useTranslation(['groups']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasGroups, setHasGroups] = useState(true);
   const [currentGroup, setCurrentGroup] = useState(undefined);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [filters, setFilters] = useState(new Map());
   const [searchQuery, setSearchQuery] = useState(null);
+
+  const title = t('userGroups');
 
   useEffect(() => {
     const userTypeAllowed = [1];
@@ -84,7 +86,7 @@ const GroupsView = () => {
           />
         )}
         {!hasGroups ? (
-          <NoContent heading="No groups yet" />
+          <NoContent heading={t('noGroupsYet')} />
         ) : (
           <Box mt={3}>
             <Collection

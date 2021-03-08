@@ -9,8 +9,10 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
+  capitalize: { textTransform: 'capitalize' },
   progress: { position: 'absolute' },
 }));
 
@@ -23,6 +25,7 @@ const DeleteDialog = ({
   title,
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['common']);
 
   return (
     <Dialog
@@ -32,7 +35,9 @@ const DeleteDialog = ({
       maxWidth="xs"
       open={open}
     >
-      <DialogTitle id={title}>{title}</DialogTitle>
+      <DialogTitle className={classes.capitalize} id={title}>
+        {title}
+      </DialogTitle>
       <DialogContent dividers>{message}</DialogContent>
       <DialogActions>
         <Button
@@ -42,10 +47,10 @@ const DeleteDialog = ({
           onClick={handleNo}
           variant="outlined"
         >
-          No
+          {t('no')}
         </Button>
         <Button color="secondary" disabled={isSubmitting} onClick={handleYes}>
-          Yes
+          {t('yes')}
           {isSubmitting && (
             <CircularProgress className={classes.progress} size={24} />
           )}

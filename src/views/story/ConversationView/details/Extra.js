@@ -1,18 +1,22 @@
 import { Grid, makeStyles, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import clsx from 'clsx';
 import { useField } from 'formik';
 import { json } from 'overmind';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from 'src/overmind';
 
 const useStyles = makeStyles(({ spacing }) => ({
+  capitalize: { textTransform: 'capitalize' },
   marginBottom: { marginBottom: spacing(2) },
 }));
 
 const Folsonomy = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['common']);
 
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('tags');
@@ -29,10 +33,10 @@ const Folsonomy = ({ errors, handleBlur, handleChange, touched, values }) => {
   return (
     <Grid item md={12} xs={12}>
       <TextField
-        className={classes.marginBottom}
+        className={clsx(classes.marginBottom, classes.capitalize)}
         error={Boolean(touched['description'] && errors['description'])}
         fullWidth
-        label="Description"
+        label={t('description')}
         name="description"
         multiline
         onBlur={handleBlur}
@@ -61,7 +65,7 @@ const Folsonomy = ({ errors, handleBlur, handleChange, touched, values }) => {
           )}
           value={values.tags.filter((tag) => tag.active === true)}
           renderInput={(params) => (
-            <TextField fullWidth label="Tags" {...params} />
+            <TextField className={classes.capitalize} fullWidth label={t('tags')} {...params} />
           )}
         />
       )}

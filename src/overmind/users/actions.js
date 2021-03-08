@@ -36,7 +36,6 @@ export const getUserGroups = async ({ state, effects }, userId) => {
   const token = state.session.user.token;
   const groups = await effects.users.api.getUserGroups(userId, token);
   // const activeGroups = groups.filter(({  active }) => active === true);
-  console.log(groups);
 
   return groups;
 };

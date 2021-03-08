@@ -18,6 +18,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 
@@ -25,20 +26,19 @@ const useStyles = makeStyles(() => ({
   progress: { position: 'absolute' },
 }));
 
-const formValidation = Yup.object().shape({
-  password: Yup.string()
-    .min(8)
-    .max(255)
-    .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
-    .required(
-      'Password must have at least 8 characters and contain at least 2 numbers'
-    ),
-});
-
 const PasswordDialog = ({ handleClose, open }) => {
   const classes = useStyles();
   const { actions } = useApp();
+  const { t } = useTranslation(['common', 'profile', 'auth', 'errorMessages']);
   const [showPassword, setShowPassword] = useState(false);
+
+  const formValidation = Yup.object().shape({
+    password: Yup.string()
+      .min(8)
+      .max(255)
+      .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
+      .required(t('passwordRequirement', { nCharacters: 8, nNumbers: 2 })),
+  });
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -46,16 +46,17 @@ const PasswordDialog = ({ handleClose, open }) => {
   const submit = async (values) => {
     const response = await actions.session.changePassword(values);
 
+    const type = response.error ? 'error' : 'success';
+
     if (response.error) {
-      actions.ui.showNotification({
-        message: 'Something went wrong!',
-        type: 'error',
-      });
+      const message = t('errorMessages:somethingWentWrong');
+      actions.ui.showNotification({ message, type });
       return;
     }
+  
     actions.ui.showNotification({
-      message: 'Password changed',
-      type: 'success',
+      message: t('profile:passwordChanged'),
+      type,
     });
 
     handleClose();
@@ -84,11 +85,11 @@ const PasswordDialog = ({ handleClose, open }) => {
           values,
         }) => (
           <>
-            <DialogTitle id="change-password">Change Password</DialogTitle>
+            <DialogTitle id="change-password">{t('profile:changePassword')}</DialogTitle>
             <DialogContent dividers>
               <form onSubmit={handleSubmit}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor="password">New Password</InputLabel>
+                  <InputLabel htmlFor="password">{t('profile:newPassword')}</InputLabel>
                   <Input
                     autoComplete="new-password"
                     endAdornment={
@@ -116,7 +117,7 @@ const PasswordDialog = ({ handleClose, open }) => {
             </DialogContent>
             <DialogActions>
               <Button color="primary" onClick={handleClose}>
-                Cancel
+                {t('cancel')}
               </Button>
               <Box flexGrow={1} />
               <Button
@@ -125,7 +126,7 @@ const PasswordDialog = ({ handleClose, open }) => {
                 onClick={() => handleSubmit()}
                 variant="outlined"
               >
-                Submit
+                {t('submit')}
                 {isSubmitting && (
                   <CircularProgress className={classes.progress} size={24} />
                 )}

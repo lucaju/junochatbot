@@ -8,6 +8,7 @@ import {
 import { useField, useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   bar: {
@@ -31,6 +32,7 @@ const BottomBar = ({
   submitSuccess,
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['common', 'storyGeneral']);
   const { submitForm } = useFormikContext();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
@@ -77,7 +79,7 @@ const BottomBar = ({
           onClick={() => handleSubmit('draft')}
           variant={status ? 'text' : 'outlined'}
         >
-          {status ? 'Switch to Draft' : 'Save draft'}
+          {status ? t('storyGeneral:switchToDraft') : t('storyGeneral:saveDraft')}
           {isSubmitting && pushedButton === 'draft' && (
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}
@@ -90,7 +92,7 @@ const BottomBar = ({
           variant="contained"
           className={classes.marginLeft}
         >
-          {status ? 'Update' : 'Publish'}
+          {status ? t('update') : t('publish')}
           {isSubmitting && pushedButton === 'publish' && (
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}

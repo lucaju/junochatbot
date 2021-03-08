@@ -7,6 +7,7 @@ import {
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import DeleteDialog from 'src/components/DeleteDialog';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
@@ -27,29 +28,15 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 
 const title = 'Juno Chatbot';
 
-const formValidation = Yup.object().shape({
-  title: Yup.string().trim().max(125).required('Title is required'),
-  languageCode: Yup.string(),
-  synopsis: Yup.string(),
-  image: Yup.mixed(),
-  published: Yup.bool(),
-  active: Yup.bool(),
-  botAvatar: Yup.string(),
-  botName: Yup.string(),
-  botPersona: Yup.string(),
-  botDelay: Yup.number(),
-});
-
 const GeneralView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['storyGeneral', 'common', 'errorMessages, deleteDialog']);
   const [isLoading, setIsLoading] = useState(true);
   const [storyData, setStoryData] = useState(null);
   const [submitType, setSubmitType] = useState(null);
-
   const [submitSuccess, setSubmitSuccess] = useState(null);
-
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -58,6 +45,7 @@ const GeneralView = () => {
     const getStory = async () => {
       await actions.story.getStory(state.story.currentStory.id);
       setStoryData(state.story.currentStory);
+
       actions.ui.updateTitle(state.story.currentStory.title);
       setIsLoading(false);
     };
@@ -73,6 +61,19 @@ const GeneralView = () => {
     return () => {};
   }, []);
 
+  const formValidation = Yup.object().shape({
+    title: Yup.string().trim().max(125).required(t('common:required')),
+    languageCode: Yup.string(),
+    synopsis: Yup.string(),
+    image: Yup.mixed(),
+    published: Yup.bool(),
+    active: Yup.bool(),
+    botAvatar: Yup.string(),
+    botName: Yup.string(),
+    botPersona: Yup.string(),
+    botDelay: Yup.number(),
+  });
+
   // eslint-disable-next-line no-unused-vars
   const submit = async (values) => {
     console.log(values);
@@ -81,8 +82,9 @@ const GeneralView = () => {
     // setSubmitSuccess(!!res);
 
     // //
-    // const message = (res) ? 'Story Updated' : 'Error: Something went wrong!';
     // const type = (res) ? 'success' : 'error';
+    // const message = (res) ? t('storyUpdated') : t('errorMessages:somethingWentWrong');
+    
     // actions.ui.showNotification({ message, type });
   };
 
@@ -176,9 +178,9 @@ const GeneralView = () => {
                   }}
                   handleNo={() => setDeleteDialogOpen(false)}
                   isSubmitting={isSubmitting}
-                  message="Are you sure you want to delete this story?"
+                  message={t('deleteDialog:message', { object: t('story')})}
                   open={deleteDialogOpen}
-                  title="Delete Story"
+                  title={t('deleteDialog:title', { object: t('story')})}
                 />
               </form>
             )}

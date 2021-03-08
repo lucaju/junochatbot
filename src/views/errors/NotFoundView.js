@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Container, Typography, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
@@ -31,9 +32,13 @@ const useStyles = makeStyles((theme) => ({
 
 const NotFoundView = () => {
   const classes = useStyles();
+  const { t } = useTranslation(['notFound']);
 
   return (
-    <Page className={classes.root} title="Juno Chatbot - Page Not Found">
+    <Page
+      className={classes.root}
+      title={t('pageNotFound')}
+    >
       <Box
         display="flex"
         flexDirection="column"
@@ -45,11 +50,12 @@ const NotFoundView = () => {
             <Logo type="full" className={classes.logo} />
           </RouterLink>
           <Typography align="center" color="textPrimary" variant="h4">
-            404: The page you are looking for isn’t here
+            {t('title404')}
           </Typography>
           <Typography align="center" color="textPrimary" variant="subtitle2">
-            You either tried some shady route or you came here by mistake. Go
-            back to the <RouterLink to="/">main page.</RouterLink>
+            <Trans i18nKey="notFound:message404">
+              You either tried some shady route or you came here by mistake. Go back to the <RouterLink to="/">main page.</RouterLink>
+            </Trans>
           </Typography>
           <Box textAlign="center">
             <img

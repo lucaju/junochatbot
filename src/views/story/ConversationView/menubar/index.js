@@ -2,6 +2,7 @@ import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import SearchBox from 'src/components/menubar/SearchBox';
 
 const useStyles = makeStyles(({ spacing }) => ({
@@ -14,6 +15,7 @@ const MenuBar = ({
   handleSearch,
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['intents']);
 
   return (
     <Toolbar className={classes.root} disableGutters variant="dense">
@@ -22,7 +24,7 @@ const MenuBar = ({
         onClick={() => handleDetailOpen()}
         startIcon={<AddCircleOutlineIcon />}
       >
-        Add Intent
+       {t('createIntent')}
       </Button>
       {!disabledFilters && (
         <>

@@ -1,6 +1,8 @@
 import { Container, Link, makeStyles, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import Page from '../../components/Page';
@@ -19,6 +21,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     marginBottom: -spacing(0.5),
     marginRight: spacing(0.5),
   },
+  capitalize: { textTransform: 'capitalize' },
   container: {
     marginTop: spacing(8),
     display: 'flex',
@@ -39,6 +42,7 @@ const ResetPasswordView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state, actions } = useApp();
+  const { t } = useTranslation(['auth', 'common', 'errorMessages']);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState();
 
@@ -69,29 +73,31 @@ const ResetPasswordView = () => {
         <>
           {requestSent ? (
             <Typography color="textPrimary" component="h1" variant="body1">
-              {!newUser ? 'New password' : 'Password'} set. Visit the login page
-              to sign in.
+              {t('passwordSet')}
             </Typography>
           ) : (
             <>
               {newUser ? (
                 <>
-                  <Typography component="h1" variant="h6">
-                    Welcome {fullName}
+                  <Typography
+                    className={classes.capitalize}
+                    component="h1"
+                    variant="h6"
+                  >
+                    {t('common:welcome')} {fullName}
                   </Typography>
                   <Typography component="h2" gutterBottom variant="subtitle2">
-                    You must set up your password before starting with Juno
-                    Chatbot.
+                    {t('mustSetPassowrd')}
                   </Typography>
                 </>
               ) : (
                 <Typography component="h1" variant="h6">
-                  Set up new password for {fullName}
+                  {`${t('setupPasswordFor')} ${fullName}`}
                 </Typography>
               )}
               {error && (
                 <ErrorMessage
-                  message={`Sorry, it is not possible to set your password at this time.`}
+                  message={t('errorMessages:notPossibleSetPassword')}
                 />
               )}
               <ResetPasswordForm
@@ -101,13 +107,13 @@ const ResetPasswordView = () => {
             </>
           )}
           <Link
-            className={classes.login}
+            className={clsx(classes.login, classes.capitalize)}
             component={RouterLink}
             to="/login"
             variant="body2"
           >
             <ArrowBackIcon className={classes.backArrowIcon} fontSize="small" />
-            LOGIN
+            {t('signin')}
           </Link>
         </>
       </Container>

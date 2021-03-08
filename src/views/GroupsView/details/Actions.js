@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(({ palette }) => ({
   progress: { position: 'absolute' },
@@ -30,6 +31,7 @@ const Actions = ({
   values,
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['common', 'groups']);
   const { submitForm } = useFormikContext();
   const [buttonClicked, setButtonClicked] = useState(null);
 
@@ -49,7 +51,7 @@ const Actions = ({
       {groupData.id && !groupData.active ? (
         <>
           <Button color="primary" onClick={handleCancel}>
-            Cancel
+          {t('cancel')}
           </Button>
           <Box flexGrow={1} />
           <BlockIcon className={classes.warning} />
@@ -57,7 +59,7 @@ const Actions = ({
             className={clsx(classes.uppercase, classes.warning)}
             variant="subtitle1"
           >
-            Group inative
+            {t('groups:groupInactive')}
           </Typography>
           <Box flexGrow={1} />
           <Button
@@ -65,7 +67,7 @@ const Actions = ({
             onClick={() => handleRestore('restore')}
             variant="outlined"
           >
-            Restore
+            {t('restore')}
             {isSubmitting && buttonClicked === 'restore' && (
               <CircularProgress className={classes.progress} size={24} />
             )}
@@ -74,7 +76,7 @@ const Actions = ({
       ) : (
         <>
           <Button color="primary" onClick={handleCancel}>
-            Cancel
+          {t('cancel')}
           </Button>
           {values.id && (
             <>
@@ -84,7 +86,7 @@ const Actions = ({
                 disabled={isSubmitting}
                 onClick={() => handleDelete('delete')}
               >
-                Delete
+                 {t('delete')}
                 {isSubmitting && buttonClicked === 'delete' && (
                   <CircularProgress className={classes.progress} size={24} />
                 )}
@@ -98,7 +100,7 @@ const Actions = ({
             onClick={() => handleSubmit('submit')}
             variant="outlined"
           >
-            Save
+            {t('save')}
             {isSubmitting && buttonClicked === 'submit' && (
               <CircularProgress className={classes.progress} size={24} />
             )}

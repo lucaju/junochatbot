@@ -3,19 +3,22 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useApp } from 'src/overmind';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(({ palette }) => ({
   box: { width: 125 },
+  capitalize: { textTransform: 'capitalize' },
   highlight: { color: palette.primary.main },
 }));
 
 const FilterRole = ({ className, handleFilter, value }) => {
   const classes = useStyles();
   const { state } = useApp();
+  const { t } = useTranslation(['users']);
   const [filterValue, setFilterValue] = useState(value);
 
   const filterRoleOptions = [
-    { value: -1, name: 'All' },
+    { value: -1, name: 'all' },
     ...state.users.roleTypes,
   ];
 
@@ -29,9 +32,9 @@ const FilterRole = ({ className, handleFilter, value }) => {
 
   return (
     <TextField
-      className={clsx(className, classes.box)}
+      className={clsx(className, classes.box, classes.capitalize)}
       InputProps={{ className: clsx(isOn() && classes.highlight) }}
-      label="Role"
+      label={t('role')}
       name="filterRole"
       onChange={(e) => handleChange(e.target.value)}
       select
@@ -46,8 +49,8 @@ const FilterRole = ({ className, handleFilter, value }) => {
           if (state.session.user.roleTypeId <= option.value) return true;
         })
         .map(({ value, name }) => (
-          <MenuItem key={value} value={value}>
-            {name}
+          <MenuItem className={classes.capitalize} key={value} value={value}>
+            {t(name)}
           </MenuItem>
         ))}
     </TextField>

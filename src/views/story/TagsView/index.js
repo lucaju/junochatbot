@@ -1,6 +1,7 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import NoContent from 'src/components/NoContent';
 import Page from 'src/components/Page';
 import { useApp } from 'src/overmind';
@@ -22,6 +23,7 @@ const TagsView = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
+  const { t } = useTranslation(['tags']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasTags, setHasTags] = useState(true);
   const [currentTag, setCurrentTag] = useState(undefined);
@@ -31,12 +33,16 @@ const TagsView = () => {
 
   useEffect(() => {
     if (!state.story.currentStory.id) navigate('/app', { replace: true });
+
     const getCollection = async () => {
       await actions.videos.getTags();
       setIsLoading(false);
       setHasTags(state.videos.tagCollection.length > 0);
     };
+
     getCollection();
+    actions.ui.updateTitle(state.story.currentStory.title);
+
     return () => {};
   }, []);
 
@@ -77,7 +83,7 @@ const TagsView = () => {
           />
         )}
         {!hasTags ? (
-          <NoContent heading="No tags yet" />
+          <NoContent heading={t('noTagsYet')} />
         ) : (
           <Box mt={3}>
             <Collection

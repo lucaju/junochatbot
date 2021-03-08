@@ -2,20 +2,23 @@ import { makeStyles, MenuItem, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(({ palette }) => ({
   box: { width: 105 },
+  capitalize: { textTransform: 'capitalize' },
   highlight: { color: palette.primary.main },
 }));
 
 const options = [
-  { value: -1, name: 'All' },
-  { value: true, name: 'Active' },
-  { value: false, name: 'Inactive' },
+  { value: -1, name: 'all' },
+  { value: true, name: 'active' },
+  { value: false, name: 'inactive' },
 ];
 
 const FilterStatus = ({ className, handleFilter, value }) => {
   const classes = useStyles();
+  const { t } = useTranslation(['common']);
   const [filterValue, setFilterValue] = useState(value);
 
   const handleChange = (value) => {
@@ -28,9 +31,9 @@ const FilterStatus = ({ className, handleFilter, value }) => {
 
   return (
     <TextField
-      className={clsx(className, classes.box)}
+      className={clsx(className, classes.box, classes.capitalize)}
       InputProps={{ className: clsx(isOn() && classes.highlight) }}
-      label="Status"
+      label={t('status')}
       name="filterStatus"
       onChange={(e) => handleChange(e.target.value)}
       select
@@ -39,8 +42,8 @@ const FilterStatus = ({ className, handleFilter, value }) => {
       value={filterValue}
     >
       {options.map(({ name, value }) => (
-        <MenuItem key={value} value={value}>
-          {name}
+        <MenuItem className={classes.capitalize} key={value} value={value}>
+          {t(name)}
         </MenuItem>
       ))}
     </TextField>

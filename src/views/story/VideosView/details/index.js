@@ -9,6 +9,7 @@ import {
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
@@ -61,25 +62,26 @@ const initialValues = {
   active: true,
 };
 
-const formValidation = Yup.object().shape({
-  url: Yup.string().trim().required('Url is required'),
-  image: Yup.string(),
-  title: Yup.string().max(255),
-  channelTitle: Yup.string().max(255),
-  publishedAt: Yup.string(),
-  duration: Yup.string(),
-  description: Yup.string(),
-  tags: Yup.array(),
-  active: Yup.bool(),
-});
-
 const Details = ({ open, handleDetailClose, video }) => {
   const classes = useStyles();
   const { actions } = useApp();
+  const { t } = useTranslation(['videos', 'common', 'errorMessages', 'deleteDialog']);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [videoData, setVideoData] = useState(initialValues);
   const [youtubeVideoId, setYoutubeVideoId] = useState(null);
   const [dirtyFromYoutube, setDirtyFromYoutube] = useState(false);
+
+  const formValidation = Yup.object().shape({
+    url: Yup.string().trim().required(t('common:required')),
+    image: Yup.string(),
+    title: Yup.string().max(255),
+    channelTitle: Yup.string().max(255),
+    publishedAt: Yup.string(),
+    duration: Yup.string(),
+    description: Yup.string(),
+    tags: Yup.array(),
+    active: Yup.bool(),
+  });
 
   useEffect(() => {
     if (open && video?.id) {
@@ -133,13 +135,13 @@ const Details = ({ open, handleDetailClose, video }) => {
 
     //error
     if (response.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;
     }
 
     //success
-    const message = values.id ? 'Video updated' : 'Video created';
+    const message = values.id ? t('videoUpdated') : t('videoAdded');
     actions.ui.showNotification({ message, type });
 
     handleClose();
@@ -159,13 +161,13 @@ const Details = ({ open, handleDetailClose, video }) => {
 
     //error
     if (response.error) {
-      const message = 'Something went wrong!';
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;
     }
 
     //success
-    const message = active ? 'Video restored' : 'Video deleted';
+    const message = active ? t('videoRestored') : t('videoDeleted');
     actions.ui.showNotification({ message, type });
 
     //end
@@ -186,7 +188,7 @@ const Details = ({ open, handleDetailClose, video }) => {
     >
       {!video?.id && !youtubeVideoId ? (
         <>
-          <DialogTitle className={classes.header}>Add Video</DialogTitle>
+          <DialogTitle className={classes.header}>{t('addVideo')}</DialogTitle>
           <DialogContent dividers>
             <Source parseVideoId={parseVideoId} />
           </DialogContent>
@@ -263,9 +265,9 @@ const Details = ({ open, handleDetailClose, video }) => {
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message="Are you sure you want to delete this video?"
+                message={t('deleteDialog:message', { object: t('video')})}
                 open={deleteDialogOpen}
-                title="Delete Video"
+                title={t('deleteDialog:title', { object: t('video')})}
               />
             </form>
           )}

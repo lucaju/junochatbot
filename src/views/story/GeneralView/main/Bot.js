@@ -5,14 +5,17 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from 'src/overmind';
 import { getIcon } from 'src/util/icons';
 import BotDelaySlider from './BotDelaySlider';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
   avatarSelectBox: { marginTop: '-5px' },
+  capitalize: { textTransform: 'capitalize' },
   marginBottom: { marginBottom: spacing(1) },
   label: {
     fontSize: '0.75rem',
@@ -23,11 +26,12 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
   const classes = useStyles();
   const { state } = useApp();
+  const { t } = useTranslation(['storyGeneral', 'common',]);
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
-        Character Bot
+      <Typography className={classes.capitalize} variant="h6" gutterBottom>
+        {t('characterBot')}
       </Typography>
       <Box
         p={1}
@@ -38,10 +42,10 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
       >
         <Box flexGrow={1} mr={2}>
           <TextField
-            className={classes.marginBottom}
+            className={clsx(classes.marginBottom, classes.capitalize)}
             error={Boolean(touched['botName'] && errors['botName'])}
             fullWidth
-            label="Name"
+            label={t('common:name')}
             name="botName"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -50,8 +54,9 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
         </Box>
         <Box width="50px" className={classes.avatarSelectBox}>
           <TextField
+            className={classes.capitalize} 
             fullWidth
-            label="Avatar"
+            label={t('avatar')}
             name="botAvatar"
             select
             onBlur={handleBlur}
@@ -71,10 +76,10 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
       </Box>
       <Box p={1} width="100%">
         <TextField
-          className={classes.marginBottom}
+          className={clsx(classes.marginBottom, classes.capitalize)} 
           error={Boolean(touched['botPersona'] && errors['botPersona'])}
           fullWidth
-          label="Persona"
+          label={t('persona')}
           name="botPersona"
           multiline
           rowsMax={2}
@@ -88,7 +93,7 @@ const Bot = ({ errors, handleBlur, handleChange, touched, values }) => {
       <Box p={1} width="50%" minWidth={'330px'}>
         <Box>
           <Typography className={classes.label}>
-            {`Message Delay (characters per millissecond)`}
+            {t('messageDelay')}
           </Typography>
         </Box>
         <BotDelaySlider name="botDelay" />

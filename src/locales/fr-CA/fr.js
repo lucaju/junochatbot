@@ -1,4 +1,4 @@
-{
+export default {
 	"profile": {
 		"darkMode": "Mode sombre",
 		"language": "Langue",
