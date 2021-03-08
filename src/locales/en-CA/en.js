@@ -103,7 +103,6 @@ export default {
     language: 'Language',
 	newPassword: 'New password',
 	passwordChanged: 'Password changed',
-    passwordRequirement: 'Password must have at least 8 characters and contain at least 2 numbers',
     signOut: 'Sign Out',
   },
   stories: {
