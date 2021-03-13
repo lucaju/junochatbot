@@ -88,7 +88,7 @@ const Details = ({ open, handleDetailClose, video }) => {
       const fetch = async () => {
         const selectedVideo = await actions.videos.getVideo(video.id);
         setVideoData(selectedVideo);
-        parseVideoId(selectedVideo.url);
+        parseVideoUrl(selectedVideo.url);
       };
       fetch();
     }
@@ -96,7 +96,7 @@ const Details = ({ open, handleDetailClose, video }) => {
     return () => {};
   }, [open]);
 
-  const parseVideoId = (input) => {
+  const parseVideoUrl = (input) => {
     //REGEX
     // extract the ID from the url
     //anything after the character "=", exclusively;
@@ -190,7 +190,7 @@ const Details = ({ open, handleDetailClose, video }) => {
         <>
           <DialogTitle className={classes.header}>{t('addVideo')}</DialogTitle>
           <DialogContent dividers>
-            <Source parseVideoId={parseVideoId} />
+            <Source parseVideoUrl={parseVideoUrl} />
           </DialogContent>
         </>
       ) : (
