@@ -98,14 +98,22 @@ const Details = ({ open, handleDetailClose, video }) => {
 
   const parseVideoUrl = (input) => {
     //REGEX
-    // extract the ID from the url
-    //anything after the character "=", exclusively;
-    //ex: https://www.youtube.com/watch?v=2MQx0SXLCcE&t=4274s -> 2MQx0SXLCcE
-    const regex = /(?<==)((.*)|(.+?)(?=&))/g; //
+    // extract the params from URL
+    //anything after the '/watch?'
+    //ex: https://www.youtube.com/watch?v=2MQx0SXLCcE&t=4274s -> v=2MQx0SXLCcE&t=4274s
+    const regex = /(?:watch\?)(.+)/; //
     const match = input.match(regex);
     if (!match) return;
 
-    const id = match[0];
+    const rawParams = match[1].split('&');
+
+    const videoParams = new Map();
+    rawParams.forEach((params) => {
+      const [key,value] = params.split('=');
+      videoParams.set(key, value)
+    });
+
+    const id = videoParams.get('v');
     videoData.url = input;
     setYoutubeVideoId(id);
   };
