@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 .DS_STORE
 
-# .env-cmdrc.js
+.env-cmdrc.js
 
 /dist
 /templates
