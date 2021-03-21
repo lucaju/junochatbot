@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const WebpackBar = require('webpackbar');
+const WebpackBar = require('webpackbar');
 
 module.exports = {
   mode: 'none', // all mode defaults for dev and prod and set in the respective configs
@@ -36,13 +36,22 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [{ from: 'src/assets/', to: './assets' }],
     }),
-    // new WebpackBar({ color: '#0099ff' }),
+    new WebpackBar({ color: '#0099ff' }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
   ],
   module: {
     rules: [
+      {
+        rules: [
+          {
+            test: /\.tsx?$/,
+            exclude: /node_modules/,
+            use: 'ts-loader',
+          },
+        ],
+      },
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
