@@ -55,10 +55,8 @@ export default {
   },
   groups: {
 	createGroup: 'Crate group',
-	editGroup: 'Edit Group',
 	groupCreated: 'Group Created',
 	groupDeleted: 'Group Deleted',
-	groupInactive: 'Group Inactive',
 	groupRestored: 'Group Restored',
 	groupUpdated: 'Group Updated',
 	institution: 'institution',
@@ -71,7 +69,6 @@ export default {
 	editIntent: 'Edit intent',
 	intentCreated: 'Intent Created',
 	intentDeleted: 'Intent Deleted',
-	intentInactive: 'Intent Inactive',
 	intentRestored: 'Intent Restored',
 	intentUpdated: 'Intent Updated',
 	newIntent: 'New intent',
@@ -123,12 +120,10 @@ export default {
   },
   tags: {
 	addTag: 'Add Tag',
-	editTag: 'Edit tag',
 	newTag: 'New tag',
 	noTagsYet: 'No tags yet',
 	tagCreated: 'Tag Created',
 	tagDeleted: 'Tag Deleted',
-	tagInactive: 'Tag inative',
 	tagRestored: 'Tag Restored',
 	tagUpdated: 'Tag Updated',
   },
@@ -140,7 +135,6 @@ export default {
 	role: 'role',
 	userCreated: 'User Created',
 	userDeleted: 'User Deleted',
-	userInactive: 'User inative',
 	userRestored: 'User Restored',
 	userUpdated: 'User Updated',
 	users: 'Users',
@@ -153,7 +147,6 @@ export default {
 	source: 'source', //video source
 	videoAdded: 'Video Added',
 	videoDeleted: 'Video Deleted',
-	videoInactive: 'Video inative',
 	videoRestored: 'Video Restored',
 	videoUpdated: 'Video Updated',
   }
