@@ -1,13 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {
-  Box,
-  Button,
-  CircularProgress,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import BlockIcon from '@material-ui/icons/Block';
-import clsx from 'clsx';
+import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -15,11 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(({ palette }) => ({
   progress: { position: 'absolute' },
-  uppercase: { textTransform: 'uppercase' },
-  warning: {
-    color:
-      palette.type === 'light' ? palette.warning.light : palette.warning.dark,
-  },
+  textColor: { color: palette.type === 'light' && palette.common.white },
 }));
 
 const Actions = ({
@@ -48,61 +36,48 @@ const Actions = ({
 
   return (
     <>
+      <Button onClick={handleCancel}>{t('cancel')}</Button>
+
+      {values.id && intentData.active && (
+        <>
+          <Box flexGrow={1} />
+          <Button
+            disabled={isSubmitting}
+            onClick={() => handleDelete('delete')}
+            variant="outlined"
+          >
+            {t('delete')}
+          </Button>
+        </>
+      )}
+      <Box flexGrow={1} />
+
       {intentData.id && !intentData.active ? (
-        <>
-          <Button color="primary" onClick={handleCancel}>
-            {t('cancel')}
-          </Button>
-          <Box flexGrow={1} />
-          <BlockIcon className={classes.warning} />
-          <Typography
-            className={clsx(classes.uppercase, classes.warning)}
-            variant="subtitle1"
-          >
-             {t('intents:intentInactive')}
-          </Typography>
-          <Box flexGrow={1} />
-          <Button
-            disabled={isSubmitting}
-            onClick={() => handleRestore('restore')}
-            variant="outlined"
-          >
-            {t('restore')}
-            {isSubmitting && buttonClicked === 'restore' && (
-              <CircularProgress className={classes.progress} size={24} />
-            )}
-          </Button>
-        </>
-      ) : (
-        <>
-          <Button color="primary" onClick={handleCancel}>
-            {t('cancel')}
-          </Button>
-          {values.id && (
-            <>
-              <Box flexGrow={1} />
-              <Button
-                color="primary"
-                disabled={isSubmitting}
-                onClick={() => handleDelete('delete')}
-              >
-                {t('delete')}
-              </Button>
-            </>
+        <Button
+          classes={{ containedPrimary: classes.textColor }}
+          color="primary"
+          disabled={isSubmitting}
+          onClick={() => handleRestore('restore')}
+          variant="contained"
+        >
+          {t('restore')}
+          {isSubmitting && buttonClicked === 'restore' && (
+            <CircularProgress className={classes.progress} size={24} />
           )}
-          <Box flexGrow={1} />
-          <Button
-            color="primary"
-            disabled={isSubmitting}
-            onClick={() => handleSubmit('submit')}
-            variant="outlined"
-          >
-            {t('save')}
-            {isSubmitting && buttonClicked === 'submit' && (
-              <CircularProgress className={classes.progress} size={24} />
-            )}
-          </Button>
-        </>
+        </Button>
+      ) : (
+        <Button
+          classes={{ containedPrimary: classes.textColor }}
+          color="primary"
+          disabled={isSubmitting}
+          onClick={() => handleSubmit('submit')}
+          variant="contained"
+        >
+          {t('save')}
+          {isSubmitting && buttonClicked === 'submit' && (
+            <CircularProgress className={classes.progress} size={24} />
+          )}
+        </Button>
       )}
     </>
   );

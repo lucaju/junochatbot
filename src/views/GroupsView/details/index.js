@@ -3,17 +3,28 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  makeStyles,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AlertInactive from 'src/components/AlertInactive';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import { json } from 'overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
 import Fields from './Fields';
+
+const useStyles = makeStyles(({ spacing }) => ({
+  alertInactive: {
+    marginLeft: -spacing(2),
+    marginRight: -spacing(2),
+    marginTop: -spacing(1),
+    marginBottom: spacing(1),
+  },
+}));
 
 const initialValues = {
   name: '',
@@ -23,8 +34,14 @@ const initialValues = {
 };
 
 const Details = ({ group, open, handleDetailClose }) => {
+  const classes = useStyles();
   const { actions } = useApp();
-  const { t } = useTranslation(['groups', 'common', 'errorMessages, deleteDialog']);
+  const { t } = useTranslation([
+    'groups',
+    'common',
+    'errorMessages',
+    'deleteDialog',
+  ]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [groupData, setGroupData] = useState(initialValues);
 
@@ -137,10 +154,11 @@ const Details = ({ group, open, handleDetailClose }) => {
             values,
           }) => (
             <form onSubmit={handleSubmit}>
-              <DialogTitle>
-                {!groupData.id ? t('newGroup') : t('editGroup')}
-              </DialogTitle>
+              {!groupData.id && <DialogTitle>{t('newGroup')}</DialogTitle>}
               <DialogContent dividers>
+                {groupData.id && !groupData.active && (
+                  <AlertInactive className={classes.alertInactive} />
+                )}
                 <Fields
                   errors={errors}
                   handleBlur={handleBlur}
@@ -167,9 +185,9 @@ const Details = ({ group, open, handleDetailClose }) => {
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('deleteDialog:message', { object: t('group')})}
+                message={t('deleteDialog:message', { object: t('group') })}
                 open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('group')})}
+                title={t('deleteDialog:title', { object: t('group') })}
               />
             </form>
           )}

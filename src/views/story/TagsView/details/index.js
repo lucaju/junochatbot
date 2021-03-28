@@ -10,12 +10,19 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AlertInactive from 'src/components/AlertInactive';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
+  alertInactive: {
+    marginLeft: -spacing(2),
+    marginRight: -spacing(2),
+    marginTop: -spacing(1),
+    marginBottom: spacing(1),
+  },
   capitalize: { textTransform: 'capitalize' },
   dialogContent: { width: 400 },
   header: {
@@ -145,8 +152,11 @@ const Details = ({ handleDetailClose, open, tag }) => {
             values,
           }) => (
             <form onSubmit={handleSubmit}>
-              <DialogTitle>{!tagData.id ? t('newTag') : t('editTag')}</DialogTitle>
+              {!tagData.id && <DialogTitle>{t('newTag')}</DialogTitle>}
               <DialogContent className={classes.dialogContent} dividers>
+                {tagData.id && !tagData.active && (
+                  <AlertInactive className={classes.alertInactive} />
+                )}
                 <TextField
                   className={classes.capitalize}
                   error={Boolean(touched.name && errors.name)}

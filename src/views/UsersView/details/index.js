@@ -10,6 +10,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AlertInactive from 'src/components/AlertInactive';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
@@ -19,6 +20,11 @@ import Credentials from './Credentials';
 import Personal from './Personal';
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
+  alertInactive: {
+    marginBottom: spacing(0.5),
+    marginTop: spacing(-2.5),
+    padding: spacing(0.5),
+  },
   dialogContent: {
     paddingRight: 0,
     paddingLeft: 0,
@@ -54,7 +60,12 @@ const initialValues = {
 const Details = ({ handleDetailClose, open, user }) => {
   const classes = useStyles();
   const { state, actions } = useApp();
-  const { t } = useTranslation(['users', 'common', 'errorMessages, deleteDialog']);
+  const { t } = useTranslation([
+    'users',
+    'common',
+    'errorMessages',
+    'deleteDialog',
+  ]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [userData, setUserData] = useState(initialValues);
@@ -64,7 +75,7 @@ const Details = ({ handleDetailClose, open, user }) => {
       const selectedUserData = Object.assign(initialValues);
       selectedUserData.groups = null;
       if (!state.session.isAdmin) {
-        selectedUserData.groups = [ ...state.session.user.groups[0]];
+        selectedUserData.groups = [...state.session.user.groups[0]];
       }
       setUserData(selectedUserData);
       setLoaded(true);
@@ -191,6 +202,9 @@ const Details = ({ handleDetailClose, open, user }) => {
           }) => (
             <form onSubmit={handleSubmit}>
               <DialogContent className={classes.dialogContent} dividers>
+                {userData.id && !userData.active && (
+                  <AlertInactive className={classes.alertInactive} />
+                )}
                 <Grid container spacing={3} className={classes.section}>
                   <Personal
                     errors={errors}
@@ -236,14 +250,14 @@ const Details = ({ handleDetailClose, open, user }) => {
               <DeleteDialog
                 handleNo={() => setDeleteDialogOpen(false)}
                 handleYes={() => {
-                  setDeleteDialogOpen(false)
+                  setDeleteDialogOpen(false);
                   values.submitType = 'delete';
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('deleteDialog:message', { object: t('user')})}
+                message={t('deleteDialog:message', { object: t('user') })}
                 open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('user')})}
+                title={t('deleteDialog:title', { object: t('user') })}
               />
             </form>
           )}

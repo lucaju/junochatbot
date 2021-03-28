@@ -49,7 +49,7 @@ const useStyles = makeStyles(({ palette, shape, spacing }) => ({
     color: palette.type === 'light' ? palette.grey[800] : palette.common.white,
   },
   titleHover: {
-    backgroundColor: palette.primary.light,
+    backgroundColor: palette.secondary.main,
     color: palette.type === 'light' ? palette.common.white : palette.grey[800],
   },
   uppercase: { textTransform: 'uppercase' },

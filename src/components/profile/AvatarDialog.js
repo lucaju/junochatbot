@@ -48,6 +48,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   progress: { position: 'absolute' },
   show: { display: 'block' },
+  textColor: { color: palette.type === 'light' && palette.common.white },
 }));
 
 const formValidation = Yup.object().shape({
@@ -92,12 +93,14 @@ const AvatarDialog = ({ handleClose, open }) => {
     const type = response.error ? 'error' : 'success';
 
     if (response.error) {
-      const message =  t('errorMessages:somethingWentWrong')
+      const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return;
     }
 
-    const message = avatar ? t('profile:avatarChanged') : t('profile:avatarRemoved');
+    const message = avatar
+      ? t('profile:avatarChanged')
+      : t('profile:avatarRemoved');
     actions.ui.showNotification({ message, type });
 
     handleClose();
@@ -182,17 +185,16 @@ const AvatarDialog = ({ handleClose, open }) => {
               </form>
             </DialogContent>
             <DialogActions>
-              <Button color="primary" onClick={handleClosePanel}>
-                {t('cancel')}
-              </Button>
+              <Button onClick={handleClosePanel}>{t('cancel')}</Button>
               <Box flexGrow={1} />
               <Button
+                classes={{ containedPrimary: classes.textColor }}
                 color="primary"
                 disabled={
                   isSubmitting || value === state.session.user.avatarUrl
                 }
                 onClick={() => handleSubmit()}
-                variant="outlined"
+                variant="contained"
               >
                 {t('submit')}
                 {isSubmitting && (

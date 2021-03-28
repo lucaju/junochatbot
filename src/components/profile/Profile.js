@@ -120,6 +120,7 @@ const Profile = ({ anchor, handleClose }) => {
           <ListItemSecondaryAction>
             <Switch
               checked={state.ui.darkMode}
+              color="primary"
               edge="end"
               inputProps={{ 'aria-labelledby': 'dark-mode' }}
               onChange={switchAppearenceMode}
@@ -130,10 +131,7 @@ const Profile = ({ anchor, handleClose }) => {
           <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
             <LanguageIcon />
           </ListItemIcon>
-          <ListItemText
-            id="switch-list-label-bluetooth"
-            primary={t('language')}
-          />
+          <ListItemText id="language" primary={t('language')} />
           <ListItemSecondaryAction>
             <Select
               className={classes.capitalize}

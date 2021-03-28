@@ -10,6 +10,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AlertInactive from 'src/components/AlertInactive';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
@@ -20,6 +21,12 @@ import Player from './Player';
 import Source from './Source';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
+  alertInactive: {
+    marginLeft: -spacing(2),
+    marginRight: -spacing(2),
+    marginTop: -spacing(1),
+    marginBottom: spacing(1),
+  },
   header: {
     color: palette.primary.light,
     textAlign: 'center',
@@ -65,7 +72,12 @@ const initialValues = {
 const Details = ({ open, handleDetailClose, video }) => {
   const classes = useStyles();
   const { actions } = useApp();
-  const { t } = useTranslation(['videos', 'common', 'errorMessages', 'deleteDialog']);
+  const { t } = useTranslation([
+    'videos',
+    'common',
+    'errorMessages',
+    'deleteDialog',
+  ]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [videoData, setVideoData] = useState(initialValues);
   const [youtubeVideoId, setYoutubeVideoId] = useState(null);
@@ -109,8 +121,8 @@ const Details = ({ open, handleDetailClose, video }) => {
 
     const videoParams = new Map();
     rawParams.forEach((params) => {
-      const [key,value] = params.split('=');
-      videoParams.set(key, value)
+      const [key, value] = params.split('=');
+      videoParams.set(key, value);
     });
 
     const id = videoParams.get('v');
@@ -237,6 +249,9 @@ const Details = ({ open, handleDetailClose, video }) => {
               )}
 
               <DialogContent dividers>
+                {!videoData.active && (
+                  <AlertInactive className={classes.alertInactive} />
+                )}
                 <Box className={classes.meta}>
                   <Meta
                     handleRefresh={fetchYoutubeData}
@@ -273,9 +288,9 @@ const Details = ({ open, handleDetailClose, video }) => {
                   handleSubmit();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('deleteDialog:message', { object: t('video')})}
+                message={t('deleteDialog:message', { object: t('video') })}
                 open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('video')})}
+                title={t('deleteDialog:title', { object: t('video') })}
               />
             </form>
           )}

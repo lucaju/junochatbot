@@ -10,18 +10,19 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({spacing, palette }) => ({
   bar: {
-    paddingTop: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    paddingTop: spacing(2),
+    paddingLeft: spacing(2),
+    paddingRight: spacing(2),
   },
   buttonProgress: { position: 'absolute' },
   divider: {
-    paddingLeft: theme.spacing(2),
-    paddingright: theme.spacing(2),
+    paddingLeft: spacing(2),
+    paddingright: spacing(2),
   },
-  marginLeft: { marginLeft: theme.spacing(2) },
+  marginLeft: { marginLeft: spacing(2) },
+  textColor: { color: palette.type === 'light' && palette.common.white },
 }));
 
 const BottomBar = ({
@@ -86,6 +87,7 @@ const BottomBar = ({
         </Button>
 
         <Button
+        classes={{ containedPrimary: classes.textColor }}
           color="primary"
           disabled={isSubmitting || !dirty}
           onClick={() => handleSubmit('publish')}

@@ -9,6 +9,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AlertInactive from 'src/components/AlertInactive';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
@@ -16,6 +17,12 @@ import Actions from './Actions';
 import Extra from './Extra';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
+  alertInactive: {
+    marginLeft: -spacing(2),
+    marginRight: -spacing(2),
+    marginTop: -spacing(1),
+    marginBottom: spacing(1),
+  },
   header: {
     color: palette.primary.light,
     textAlign: 'center',
@@ -61,14 +68,19 @@ const initialValues = {
 const Details = ({ open, handleDetailClose, intent }) => {
   const classes = useStyles();
   const { actions } = useApp();
-  const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
+  const { t } = useTranslation([
+    'intents',
+    'common',
+    'errorMessages',
+    'deleteDialog',
+  ]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [intentData, setIntentData] = useState(initialValues);
 
   useEffect(() => {
     if (open && intent?.id) {
       const fetch = async () => {
-        const selectedIntent= await actions.intents.getIntent(intent.id);
+        const selectedIntent = await actions.intents.getIntent(intent.id);
         setIntentData(selectedIntent);
       };
       fetch();
@@ -112,7 +124,7 @@ const Details = ({ open, handleDetailClose, intent }) => {
     }
 
     //success
-    const message = values.id ? t('intentUpdated') : t('intentCreated')
+    const message = values.id ? t('intentUpdated') : t('intentCreated');
     actions.ui.showNotification({ message, type });
 
     handleClose();
@@ -157,73 +169,74 @@ const Details = ({ open, handleDetailClose, intent }) => {
       open={open}
       scroll="body"
     >
-      
-        <Formik
-          enableReinitialize={true}
-          initialValues={intentData}
-          onSubmit={async (values) => {
-            //change status submission
-            if (values.submitType) {
-              const active = values.submitType === 'delete' ? false : true;
-              const response = await updateStatus(values, active);
-              if (!response?.error) values.active = active;
-              return;
-            }
+      <Formik
+        enableReinitialize={true}
+        initialValues={intentData}
+        onSubmit={async (values) => {
+          //change status submission
+          if (values.submitType) {
+            const active = values.submitType === 'delete' ? false : true;
+            const response = await updateStatus(values, active);
+            if (!response?.error) values.active = active;
+            return;
+          }
 
-            //normal submission
-            await submit(values);
-          }}
-          validationSchema={formValidation}
-        >
-          {({
-            errors,
-            dirty,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            isSubmitting,
-            touched,
-            values,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <DialogContent dividers>
-                <Box className={classes.meta}>
-                </Box>
-                <Box>
-                  <Extra
-                    errors={errors}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                    touched={touched}
-                    values={values}
-                  />
-                </Box>
-              </DialogContent>
-              <DialogActions>
-                <Actions
-                  dirty={dirty}
-                  handleCancel={handleClose}
-                  handleDelete={() => setDeleteDialogOpen(true)}
-                  intentData={intentData}
-                  isSubmitting={isSubmitting}
+          //normal submission
+          await submit(values);
+        }}
+        validationSchema={formValidation}
+      >
+        {({
+          errors,
+          dirty,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <DialogContent dividers>
+              {intentData.id && !intentData.active && (
+                <AlertInactive className={classes.alertInactive} />
+              )}
+              <Box className={classes.meta}></Box>
+              <Box>
+                <Extra
+                  errors={errors}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
                   values={values}
                 />
-              </DialogActions>
-              <DeleteDialog
-                handleNo={() => setDeleteDialogOpen(false)}
-                handleYes={() => {
-                  setDeleteDialogOpen(false);
-                  values.submitType = 'delete';
-                  handleSubmit();
-                }}
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Actions
+                dirty={dirty}
+                handleCancel={handleClose}
+                handleDelete={() => setDeleteDialogOpen(true)}
+                intentData={intentData}
                 isSubmitting={isSubmitting}
-                message={t('deleteDialog:message', { object: t('intent')})}
-                open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('intent')})}
+                values={values}
               />
-            </form>
-          )}
-        </Formik>
+            </DialogActions>
+            <DeleteDialog
+              handleNo={() => setDeleteDialogOpen(false)}
+              handleYes={() => {
+                setDeleteDialogOpen(false);
+                values.submitType = 'delete';
+                handleSubmit();
+              }}
+              isSubmitting={isSubmitting}
+              message={t('deleteDialog:message', { object: t('intent') })}
+              open={deleteDialogOpen}
+              title={t('deleteDialog:title', { object: t('intent') })}
+            />
+          </form>
+        )}
+      </Formik>
     </Dialog>
   );
 };

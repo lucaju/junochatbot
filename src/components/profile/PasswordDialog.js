@@ -22,8 +22,9 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ palette }) => ({
   progress: { position: 'absolute' },
+  textColor: { color: palette.type === 'light' && palette.common.white },
 }));
 
 const PasswordDialog = ({ handleClose, open }) => {
@@ -53,7 +54,7 @@ const PasswordDialog = ({ handleClose, open }) => {
       actions.ui.showNotification({ message, type });
       return;
     }
-  
+
     actions.ui.showNotification({
       message: t('profile:passwordChanged'),
       type,
@@ -85,11 +86,15 @@ const PasswordDialog = ({ handleClose, open }) => {
           values,
         }) => (
           <>
-            <DialogTitle id="change-password">{t('profile:changePassword')}</DialogTitle>
+            <DialogTitle id="change-password">
+              {t('profile:changePassword')}
+            </DialogTitle>
             <DialogContent dividers>
               <form onSubmit={handleSubmit}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor="password">{t('profile:newPassword')}</InputLabel>
+                  <InputLabel htmlFor="password">
+                    {t('profile:newPassword')}
+                  </InputLabel>
                   <Input
                     autoComplete="new-password"
                     endAdornment={
@@ -116,15 +121,14 @@ const PasswordDialog = ({ handleClose, open }) => {
               </form>
             </DialogContent>
             <DialogActions>
-              <Button color="primary" onClick={handleClose}>
-                {t('cancel')}
-              </Button>
+              <Button onClick={handleClose}>{t('cancel')}</Button>
               <Box flexGrow={1} />
               <Button
+                classes={{ containedPrimary: classes.textColor }}
                 color="primary"
                 disabled={isSubmitting}
                 onClick={() => handleSubmit()}
-                variant="outlined"
+                variant="contained"
               >
                 {t('submit')}
                 {isSubmitting && (
