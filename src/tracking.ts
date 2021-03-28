@@ -17,7 +17,6 @@ export const useTracking = (
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location);
     const unlisten = () => {
       if (!window.gtag) return;
       if (!trackingId) {
