@@ -3,7 +3,6 @@ import AdbIcon from '@material-ui/icons/Adb';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import FaceIcon from '@material-ui/icons/Face';
-import { Component } from 'React';
 
 type IconsMap = Map<string, any>;
 
