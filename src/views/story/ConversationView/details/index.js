@@ -114,10 +114,10 @@ const Details = ({ open, handleDetailClose, intent }) => {
       ? await actions.intents.updateIntent({ intentData, values })
       : actions.intents.createIntent(values);
 
-    const type = response.error ? 'error' : 'success';
+    const type = response.errorMessage ? 'error' : 'success';
 
     //error
-    if (response.error) {
+    if (response.errorMessage) {
       const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;
@@ -140,10 +140,10 @@ const Details = ({ open, handleDetailClose, intent }) => {
 
     const response = await actions.intent.updateIntentStatus(data);
 
-    const type = response.error ? 'error' : 'success';
+    const type = response.errorMessage ? 'error' : 'success';
 
     //error
-    if (response.error) {
+    if (response.errorMessage) {
       const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return response;

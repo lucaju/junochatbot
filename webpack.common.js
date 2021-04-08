@@ -9,7 +9,7 @@ const WebpackBar = require('webpackbar');
 module.exports = {
   mode: 'none', // all mode defaults for dev and prod and set in the respective configs
   entry: {
-    app: [path.resolve(__dirname, 'src', 'index.js')],
+    app: [path.resolve(__dirname, 'src', 'index.tsx')],
   },
   output: {
     // filename: '[name].js',
