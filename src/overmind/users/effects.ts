@@ -48,10 +48,13 @@ export const api = {
   getUserGroup: async (
     userId: number,
     token: string
-  ): Promise<UserGroup | ErrorMessage> => {
+  ): Promise<UserGroup | ErrorMessage | void > => {
     const response = await fetch(`${API_URL}/groups/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+
+    // no content
+    if (response.status === 204) return;
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -212,6 +215,23 @@ export const api = {
     return true;
   },
 
+  deleteGroup: async (
+    groupId: number,
+    token: string
+  ): Promise<boolean | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/groups/${groupId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) return { errorMessage: response.statusText };
+
+    return true;
+  },
+
   uploadAvatar: async (
     userId: number,
     avatar: any,
@@ -248,7 +268,7 @@ export const api = {
 
   requestPassword: async (email: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(
-      `${API_URL}/authentication/users/${email}/sendresetpassword`,
+      `${API_URL}/authentication/users/${email}/password`,
       {
         method: 'POST',
       }
@@ -264,7 +284,7 @@ export const api = {
     token: string
   ): Promise<boolean | ErrorMessage> => {
     const response = await fetch(
-      `${API_URL}/authentication/users/setpassword`,
+      `${API_URL}/authentication/users/password`,
       {
         method: 'PUT',
         headers: {

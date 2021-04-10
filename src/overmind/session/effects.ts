@@ -48,20 +48,6 @@ export const api = {
     return result as User;
   },
 
-  getUserGroup: async (
-    userID: number,
-    token: string
-  ): Promise<UserGroup | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/groups/users/${userID}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!response.ok) return { errorMessage: response.statusText };
-
-    const result = await response.json();
-    return result as UserGroup;
-  },
-
   changePassword: async (
     userId: number,
     password: string,

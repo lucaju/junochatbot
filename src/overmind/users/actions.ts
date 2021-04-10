@@ -58,7 +58,7 @@ export const getUser = async (
     userId,
     authUser.token
   );
-  if (!isError(userGroup)) user.groupId = userGroup.id;
+  if (userGroup && !isError(userGroup)) user.groupId = userGroup.id;
 
   return user;
 };
@@ -66,13 +66,14 @@ export const getUser = async (
 export const getUserGroup = async (
   { state, effects }: Context,
   userId: number
-): Promise<UserGroup | ErrorMessage> => {
+): Promise<UserGroup | ErrorMessage | void> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
   const response = await effects.users.api.getUserGroup(userId, authUser.token);
+  if (!response) return;
   if (isError(response)) return response;
-
+  
   //update user
   state.users.list = state.users.list.map((user: User) => {
     if (user.id === userId) user.groupId = response.id;
@@ -314,23 +315,18 @@ export const updateGroup = async (
   return true;
 };
 
-export const updateGroupStatus = async (
+export const deleteGroup = async (
   { state, effects }: Context,
-  groupData: UserGroup
+  groupId: number
 ): Promise<boolean | ErrorMessage> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.users.api.updateGroup(
-    groupData,
-    authUser.token
-  );
+  const response = await effects.users.api.deleteGroup(groupId, authUser.token);
   if (isError(response)) return response;
 
-  state.users.groups = state.users.groups.map((group: UserGroup) => {
-    if (group.id === groupData.id) group = groupData;
-    return group;
-  });
+  // update state;
+  state.users.groups = state.users.groups.filter((g: UserGroup) => g.id !== groupId);
 
   return true;
 };
