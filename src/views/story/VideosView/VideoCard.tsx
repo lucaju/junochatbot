@@ -21,7 +21,6 @@ interface VideoCardProps {
 const useStyles = makeStyles(({ spacing, palette }) => ({
   root: { width: 320 },
   cardHover: { cursor: 'pointer' },
-  inactive: { filter: 'grayscale(100%)' },
   media: { height: 180 },
   meta: {
     backgroundColor: palette.background.default,
@@ -83,7 +82,7 @@ const VideoCard: FC<VideoCardProps> = ({
       {...rest}
     >
       <CardMedia
-        className={clsx(classes.media, !video.active && classes.inactive)}
+        className={classes.media}
         image={video.imageUrl}
         title={video.title}
       />

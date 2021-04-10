@@ -21,10 +21,6 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     },
   },
   cardHover: { cursor: 'pointer' },
-  cardInactive: {
-    backgroundColor: palette.background.default,
-    opacity: 0.7,
-  },
 }));
 
 const TagCard: FC<TagCardProps> = ({ className, tag, handleEditClick, ...rest }) => {
@@ -57,10 +53,9 @@ const TagCard: FC<TagCardProps> = ({ className, tag, handleEditClick, ...rest })
       className={clsx(
         classes.root,
         className,
-        hover && classes.cardHover,
-        !tag.active && classes.cardInactive
+        hover && classes.cardHover
       )}
-      elevation={tag.active ? elevation : elevation - 1}
+      elevation={elevation}
       onClick={() => handleEditClick(tag.id)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}

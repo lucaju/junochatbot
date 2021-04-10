@@ -64,19 +64,15 @@ const Extra: FC<ExtraProps> = ({
         <Autocomplete
           filterSelectedOptions
           getOptionLabel={(tag) => tag.name}
-          getOptionSelected={(option, value) =>
-            option.id === value.id && option.active === true
-          }
+          getOptionSelected={(option, value) => option.id === value.id}
           id="tags"
           multiple
-          onChange={(event:FocusEvent, value, reason) => {
+          onChange={(event: FocusEvent, value, reason) => {
             if (reason === 'blur') return handleBlur(event);
             setValue(json(value));
           }}
-          options={state.videos.tagCollection.filter(
-            (tag) => tag.active === true
-          )}
-          value={values.tags?.filter((tag) => tag.active === true)}
+          options={state.videos.tagCollection}
+          value={values.tags}
           renderInput={(params) => (
             <TextField
               {...params}

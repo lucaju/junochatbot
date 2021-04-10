@@ -21,10 +21,6 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     },
   },
   cardHover: { cursor: 'pointer' },
-  cardInactive: {
-    backgroundColor: palette.background.default,
-    opacity: 0.7,
-  },
 }));
 
 const GroupCard: FC<GroupCardProps> = ({
@@ -62,10 +58,9 @@ const GroupCard: FC<GroupCardProps> = ({
       className={clsx(
         classes.root,
         className,
-        hover && classes.cardHover,
-        !group.active && classes.cardInactive
+        hover && classes.cardHover
       )}
-      elevation={group.active ? elevation : elevation - 1}
+      elevation={elevation}
       onClick={() => handleEditClick(group.id)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}

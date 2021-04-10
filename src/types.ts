@@ -38,7 +38,7 @@ export interface User {
   lastName: string;
   userName: string;
   roleTypeId: number;
-  active: boolean;
+  active?: boolean; //To be removed
   createdDate?: string;
   updatedDate?: string;
   avatarUrl?: string | any;
@@ -51,7 +51,7 @@ export interface UserGroup {
   name: string;
   description: string;
   institution: string;
-  active: boolean;
+  active?: boolean; //To be removed
   createdDate?: string;
   updatedDate?: string;
 }
@@ -65,7 +65,7 @@ export interface Story {
   languageCode: string;
   publishedAt: string;
   publishedDate: string;
-  active: boolean;
+  active?: boolean; //To be removed
   synopsis: string;
   botAvatar: string;
   botName: string;
@@ -77,7 +77,7 @@ export interface Story {
 export interface Tag {
   id: number;
   name: string;
-  active: boolean;
+  active?: boolean; //To be removed
 };
 
 export interface Video {
@@ -88,7 +88,7 @@ export interface Video {
   channelName: string;
   publishedAt: string; //not present yet
   duration: string; //not present yet
-  active: boolean;
+  active?: boolean; //To be removed
   description?: string;
   tags?: Tag[];
 };

@@ -23,14 +23,11 @@ const FilterTag: FC<FilterTagProps> = ({
   const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['common']);
-  const [tags, setTags] = useState([{ id: -1, name: 'all', active: true }]);
+  const [tags, setTags] = useState([{ id: -1, name: 'all' }]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
-    setTags([
-      { id: -1, name: 'all', active: true },
-      ...state.videos.tagCollection,
-    ]);
+    setTags([{ id: -1, name: 'all' }, ...state.videos.tagCollection]);
     return () => {};
   }, [state.videos.tagCollection]);
 
@@ -53,13 +50,11 @@ const FilterTag: FC<FilterTagProps> = ({
       variant="outlined"
       value={filterValue}
     >
-      {tags
-        .filter(({ active }) => active)
-        .map(({ id, name }) => (
-          <MenuItem key={id} value={id}>
-            {name}
-          </MenuItem>
-        ))}
+      {tags.map(({ id, name }) => (
+        <MenuItem key={id} value={id}>
+          {name}
+        </MenuItem>
+      ))}
     </TextField>
   );
 };

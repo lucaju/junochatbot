@@ -71,8 +71,7 @@ export const api = {
         setTimeout(() => {
           const newVideo: Video = { 
             ...video,
-            id: mock.dataVideoCollection.length + 1,
-            active: true
+            id: mock.dataVideoCollection.length + 1
           };
           mock.dataVideoCollection = [newVideo, ...mock.dataVideoCollection];
           resolve(newVideo);
@@ -269,8 +268,7 @@ export const api = {
         setTimeout(() => {
           const newTag: Tag = { 
             ...tag,
-            id: mock.dataTags.length + 1,
-            active: true
+            id: mock.dataTags.length + 1
           };
           mock.dataTags = [newTag, ...mock.dataTags];
           resolve(newTag);

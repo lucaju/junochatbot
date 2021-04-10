@@ -1,6 +1,5 @@
 export default {
   common: {
-    active: 'active',
     all: 'all',
     cancel: 'cancel',
 	delete: 'delete',
@@ -11,7 +10,6 @@ export default {
     english: 'english',
     french: 'french',
     group: 'group',
-    inactive: 'inactive',
 	launch: 'launch',
 	name: 'name',
     password: 'password',

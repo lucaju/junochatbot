@@ -12,13 +12,12 @@ export const dataVideoCollection: Video[] = [
     duration: 'PT1H1S',
     description:
       'One hour of relaxing ambient music from The Last of Us Part I & II official soundtracks (OST).',
-    active: true,
     tags: [
-      { id: 1, name: 'Intro', active: true },
-      { id: 2, name: 'Welcome', active: true },
-      { id: 3, name: 'Gato', active: true },
-      { id: 4, name: 'Person', active: true },
-      { id: 5, name: 'AI', active: true },
+      { id: 1, name: 'Intro' },
+      { id: 2, name: 'Welcome' },
+      { id: 3, name: 'Gato' },
+      { id: 4, name: 'Person' },
+      { id: 5, name: 'AI' },
     ],
   },
   {
@@ -31,7 +30,6 @@ export const dataVideoCollection: Video[] = [
     duration: 'PT1H1S',
     description:
       'One hour of relaxing ambient music from The Last of Us Part I & II official soundtracks (OST).',
-    active: true,
     tags: [],
   },
   {
@@ -44,8 +42,7 @@ export const dataVideoCollection: Video[] = [
     duration: 'PT1H1S',
     description:
       'One hour of relaxing ambient music from The Last of Us Part I & II official soundtracks (OST).',
-    active: true,
-    tags: [{ id: 7, name: 'Person', active: true }],
+    tags: [{ id: 7, name: 'Person' }],
   },
   {
     id: 4,
@@ -58,10 +55,9 @@ export const dataVideoCollection: Video[] = [
     duration: 'PT1H1S',
     description:
       'One hour of relaxing ambient music from The Last of Us Part I & II official soundtracks (OST).',
-    active: true,
     tags: [
-      { id: 8, name: 'Xuxu', active: true },
-      { id: 9, name: 'Test', active: false },
+      { id: 8, name: 'Xuxu' },
+      { id: 9, name: 'Test' },
     ],
   },
   {
@@ -75,12 +71,11 @@ export const dataVideoCollection: Video[] = [
     duration: 'PT1H1S',
     description:
       'One hour of relaxing ambient music from The Last of Us Part I & II official soundtracks (OST).',
-    active: true,
     tags: [
-      { id: 6, name: 'Television', active: true },
-      { id: 7, name: 'Communication', active: true },
-      { id: 8, name: 'Xuxu', active: true },
-      { id: 9, name: 'Test', active: false },
+      { id: 6, name: 'Television' },
+      { id: 7, name: 'Communication' },
+      { id: 8, name: 'Xuxu' },
+      { id: 9, name: 'Test' },
     ],
   },
   {
@@ -94,8 +89,7 @@ export const dataVideoCollection: Video[] = [
     duration: 'PT1H1S',
     description:
       'One hour of relaxing ambient music from The Last of Us Part I & II official soundtracks (OST).',
-    active: true,
-    tags: [{ id: 9, name: 'Test', active: false }],
+    tags: [{ id: 9, name: 'Test' }],
   },
   {
     id: 7,
@@ -108,10 +102,9 @@ export const dataVideoCollection: Video[] = [
     duration: 'PT1H1S',
     description:
       'One hour of relaxing ambient music from The Last of Us Part I & II official soundtracks (OST).',
-    active: false,
     tags: [
-      { id: 3, name: 'Gato', active: true },
-      { id: 4, name: 'Person', active: true },
+      { id: 3, name: 'Gato' },
+      { id: 4, name: 'Person' },
     ],
   },
 ];

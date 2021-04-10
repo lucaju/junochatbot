@@ -9,7 +9,6 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import AlertInactive from 'src/components/AlertInactive';
 import DeleteDialog from 'src/components/DeleteDialog';
 import { useApp } from 'src/overmind';
 import * as Yup from 'yup';
@@ -17,12 +16,6 @@ import Actions from './Actions';
 import Extra from './Extra';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
-  alertInactive: {
-    marginLeft: -spacing(2),
-    marginRight: -spacing(2),
-    marginTop: -spacing(1),
-    marginBottom: spacing(1),
-  },
   header: {
     color: palette.primary.light,
     textAlign: 'center',
@@ -62,7 +55,6 @@ const initialValues = {
   duration: '',
   description: '',
   tags: [],
-  active: true,
 };
 
 const Details = ({ open, handleDetailClose, intent }) => {
@@ -98,7 +90,6 @@ const Details = ({ open, handleDetailClose, intent }) => {
     duration: Yup.string(),
     description: Yup.string(),
     tags: Yup.array(),
-    active: Yup.bool(),
   });
 
   const handleClose = () => {
@@ -130,35 +121,6 @@ const Details = ({ open, handleDetailClose, intent }) => {
     handleClose();
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const updateStatus = async (values, active) => {
-    if (!values.id) return;
-
-    //Since the API is PUT not PATCH, we need to send all fields
-    const data = intentData;
-    data.active = active; //change intent status
-
-    const response = await actions.intent.updateIntentStatus(data);
-
-    const type = response.errorMessage ? 'error' : 'success';
-
-    //error
-    if (response.errorMessage) {
-      const message = t('errorMessages:somethingWentWrong');
-      actions.ui.showNotification({ message, type });
-      return response;
-    }
-
-    //success
-    const message = active ? t('intentRestored') : t('intentDeleted');
-    actions.ui.showNotification({ message, type });
-
-    //end
-    if (active) return response;
-
-    handleClose();
-  };
-
   return (
     <Dialog
       aria-labelledby="intent-details-dialog"
@@ -172,18 +134,7 @@ const Details = ({ open, handleDetailClose, intent }) => {
       <Formik
         enableReinitialize={true}
         initialValues={intentData}
-        onSubmit={async (values) => {
-          //change status submission
-          if (values.submitType) {
-            const active = values.submitType === 'delete' ? false : true;
-            const response = await updateStatus(values, active);
-            if (!response?.error) values.active = active;
-            return;
-          }
-
-          //normal submission
-          await submit(values);
-        }}
+        onSubmit={async (values) => {await submit(values)}}
         validationSchema={formValidation}
       >
         {({
@@ -198,9 +149,6 @@ const Details = ({ open, handleDetailClose, intent }) => {
         }) => (
           <form onSubmit={handleSubmit}>
             <DialogContent dividers>
-              {intentData.id && !intentData.active && (
-                <AlertInactive className={classes.alertInactive} />
-              )}
               <Box className={classes.meta}></Box>
               <Box>
                 <Extra

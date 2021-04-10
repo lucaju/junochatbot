@@ -6,10 +6,8 @@ import { UserGroup } from '../../../types';
 
 interface ActionsProps {
   dirty: boolean;
-  groupData: Partial<UserGroup>;
   handleCancel: () => void;
   handleDelete: (action: string) => void;
-  setRestore: (acitve: boolean) => void;
   isSubmitting: boolean;
   values: Partial<UserGroup>;
 }
@@ -21,10 +19,8 @@ const useStyles = makeStyles(({ palette: { common, type } }) => ({
 
 const Actions: FC<ActionsProps> = ({
   dirty,
-  groupData,
   handleCancel,
   handleDelete,
-  setRestore,
   isSubmitting,
   values,
 }) => {
@@ -33,22 +29,13 @@ const Actions: FC<ActionsProps> = ({
   const { submitForm } = useFormikContext();
   const [buttonClicked, setButtonClicked] = useState<string | undefined>();
 
-  const handleSubmit = async (source: string) => {
-    setButtonClicked(source);
-    await submitForm();
-  };
-
-  const handleRestore = async (source: string) => {
-    setButtonClicked(source);
-    setRestore(true);
-    await submitForm();
-  };
+  const handleSubmit = async () => await submitForm();
 
   return (
     <>
       <Button onClick={handleCancel}>{t('cancel')}</Button>
 
-      {values.id && groupData.active && (
+      {values.id && (
         <>
           <Box flexGrow={1} />
           <Button
@@ -63,33 +50,18 @@ const Actions: FC<ActionsProps> = ({
 
       <Box flexGrow={1} />
 
-      {groupData.id && !groupData.active ? (
-        <Button
-          classes={{ containedPrimary: classes.textColor }}
-          color="primary"
-          disabled={isSubmitting}
-          onClick={() => handleRestore('restore')}
-          variant="contained"
-        >
-          {t('restore')}
-          {isSubmitting && buttonClicked === 'restore' && (
-            <CircularProgress className={classes.progress} size={24} />
-          )}
-        </Button>
-      ) : (
-        <Button
-          classes={{ containedPrimary: classes.textColor }}
-          color="primary"
-          disabled={isSubmitting || !dirty}
-          onClick={() => handleSubmit('submit')}
-          variant="contained"
-        >
-          {t('save')}
-          {isSubmitting && buttonClicked === 'submit' && (
-            <CircularProgress className={classes.progress} size={24} />
-          )}
-        </Button>
-      )}
+      <Button
+        classes={{ containedPrimary: classes.textColor }}
+        color="primary"
+        disabled={isSubmitting || !dirty}
+        onClick={() => handleSubmit()}
+        variant="contained"
+      >
+        {t('save')}
+        {isSubmitting && (
+          <CircularProgress className={classes.progress} size={24} />
+        )}
+      </Button>
     </>
   );
 };

@@ -32,14 +32,13 @@ const Personal: FC<PersonalProps> = ({
   return (
     <>
       <Grid item md={3} xs={12}>
-        <UserAvatar name="avatarUrl" active={values.active} values={values} />
+        <UserAvatar name="avatarUrl" values={values} />
       </Grid>
       <Grid item md={9} xs={12}>
         <TextField
           className={clsx(classes.marginBottom, classes.capitalize)}
           error={Boolean(touched.firstName && errors.firstName)}
           fullWidth
-          disabled={values.id && !values.active ? true : false}
           helperText={touched.firstName && errors.firstName}
           label={t('firstName')}
           name="firstName"
@@ -52,7 +51,6 @@ const Personal: FC<PersonalProps> = ({
           className={clsx(classes.marginBottom, classes.capitalize)}
           error={Boolean(touched.lastName && errors.lastName)}
           fullWidth
-          disabled={values.id && !values.active ? true : false}
           helperText={touched.lastName && errors.lastName}
           label={t('lasttName')}
           name="lastName"

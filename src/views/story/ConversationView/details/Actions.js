@@ -38,7 +38,7 @@ const Actions = ({
     <>
       <Button onClick={handleCancel}>{t('cancel')}</Button>
 
-      {values.id && intentData.active && (
+      {values.id && (
         <>
           <Box flexGrow={1} />
           <Button
@@ -52,7 +52,7 @@ const Actions = ({
       )}
       <Box flexGrow={1} />
 
-      {intentData.id && !intentData.active ? (
+      {intentData.id ? (
         <Button
           classes={{ containedPrimary: classes.textColor }}
           color="primary"

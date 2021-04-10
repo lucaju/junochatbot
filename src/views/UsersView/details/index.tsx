@@ -26,11 +26,6 @@ interface DetailsProps {
 }
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
-  alertInactive: {
-    marginBottom: spacing(0.5),
-    marginTop: spacing(-2.5),
-    padding: spacing(0.5),
-  },
   dialogContent: {
     paddingRight: 0,
     paddingLeft: 0,
@@ -123,7 +118,6 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
     userName: Yup.string().email().required(t('common:required')),
     roleTypeId: Yup.number().required(),
     groupId: Yup.number(),
-    active: Yup.bool(),
   });
 
   const submit = async (values: Partial<User>) => {

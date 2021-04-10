@@ -1,6 +1,6 @@
 import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import FilterGroup from '../../../components/menubar/FilterGroup';
 import SearchBox from '../../../components/menubar/SearchBox';
@@ -19,8 +19,6 @@ const useStyles = makeStyles(({ spacing }) => ({
   marginRight: { marginRight: spacing(2) },
 }));
 
-const filterStatus = 1;
-
 const MenuBar: FC<MenuBarProps> = ({
   handleDetailOpen,
   handleFilterByGroup,
@@ -30,11 +28,6 @@ const MenuBar: FC<MenuBarProps> = ({
   const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['users']);
-
-  useEffect(() => {
-    updateFilter({ type: 'active', value: filterStatus });
-    return () => {};
-  }, []);
 
   return (
     <Toolbar disableGutters variant="dense">

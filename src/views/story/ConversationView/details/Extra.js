@@ -52,7 +52,7 @@ const Folsonomy = ({ errors, handleBlur, handleChange, touched, values }) => {
           filterSelectedOptions
           getOptionLabel={(tag) => tag.name}
           getOptionSelected={(option, value) =>
-            option.id === value.id && option.active === true
+            option.id === value.id
           }
           id="tags"
           multiple
@@ -60,10 +60,8 @@ const Folsonomy = ({ errors, handleBlur, handleChange, touched, values }) => {
             if (reason === 'blur') return handleBlur();
             setValue(json(value));
           }}
-          options={state.videos.tagCollection.filter(
-            (tag) => tag.active === true
-          )}
-          value={values.tags.filter((tag) => tag.active === true)}
+          options={state.videos.tagCollection}
+          value={values.tags}
           renderInput={(params) => (
             <TextField className={classes.capitalize} fullWidth label={t('tags')} {...params} />
           )}

@@ -27,10 +27,6 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     height: 40,
     width: 40,
   },
-  cardInactive: {
-    backgroundColor: palette.background.default,
-    opacity: 0.7,
-  },
   editButton: { marginTop: -spacing(1) },
 }));
 
@@ -46,7 +42,7 @@ const UserCard: FC<UserCarddProps> = ({
 
   useRefresh([user]);
 
-  const { firstName, lastName, userName, active, avatarUrl } = user;
+  const { firstName, lastName, userName, avatarUrl } = user;
 
   const mouseOver = () => {
     setHover(true);
@@ -60,8 +56,8 @@ const UserCard: FC<UserCarddProps> = ({
 
   return (
     <Card
-      className={clsx(className, !active && classes.cardInactive)}
-      elevation={active ? elevation : elevation - 1}
+      className={className}
+      elevation={elevation}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
       {...rest}
@@ -90,18 +86,10 @@ const UserCard: FC<UserCarddProps> = ({
               justifyContent="flex-start"
               alignItems="flex-start"
             >
-              <Typography
-                color={active ? 'textPrimary' : 'textSecondary'}
-                variant="button"
-              >
+              <Typography variant="button">
                 {firstName} {lastName}
               </Typography>
-              <Typography
-                color={active ? 'textPrimary' : 'textSecondary'}
-                variant="body2"
-              >
-                {userName}
-              </Typography>
+              <Typography variant="body2">{userName}</Typography>
             </Box>
           </Box>
           <Box width={40}>

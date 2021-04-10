@@ -49,9 +49,7 @@ const Collection: FC<CollectionProps> = ({
             const valueAPublished: boolean = value === 1 ? true : false;
             match = !!item['publishedDate'] === valueAPublished;
           } else {
-            const valueActive: number | boolean =
-              prop !== 'active' ? value : value === 1 ? true : false;
-            match = item[prop as keyof Story] === valueActive;
+            match = item[prop as keyof Story] === value;
           }
           if (match === false) break;
         }

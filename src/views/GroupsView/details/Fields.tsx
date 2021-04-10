@@ -34,7 +34,6 @@ const Fields: FC<FieldsProps> = ({
         className={clsx(classes.marginBottom, classes.capitalize)}
         error={Boolean(touched.name && errors.name)}
         fullWidth
-        disabled={values.id ? !values.active : undefined}
         helperText={touched.name && errors.name}
         label={t('name')}
         name="name"
@@ -46,7 +45,6 @@ const Fields: FC<FieldsProps> = ({
         className={clsx(classes.marginBottom, classes.capitalize)}
         error={Boolean(touched.institution && errors.institution)}
         fullWidth
-        disabled={values.id ? !values.active : undefined}
         helperText={touched.institution && errors.institution}
         label={t('groups:institution')}
         name="institution"
@@ -58,7 +56,6 @@ const Fields: FC<FieldsProps> = ({
         className={clsx(classes.marginBottom, classes.capitalize)}
         error={Boolean(touched.description && errors.description)}
         fullWidth
-        disabled={values.id ? !values.active : undefined}
         helperText={touched.description && errors.description}
         label={t('description')}
         name="description"

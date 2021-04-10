@@ -179,7 +179,7 @@ export const api = {
   },
 
   createGroup: async (
-    groupData: Omit<UserGroup, 'id' | 'active'>,
+    groupData: Omit<UserGroup, 'id'>,
     token: string
   ): Promise<UserGroup | ErrorMessage> => {
     const response = await fetch(`${API_URL}/groups`, {

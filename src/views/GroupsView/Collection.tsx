@@ -43,9 +43,7 @@ const Collection: FC<CollectionProps> = ({
         if (filters.size === 0) return true;
         let match = true;
         for (const [prop, value] of Array.from(filters.entries())) {
-          const valueActive: number | boolean =
-            prop !== 'active' ? value : value === 1 ? true : false;
-          match = item[prop as keyof UserGroup] === valueActive;
+          match = item[prop as keyof UserGroup] === value;
           if (match === false) break;
         }
         return match;

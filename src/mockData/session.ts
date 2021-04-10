@@ -7,7 +7,6 @@ export const authUser: User = {
   roleTypeId: 0,
   userName: 'lucaju@gmail.com',
   avatarUrl: 'lucaju.jpg',
-  active: true,
   token: 'TOKEN-123',
 };
 

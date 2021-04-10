@@ -10,7 +10,6 @@ import { User } from '../../../types';
 interface UserAvatarProps {
   name: string;
   values: Partial<User>;
-  active?: boolean | undefined;
 }
 
 const useStyles = makeStyles(({ palette }) => ({
@@ -41,7 +40,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const UserAvatar: FC<UserAvatarProps> = ({ name, values, active }) => {
+const UserAvatar: FC<UserAvatarProps> = ({ name, values }) => {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
@@ -86,7 +85,6 @@ const UserAvatar: FC<UserAvatarProps> = ({ name, values, active }) => {
             root: classes.dropzone,
             icon: classes.icon,
           }}
-          // disabled={!active}
           dropzoneText={''}
           dropzoneParagraphClass={classes.dropzoneText}
           filesLimit={1}
@@ -109,7 +107,6 @@ const UserAvatar: FC<UserAvatarProps> = ({ name, values, active }) => {
             aria-label="remove picture"
             component="span"
             className={classes.button}
-            disabled={values.id && !active ? true : false}
             onClick={handleDeleteAvatar}
             size="small"
           >

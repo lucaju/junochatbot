@@ -154,8 +154,7 @@ export const updateUser = async (
   const userDatahasChanged =
     newValues.firstName === userData.firstName &&
     newValues.lastName === userData.lastName &&
-    newValues.roleTypeId === userData.roleTypeId &&
-    newValues.active === userData.active
+    newValues.roleTypeId === userData.roleTypeId
       ? false
       : true;
 
@@ -277,7 +276,7 @@ export const getGroup = async (
 
 export const createGroup = async (
   { state, effects }: Context,
-  groupData: Omit<UserGroup, 'id' | 'active'>
+  groupData: Omit<UserGroup, 'id'>
 ): Promise<UserGroup | ErrorMessage> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };

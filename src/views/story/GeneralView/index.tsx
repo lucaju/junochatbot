@@ -69,7 +69,6 @@ const GeneralView: FC = () => {
     synopsis: Yup.string(),
     imageUrl: Yup.mixed(),
     publishedDate: Yup.string(),
-    active: Yup.bool(),
     botAvatar: Yup.string(),
     botName: Yup.string(),
     botPersona: Yup.string(),

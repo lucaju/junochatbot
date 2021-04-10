@@ -31,9 +31,7 @@ const Attributions: FC<AttributionsProps> = ({
   const [groupsOptions, setGroupsOptions] = useState<UserGroup[] | undefined>();
 
   useEffect(() => {
-    const groups = [...state.users.groups];
-    const activeGroups = groups.filter(({ active }) => active);
-    setGroupsOptions(activeGroups);
+    setGroupsOptions(state.users.groups);
     return () => {};
   }, [state.users.groups]);
 
@@ -51,7 +49,7 @@ const Attributions: FC<AttributionsProps> = ({
             onChange={handleChange}
             select
             value={values.roleTypeId}
-            disabled={!isAdmin || (values.id && !values.active) ? true : false}
+            disabled={!isAdmin ? true : false}
             variant="outlined"
           >
             {state.users.roleTypes.map(({ name, value }) => (
@@ -78,7 +76,7 @@ const Attributions: FC<AttributionsProps> = ({
             onChange={handleChange}
             select
             value={values.groupId}
-            disabled={!isAdmin || (values.id && !values.active) ? true : false}
+            disabled={!isAdmin ? true : false}
             variant="outlined"
           >
             {state.users.groups.map(({ id, name }) => (

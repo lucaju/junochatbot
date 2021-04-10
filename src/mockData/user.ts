@@ -8,7 +8,6 @@ export const dataUsers: User[] = [
     avatarUrl: 'lucaju.jpg',
     userName: 'lucaju@gmail.com',
     roleTypeId: 0,
-    active: true,
   },
   {
     id: 2,
@@ -17,7 +16,6 @@ export const dataUsers: User[] = [
     avatarUrl: '',
     userName: 'cao.yu@userName.io',
     roleTypeId: 2,
-    active: true,
   },
   {
     id: 3,
@@ -26,7 +24,6 @@ export const dataUsers: User[] = [
     avatarUrl: '',
     userName: 'alex.ri@userName.io',
     roleTypeId: 2,
-    active: false,
   },
   {
     id: 4,
@@ -35,7 +32,6 @@ export const dataUsers: User[] = [
     avatarUrl: '',
     userName: 'anje.keizer@userName.io',
     roleTypeId: 2,
-    active: true,
   },
   {
     id: 5,
@@ -44,7 +40,6 @@ export const dataUsers: User[] = [
     avatarUrl: '',
     userName: 'clarke.gillebert@userName.io',
     roleTypeId: 2,
-    active: true,
   },
   {
     id: 6,
@@ -53,7 +48,6 @@ export const dataUsers: User[] = [
     avatarUrl: '',
     userName: 'adam.denisov@userName.io',
     roleTypeId: 2,
-    active: true,
   },
   {
     id: 7,
@@ -62,7 +56,6 @@ export const dataUsers: User[] = [
     avatarUrl: '',
     userName: 'ava.gregoraci@userName.io',
     roleTypeId: 2,
-    active: true,
   },
   {
     id: 8,
@@ -71,7 +64,6 @@ export const dataUsers: User[] = [
     avatarUrl: '',
     userName: 'emilee.simchenko@userName.io',
     roleTypeId: 2,
-    active: true,
   },
 ];
 

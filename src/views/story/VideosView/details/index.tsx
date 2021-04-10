@@ -27,12 +27,6 @@ interface DetailsProps {
 }
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
-  alertInactive: {
-    marginLeft: -spacing(2),
-    marginRight: -spacing(2),
-    marginTop: -spacing(1),
-    marginBottom: spacing(1),
-  },
   header: {
     color: palette.primary.light,
     textAlign: 'center',
@@ -117,7 +111,6 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
     duration: Yup.string(),
     description: Yup.string(),
     tags: Yup.array(),
-    active: Yup.bool(),
   });
 
   const parseVideoUrl = (input: string) => {

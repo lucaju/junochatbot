@@ -18,8 +18,6 @@ const useStyles = makeStyles(({ spacing }) => ({
   marginRight: { marginRight: spacing(2) },
 }));
 
-const filterStatus = 1;
-
 const MenuBar: FC<MenuBarProps> = ({
   handleDetailOpen,
   handleFilterByTag,
@@ -29,11 +27,6 @@ const MenuBar: FC<MenuBarProps> = ({
 }) => {
   const classes = useStyles();
   const { t } = useTranslation(['videos']);
-
-  useEffect(() => {
-    updateFilter({ type: 'active', value: filterStatus });
-    return () => {};
-  }, []);
 
   return (
     <Toolbar disableGutters variant="dense">

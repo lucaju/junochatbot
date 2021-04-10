@@ -23,12 +23,6 @@ interface DetailsProps {
 }
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
-  alertInactive: {
-    marginLeft: -spacing(2),
-    marginRight: -spacing(2),
-    marginTop: -spacing(1),
-    marginBottom: spacing(1),
-  },
   capitalize: { textTransform: 'capitalize' },
   dialogContent: { width: 400 },
   header: {
@@ -75,8 +69,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, tagId }) => {
 
   const formValidation = Yup.object().shape({
     id: Yup.number(),
-    name: Yup.string().required(t('common:required')),
-    active: Yup.bool(),
+    name: Yup.string().required(t('common:required'))
   });
 
   const submit = async (values: Partial<Tag>) => {

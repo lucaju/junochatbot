@@ -23,11 +23,11 @@ const FilterGroup: FC<FilterGroupProps> = ({
   const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['common']);
-  const [groups, setGroups] = useState([{ id: -1, name: 'all', active: true }]);
+  const [groups, setGroups] = useState([{ id: -1, name: 'all' }]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
-    setGroups([{ id: -1, name: 'all', active: true }, ...state.users.groups]);
+    setGroups([{ id: -1, name: 'all' }, ...state.users.groups]);
     return () => {};
   }, [state.users.groups]);
 
@@ -50,13 +50,11 @@ const FilterGroup: FC<FilterGroupProps> = ({
       variant="outlined"
       value={filterValue}
     >
-      {groups
-        .filter(({ active }: { active: boolean }) => active)
-        .map(({ id, name }: { id: number; name: string }) => (
-          <MenuItem key={id} value={id}>
-            {name}
-          </MenuItem>
-        ))}
+      {groups.map(({ id, name }: { id: number; name: string }) => (
+        <MenuItem key={id} value={id}>
+          {name}
+        </MenuItem>
+      ))}
     </TextField>
   );
 };
