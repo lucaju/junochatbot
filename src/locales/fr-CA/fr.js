@@ -16,17 +16,19 @@ export default {
     publish: 'publish',
     published: 'published',
     required: 'required',
-    restore: 'restore',
     save: 'save',
     search: 'search',
     starring: 'starring',
     submit: 'submit',
     status: 'status',
+    stories: 'Récit',
     tag: 'tag',
-    tags: 'tags',
+    tags: 'Mots Clés',
     title: 'title',
     update: 'update',
     user: 'user',
+    users: 'Utilisateurs',
+    videos: 'videos',
     welcome: 'wecome',
   },
   auth: {
@@ -59,7 +61,6 @@ export default {
     createGroup: 'Crate group',
     groupCreated: 'Group Created',
     groupDeleted: 'Group Deleted',
-    groupRestored: 'Group Restored',
     groupUpdated: 'Group Updated',
     institution: 'institution',
     newGroup: 'New group',
@@ -71,18 +72,14 @@ export default {
     editIntent: 'Edit intent',
     intentCreated: 'Intent Created',
     intentDeleted: 'Intent Deleted',
-    intentRestored: 'Intent Restored',
     intentUpdated: 'Intent Updated',
     newIntent: 'New intent',
     noIntentsYet: 'No Intents yet',
   },
   navMenu: {
-    stories: 'Récit',
-    users: 'Utilisateurs',
     usersGroups: "Groupes d'Utilisateurs",
     general: 'Général',
     videoCollection: 'Collection de vidéos',
-    tags: 'Mots Clés',
     conversationDesign: 'Conception de conversation',
   },
   noContent: {
@@ -95,7 +92,7 @@ export default {
     title404: '404: The page you are looking for is not here',
   },
   profile: {
-	avatarChanged: 'Avatar changed',
+    avatarChanged: 'Avatar changed',
     avatarRemoved: 'Avatar removed',
     changeAvatar: "Changer d'avatar",
     changePassword: 'Changer le mot de passe',
@@ -107,6 +104,7 @@ export default {
   },
   stories: {
     createStory: 'Create Story',
+    myStory: 'my story',
     noStoriesYet: 'No stories yet',
   },
   storyGeneral: {
@@ -127,7 +125,6 @@ export default {
     noTagsYet: 'No tags yet',
     tagCreated: 'Tag Created',
     tagDeleted: 'Tag Deleted',
-    tagRestored: 'Tag Restored',
     tagUpdated: 'Tag Updated',
   },
   users: {
@@ -138,9 +135,8 @@ export default {
     role: 'role',
     userCreated: 'User Created',
     userDeleted: 'User Deleted',
-    userRestored: 'User Restored',
     userUpdated: 'User Updated',
-    users: 'Users',
+    users: 'users',
   },
   videos: {
     addVideo: 'Add Video',
@@ -150,7 +146,6 @@ export default {
     source: 'source', //video source
     videoAdded: 'Video Added',
     videoDeleted: 'Video Deleted',
-    videoRestored: 'Video Restored',
     videoUpdated: 'Video Updated',
   },
 };
