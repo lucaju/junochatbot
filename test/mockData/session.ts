@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { User } from '../../src/types';
 
 export const authUser: User = {
   id: 1,

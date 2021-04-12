@@ -1,4 +1,4 @@
-import type { Video } from '../types';
+import type { Video } from '../../src/types';
 
 export const dataVideoCollection: Video[] = [
   {
@@ -7,7 +7,7 @@ export const dataVideoCollection: Video[] = [
     imageUrl: 'https://i.ytimg.com/vi/2kntnocgLfc/mqdefault.jpg',
     title:
       'The Beach Chill Mix 🎵 Relaxing THE LAST OF US Part II Ambient Music',
-    channelName: 'z3n Pnk',
+    channelTitle: 'z3n Pnk',
     publishedAt: '2021-01-31T08:00:00Z',
     duration: 'PT1H1S',
     description:
@@ -25,7 +25,7 @@ export const dataVideoCollection: Video[] = [
     url: 'https://www.youtube.com/watch?v=2kntnocgLfc',
     imageUrl: 'https://i.ytimg.com/vi/2kntnocgLfc/mqdefault.jpg',
     title: 'Movie',
-    channelName: 'z3n Pnk',
+    channelTitle: 'z3n Pnk',
     publishedAt: '2021-01-31T08:00:00Z',
     duration: 'PT1H1S',
     description:
@@ -37,7 +37,7 @@ export const dataVideoCollection: Video[] = [
     url: 'https://www.youtube.com/watch?v=2kntnocgLfc',
     imageUrl: 'https://i.ytimg.com/vi/2kntnocgLfc/mqdefault.jpg',
     title: 'Party',
-    channelName: 'z3n Pnk',
+    channelTitle: 'z3n Pnk',
     publishedAt: '2021-01-31T08:00:00Z',
     duration: 'PT1H1S',
     description:
@@ -50,7 +50,7 @@ export const dataVideoCollection: Video[] = [
     imageUrl: 'https://i.ytimg.com/vi/2kntnocgLfc/mqdefault.jpg',
     title:
       'The Beach Chill Mix 🎵 Relaxing THE LAST OF US Part II Ambient Music',
-    channelName: 'z3n Pnk',
+    channelTitle: 'z3n Pnk',
     publishedAt: '2021-01-31T08:00:00Z',
     duration: 'PT1H1S',
     description:
@@ -66,7 +66,7 @@ export const dataVideoCollection: Video[] = [
     imageUrl: 'https://i.ytimg.com/vi/2kntnocgLfc/mqdefault.jpg',
     title:
       'The Beach Chill Mix 🎵 Relaxing THE LAST OF US Part II Ambient Music',
-    channelName: 'z3n Pnk',
+    channelTitle: 'z3n Pnk',
     publishedAt: '2021-01-31T08:00:00Z',
     duration: 'PT1H1S',
     description:
@@ -84,7 +84,7 @@ export const dataVideoCollection: Video[] = [
     imageUrl: 'https://i.ytimg.com/vi/2kntnocgLfc/mqdefault.jpg',
     title:
       'The Beach Chill Mix 🎵 Relaxing THE LAST OF US Part II Ambient Music',
-    channelName: 'z3n Pnk',
+    channelTitle: 'z3n Pnk',
     publishedAt: '2021-01-31T08:00:00Z',
     duration: 'PT1H1S',
     description:
@@ -97,7 +97,7 @@ export const dataVideoCollection: Video[] = [
     imageUrl: 'https://i.ytimg.com/vi/2kntnocgLfc/mqdefault.jpg',
     title:
       'The Beach Chill Mix 🎵 Relaxing THE LAST OF US Part II Ambient Music',
-    channelName: 'z3n Pnk',
+    channelTitle: 'z3n Pnk',
     publishedAt: '2021-01-31T08:00:00Z',
     duration: 'PT1H1S',
     description:
