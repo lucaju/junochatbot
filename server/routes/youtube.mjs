@@ -21,7 +21,7 @@ router.get('/video/:id', async (req, res) => {
     channelTitle: video.snippet.channelTitle,
     publishedAt: video.snippet.publishedAt,
     duration: video.contentDetails.duration,
-    image: video.snippet.thumbnails.medium.url,
+    imageUrl: video.snippet.thumbnails.medium.url,
   };
 
   res.status(200).send(videData);
