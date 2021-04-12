@@ -5,11 +5,9 @@ import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import React, { FC, useEffect, useState } from 'react';
 import { APP_URL } from '../../../config/config.js';
-import { User } from '../../../types';
 
 interface UserAvatarProps {
   name: string;
-  values: Partial<User>;
 }
 
 const useStyles = makeStyles(({ palette }) => ({
@@ -40,7 +38,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const UserAvatar: FC<UserAvatarProps> = ({ name, values }) => {
+const UserAvatar: FC<UserAvatarProps> = ({ name }) => {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);

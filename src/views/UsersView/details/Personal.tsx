@@ -32,7 +32,7 @@ const Personal: FC<PersonalProps> = ({
   return (
     <>
       <Grid item md={3} xs={12}>
-        <UserAvatar name="avatarUrl" values={values} />
+        <UserAvatar name="avatarUrl" />
       </Grid>
       <Grid item md={9} xs={12}>
         <TextField
