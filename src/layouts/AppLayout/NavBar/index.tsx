@@ -1,12 +1,10 @@
 import {
   Box,
-  Divider,
   Drawer,
   IconButton,
   makeStyles,
   useMediaQuery,
   useTheme,
-  SvgIconTypeMap,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
@@ -96,7 +94,6 @@ const NavBar: FC<NavBarProps> = ({
       {state.session.user && state.session.user.roleTypeId <= 2 && (
         <>
           <Box flexGrow={1} />
-          <Divider />
           <Menu compactMode={compactMode} items={adminMenu} />
         </>
       )}
