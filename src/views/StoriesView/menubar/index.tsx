@@ -7,6 +7,7 @@ import SearchBox from '../../../components/menubar/SearchBox';
 import { useApp } from '../../../overmind';
 import { HandleFilterType } from '../../../types';
 import FilterPublished from './FilterPublished';
+import FilterMyStory from './FilterMyStory';
 
 interface MenuBarProps {
   handleDetailOpen: () => void;
@@ -32,14 +33,29 @@ const MenuBar: FC<MenuBarProps> = ({
 
   return (
     <Toolbar disableGutters variant="dense">
-      <Button
-        color="primary"
-        onClick={() => handleDetailOpen()}
-        startIcon={<AddCircleOutlineIcon />}
-      >
-        {t('createStory')}
-      </Button>
-      <Box flexGrow={1} />
+      {!state.story.stories.some((story) => {
+        return story.user?.id === state.session.user?.id;
+      }) ? (
+        <>
+          <Button
+            color="primary"
+            onClick={() => handleDetailOpen()}
+            startIcon={<AddCircleOutlineIcon />}
+          >
+            {t('createStory')}
+          </Button>
+          <Box flexGrow={1} />
+        </>
+      ) : (
+        <>
+          <Box flexGrow={1} />
+          <FilterMyStory
+            className={classes.marginRight}
+            handleFilter={updateFilter}
+            value={state.session.user?.id}
+          />
+        </>
+      )}
       <SearchBox className={classes.marginRight} handleSearch={handleSearch} />
       {state.session.isAdmin && (
         <FilterGroup

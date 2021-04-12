@@ -31,7 +31,7 @@ const Collection: FC<CollectionProps> = ({
   isLoading,
 }) => {
   const classes = useStyles();
-  const { state } = useApp();
+  const { state, actions } = useApp();
   const [filteredItems, setFilteredItems] = useState<Story[]>([]);
 
   useEffect(() => {
@@ -39,28 +39,57 @@ const Collection: FC<CollectionProps> = ({
     return () => {};
   }, [filters, searchQuery, groupId, state.story.stories]);
 
+  useEffect(() => {
+    fetchStories();
+    return () => {};
+  }, [groupId]);
+
+  const fetchStories = async () => {
+    isLoading = true;
+    groupId
+      ? await actions.story.getStoriesByGroup(groupId)
+      : await actions.story.getStories();
+    isLoading = false;
+  };
+
   const items = () => {
     return state.story.stories
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;
         for (const [prop, value] of Array.from(filters.entries())) {
-          if (prop === 'published') {
-            const valueAPublished: boolean = value === 1 ? true : false;
-            match = !!item['publishedDate'] === valueAPublished;
-          } else {
-            match = item[prop as keyof Story] === value;
+          switch(prop) {
+            case 'user.id': {
+              if (!item.user) {
+                match = false;
+                break;
+              }
+              match = item.user.id === value;
+              break;
+            }
+            case 'published': {
+              const valueAPublished: boolean = value === 1 ? true : false;
+              match = !!item.publishedDate === valueAPublished;
+              break;
+            }
+            default: {
+              match = item[prop as keyof Story] === value;
+              break;
+            }
           }
+          
           if (match === false) break;
         }
         return match;
       })
       .filter((item) => {
         if (!searchQuery) return item;
-        const ownerFullName = `${item.owner.firstName} ${item.owner.lastName}`;
+        const userFullName = item.user
+          ? `${item.user.firstName} ${item.user.lastName}`
+          : '';
         const match =
           item.title.toLowerCase().match(searchQuery.toLowerCase()) ||
-          ownerFullName.toLowerCase().match(searchQuery.toLowerCase());
+          userFullName.toLowerCase().match(searchQuery.toLowerCase());
         return match;
       });
   };

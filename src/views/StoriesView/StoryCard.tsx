@@ -17,12 +17,13 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getIcon } from '../../util/icons';
 import { Story } from '../../types';
+import { APP_URL } from '../../config/config.js';
 
 interface UserCarddProps {
   className: string;
-  story: Story,
+  story: Story;
   triggerEditStory: (value: number) => void;
-  showEdit?: boolean,
+  showEdit?: boolean;
 }
 
 const useStyles = makeStyles(({ palette, shape, spacing }) => ({
@@ -53,7 +54,7 @@ const useStyles = makeStyles(({ palette, shape, spacing }) => ({
     paddingLeft: spacing(2),
     paddingRight: spacing(1),
     borderRadius: shape.borderRadius,
-    color: palette.type === 'light' ? palette.grey[800] : palette.common.white,
+    // color: palette.type === 'light' ? palette.grey[800] : palette.common.white,
   },
   titleHover: {
     backgroundColor: palette.secondary.main,
@@ -95,7 +96,11 @@ const StoryCard: FC<UserCarddProps> = ({
 
   return (
     <Card
-      className={clsx(classes.root, className, !story.imageUrl && classes.noMedia)}
+      className={clsx(
+        classes.root,
+        className,
+        !story.imageUrl && classes.noMedia
+      )}
       elevation={elevation}
       {...rest}
       onMouseEnter={mouseOver}
@@ -104,7 +109,7 @@ const StoryCard: FC<UserCarddProps> = ({
       {story.imageUrl && (
         <CardMedia
           className={classes.media}
-          image={`/assets/stories/images/${story.imageUrl}`}
+          image={`${APP_URL}/uploads/assets${story.imageUrl}`}
           title={story.title}
         />
       )}
@@ -155,18 +160,22 @@ const StoryCard: FC<UserCarddProps> = ({
           <Grow in={!hover}>
             <Box className={classes.label}>
               <Typography variant="overline">
-                {story.publishedAt === '' ? (
+                {story.publishedDate === null ? (
                   <span className={classes.draft}>{t('draft')}</span>
                 ) : (
-                  DateTime.fromISO(story.publishedAt).toFormat('yyyy')
+                  story.publishedDate !== null &&
+                  DateTime.fromISO(story.publishedDate).toFormat('yyyy')
                 )}
               </Typography>
             </Box>
           </Grow>
         </Box>
+
         <Box mt={1} display="flex" alignItems="flex-start">
           <Typography className={classes.uppercase} variant="caption">
-            By {story.owner.firstName} {story.owner.lastName}
+            {story.user
+              ? `By ${story.user.firstName} ${story.user.lastName}`
+              : 'By Anonymous'}
           </Typography>
         </Box>
         {story.synopsis && (

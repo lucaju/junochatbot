@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Video } from '../../../types';
 
 interface VideoCardProps {
@@ -54,6 +54,10 @@ const VideoCard: FC<VideoCardProps> = ({
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(1);
+
+  useEffect(() => {
+    return () => {};
+  }, [video]);
 
   useRefresh([video]);
 

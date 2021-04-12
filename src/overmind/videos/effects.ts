@@ -1,24 +1,11 @@
-import mock from '../../mockData';
 import { API_URL } from '../../config/config.js';
 import type { ErrorMessage, Video, Tag } from '../../types';
-
-const MOCKUP = true;
 
 export const api = {
   getVideos: async (
     storyId: number,
     token: string
   ): Promise<Video[] | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mock.dataVideoCollection);
-        }, 1000);
-      });
-    }
-    // -----------
-
     const response = await fetch(`${API_URL}/stories/${storyId}/videos/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -34,19 +21,7 @@ export const api = {
     videoId: number,
     token: string
   ): Promise<Video | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const video = mock.dataVideoCollection.find(
-            (video) => video.id === videoId
-          );
-          video ? resolve(video) : reject();
-        }, 1000);
-      });
-    }
-    // -----------
-
+    
     const response = await fetch(
       `${API_URL}/stories/${storyId}/videos/${videoId}`,
       {
@@ -65,21 +40,6 @@ export const api = {
     video: Omit<Video, 'id'>,
     token: string
   ): Promise<Video | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          const newVideo: Video = { 
-            ...video,
-            id: mock.dataVideoCollection.length + 1
-          };
-          mock.dataVideoCollection = [newVideo, ...mock.dataVideoCollection];
-          resolve(newVideo);
-        }, 1000);
-      });
-    }
-    // -----------
-
     const response = await fetch(`${API_URL}/stories/${storyId}/videos`, {
       method: 'POST',
       headers: {
@@ -97,25 +57,9 @@ export const api = {
 
   async updateVideo(
     storyId: number,
-    video: Video,
+    video: Partial<Video>,
     token: string
   ): Promise<Video | ErrorMessage> {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          mock.dataVideoCollection = mock.dataVideoCollection.map(
-            (v: Video) => {
-              if (video.id === v.id) v = video;
-              return v;
-            }
-          );
-          resolve(video);
-        }, 1000);
-      });
-    }
-    // -----------
-
     const response = await fetch(`${API_URL}/stories/${storyId}/videos`, {
       method: 'PUT',
       headers: {
@@ -136,19 +80,6 @@ export const api = {
     videoId: number,
     token: string
   ): Promise<boolean | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          mock.dataVideoCollection = mock.dataVideoCollection.filter(
-            (video: Video) => video.id !== videoId
-          );
-          resolve(true);
-        }, 1000);
-      });
-    }
-    // -----------
-
     const response = await fetch(
       `${API_URL}/stories/${storyId}/videos/${videoId}`,
       {
@@ -181,22 +112,9 @@ export const api = {
     storyId: number,
     token: string
   ): Promise<Tag[] | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mock.dataTags);
-        }, 1000);
-      });
-    }
-    // -----------
-
-    const response = await fetch(
-      `${API_URL}/stories/${storyId}/videos/tags/all`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/stories/${storyId}/tags/all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -209,19 +127,8 @@ export const api = {
     tagId: number,
     token: string
   ): Promise<Tag | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const tag = mock.dataTags.find((tag: Tag) => tag.id === tagId);
-          tag ? resolve(tag) : reject();
-        }, 1000);
-      });
-    }
-    // -----------
-
     const response = await fetch(
-      `${API_URL}/stories/${storyId}/videos/tags/${tagId}`,
+      `${API_URL}/stories/${storyId}/tags/${tagId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -237,16 +144,6 @@ export const api = {
     videoId: number,
     token: string
   ): Promise<Tag[] | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mock.dataTags);
-        }, 1000);
-      });
-    }
-    // -----------
-
     const response = await fetch(`${API_URL}/videos/${videoId}/tags/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -262,22 +159,7 @@ export const api = {
     tag: Omit<Tag, 'id'>,
     token: string
   ): Promise<Tag | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          const newTag: Tag = { 
-            ...tag,
-            id: mock.dataTags.length + 1
-          };
-          mock.dataTags = [newTag, ...mock.dataTags];
-          resolve(newTag);
-        }, 1000);
-      });
-    }
-    // -----------
-
-    const response = await fetch(`${API_URL}/stories/${storyId}/tag`, {
+    const response = await fetch(`${API_URL}/stories/${storyId}/tags`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -297,21 +179,7 @@ export const api = {
     tag: Tag,
     token: string
   ): Promise<Tag | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          mock.dataTags = mock.dataTags.map((t: Tag) => {
-            if (tag.id === t.id) t = tag;
-            return t;
-          });
-          resolve(tag);
-        }, 1000);
-      });
-    }
-    // -----------
-
-    const response = await fetch(`${API_URL}/stories/${storyId}/tag`, {
+    const response = await fetch(`${API_URL}/stories/${storyId}/tags`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -331,21 +199,13 @@ export const api = {
     tagId: number,
     token: string
   ): Promise<boolean | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          mock.dataTags = mock.dataTags.filter((tag: Tag) => tag.id !== tagId);
-          resolve(true);
-        }, 1000);
-      });
-    }
-    // -----------
-
-    const response = await fetch(`${API_URL}/stories/${storyId}/tag/${tagId}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await fetch(
+      `${API_URL}/stories/${storyId}/tags/${tagId}`,
+      {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     if (!response.ok) return { errorMessage: response.statusText };
 

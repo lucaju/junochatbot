@@ -1,5 +1,5 @@
-import mock from 'src/mockData';
-import { API_URL } from '../../config/config.js';
+import mock from '../../../test/mockData';
+import { API_URL } from '../../config/config';
 
 
 export const api = {

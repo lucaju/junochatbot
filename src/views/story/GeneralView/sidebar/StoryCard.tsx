@@ -64,16 +64,18 @@ const StoryCard: FC<StoryCardProps> = ({ values, ...rest }) => {
             />
             <Box flexGrow={1} />
             <Typography variant="overline">
-              {values.publishedAt === '' ? (
+              {values.publishedDate === null ? (
                 <span className={classes.draft}>{t('draft')}</span>
               ) : (
-                DateTime.fromISO(values.publishedAt).toFormat('yyyy')
+                values.publishedDate !== null && DateTime.fromISO(values.publishedDate).toFormat('yyyy')
               )}
             </Typography>
           </Box>
           <Box mt={1} display="flex" alignItems="flex-start">
             <Typography className={classes.uppercase} variant="caption">
-              By {values.owner.firstName} {values.owner.lastName}
+              {values.user
+                ? `By ${values.user.firstName} ${values.user.lastName}`
+                : 'By Anonymous'}
             </Typography>
           </Box>
           {values.synopsis && (

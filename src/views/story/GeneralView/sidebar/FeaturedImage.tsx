@@ -4,6 +4,7 @@ import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { APP_URL } from '../../../../config/config.js';
 
 interface FeaturedImageProps {
   name: string;
@@ -15,7 +16,6 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     position: 'relative',
     top: spacing(1),
     left: 296,
-    // backgroundColor: palette.type === 'light' ? palette.common.white :
     backgroundColor: palette.background.paper,
   },
   media: { height: 180 },
@@ -43,43 +43,45 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
   const [field, meta, helpers] = useField(name);
   const { value } = meta;
   const { setValue } = helpers;
-  const [imageToDisplay, setImageToDisplay] = useState<string | null>(null);
-  const [file, setFile] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [showDropzone, setShowDropzone] = useState(false);
 
   useEffect(() => {
-    setImageToDisplay(value);
-    setShowDropzone(value !== '' ? false : true);
+    const posterFile = typeof value === 'string' ? value : value?.file?.name;
+    uploadedImage ? setImage(uploadedImage) : setImage(posterFile);
+    value === null || value === ''
+      ? setShowDropzone(true)
+      : setShowDropzone(false);
     return () => {};
   }, []);
 
-  const handleDropZoneChange = (files: any[]) => {
-    console.log('Files:', files);
-    setFile(files[0].file);
-    const image = files[0].data;
-    setValue(files[0].file.name);
-    setImageToDisplay(image);
+  const handleUpdateImage = (files: any[]) => {
+    setImage(files[0].data);
+    setUploadedImage(files[0].data);
+    setValue(files[0].file);
     setShowDropzone(false);
   };
 
-  const handleRemoveImage = () => {
-    setImageToDisplay(null);
-    setValue('');
+  const handleDeleteImage = () => {
+    setImage(null);
+    setValue(null);
+    setUploadedImage(null);
     setShowDropzone(true);
   };
 
   return (
     <>
-      {imageToDisplay && (
+      {image && (
         <CardMedia
           className={classes.media}
-          image={file ? imageToDisplay : `/uploads/assets${imageToDisplay}`}
+          image={uploadedImage ? image : `${APP_URL}/uploads/assets${image}`}
           title={title}
         >
           <IconButton
             aria-label="delete"
             className={classes.buttonRemove}
-            onClick={handleRemoveImage}
+            onClick={handleDeleteImage}
             size="small"
           >
             <DeleteIcon fontSize="inherit" />
@@ -98,7 +100,7 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
           dropzoneParagraphClass={classes.dropzoneText}
           filesLimit={1}
           fileObjects={[]}
-          onAdd={(files) => handleDropZoneChange(files)}
+          onAdd={(files) => handleUpdateImage(files)}
           showAlerts={['error']}
           showPreviewsInDropzone={false}
         />

@@ -37,6 +37,12 @@ export const getVideo = async (
   );
   if (isError(response)) return response;
 
+  //Update state
+  state.videos.collection = state.videos.collection.map((v: Video) => {
+    if (v.id === response.id) v = response;
+    return v;
+  });
+
   return response;
 };
 
@@ -97,7 +103,7 @@ export const updateVideo = async (
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
   //1. Split data
-  let newValues: Video = { ...values } as Video;
+  let newValues: Partial<Video> = { ...values };
 
   const videoTagsSet = new Set(videoData.tags?.map(({ id }) => id));
   const valuesTagsSet = new Set(values.tags?.map(({ id }) => id));
@@ -113,7 +119,7 @@ export const updateVideo = async (
     newValues.url === videoData.url &&
     newValues.imageUrl === videoData.imageUrl &&
     newValues.title === videoData.title &&
-    newValues.channelName === videoData.channelName &&
+    newValues.channelTitle === videoData.channelTitle &&
     newValues.publishedAt === videoData.publishedAt &&
     newValues.duration === videoData.duration &&
     newValues.description === videoData.description
@@ -132,13 +138,28 @@ export const updateVideo = async (
     newValues = videoData as Video;
   }
 
-  //4. Add to group
+  //handle tags
   newValues.tags = videoData.tags;
+  const videoId = newValues.id;
 
-  if (tagsToAdd && tagsToAdd.length > 0) {
+   //4.1 remove from group
+   if (videoId && tagsToRemove && tagsToRemove?.length > 0) {
+    for await (const tag of tagsToRemove) {
+      const removeTag = await actions.videos.removeTagFromVideo({
+        videoId,
+        tagId: tag.id,
+      });
+      if (!isError(removeTag)) {
+        newValues.tags = newValues.tags?.filter((videoTag) => videoTag.id !== tag.id);
+      }
+    }
+  }
+
+  //4.2. Add to group
+  if (videoId && tagsToAdd && tagsToAdd.length > 0) {
     for await (const tag of tagsToAdd) {
       const newTag = await actions.videos.addTagToVideo({
-        videoId: newValues.id,
+        videoId,
         tag,
       });
       if (!isError(newTag)) {
@@ -148,22 +169,11 @@ export const updateVideo = async (
     }
   }
 
-  //5. remove from group
-  if (tagsToRemove && tagsToRemove?.length > 0) {
-    for await (const tag of tagsToRemove) {
-      const removeTag = await actions.videos.removeTagFromVideo({
-        videoId: newValues.id,
-        tagId: tag.id,
-      });
-      if (!isError(removeTag)) {
-        newValues.tags?.filter((videoTag) => videoTag.id !== tag.id);
-      }
-    }
-  }
+ 
 
   //7. update state;
   state.videos.collection = state.videos.collection.map((v: Video) => {
-    if (v.id === newValues.id) v = newValues;
+    if (v.id === newValues.id) v = newValues as Video;
     return v;
   });
 

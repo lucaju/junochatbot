@@ -73,7 +73,7 @@ export const getUserGroup = async (
   const response = await effects.users.api.getUserGroup(userId, authUser.token);
   if (!response) return;
   if (isError(response)) return response;
-  
+
   //update user
   state.users.list = state.users.list.map((user: User) => {
     if (user.id === userId) user.groupId = response.id;
@@ -169,17 +169,7 @@ export const updateUser = async (
     newValues = userData as User;
   }
 
-  //4. remove group to group
-  if (newGroupId && userData.groupId !== undefined) {
-    const response = await effects.users.api.deleteUserFromGroup(
-      Number(userData.groupId),
-      newValues.id,
-      authUser.token
-    );
-    // if (isError(response)) return response;
-  }
-
-  //5. add group to group
+  //4. Update user group
   if (newGroupId) {
     const response = await effects.users.api.addUserToGroup(
       Number(newGroupId),
@@ -189,7 +179,7 @@ export const updateUser = async (
     if (!isError(response)) newValues.groupId = newGroupId;
   }
 
-  //6. Upload avatar
+  //5. Upload avatar
   if (newAvatar?.name) {
     const response = await effects.users.api.uploadAvatar(
       newValues.id,
@@ -207,7 +197,7 @@ export const updateUser = async (
     newValues.avatarUrl = userData.avatarUrl;
   }
 
-  //7. update state;
+  //6. update state;
   state.users.list = state.users.list.map((user: User) => {
     if (user.id === newValues.id) user = newValues;
     return user;
@@ -325,7 +315,9 @@ export const deleteGroup = async (
   if (isError(response)) return response;
 
   // update state;
-  state.users.groups = state.users.groups.filter((g: UserGroup) => g.id !== groupId);
+  state.users.groups = state.users.groups.filter(
+    (g: UserGroup) => g.id !== groupId
+  );
 
   return true;
 };

@@ -48,7 +48,7 @@ export const api = {
   getUserGroup: async (
     userId: number,
     token: string
-  ): Promise<UserGroup | ErrorMessage | void > => {
+  ): Promise<UserGroup | ErrorMessage | void> => {
     const response = await fetch(`${API_URL}/groups/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -125,7 +125,7 @@ export const api = {
     const response = await fetch(
       `${API_URL}/groups/${groupId}/users/${userId}`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
       }
     );
@@ -283,17 +283,14 @@ export const api = {
     password: string,
     token: string
   ): Promise<boolean | ErrorMessage> => {
-    const response = await fetch(
-      `${API_URL}/authentication/users/password`,
-      {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password }),
-      }
-    );
+    const response = await fetch(`${API_URL}/authentication/users/password`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password }),
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 

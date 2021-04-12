@@ -21,30 +21,25 @@ const BotDelaySlider: FC<BotDelaySliderProps> = ({ name }) => {
   // we'll use 'meta' and 'helpers'.
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
-  const [initialValue, setInitialValue] = useState(0);
-
   const { value } = meta;
   const { setValue } = helpers;
+  const [sliderValue, setSliderValue] = useState(0);
 
   useEffect(() => {
-    setInitialValue(value);
+    setSliderValue(value);
     return () => {};
   }, []);
 
   return (
-    <>
-      {initialValue && (
-        <Slider
-          aria-labelledby="discrete-slider"
-          defaultValue={initialValue}
-          onChangeCommitted={(event, newValue) => setValue(newValue)}
-          marks={marks}
-          max={180}
-          step={null}
-          valueLabelDisplay="auto"
-        />
-      )}
-    </>
+    <Slider
+      aria-labelledby="discrete-slider"
+      defaultValue={sliderValue}
+      onChangeCommitted={(event, newValue) => setValue(newValue)}
+      marks={marks}
+      max={180}
+      step={null}
+      valueLabelDisplay="auto"
+    />
   );
 };
 

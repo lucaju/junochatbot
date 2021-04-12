@@ -61,7 +61,7 @@ const initialValues: Partial<Video> = {
   url: '',
   imageUrl: '',
   title: '',
-  channelName: '',
+  channelTitle: '',
   publishedAt: '',
   duration: '',
   description: '',
@@ -114,12 +114,10 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
   });
 
   const parseVideoUrl = (input: string) => {
-    //REGEX
-    // extract the params from URL
-    //anything after the '/watch?'
+    //REGEX: extract the params from URL. anything after the '/watch?'
     //ex: https://www.youtube.com/watch?v=2MQx0SXLCcE&t=4274s
     // -> v=2MQx0SXLCcE&t=4274s
-    const regex = /(?:watch\?)(.+)/; //
+    const regex = /(?:watch\?)(.+)/;
     const match = input.match(regex);
     if (!match) return;
 
@@ -186,7 +184,6 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
   };
 
   const handleBeforeClose = () => {
-    setVideoData(initialValues);
     setDirtyFromYoutube(false);
     setYoutubeVideoId(undefined);
     handleClose();

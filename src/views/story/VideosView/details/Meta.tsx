@@ -35,15 +35,16 @@ const useStyles = makeStyles(({ spacing }) => ({
 const Meta: FC<MetaProps> = ({ handleRefresh, values, youtubeVideoId }) => {
   const classes = useStyles();
   const { t } = useTranslation(['videos', 'common']);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshed, setRefreshed] = useState(false);
 
   useEffect(() => {
     if (youtubeVideoId && values.title === '') fetchData();
-    if (youtubeVideoId) setLoading(false);
+    // if (youtubeVideoId) setLoading(false);
   }, [values.title]);
 
   const fetchData = async () => {
+    setLoading(true);
     await handleRefresh();
     setRefreshed(true);
     setLoading(false);
@@ -78,7 +79,7 @@ const Meta: FC<MetaProps> = ({ handleRefresh, values, youtubeVideoId }) => {
             {t('channel')}
           </Typography>
           <Typography gutterBottom variant="subtitle2">
-            {loading ? <Skeleton /> : values.channelName}
+            {loading ? <Skeleton /> : values.channelTitle}
           </Typography>
         </Grid>
 

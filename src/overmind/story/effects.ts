@@ -1,56 +1,63 @@
-import mock from '../../mockData';
 import { API_URL } from '../../config/config.js';
 import type { ErrorMessage, Story } from '../../types';
 
-const MOCKUP = true;
+type ResponseUploadImage = {
+  fileName: string;
+};
 
 export const api = {
-  // getUserAssets: async (
-  //   userId: number,
-  //   token: string
-  // ): Promise<Story[] | ErrorMessage> => {
-
-  //   const response = await fetch(`${API_URL}/story/${userId}/assets`, {
-  //     headers: { Authorization: `Bearer ${token}` },
-  //   });
-
-  //   if (!response.ok) return { errorMessage: response.statusText };
-
-  //   const result = await response.json();
-  //   return result as Asset[];
-  // },
-
-  getStories: async (): Promise<Story[] | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mock.dataStories);
-        }, 1000);
-      });
-    }
-    // -----------
-
-    const response = await fetch(`${API_URL}/stories/all`);
+  getAllStories: async (token: string): Promise<Story[] | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
+
+    if (response.status === 204) return [] as Story[];
 
     const result = await response.json();
     return result as Story[];
   },
 
-  getStory: async (storyId: number): Promise<Story | ErrorMessage> => {
-    // -----------
-    if (MOCKUP) {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mock.storyExample);
-        }, 1000);
-      });
-    }
-    // -----------
+  getStoriesByGroup: async (
+    groupId: number,
+    token: string
+  ): Promise<Story[] | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/groups/${groupId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    const response = await fetch(`${API_URL}/stories/${storyId}`);
+    if (!response.ok) return { errorMessage: response.statusText };
+
+    if (response.status === 204) return [] as Story[];
+
+    const result = await response.json();
+    return result as Story[];
+  },
+
+  getStoriesByUser: async (
+    userId: number,
+    token: string
+  ): Promise<Story[] | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) return { errorMessage: response.statusText };
+
+    if (response.status === 204) return [] as Story[];
+
+    const result = await response.json();
+    return result as Story[];
+  },
+
+  getStory: async (
+    storyId: number,
+    token: string
+  ): Promise<Story | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/${storyId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -78,11 +85,10 @@ export const api = {
   },
 
   updateStory: async (
-    storyId: number,
-    story: Story,
+    story: Partial<Story>,
     token: string
   ): Promise<Story | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/stories/${storyId}`, {
+    const response = await fetch(`${API_URL}/stories`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -97,9 +103,42 @@ export const api = {
     return result as Story;
   },
 
-  deleteStory: async(
+  uploadImage: async (
     storyId: number,
-    token: string,
+    image: any,
+    token: string
+  ): Promise<ResponseUploadImage | ErrorMessage> => {
+    const formData = new FormData();
+    formData.append('file', image);
+
+    const response = await fetch(`${API_URL}/stories/${storyId}/image`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+    if (!response.ok) return { errorMessage: response.statusText };
+
+    const result = await response.json();
+    return result as ResponseUploadImage;
+  },
+
+  deleteImage: async (
+    storyId: number,
+    token: string
+  ): Promise<boolean | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/${storyId}/image`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) return { errorMessage: response.statusText };
+
+    return true;
+  },
+
+  deleteStory: async (
+    storyId: number,
+    token: string
   ): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/${storyId}`, {
       method: 'DELETE',

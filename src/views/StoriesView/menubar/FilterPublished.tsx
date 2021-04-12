@@ -35,7 +35,7 @@ const options: Option[] = [
 const FilterPublished: FC<FilterPublishedProps> = ({
   handleFilter,
   className = '',
-  value = 1,
+  value = 0,
 }) => {
   const classes = useStyles();
   const { t } = useTranslation(['stories']);
@@ -47,7 +47,7 @@ const FilterPublished: FC<FilterPublishedProps> = ({
     handleFilter({ type: 'published', value, reset });
   };
 
-  const isOn = () => filterValue !== -1;
+  const isOn = () => filterValue !== 0;
 
   return (
     <TextField

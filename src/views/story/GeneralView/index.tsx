@@ -71,7 +71,7 @@ const GeneralView: FC = () => {
     languageCode: Yup.string(),
     synopsis: Yup.string(),
     imageUrl: Yup.mixed(),
-    publishedDate: Yup.string(),
+    publishedDate: Yup.mixed(),
     botAvatar: Yup.string(),
     botName: Yup.string(),
     botPersona: Yup.string(),
@@ -79,8 +79,8 @@ const GeneralView: FC = () => {
   });
 
   const submit = async (values: Story) => {
-    console.log(values);
-    const response = actions.story.updateStory(values);
+    if (!storyData) return;
+    const response = actions.story.updateStory({ storyData, values });
 
     const type = isError(response)
       ? NotificationType.ERROR
@@ -91,21 +91,10 @@ const GeneralView: FC = () => {
       : t('storyUpdated');
 
     actions.ui.showNotification({ message, type });
-    setSubmitSuccess(true);
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const updateStoryStatus = async () => {
-    //TODO
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const updateFeaturedImage = async () => {
-    //TODO
   };
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       {isLoading ? (
         <Box
           display="flex"
@@ -120,10 +109,7 @@ const GeneralView: FC = () => {
           <Formik
             enableReinitialize={true}
             initialValues={storyData}
-            onSubmit={async (values) => {
-              console.log(values);
-              // submit(values);
-            }}
+            onSubmit={submit}
             validationSchema={formValidation}
           >
             {({
@@ -137,14 +123,14 @@ const GeneralView: FC = () => {
               values,
             }) => (
               <form onSubmit={handleSubmit}>
-                <Box flexGrow={1} height="100%">
+                <Box height="100%">
                   <Container className={classes.container} maxWidth={false}>
                     <Box
                       alignItems="flex-start"
                       display="flex"
                       flexDirection="row"
                     >
-                      <Box flexGrow={1} maxWidth="800px" pr={2}>
+                      <Box flexGrow={1} maxWidth="770px" pr={2}>
                         <Main
                           errors={errors}
                           handleBlur={handleBlur}
@@ -159,12 +145,11 @@ const GeneralView: FC = () => {
                     </Box>
                   </Container>
                 </Box>
-                <Box>
+                <Box ml={3} mr={3} maxWidth="1100px">
                   <BottomBar
                     dirty={dirty}
                     isSubmitting={isSubmitting}
-                    name={'published'}
-                    submitSuccess={submitSuccess}
+                    name={'publishedDate'}
                   />
                 </Box>
               </form>
