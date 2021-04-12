@@ -60,11 +60,10 @@ export interface UserGroup {
 export interface Story {
   id: number;
   title: string;
-  imageUrl: string;
-  owner: User; //not present
+  imageUrl?: string | any;
+  user: User; //not present
   languageCode: string;
-  publishedAt: string;
-  publishedDate: string;
+  publishedDate: string | null;
   active?: boolean; //To be removed
   synopsis: string;
   botAvatar: string;
@@ -85,7 +84,7 @@ export interface Video {
   url: string;
   imageUrl: string;
   title: string;
-  channelName: string;
+  channelTitle: string;
   publishedAt: string; //not present yet
   duration: string; //not present yet
   active?: boolean; //To be removed
