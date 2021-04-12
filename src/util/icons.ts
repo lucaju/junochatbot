@@ -13,4 +13,9 @@ icons.set('account', AccountCircleIcon);
 icons.set('bug', BugReportIcon);
 icons.set('child', ChildCareIcon);
 
-export const getIcon = (name: string): any => icons.get(name);
+export const getIcon = (name: string): any => {
+    const icon = icons.get(name)
+    if (!icon) return AdbIcon;
+    return icon;
+}
+
