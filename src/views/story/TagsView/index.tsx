@@ -1,11 +1,12 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NoContent from '../../../components/NoContent';
 import Page from '../../../components/Page';
 import { useApp } from '../../../overmind';
 import { HandleFilterType } from '../../../types';
+import { isError } from '../../../util/utilities';
 import Collection from './Collection';
 import Details from './details';
 import MenuBar from './menubar';
@@ -18,13 +19,12 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   },
 }));
 
-const title = 'Juno Chatbot';
-
 const TagsView: FC = () => {
   const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
-  const { t } = useTranslation(['tags']);
+  const { storyId } = useParams();
+  const { t } = useTranslation(['tags','common']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasTags, setHasTags] = useState(true);
   const [currentTagId, setCurrentTagId] = useState<number | undefined>();
@@ -33,20 +33,27 @@ const TagsView: FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
-    if (!state.story.currentStory) {
-      navigate('/app', { replace: true });
-      return;
-    }
-
-    actions.ui.updateTitle(state.story.currentStory.title);
+    if (!storyId) return navigate('/app', { replace: true });
 
     const getCollection = async () => {
       await actions.videos.getTags();
+      actions.ui.setPageTitle(
+        `${state.story.currentStory?.title} - ${t('common:tags')}`
+      );
       setIsLoading(false);
       setHasTags(state.videos.tagCollection.length > 0);
     };
 
-    getCollection();
+    const getStory = async () => {
+      setIsLoading(true);
+      const story = await actions.story.getStory(Number(storyId));
+      if (isError(story)) return navigate('/app', { replace: true });
+
+      actions.ui.setPageTitle(story.title);
+      getCollection();
+    };
+
+    state.story.currentStory ? getCollection() : getStory();
 
     return () => {};
   }, []);
@@ -71,7 +78,7 @@ const TagsView: FC = () => {
   };
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
         <Details
           open={detailsOpen}

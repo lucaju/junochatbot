@@ -1,5 +1,6 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Page from '../../components/Page';
 import { useApp } from '../../overmind';
@@ -17,11 +18,10 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   },
 }));
 
-const title = 'Stories';
-
 const Stories: FC = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { t } = useTranslation(['common']);
   const { state, actions } = useApp();
   const [isLoading, setIsLoading] = useState(true);
   const [hasStories, setHasStories] = useState(true);
@@ -31,10 +31,11 @@ const Stories: FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
-    actions.ui.updateTitle(title);
+    actions.ui.setPageTitle(t('stories'));
 
     const getCollection = async () => {
       await actions.story.getStories();
+      if (state.session.isAdmin) await actions.users.getGroups();
       setIsLoading(false);
       setHasStories(state.story.stories.length > 0);
     };
@@ -47,8 +48,7 @@ const Stories: FC = () => {
   const handleAddDiaglogClose = () => setAddStoryOpenn(false);
 
   const triggerEditStory = async (storyId: number) => {
-    await actions.story.getStory(storyId);
-    navigate('/app/story/general', { replace: true });
+    navigate(`/app/stories/${storyId}`, { replace: true });
   };
 
   const updateFilters = ({ type, value, reset }: HandleFilterType) => {
@@ -66,7 +66,7 @@ const Stories: FC = () => {
   };
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
         <AddStoryDialog
           open={addStoryOpen}

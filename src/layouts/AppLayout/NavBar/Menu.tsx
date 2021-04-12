@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 export type MenuType = {
   title: string;
   tKey: string;
-  href: string;
+  path: string;
   icon?: any;
   restricted?: number[];
 };
@@ -28,12 +28,12 @@ const useStyles = makeStyles(({ spacing }) => ({
 const Menu: FC<MenuProps> = ({ compactMode, items }) => {
   const classes = useStyles();
   const { state } = useApp();
-  const { t } = useTranslation('navMenu');
+  const { t } = useTranslation(['navMenu', 'common']);
 
   return (
     <Box className={compactMode ? classes.listCompacted : classes.listExanded}>
       <List>
-        {items.map(({ href, icon, restricted, title, tKey }) => {
+        {items.map(({ path, icon, restricted, title, tKey }) => {
           if (
             restricted &&
             state.session.user &&
@@ -45,7 +45,7 @@ const Menu: FC<MenuProps> = ({ compactMode, items }) => {
               key={title}
               isCompact={compactMode}
               icon={icon}
-              href={href}
+              path={path}
               title={t(tKey)}
             />
           );

@@ -1,10 +1,11 @@
 import { Box, Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
+import { useApp } from '../../../overmind';
 import React, { FC } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 
 interface NavItemProps {
-  href: string;
+  path: string;
   title: string;
   isCompact: boolean;
   icon: any;
@@ -26,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   icon: { marginRight: theme.spacing(1) },
-  title: { marginRight: 'auto' },
+  title: {
+    marginRight: 'auto',
+    textTransform: 'capitalize',
+  },
   titleCompact: { marginTop: theme.spacing(0.5) },
   active: {
     color: theme.palette.primary.main,
@@ -39,8 +43,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavItem: FC<NavItemProps> = ({ href, icon: Icon, title, isCompact }) => {
+const NavItem: FC<NavItemProps> = ({ path, icon: Icon, title, isCompact }) => {
   const classes = useStyles();
+  const { state } = useApp();
+
+  if (path.includes(':storyId')) {
+    const storyID = state.story.currentStory?.id;
+    path = storyID ? path.replace(':storyId', storyID.toString()) : '/app';
+  }
 
   return (
     <>
@@ -49,7 +59,7 @@ const NavItem: FC<NavItemProps> = ({ href, icon: Icon, title, isCompact }) => {
           activeClassName={classes.active}
           className={clsx(classes.button, classes.buttonCompact)}
           component={RouterLink}
-          to={href}
+          to={path}
           fullWidth
         >
           <Box
@@ -69,7 +79,7 @@ const NavItem: FC<NavItemProps> = ({ href, icon: Icon, title, isCompact }) => {
           activeClassName={classes.active}
           className={clsx(classes.button, classes.buttonExpanded)}
           component={RouterLink}
-          to={href}
+          to={path}
           fullWidth
         >
           {Icon && <Icon className={classes.icon} size="20" />}

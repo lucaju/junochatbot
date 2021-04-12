@@ -36,6 +36,7 @@ const useStyles = makeStyles(({ spacing }) => ({
     marginTop: spacing(1),
   },
   marginRight: { marginRight: spacing(2) },
+  title: { textTransform: 'capitalize' },
   toolbarGutters: {
     paddingLeft: spacing(1.5),
     paddingRight: spacing(1.5),
@@ -73,7 +74,7 @@ const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick, ...rest }) => {
             display="flex"
             flexDirection="row"
             alignItems="center"
-            // justify="center"
+            justifyContent="center"
           >
             {appMode && (
               <IconButton color="inherit" onClick={handleMenuClick}>
@@ -85,8 +86,13 @@ const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick, ...rest }) => {
             </RouterLink>
           </Box>
           <Box flexGrow={1} />
-          <Typography component="h1" noWrap variant="h5">
-            {state.ui.title}
+          <Typography
+            className={classes.title}
+            component="h1"
+            noWrap
+            variant="h5"
+          >
+            {state.ui.pageTitle}
           </Typography>
           <Box flexGrow={1} />
           <Box

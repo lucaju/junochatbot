@@ -30,8 +30,6 @@ const GroupsView: FC = () => {
   const [filters, setFilters] = useState<Map<string, number>>(new Map());
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
-  const title = t('userGroups');
-
   useEffect(() => {
     const userTypeAllowed = [1];
     if (
@@ -41,7 +39,7 @@ const GroupsView: FC = () => {
       navigate('/app', { replace: true });
     }
 
-    actions.ui.updateTitle(title);
+    actions.ui.setPageTitle(t('userGroups'));
 
     const getCollection = async () => {
       await actions.users.getGroups();
@@ -73,7 +71,7 @@ const GroupsView: FC = () => {
   };
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
         <Details
           open={detailsOpen}

@@ -24,25 +24,25 @@ import UsersView from './views/UsersView';
 
 const routes = [
   {
-    path: '/app/story',
+    path: '/app/stories',
     element: <AppLayout showStoryMenu={true} />,
     children: [
-      { path: 'general', element: <GeneralView /> },
-      { path: 'videos', element: <VideosView /> },
-      { path: 'tags', element: <TagsView /> },
-      { path: 'conversation', element: <ConversationView /> },
-      { path: 'contexts', element: <ContextsView /> },
-      { path: '*', element: <Navigate to="/app/story/general" /> },
+      { path: ':storyId', element: <GeneralView /> },
+      { path: ':storyId/videos', element: <VideosView /> },
+      { path: ':storyId/tags', element: <TagsView /> },
+      { path: ':storyId/conversation', element: <ConversationView /> },
+      { path: ':storyId/contexts', element: <ContextsView /> },
+      { path: '/', element: <Navigate to="/app/" /> },
+      { path: '*', element: <Navigate to="/app/" /> },
     ],
   },
   {
     path: '/app',
     element: <AppLayout />,
     children: [
-      { path: '/stories', element: <StoriesView /> },
+      { path: '/', element: <StoriesView /> },
       { path: '/users', element: <UsersView /> },
       { path: '/groups', element: <GroupsView /> },
-      { path: '/', element: <Navigate to="/app/stories" /> },
     ],
   },
   {

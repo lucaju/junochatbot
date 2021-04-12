@@ -1,9 +1,8 @@
-import { TrainRounded } from '@material-ui/icons';
 import { Context } from 'overmind';
-import { Language, Notification, NotificationType } from '../../types';
+import { NotificationType } from '../../types';
 
-export const updateTitle = ({ state }: Context, title: string) => {
-  state.ui.title = title;
+export const setPageTitle = ({ state }: Context, title: string) => {
+  state.ui.pageTitle = title;
 };
 
 export const setDarkMode = ({ state }: Context, value: boolean) => {

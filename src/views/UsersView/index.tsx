@@ -28,8 +28,6 @@ const UsersView: FC = () => {
   const [groupId, setGroupId] = useState<number | undefined>();
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
-  const title = t('users');
-
   useEffect(() => {
     const userTypeAllowed = [1, 2];
     if (
@@ -38,7 +36,7 @@ const UsersView: FC = () => {
     ) {
       navigate('/app', { replace: true });
     }
-    actions.ui.updateTitle(title);
+    actions.ui.setPageTitle(t('users'));
     return () => {};
   }, []);
 
@@ -67,7 +65,7 @@ const UsersView: FC = () => {
   };
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
         <Details
           open={detailsOpen}

@@ -9,31 +9,31 @@ export const storyMenu: MenuType[] = [
   {
     title: 'general',
     tKey: 'general',
-    href: '/app/story/general',
+    path: '/app/stories/:storyId',
     icon: AdbIcon,
   },
   {
     title: 'Video Collection',
     tKey: 'videoCollection',
-    href: '/app/story/videos',
+    path: '/app/stories/:storyId/videos',
     icon: VideoLibraryIcon,
   },
   {
     title: 'Tags',
-    tKey: 'tags',
-    href: '/app/story/tags',
+    tKey: 'common:tags',
+    path: '/app/stories/:storyId//tags',
     icon: LocalOfferIcon,
   },
   {
     title: 'Conversation Design',
     tKey: 'conversationDesign',
-    href: '/app/story/conversation',
+    path: '/app/stories/:storyId/conversation',
     icon: QuestionAnswerIcon,
   },
   // {
   //   title: 'Contexts',
   //   tKey: 'contexts',
-  //   href: '/app/story/contexts',
+  //   href: '/app/stories/:storyId/contexts',
   //   icon: LabelIcon,
   // },
 ];

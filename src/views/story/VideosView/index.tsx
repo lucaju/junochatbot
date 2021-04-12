@@ -1,11 +1,12 @@
 import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NoContent from '../../../components/NoContent';
 import Page from '../../../components/Page';
 import { useApp } from '../../../overmind';
 import { HandleFilterType } from '../../../types';
+import { isError } from '../../../util/utilities';
 import Collection from './Collection';
 import Details from './details';
 import MenuBar from './menubar';
@@ -18,13 +19,12 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   },
 }));
 
-const title = 'Juno Chatbot';
-
 const VideosView: FC = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { storyId } = useParams();
   const { state, actions } = useApp();
-  const { t } = useTranslation(['videos']);
+  const { t } = useTranslation(['videos', 'common']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasVideos, setHasVideos] = useState(true);
   const [currentVideoId, setCurrentVideoId] = useState<number | undefined>();
@@ -34,21 +34,28 @@ const VideosView: FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
-    if (!state.story.currentStory) {
-      navigate('/app', { replace: true });
-      return;
-    }
-
-    actions.ui.updateTitle(state.story.currentStory.title);
+    if (!storyId) return navigate('/app', { replace: true });
 
     const getCollection = async () => {
       await actions.videos.getVideos();
       await actions.videos.getTags();
+      actions.ui.setPageTitle(
+        `${state.story.currentStory?.title} - ${t('common:videos')}`
+      );
       setIsLoading(false);
       setHasVideos(state.videos.collection.length > 0);
     };
 
-    getCollection();
+    const getStory = async () => {
+      setIsLoading(true);
+      const story = await actions.story.getStory(Number(storyId));
+      if (isError(story)) return navigate('/app', { replace: true });
+
+      actions.ui.setPageTitle(story.title);
+      getCollection();
+    };
+
+    state.story.currentStory ? getCollection() : getStory();
 
     return () => {};
   }, []);
@@ -78,7 +85,7 @@ const VideosView: FC = () => {
   };
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
         <Details
           open={detailsOpen}

@@ -7,7 +7,7 @@ import {
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import Page from '../../../components/Page';
 import { useApp } from '../../../overmind';
@@ -32,32 +32,35 @@ const title = 'Juno Chatbot';
 const GeneralView: FC = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { storyId } = useParams();
   const { state, actions } = useApp();
   const { t } = useTranslation([
     'storyGeneral',
     'common',
     'errorMessages, deleteDialog',
   ]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [submitSuccess, setSubmitSuccess] = useState<boolean | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
   const [storyData, setStoryData] = useState<Story | undefined>(
     state.story.currentStory
   );
 
   useEffect(() => {
-    if (!state.story.currentStory) return navigate('/app', { replace: true });
+    if (!storyId) return navigate('/app', { replace: true });
 
     const getStory = async () => {
-      // const storyId = 1;
-      // await actions.story.getStory(1);
-      if (state.story.currentStory) {
-        setStoryData(state.story.currentStory);
-        actions.ui.updateTitle(state.story.currentStory.title);
-        setIsLoading(false);
-      }
+      setIsLoading(true);
+      const story = await actions.story.getStory(Number(storyId));
+      if (isError(story)) return navigate('/app', { replace: true });
+
+      setStoryData(story);
+      actions.ui.setPageTitle(story.title);
+
+      setIsLoading(false);
     };
 
-    getStory();
+    !state.story.currentStory
+      ? getStory()
+      : actions.ui.setPageTitle(state.story.currentStory.title);
 
     return () => {};
   }, []);

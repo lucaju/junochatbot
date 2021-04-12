@@ -42,7 +42,7 @@ const ConverastionView = () => {
     };
 
     getCollection();
-    actions.ui.updateTitle(state.story.currentStory.title);
+    actions.ui.setPageTitle(state.story.currentStory.title);
 
     return () => {};
   }, []);
@@ -73,7 +73,7 @@ const ConverastionView = () => {
   };
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
         <Details
           handleDetailClose={handleDetailClose}

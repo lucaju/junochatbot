@@ -38,7 +38,7 @@ const ContextView = () => {
   }, []);
 
   return (
-    <Page className={classes.root} title={title}>
+    <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
         {isLoading && (
           <Box
