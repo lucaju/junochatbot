@@ -70,14 +70,14 @@ export interface Story {
   botName: string;
   botPersona: string;
   botDelay: number;
-};
+}
 
 //VIDEOS
 export interface Tag {
   id: number;
   name: string;
   active?: boolean; //To be removed
-};
+}
 
 export interface Video {
   id: number;
@@ -90,12 +90,12 @@ export interface Video {
   active?: boolean; //To be removed
   description?: string;
   tags?: Tag[];
-};
+}
 
 //filter
 
 export type HandleFilterType = {
   type: string;
-  value: number;
+  value: number | string;
   reset?: boolean;
 };

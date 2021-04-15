@@ -51,6 +51,7 @@ const UsersView: FC = () => {
   };
 
   const updateFilters = ({ type, value, reset }: HandleFilterType) => {
+    if (typeof value !== 'number') return;
     reset ? filters.delete(type) : filters.set(type, value);
     setFilters(new Map(filters));
   };
