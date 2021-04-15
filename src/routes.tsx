@@ -9,18 +9,16 @@ import StoriesView from './views/StoriesView';
 import {
   ContextsView,
   ConversationView,
+  EntitiesView,
   GeneralView,
   TagsView,
   VideosView
 } from './views/story';
 import UsersView from './views/UsersView';
 
-
 // * react-router-dom REFERENCES:
 // https://medium.com/frontend-digest/whats-new-in-react-router-6-732b06cc83e4
 // https://reacttraining.com/blog/react-router-v6-pre/
-
-// ? Can / should use /:storyID ?
 
 const routes = [
   {
@@ -32,6 +30,7 @@ const routes = [
       { path: ':storyId/tags', element: <TagsView /> },
       { path: ':storyId/conversation', element: <ConversationView /> },
       { path: ':storyId/contexts', element: <ContextsView /> },
+      { path: ':storyId/entities', element: <EntitiesView /> },
       { path: '/', element: <Navigate to="/app/" /> },
       { path: '*', element: <Navigate to="/app/" /> },
     ],

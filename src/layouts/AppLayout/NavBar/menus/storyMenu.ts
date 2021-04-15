@@ -1,4 +1,5 @@
 import AdbIcon from '@material-ui/icons/Adb';
+import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 // import LabelIcon from '@material-ui/icons/Label';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
@@ -36,4 +37,10 @@ export const storyMenu: MenuType[] = [
   //   href: '/app/stories/:storyId/contexts',
   //   icon: LabelIcon,
   // },
+  {
+    title: 'Entities',
+    tKey: 'entities',
+    path: '/app/stories/:storyId/entities',
+    icon: DeviceHubIcon,
+  },
 ];
