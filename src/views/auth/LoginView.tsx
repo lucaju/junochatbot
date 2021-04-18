@@ -12,10 +12,10 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import Page from '../../components/Page';
 import { useApp } from '../../overmind';
+import type { Credential, ErrorMessage as ErrorMessageType } from '../../types';
+import { isError } from '../../util/utilities';
 import ErrorMessage from './components/ErrorMessage';
 import LoginForm from './components/LoginForm';
-import { isError } from '../../util/utilities';
-import type { Credential, ErrorMessage as ErrorMessageType } from '../../types';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
@@ -47,34 +47,34 @@ const LoginView: FC = () => {
   const [error, setError] = useState<ErrorMessageType | undefined>();
   const [hasToken, setHasToken] = useState(!!actions.session.getUserToken());
 
-  const authenticate = async (credential: Credential) => {
-    const response = await actions.session.authenticate(credential);
-    if (isError(response)) {
-      setError(response);
-      setIsAuthenticating(false);
-      setHasToken(false);
-    }
-  };
-
   useEffect(() => {
-    if (hasToken) {
-      setIsAuthenticating(true);
-      authenticate({});
-    }
+    if (hasToken) authenticate();
     return () => {};
   }, []);
 
   useEffect(() => {
     if (state.session.isSignedIn) {
-      setIsAuthenticating(false);
       navigate('/app', { replace: true });
     }
   }, [state.session.isSignedIn]);
 
+  const authenticate = async (credential?: Credential) => {
+    setIsAuthenticating(true);
+    const response = await actions.session.authenticate(credential);
+    setIsAuthenticating(false);
+    if (isError(response)) {
+      setHasToken(false);
+      const errorMessage = credential
+        ? t('errorMessages:accontNotRecognized')
+        : '';
+      setError({ errorMessage });
+    }
+  };
+
   return (
     <Page title={t('signin')}>
       <Container className={classes.container} maxWidth="xs">
-        <Logo className={classes.logo} type="full"/>
+        <Logo className={classes.logo} type="full" />
         {hasToken ? (
           <Box
             display="flex"
@@ -97,13 +97,8 @@ const LoginView: FC = () => {
             >
               {t('signin')}
             </Typography>
-            {error && (
-              <ErrorMessage message={t('errorMessages:accontNotRecognized')} />
-            )}
-            <LoginForm
-              authenticate={authenticate}
-              setIsAuthenticating={setIsAuthenticating}
-            />
+            {error && <ErrorMessage message={error.errorMessage} />}
+            <LoginForm authenticate={authenticate} />
             <Link
               className={classes.forgot}
               component={RouterLink}

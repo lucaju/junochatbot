@@ -18,10 +18,7 @@ interface ForgotFormProps {
 const useStyles = makeStyles(({ palette }) => ({
   capitalize: { textTransform: 'capitalize' },
   submitButton: { color: palette.common.white },
-  buttonProgress: {
-    position: 'absolute',
-    marginLeft: '45%',
-  },
+  progress: { position: 'absolute' },
 }));
 
 const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
@@ -79,7 +76,7 @@ const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
               {t('getNewPassowrd')}
               {isSubmitting && (
                 <CircularProgress
-                  className={classes.buttonProgress}
+                  className={classes.progress}
                   size={24}
                 />
               )}

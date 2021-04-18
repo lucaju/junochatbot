@@ -23,20 +23,19 @@ export const signedIn = async ({
 
 export const authenticate = async (
   { state, effects, actions }: Context,
-  { email, password }: Credential
+  credential?: Credential
 ): Promise<User | ErrorMessage> => {
   let token = getUserToken();
 
-  if (!token) {
-    const response = await effects.session.api.authenticate({
-      email,
-      password,
-    });
+  if (credential) {
+    const response = await effects.session.api.authenticate(credential);
     if (isError(response)) return response;
 
     token = response.token;
     Cookies.set('JunoToken', token);
   }
+
+  if (!token) return { errorMessage: '' };
 
   const userDetails = await actions.session.getUserDetails(token);
   if (isError(userDetails)) {

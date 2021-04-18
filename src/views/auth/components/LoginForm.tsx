@@ -20,22 +20,15 @@ import type { Credential } from '../../../types';
 
 interface LoginFormProps {
   authenticate: (credential: Credential) => void;
-  setIsAuthenticating: (value: boolean) => void;
 }
 
 const useStyles = makeStyles(({ palette }) => ({
   capitalize: { textTransform: 'capitalize' },
   submitButton: { color: palette.common.white },
-  progress: {
-    position: 'absolute',
-    marginLeft: '45%',
-  },
+  progress: { position: 'absolute' },
 }));
 
-const LoginForm: FC<LoginFormProps> = ({
-  authenticate,
-  setIsAuthenticating,
-}) => {
+const LoginForm: FC<LoginFormProps> = ({ authenticate }) => {
   const classes = useStyles();
   const { t } = useTranslation(['auth', 'common']);
   const [showPassword, setShowPassword] = useState(false);
@@ -56,10 +49,7 @@ const LoginForm: FC<LoginFormProps> = ({
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
-      onSubmit={async (values: Credential) => {
-        setIsAuthenticating(true);
-        await authenticate(values);
-      }}
+      onSubmit={authenticate}
       validationSchema={formValidation}
     >
       {({

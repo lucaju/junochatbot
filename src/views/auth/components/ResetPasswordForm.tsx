@@ -25,10 +25,7 @@ interface ResetPasswordFormProps {
 const useStyles = makeStyles(({ palette }) => ({
   capitalize: { textTransform: 'capitalize' },
   submitButton: { color: palette.common.white },
-  progress: {
-    position: 'absolute',
-    marginLeft: '45%',
-  },
+  progress: { position: 'absolute' },
 }));
 
 const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
