@@ -16,8 +16,11 @@ interface EntityCardProps {
 }
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
-  root: { width: 320 },
+  root: { width: 350 },
   cardContent: {
+    borderLeftWidth: 1,
+    borderLeftStyle: 'solid',
+    BorderLeftColor: palette.background.paper,
     backgroundColor: palette.background.default,
     padding: spacing(1),
     paddingLeft: spacing(2),

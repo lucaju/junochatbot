@@ -14,9 +14,7 @@ interface CollectionProps {
 }
 
 const useStyles = makeStyles(({ spacing }) => ({
-  card: {
-    margin: spacing(1),
-  },
+  card: { margin: spacing(3) },
   container: {
     maxHeight: '83vh',
     overflowY: 'scroll',
