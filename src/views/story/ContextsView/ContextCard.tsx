@@ -1,6 +1,7 @@
 import {
   Box,
   Card,
+  Chip,
   CardContent,
   makeStyles,
   Typography,
@@ -8,11 +9,11 @@ import {
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Entity } from '../../../types';
+import { ContextRelation } from '../../../types';
 
-interface EntityCardProps {
+interface ContextCardProps {
   className: string;
-  entity: Entity;
+  context: ContextRelation;
 }
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
@@ -32,16 +33,17 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     borderLeftWidth: 0,
   },
   outputLabel: { textDecoration: 'underline' },
+  tag: { marginRight: spacing(1) },
 }));
 
-const EntityCard: FC<EntityCardProps> = ({ className, entity, ...rest }) => {
+const ContextCard: FC<ContextCardProps> = ({ className, context, ...rest }) => {
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(0);
   const cardRef = useRef<any | undefined>();
   const [size, setSize] = useState();
 
-  const { category, description, extendable, name, outputFormat } = entity;
+  const { name, inputs, outputs } = context;
 
   //Use effects to refrech Muuri after elements sets its size
   useEffect(() => {
@@ -74,30 +76,50 @@ const EntityCard: FC<EntityCardProps> = ({ className, entity, ...rest }) => {
           root: clsx(classes.cardContent, hover && classes.cardHover),
         }}
       >
-        <Box display="flex" flexDirection="row">
-          <Typography gutterBottom variant="button">
-            {category}
-          </Typography>
-          <Box flexGrow={1} />
-          {extendable && (
-            <Typography gutterBottom variant="overline">
-              Extendable
-            </Typography>
-          )}
-        </Box>
         <Typography gutterBottom variant="h6">
           {name}
         </Typography>
-        <Typography gutterBottom variant="body2">
-          {description}
-        </Typography>
-        <Typography gutterBottom variant="body2">
-          <span className={classes.outputLabel}>Output Format</span>:{' '}
-          {outputFormat}
-        </Typography>
+
+        {inputs && (
+          <Box>
+            <Typography gutterBottom variant="overline">
+              Inputs
+            </Typography>
+            <Box>
+              {inputs.map((input) => (
+                <Chip
+                  key={input}
+                  className={classes.tag}
+                  label={input.toUpperCase()}
+                  size="small"
+                  variant="outlined"
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {outputs && (
+          <Box>
+            <Typography gutterBottom variant="overline">
+              Outputs
+            </Typography>
+            <Box>
+              {outputs.map((output) => (
+                <Chip
+                  key={output}
+                  className={classes.tag}
+                  label={output.toUpperCase()}
+                  size="small"
+                  variant="outlined"
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );
 };
 
-export default EntityCard;
+export default ContextCard;

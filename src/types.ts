@@ -114,6 +114,12 @@ export type Entity = {
   updatedDate: string;
 }
 
+export type ContextRelation = {
+  name: string;
+  inputs?: string[];
+  outputs?: string[];
+};
+
 
 
 //DIALOG FLOW INTENTS

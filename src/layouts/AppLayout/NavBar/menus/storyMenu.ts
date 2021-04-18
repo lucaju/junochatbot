@@ -1,6 +1,6 @@
 import AdbIcon from '@material-ui/icons/Adb';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
-// import LabelIcon from '@material-ui/icons/Label';
+import LabelIcon from '@material-ui/icons/Label';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
@@ -31,12 +31,12 @@ export const storyMenu: MenuType[] = [
     path: '/app/stories/:storyId/conversation',
     icon: QuestionAnswerIcon,
   },
-  // {
-  //   title: 'Contexts',
-  //   tKey: 'contexts',
-  //   href: '/app/stories/:storyId/contexts',
-  //   icon: LabelIcon,
-  // },
+  {
+    title: 'Contexts',
+    tKey: 'contexts',
+    path: '/app/stories/:storyId/contexts',
+    icon: LabelIcon,
+  },
   {
     title: 'Entities',
     tKey: 'entities',

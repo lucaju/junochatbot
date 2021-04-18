@@ -1,11 +1,5 @@
 import { derived } from 'overmind';
-import type { Intent, Entity } from '../../types';
-
-type ContextRelation = {
-  name: string;
-  inputs?: string[];
-  outputs?: string[];
-};
+import type { Intent, Entity, ContextRelation } from '../../types';
 
 type State = {
   collection: Intent[];
@@ -23,10 +17,11 @@ export const state: State = {
     let contextCollection = [] as ContextRelation[];
 
     state.collection.forEach(
-      ({ displayName, inputContextNames, outputContexts }) => {
-        if (inputContextNames.length === 0 && outputContexts.length === 0)
+      ({ name, displayName, inputContextNames, outputContexts }) => {
+        if (inputContextNames.length === 0 && outputContexts.length === 0) {
           return;
-
+        }
+          
         inputContextNames.forEach((contextIn) => {
           const existingContext =
             contextCollection.length > 0
@@ -34,12 +29,14 @@ export const state: State = {
               : undefined;
 
           if (existingContext) {
-            if (existingContext.inputs)
+            if (existingContext.inputs) {
               existingContext.inputs = [...existingContext.inputs, displayName];
+            }
           } else {
+            const inContextName = contextIn.split('/');
             contextCollection = [
               {
-                name: contextIn,
+                name: inContextName[inContextName.length-1],
                 inputs: [displayName],
               },
               ...contextCollection,
@@ -60,9 +57,10 @@ export const state: State = {
                 displayName,
               ];
           } else {
+            const outContextName = contextOut.name.split('/');
             contextCollection = [
               {
-                name: contextOut.name,
+                name: outContextName[outContextName.length-1],
                 outputs: [displayName],
               },
               ...contextCollection,
