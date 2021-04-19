@@ -18,55 +18,60 @@ export const state: State = {
 
     state.collection.forEach(
       ({ name, displayName, inputContextNames, outputContexts }) => {
-        if (inputContextNames.length === 0 && outputContexts.length === 0) {
-          return;
-        }
-          
-        inputContextNames.forEach((contextIn) => {
-          const existingContext =
-            contextCollection.length > 0
-              ? contextCollection.find((ctx) => ctx.name === contextIn)
-              : undefined;
+        if (!inputContextNames && !outputContexts) return;
 
-          if (existingContext) {
-            if (existingContext.inputs) {
-              existingContext.inputs = [...existingContext.inputs, displayName];
-            }
-          } else {
-            const inContextName = contextIn.split('/');
-            contextCollection = [
-              {
-                name: inContextName[inContextName.length-1],
-                inputs: [displayName],
-              },
-              ...contextCollection,
-            ];
-          }
-        });
+        if (inputContextNames) {
+          inputContextNames.forEach((contextIn) => {
+            const existingContext =
+              contextCollection.length > 0
+                ? contextCollection.find((ctx) => ctx.name === contextIn)
+                : undefined;
 
-        outputContexts.forEach((contextOut) => {
-          const existingContext =
-            contextCollection.length > 0
-              ? contextCollection.find((ctx) => ctx.name === contextOut.name)
-              : undefined;
-
-          if (existingContext) {
-            if (existingContext.outputs)
-              existingContext.outputs = [
-                ...existingContext.outputs,
-                displayName,
+            if (existingContext) {
+              if (existingContext.inputs) {
+                existingContext.inputs = [
+                  ...existingContext.inputs,
+                  displayName,
+                ];
+              }
+            } else {
+              const inContextName = contextIn.split('/');
+              contextCollection = [
+                {
+                  name: inContextName[inContextName.length - 1],
+                  inputs: [displayName],
+                },
+                ...contextCollection,
               ];
-          } else {
-            const outContextName = contextOut.name.split('/');
-            contextCollection = [
-              {
-                name: outContextName[outContextName.length-1],
-                outputs: [displayName],
-              },
-              ...contextCollection,
-            ];
-          }
-        });
+            }
+          });
+        }
+
+        if (outputContexts) {
+          outputContexts.forEach((contextOut) => {
+            const existingContext =
+              contextCollection.length > 0
+                ? contextCollection.find((ctx) => ctx.name === contextOut.name)
+                : undefined;
+
+            if (existingContext) {
+              if (existingContext.outputs)
+                existingContext.outputs = [
+                  ...existingContext.outputs,
+                  displayName,
+                ];
+            } else {
+              const outContextName = contextOut.name.split('/');
+              contextCollection = [
+                {
+                  name: outContextName[outContextName.length - 1],
+                  outputs: [displayName],
+                },
+                ...contextCollection,
+              ];
+            }
+          });
+        }
       }
     );
 

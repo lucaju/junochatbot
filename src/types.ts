@@ -187,7 +187,7 @@ export type Parameter = {
 
 export type Text = {
   text: {
-    text: string[];
+    text?: string[];
   };
 };
 
@@ -197,8 +197,8 @@ export enum VideoMessageSelect {
 }
 
 export type VideoMessage = {
-  select: VideoMessageSelect;
-  source: string;
+  type: string;
+  source: string | string[];
 };
 
 type Payload = {
@@ -221,16 +221,16 @@ export type Intent = {
   mlDisabled?: boolean;
   liveAgentHandoff?: boolean;
   endInteraction?: boolean;
-  inputContextNames: string[];
+  inputContextNames?: string[];
   events?: string[];
-  trainingPhrases: TrainingPhrase[];
-  action: string;
-  outputContexts: Context[];
+  trainingPhrases?: TrainingPhrase[];
+  action?: string;
+  outputContexts?: Context[];
   resetContexts?: boolean;
-  parameters: Parameter[];
+  parameters?: Parameter[];
   messages: Message[];
   defaultResponsePlatforms?: string; //PLATFORM_UNSPECIFIED
-  rootFollowupIntentName: string;
-  parentFollowupIntentName: string;
+  rootFollowupIntentName?: string;
+  parentFollowupIntentName?: string;
   followupIntentInfo?: followupIntentInfo[];
 };
