@@ -15,6 +15,7 @@ import { useApp } from '../../../overmind';
 import Menu from './Menu';
 import { adminMenu } from './menus/adminMenu';
 import { storyMenu } from './menus/storyMenu';
+import { RoleType } from '../../../types';
 
 interface NavBarProps {
   compactMode?: boolean;
@@ -61,6 +62,8 @@ const NavBar: FC<NavBarProps> = ({
     }
   }, [location.pathname]);
 
+  const userTypeAllowed = [RoleType.ADMIN, RoleType.INSTRUCTOR];
+
   return (
     <Drawer
       anchor="left"
@@ -91,12 +94,13 @@ const NavBar: FC<NavBarProps> = ({
         </Box>
       )}
       {showStoryMenu && <Menu compactMode={compactMode} items={storyMenu} />}
-      {state.session.user && state.session.user.roleTypeId <= 2 && (
-        <>
-          <Box flexGrow={1} />
-          <Menu compactMode={compactMode} items={adminMenu} />
-        </>
-      )}
+      {state.session.user &&
+        userTypeAllowed.includes(state.session.user.roleTypeId) && (
+          <>
+            <Box flexGrow={1} />
+            <Menu compactMode={compactMode} items={adminMenu} />
+          </>
+        )}
     </Drawer>
   );
 };

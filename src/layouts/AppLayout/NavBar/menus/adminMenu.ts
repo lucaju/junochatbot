@@ -2,6 +2,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import { MenuType } from '../Menu';
+import { RoleType } from '../../../../types';
 
 export const adminMenu: MenuType[] = [
   {
@@ -9,20 +10,20 @@ export const adminMenu: MenuType[] = [
     tKey: 'common:stories',
     path: '/app/stories',
     icon: ForumIcon,
-    restricted: [1, 2],
+    restricted: [RoleType.ADMIN, RoleType.INSTRUCTOR],
   },
   {
     title: 'Users',
     tKey: 'common:users',
     path: '/app/users',
     icon: PeopleAltIcon,
-    restricted: [1, 2],
+    restricted: [RoleType.ADMIN, RoleType.INSTRUCTOR],
   },
   {
     title: 'Users Groups',
     tKey: 'usersGroups',
     path: '/app/groups',
     icon: GroupWorkIcon,
-    restricted: [1],
+    restricted: [RoleType.ADMIN],
   },
 ];

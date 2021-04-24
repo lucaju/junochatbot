@@ -3,13 +3,7 @@ import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '../../../overmind';
-import { RoleType } from '../../../types';
-
-type HandleFilterType = {
-  type: string;
-  value: number;
-  reset?: boolean;
-};
+import { HandleFilterType, RoleType } from '../../../types';
 
 interface FilterStatusProps {
   className: string;
@@ -26,17 +20,14 @@ const useStyles = makeStyles(({ palette }) => ({
 const FilterRole: FC<FilterStatusProps> = ({
   className,
   handleFilter,
-  value = -1,
+  value = 'All',
 }) => {
   const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['users']);
   const [filterValue, setFilterValue] = useState(value);
 
-  const filterRoleOptions: RoleType[] = [
-    { value: -1, name: 'all' },
-    ...state.users.roleTypes,
-  ];
+  const filterRoleOptions = ['All', ...state.users.roleTypes];
 
   const handleChange = (value: number) => {
     setFilterValue(value);
@@ -61,16 +52,12 @@ const FilterRole: FC<FilterStatusProps> = ({
       {filterRoleOptions
         .filter((option) => {
           if (state.session.isAdmin) return true;
-          if (option.value === -1) return true;
-          if (
-            state.session.user &&
-            state.session.user.roleTypeId <= option.value
-          )
-            return true;
+          if (state.session.isInstructor && option === RoleType.ADMIN)
+            return false;
         })
-        .map(({ value, name }) => (
+        .map((value) => (
           <MenuItem className={classes.capitalize} key={value} value={value}>
-            {t(name)}
+            {t(value)}
           </MenuItem>
         ))}
     </TextField>

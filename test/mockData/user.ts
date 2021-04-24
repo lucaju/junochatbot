@@ -1,4 +1,4 @@
-import { User } from '../../src/types';
+import { RoleType, User } from '../../src/types';
 
 export const dataUsers: User[] = [
   {
@@ -7,7 +7,7 @@ export const dataUsers: User[] = [
     lastName: 'Frizzera',
     avatarUrl: 'lucaju.jpg',
     userName: 'lucaju@gmail.com',
-    roleTypeId: 0,
+    roleTypeId: RoleType.ADMIN,
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const dataUsers: User[] = [
     lastName: 'Yu',
     avatarUrl: '',
     userName: 'cao.yu@userName.io',
-    roleTypeId: 2,
+    roleTypeId: RoleType.STUDENT,
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ export const dataUsers: User[] = [
     lastName: 'Richardson',
     avatarUrl: '',
     userName: 'alex.ri@userName.io',
-    roleTypeId: 2,
+    roleTypeId: RoleType.STUDENT,
   },
   {
     id: 4,
@@ -31,7 +31,7 @@ export const dataUsers: User[] = [
     lastName: 'Keizer',
     avatarUrl: '',
     userName: 'anje.keizer@userName.io',
-    roleTypeId: 2,
+    roleTypeId: RoleType.STUDENT,
   },
   {
     id: 5,
@@ -39,7 +39,7 @@ export const dataUsers: User[] = [
     lastName: 'Gillebert',
     avatarUrl: '',
     userName: 'clarke.gillebert@userName.io',
-    roleTypeId: 2,
+    roleTypeId: RoleType.STUDENT,
   },
   {
     id: 6,
@@ -47,7 +47,7 @@ export const dataUsers: User[] = [
     lastName: 'Denisov',
     avatarUrl: '',
     userName: 'adam.denisov@userName.io',
-    roleTypeId: 2,
+    roleTypeId: RoleType.STUDENT,
   },
   {
     id: 7,
@@ -55,7 +55,7 @@ export const dataUsers: User[] = [
     lastName: 'Gregoraci',
     avatarUrl: '',
     userName: 'ava.gregoraci@userName.io',
-    roleTypeId: 2,
+    roleTypeId: RoleType.STUDENT,
   },
   {
     id: 8,
@@ -63,7 +63,7 @@ export const dataUsers: User[] = [
     lastName: 'Simchenko',
     avatarUrl: '',
     userName: 'emilee.simchenko@userName.io',
-    roleTypeId: 2,
+    roleTypeId: RoleType.STUDENT,
   },
 ];
 

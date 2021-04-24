@@ -4,9 +4,10 @@ export interface Language {
   name: string;
 }
 
-export interface RoleType {
-  value: number;
-  name: string;
+export enum RoleType {
+  ADMIN = 'Admin',
+  INSTRUCTOR = 'Instructor',
+  STUDENT = 'Student',
 }
 
 export interface ErrorMessage {
@@ -37,8 +38,7 @@ export interface User {
   firstName: string;
   lastName: string;
   userName: string;
-  roleTypeId: number;
-  active?: boolean; //To be removed
+  roleTypeId: RoleType;
   createdDate?: string;
   updatedDate?: string;
   avatarUrl?: string | any;

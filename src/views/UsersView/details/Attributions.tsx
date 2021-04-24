@@ -27,7 +27,6 @@ const Attributions: FC<AttributionsProps> = ({
   const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['users', 'common']);
-  const [isAdmin] = useState(state.session.isAdmin);
   const [groupsOptions, setGroupsOptions] = useState<UserGroup[] | undefined>();
 
   useEffect(() => {
@@ -49,16 +48,16 @@ const Attributions: FC<AttributionsProps> = ({
             onChange={handleChange}
             select
             value={values.roleTypeId}
-            disabled={!isAdmin ? true : false}
+            disabled={!state.session.isAdmin ? true : false}
             variant="outlined"
           >
-            {state.users.roleTypes.map(({ name, value }) => (
+            {state.users.roleTypes.map((value) => (
               <MenuItem
                 key={value}
                 className={classes.capitalize}
                 value={value}
               >
-                {t(name)}
+                {t(value)}
               </MenuItem>
             ))}
           </TextField>
@@ -76,7 +75,7 @@ const Attributions: FC<AttributionsProps> = ({
             onChange={handleChange}
             select
             value={values.groupId}
-            disabled={!isAdmin ? true : false}
+            disabled={!state.session.isAdmin ? true : false}
             variant="outlined"
           >
             {state.users.groups.map(({ id, name }) => (

@@ -3,13 +3,14 @@ import React, { FC } from 'react';
 import NavItem from './NavItem';
 import { useApp } from '../../../overmind';
 import { useTranslation } from 'react-i18next';
+import { RoleType } from '../../../types';
 
 export type MenuType = {
   title: string;
   tKey: string;
   path: string;
   icon?: any;
-  restricted?: number[];
+  restricted?: RoleType[];
 };
 
 interface MenuProps {

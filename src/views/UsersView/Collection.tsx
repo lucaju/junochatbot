@@ -17,7 +17,7 @@ interface CollectionProps {
 const useStyles = makeStyles(({ spacing }) => ({
   card: {
     minHeight: 80,
-    width: '90%',
+    width: '98%',
     margin: spacing(1),
   },
   container: {

@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import DeleteDialog from '../../../components/DeleteDialog';
 import { useApp } from '../../../overmind';
-import { NotificationType, User } from '../../../types';
+import { NotificationType, RoleType, User } from '../../../types';
 import { isError } from '../../../util/utilities';
 import Actions from './Actions';
 import Attributions from './Attributions';
@@ -52,7 +52,7 @@ const initialValues: Partial<User> = {
   firstName: '',
   lastName: '',
   userName: '',
-  roleTypeId: 3, // student
+  roleTypeId: RoleType.STUDENT, // student
   groupId: '',
 };
 
@@ -116,7 +116,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
     firstName: Yup.string().trim().required(t('common:required')),
     lastName: Yup.string().trim().required(t('common:required')),
     userName: Yup.string().email().required(t('common:required')),
-    roleTypeId: Yup.number().required(),
+    roleTypeId: Yup.string().required(),
     groupId: Yup.number(),
   });
 

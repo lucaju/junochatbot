@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Page from '../../components/Page';
 import { useApp } from '../../overmind';
-import { HandleFilterType } from '../../types';
+import { HandleFilterType, RoleType } from '../../types';
 import Collection from './Collection';
 import Details from './details';
 import MenuBar from './menubar';
@@ -29,7 +29,7 @@ const UsersView: FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
-    const userTypeAllowed = [1, 2];
+    const userTypeAllowed = [RoleType.ADMIN, RoleType.INSTRUCTOR];
     if (
       !state.session.user ||
       !userTypeAllowed.includes(state.session.user.roleTypeId)

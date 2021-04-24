@@ -1,17 +1,13 @@
-import type { RoleType, User, UserGroup } from '../../types';
+import { RoleType, User, UserGroup } from '../../types';
 
 type State = {
   list: User[];
-  groups:  UserGroup[];
+  groups: UserGroup[];
   roleTypes: RoleType[];
 };
 
-export const state:State = {
+export const state: State = {
   list: [] as User[],
   groups: [] as UserGroup[],
-  roleTypes: [
-    { value: 1, name: 'admin' },
-    { value: 2, name: 'instructor' },
-    { value: 3, name: 'student' },
-  ],
+  roleTypes: [RoleType.ADMIN, RoleType.INSTRUCTOR, RoleType.STUDENT],
 };

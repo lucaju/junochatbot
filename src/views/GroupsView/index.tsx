@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import NoContent from '../../components/NoContent';
 import Page from '../../components/Page';
 import { useApp } from '../../overmind';
-import { HandleFilterType } from '../../types';
+import { HandleFilterType, RoleType } from '../../types';
 import Collection from './Collection';
 import Details from './details/';
 import MenuBar from './menubar';
@@ -31,7 +31,7 @@ const GroupsView: FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
-    const userTypeAllowed = [1];
+    const userTypeAllowed = [RoleType.ADMIN];
     if (
       !state.session.user ||
       !userTypeAllowed.includes(state.session.user.roleTypeId)
