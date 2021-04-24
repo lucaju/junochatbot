@@ -7,7 +7,7 @@ type ResponseUploadAvatar = {
 
 export const api = {
   getAllUsers: async (token: string): Promise<User[] | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/admin/users/all`, {
+    const response = await fetch(`${API_URL}/users/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -154,7 +154,7 @@ export const api = {
   },
 
   getGroups: async (token: string): Promise<UserGroup[] | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/admin/groups/all`, {
+    const response = await fetch(`${API_URL}/groups/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
