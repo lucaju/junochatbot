@@ -78,12 +78,12 @@ const EntityCard: FC<EntityCardProps> = ({ className, entity, ...rest }) => {
           <Typography gutterBottom variant="button">
             {category}
           </Typography>
-          <Box flexGrow={1} />
+          {/* <Box flexGrow={1} />
           {extendable && (
             <Typography gutterBottom variant="overline">
               Extendable
             </Typography>
-          )}
+          )} */}
         </Box>
         <Typography gutterBottom variant="h6">
           {name}
