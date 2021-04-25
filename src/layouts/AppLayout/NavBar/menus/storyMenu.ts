@@ -1,6 +1,6 @@
 import AdbIcon from '@material-ui/icons/Adb';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
-import LabelIcon from '@material-ui/icons/Label';
+import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
@@ -35,7 +35,7 @@ export const storyMenu: MenuType[] = [
     title: 'Contexts',
     tKey: 'contexts',
     path: '/app/stories/:storyId/contexts',
-    icon: LabelIcon,
+    icon: CenterFocusWeakIcon,
   },
   {
     title: 'Entities',
