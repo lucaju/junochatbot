@@ -5,15 +5,15 @@ import {
   Grid,
   makeStyles,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@material-ui/core';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Intent } from '../../../types';
-import Context from './components/context';
-import Message from './components/message';
+import Contexts from './cardComponents/Contexts';
+import Message from './cardComponents/Message';
+import Paramenter from './cardComponents/Parameter';
 
 interface ContextCardProps {
   className: string;
@@ -21,36 +21,14 @@ interface ContextCardProps {
 }
 
 const useStyles = makeStyles(({ shape, spacing, palette }) => ({
-  root: {
-    // width: 350
-  },
+  root: {},
   cardContent: {
-    padding: spacing(1),
-    paddingLeft: spacing(2),
-    paddingRight: 0,
-    '&:last-child': { paddingBottom: spacing(1) },
+    '&:last-child': { paddingBottom: spacing(2) },
   },
   cardHover: { cursor: 'pointer' },
-  column: {
-    // paddingLeft: spacing(1),
-    paddingRight: spacing(1),
-  },
-  training: {
-    borderRadius: shape.borderRadius,
-    borderColor: '#eee',
-    borderStyle: 'solid',
-    borderWidth: 2,
-    backgroundColor: palette.action.hover,
-    width: 'fit-content',
-    padding: spacing(0.5),
-  },
-  message: {
-    backgroundColor: '#f3f3f3',
-    marginBottom: -spacing(1),
-    marginTop: -spacing(1),
-    paddingTop: spacing(1),
-    paddingRight: spacing(1),
-    paddingLeft: spacing(1),
+  context: {
+    backgroundColor: palette.background.default,
+    overflowX: 'auto',
   },
 }));
 
@@ -60,8 +38,6 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, ...rest }) => {
   const [elevation, setElevation] = useState(1);
   const cardRef = useRef<any | undefined>();
   const [size, setSize] = useState();
-  const theme = useTheme();
-  const isLarge = useMediaQuery(theme.breakpoints.up('lg'));
 
   const {
     name,
@@ -73,7 +49,7 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, ...rest }) => {
     messages,
   } = intent;
 
-  console.log(intent);
+  // console.log(intent);
 
   //Use effects to refrech Muuri after elements sets its size
   useEffect(() => {
@@ -102,82 +78,61 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, ...rest }) => {
       {...rest}
     >
       <CardContent classes={{ root: classes.cardContent }}>
-        <Grid container direction="row">
-          <Grid className={classes.column} item xs={isLarge ? 3 : 5}>
-            <Typography variant="h6">{displayName}</Typography>
-          </Grid>
-          {isLarge && (
-            <>
-              <Grid className={classes.column} item xs={1}>
-                {/* <Box className={classes.training}> */}
-                <Typography variant="body1">
+        <Grid container direction="row" spacing={1}>
+          <Grid item xs={4}>
+            <Box display="flex" flexDirection="row">
+              <Typography variant="subtitle1">{displayName}</Typography>
+              <Box
+                display="flex"
+                flexDirection="row"
+                ml={2}
+                pt={0.25}
+                color="text.secondary"
+              >
+                <FitnessCenterIcon fontSize="small" />
+                <Typography variant="body2">
                   {trainingPhrases ? trainingPhrases.length : 0}
                 </Typography>
-                {/* </Box> */}
-              </Grid>
-              <Grid className={classes.column} item xs={2}>
-                <>
-                  {inputContextNames && inputContextNames?.length > 0 && (
-                    <>
-                      <Typography variant="overline">Input</Typography>
-                      {inputContextNames.map((inContext) => (
-                        <Context key={inContext} type="in" name={inContext} />
-                      ))}
-                    </>
-                  )}
-                  {outputContexts && outputContexts?.length > 0 && (
-                    <>
-                      <Typography variant="overline">Output</Typography>
-                      {outputContexts.map((outContext) => (
-                        <Context
-                          key={outContext.name}
-                          type="out"
-                          name={outContext.name}
-                          lifespanCount={outContext.lifespanCount}
-                        />
-                      ))}
-                    </>
-                  )}
-                </>
-              </Grid>
-              <Grid className={classes.column} item xs={2}>
-                {parameters &&
-                  parameters.map((param) => (
-                    <Typography key={param.displayName} variant="body1">
-                      {`${param.displayName} (${param.entityTypeDisplayName})`}
-                    </Typography>
-                  ))}
-              </Grid>
-            </>
-          )}
-          <Grid className={classes.message} item xs={isLarge ? 4 : 7}>
-            {messages.map((message, i) => {
-              if ('payload' in message) {
-                return (
-                  <Message
-                    key={i}
-                    type="payload"
-                    text={
-                      typeof message.payload.source === 'string'
-                        ? message.payload.source
-                        : message.payload.source.join(', ')
-                    }
-                    variation={message.payload.type === 'TAG'}
-                  />
-                );
-              } else if (message.text.text) {
-                return (
-                  <Message
-                    key={i}
-                    type="text"
-                    text={message.text.text[0]}
-                    variation={message.text.text.length > 1}
-                  />
-                );
-              }
-            })}
+              </Box>
+            </Box>
+          </Grid>
+
+          <Grid item xs={2}>
+            {parameters &&
+              parameters.map((param) => <Paramenter parameter={param} />)}
+          </Grid>
+
+          <Grid item xs={6}>
+            <Box pt={0.5}>
+              {messages.map((message, i) => (
+                <Message key={i} message={message} />
+              ))}
+            </Box>
           </Grid>
         </Grid>
+
+        {(inputContextNames || inputContextNames) && (
+          <Box
+            className={classes.context}
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            mx={-2}
+            mt={1}
+            mb={-2}
+            px={2}
+            py={1}
+          >
+            <>
+              {inputContextNames && inputContextNames.length > 0 && (
+                <Contexts type="input" contexts={inputContextNames} />
+              )}
+              {outputContexts && outputContexts.length > 0 && (
+                <Contexts type="output" contexts={outputContexts} />
+              )}
+            </>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );

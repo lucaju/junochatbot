@@ -1,13 +1,4 @@
-import {
-  Box,
-  Grid,
-  makeStyles,
-  Typography,
-  useMediaQuery,
-  useTheme
-} from '@material-ui/core';
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import { Box, Grid, makeStyles, Typography } from '@material-ui/core';
 import FlareRoundedIcon from '@material-ui/icons/FlareRounded';
 import ForumRoundedIcon from '@material-ui/icons/ForumRounded';
 import NfcRoundedIcon from '@material-ui/icons/NfcRounded';
@@ -27,9 +18,11 @@ interface CollectionProps {
 
 const useStyles = makeStyles(({ spacing }) => ({
   card: {
-    minHeight: 80,
     width: '98%',
-    margin: spacing(1),
+    marginTop: spacing(1),
+    marginBottom: spacing(1),
+    marginLeft: spacing(1.5),
+    marginRight: spacing(1.5),
   },
   container: {
     maxHeight: '83vh',
@@ -51,8 +44,6 @@ const Collection: FC<CollectionProps> = ({
   const classes = useStyles();
   const { state } = useApp();
   const [filteredItems, setFilteredItems] = useState<Intent[]>([]);
-  const theme = useTheme();
-  const isLarge = useMediaQuery(theme.breakpoints.up('lg'));
 
   useEffect(() => {
     setFilteredItems(items());
@@ -79,14 +70,13 @@ const Collection: FC<CollectionProps> = ({
       });
   };
 
-  const showSkeleton = (qty = 5) => {
+  const showSkeleton = (qty = 10) => {
     const skels = new Array(qty).fill(0);
     return skels.map((sk, i) => (
       <Skeleton
         key={i}
         className={classes.card}
-        height={44}
-        width={30 + Math.random() * 100}
+        height={50 + Math.random() * 100}
         variant="rect"
       />
     ));
@@ -108,7 +98,7 @@ const Collection: FC<CollectionProps> = ({
             direction="row"
             alignItems="center"
           >
-            <Grid item xs={isLarge ? 3 : 5}>
+            <Grid item xs={4}>
               <Box display="flex" alignItems="center">
                 <FlareRoundedIcon
                   fontSize="small"
@@ -117,38 +107,17 @@ const Collection: FC<CollectionProps> = ({
                 <Typography variant="button">Intent</Typography>
               </Box>
             </Grid>
-            {isLarge && (
-              <>
-                <Grid item xs={1}>
-                  <Box display="flex" alignItems="center">
-                    <FitnessCenterIcon
-                      fontSize="small"
-                      className={classes.iconHeader}
-                    />
-                    {/* <Typography variant="button">Training</Typography> */}
-                  </Box>
-                </Grid>
-                <Grid item xs={2}>
-                  <Box display="flex" alignItems="center">
-                    <CenterFocusWeakIcon
-                      fontSize="small"
-                      className={classes.iconHeader}
-                    />
-                    <Typography variant="button">Contexts</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={2}>
-                  <Box display="flex" alignItems="center">
-                    <NfcRoundedIcon
-                      fontSize="small"
-                      className={classes.iconHeader}
-                    />
-                    <Typography variant="button">Parameters</Typography>
-                  </Box>
-                </Grid>
-              </>
-            )}
-            <Grid item xs={isLarge ? 3 : 5}>
+
+            <Grid item xs={2}>
+              <Box display="flex" alignItems="center">
+                <NfcRoundedIcon
+                  fontSize="small"
+                  className={classes.iconHeader}
+                />
+                <Typography variant="button">Parameters</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
               <Box display="flex" alignItems="center">
                 <ForumRoundedIcon
                   fontSize="small"

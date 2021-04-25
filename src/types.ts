@@ -205,7 +205,7 @@ type Payload = {
   payload: VideoMessage;
 };
 
-type Message = Text | Payload;
+export type Message = Text | Payload;
 
 type followupIntentInfo = {
   followupIntentName: string;
