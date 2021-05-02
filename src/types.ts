@@ -145,8 +145,8 @@ export type Part = {
 };
 
 export type TrainingPhrase = {
-  name: string;
-  type: string; //Type;
+  name?: string;
+  type: string;
   parts: Part[];
   timesAddedCount?: number;
 };
@@ -170,16 +170,16 @@ type Value = {
 
 export type Context = {
   name: string;
-  lifespanCount: number;
+  lifespanCount?: number;
   parameters?: Map<string, Value>;
 };
 
 export type Parameter = {
-  name: string;
+  name?: string;
   displayName: string;
-  value: string;
+  value?: string;
   defaultValue?: string;
-  entityTypeDisplayName: string;
+  entityTypeDisplayName?: string;
   mandatory?: boolean;
   prompts?: string[];
   isList?: boolean;
@@ -213,10 +213,10 @@ type followupIntentInfo = {
 };
 
 export type Intent = {
-  name: string;
+  name?: string;
   displayName: string;
   webhookState?: WebhookState;
-  priority: number;
+  priority?: number;
   isFallback?: boolean;
   mlDisabled?: boolean;
   liveAgentHandoff?: boolean;
@@ -228,7 +228,7 @@ export type Intent = {
   outputContexts?: Context[];
   resetContexts?: boolean;
   parameters?: Parameter[];
-  messages: Message[];
+  messages?: Message[];
   defaultResponsePlatforms?: string; //PLATFORM_UNSPECIFIED
   rootFollowupIntentName?: string;
   parentFollowupIntentName?: string;
