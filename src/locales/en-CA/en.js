@@ -64,7 +64,8 @@ export default {
 	userGroups: 'User Groups'
   },
   intents: {
-	createIntent: 'Crate intent',
+	addPhrase: 'Add Phrase',
+	createIntent: 'Create intent',
 	editIntent: 'Edit intent',
 	intentCreated: 'Intent Created',
 	intentDeleted: 'Intent Deleted',
