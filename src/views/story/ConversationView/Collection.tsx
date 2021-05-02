@@ -11,6 +11,7 @@ import { Intent } from '../../../types';
 import IntentCard from './IntentCard';
 
 interface CollectionProps {
+  handleDetailOpen: (value: string) => void;
   filters: Map<string, string>;
   searchQuery: string | undefined;
   isLoading?: boolean;
@@ -36,11 +37,7 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const Collection: FC<CollectionProps> = ({
-  filters,
-  searchQuery,
-  isLoading = false,
-}) => {
+const Collection: FC<CollectionProps> = ({ handleDetailOpen, filters, searchQuery, isLoading = false }) => {
   const classes = useStyles();
   const { state } = useApp();
   const [filteredItems, setFilteredItems] = useState<Intent[]>([]);
@@ -63,9 +60,7 @@ const Collection: FC<CollectionProps> = ({
       })
       .filter((item) => {
         if (!searchQuery) return item;
-        const match = item.displayName
-          .toLowerCase()
-          .match(searchQuery.toLowerCase());
+        const match = item.displayName.toLowerCase().match(searchQuery.toLowerCase());
         return match;
       });
   };
@@ -73,12 +68,7 @@ const Collection: FC<CollectionProps> = ({
   const showSkeleton = (qty = 10) => {
     const skels = new Array(qty).fill(0);
     return skels.map((sk, i) => (
-      <Skeleton
-        key={i}
-        className={classes.card}
-        height={50 + Math.random() * 100}
-        variant="rect"
-      />
+      <Skeleton key={i} className={classes.card} height={50 + Math.random() * 100} variant="rect" />
     ));
   };
 
@@ -91,52 +81,16 @@ const Collection: FC<CollectionProps> = ({
       ) : filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <>
-          <Grid
-            className={classes.header}
-            container
-            direction="row"
-            alignItems="center"
-          >
-            <Grid item xs={4}>
-              <Box display="flex" alignItems="center">
-                <FlareRoundedIcon
-                  fontSize="small"
-                  className={classes.iconHeader}
-                />
-                <Typography variant="button">Intent</Typography>
-              </Box>
-            </Grid>
-
-            <Grid item xs={2}>
-              <Box display="flex" alignItems="center">
-                <NfcRoundedIcon
-                  fontSize="small"
-                  className={classes.iconHeader}
-                />
-                <Typography variant="button">Parameters</Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <ForumRoundedIcon
-                  fontSize="small"
-                  className={classes.iconHeader}
-                />
-                <Typography variant="button">Responses</Typography>
-              </Box>
-            </Grid>
-          </Grid>
-          <MuuriComponent>
-            {filteredItems.map((intent) => (
-              <IntentCard
-                key={intent.name}
-                className={classes.card}
-                intent={intent}
-              />
-            ))}
-          </MuuriComponent>
-        </>
+        <MuuriComponent>
+          {filteredItems.map((intent) => (
+            <IntentCard
+              key={intent.name}
+              className={classes.card}
+              handleEditClick={handleDetailOpen}
+              intent={intent}
+            />
+          ))}
+        </MuuriComponent>
       )}
     </Box>
   );

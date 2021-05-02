@@ -8,7 +8,7 @@ import VideoCard from './VideoCard';
 import { Tag, Video } from '../../../types';
 
 interface CollectionProps {
-  handleDetailOpen: (tagId: number) => void;
+  handleDetailOpen: (value: number) => void;
   filters: Map<string, number>;
   tagId?: number | undefined;
   searchQuery?: string | undefined;
@@ -24,8 +24,8 @@ const useStyles = makeStyles(({ spacing }) => ({
 }));
 
 const Collection: FC<CollectionProps> = ({
-  filters,
   handleDetailOpen,
+  filters,
   searchQuery,
   tagId,
   isLoading = false

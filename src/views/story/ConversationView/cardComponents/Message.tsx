@@ -1,6 +1,6 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import React, { FC } from 'react';
-import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
+import MessageIcon from '@material-ui/icons/Message';
 import TheatersIcon from '@material-ui/icons/Theaters';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import type { Message as MesasgeType } from '../../../../types';
@@ -40,7 +40,7 @@ const Message: FC<MessageProps> = ({ message }) => {
           {type === 'payload' ? (
             <TheatersIcon fontSize="small" className={classes.icon} />
           ) : (
-            <FormatAlignLeftIcon fontSize="small" className={classes.icon} />
+            <MessageIcon fontSize="small" className={classes.icon} />
           )}
           <Typography noWrap variant="body2">
             {text}

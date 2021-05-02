@@ -15,7 +15,7 @@ import { Video } from '../../../types';
 interface VideoCardProps {
   className: string;
   video: Video;
-  handleEditClick: (videoId: number) => void;
+  handleEditClick: (value: number) => void;
 }
 
 const useStyles = makeStyles(({ spacing, palette }) => ({

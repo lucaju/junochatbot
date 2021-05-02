@@ -1,11 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Box, Card, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
@@ -18,6 +11,7 @@ import Paramenter from './cardComponents/Parameter';
 interface ContextCardProps {
   className: string;
   intent: Intent;
+  handleEditClick: (value?: string) => void;
 }
 
 const useStyles = makeStyles(({ shape, spacing, palette }) => ({
@@ -32,7 +26,7 @@ const useStyles = makeStyles(({ shape, spacing, palette }) => ({
   },
 }));
 
-const ContextCard: FC<ContextCardProps> = ({ className, intent, ...rest }) => {
+const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick, ...rest }) => {
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(1);
@@ -73,6 +67,7 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, ...rest }) => {
       ref={cardRef}
       className={clsx(classes.root, className, hover && classes.cardHover)}
       elevation={elevation}
+      onClick={() => handleEditClick(name)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
       {...rest}
@@ -82,32 +77,25 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, ...rest }) => {
           <Grid item xs={4}>
             <Box display="flex" flexDirection="row">
               <Typography variant="subtitle1">{displayName}</Typography>
-              <Box
-                display="flex"
-                flexDirection="row"
-                ml={2}
-                pt={0.25}
-                color="text.secondary"
-              >
+              <Box display="flex" flexDirection="row" ml={2} pt={0.25} color="text.secondary">
                 <FitnessCenterIcon fontSize="small" />
-                <Typography variant="body2">
-                  {trainingPhrases ? trainingPhrases.length : 0}
-                </Typography>
+                <Typography variant="body2">{trainingPhrases ? trainingPhrases.length : 0}</Typography>
               </Box>
             </Box>
           </Grid>
 
           <Grid item xs={2}>
-            {parameters &&
-              parameters.map((param) => <Paramenter parameter={param} />)}
+            {parameters && parameters.map((param) => <Paramenter key={param.name} parameter={param} />)}
           </Grid>
 
           <Grid item xs={6}>
-            <Box pt={0.5}>
-              {messages.map((message, i) => (
-                <Message key={i} message={message} />
-              ))}
-            </Box>
+            {messages && (
+              <Box pt={0.5}>
+                {messages.map((message, i) => (
+                  <Message key={i} message={message} />
+                ))}
+              </Box>
+            )}
           </Grid>
         </Grid>
 

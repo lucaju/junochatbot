@@ -20,7 +20,7 @@ interface StoryCardProps {
 }
 
 const useStyles = makeStyles(({ spacing }) => ({
-  root: { width: 325 },
+  root: { width: 350 },
   botIcon: { marginRight: spacing(1) },
   divider: { width: '30%' },
   draft: {

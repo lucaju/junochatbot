@@ -9,6 +9,7 @@ import { HandleFilterType } from '../../../types';
 import { isError } from '../../../util/utilities';
 import Collection from './Collection';
 import MenuBar from './menubar';
+import Details from './details';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
   root: {
@@ -26,6 +27,8 @@ const ConversationView: FC = () => {
   const { t } = useTranslation(['intents', 'common']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasIntents, setHasIntents] = useState(true);
+  const [currentIntentId, setCurrentIntentId] = useState<string | undefined>();
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [filters, setFilters] = useState<Map<string, string>>(new Map());
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
@@ -34,9 +37,7 @@ const ConversationView: FC = () => {
 
     const getCollection = async () => {
       await actions.intents.getIntents();
-      actions.ui.setPageTitle(
-        `${state.story.currentStory?.title} - ${t('common:intents')}`
-      );
+      actions.ui.setPageTitle(`${state.story.currentStory?.title} - ${t('common:intents')}`);
       setHasIntents(state.intents.collection.length > 0);
       setIsLoading(false);
     };
@@ -55,6 +56,16 @@ const ConversationView: FC = () => {
     return () => {};
   }, []);
 
+  const handleDetailOpen = (intentId?: string) => {
+    setCurrentIntentId(intentId);
+    setDetailsOpen(true);
+  };
+
+  const handleDetailClose = () => {
+    setCurrentIntentId(undefined);
+    setDetailsOpen(false);
+  };
+
   const updateFilters = ({ type, value, reset }: HandleFilterType) => {
     if (typeof value !== 'string') return;
     reset ? filters.delete(type) : filters.set(type, value);
@@ -68,8 +79,10 @@ const ConversationView: FC = () => {
   return (
     <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
+        <Details open={detailsOpen} handleClose={handleDetailClose} intentId={currentIntentId} />
         {!isLoading && (
           <MenuBar
+            handleDetailOpen={handleDetailOpen}
             handleSearch={handleSearch}
             updateFilter={updateFilters}
             disabledFilters={!hasIntents}
@@ -80,6 +93,7 @@ const ConversationView: FC = () => {
         ) : (
           <Box mt={3}>
             <Collection
+              handleDetailOpen={handleDetailOpen}
               filters={filters}
               searchQuery={searchQuery}
               isLoading={isLoading}

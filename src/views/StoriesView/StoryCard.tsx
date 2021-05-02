@@ -27,7 +27,7 @@ interface UserCarddProps {
 }
 
 const useStyles = makeStyles(({ palette, shape, spacing }) => ({
-  root: { width: 325 },
+  root: { width: 350 },
   actionPanel: {
     position: 'fixed',
     right: 0,
@@ -47,7 +47,7 @@ const useStyles = makeStyles(({ palette, shape, spacing }) => ({
   },
   language: { marginLeft: spacing(1) },
   marginTop: { marginTop: spacing(0.5) },
-  media: { height: 180 },
+  media: { height: 200 },
   noMedia: { backgroundColor: palette.background.default },
   title: {
     marginLeft: -spacing(2.5),
@@ -106,13 +106,18 @@ const StoryCard: FC<UserCarddProps> = ({
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
     >
-      {story.imageUrl && (
-        <CardMedia
-          className={classes.media}
-          image={`${APP_URL}/uploads/assets${story.imageUrl}`}
-          title={story.title}
-        />
-      )}
+      {story.imageUrl &&
+        story.imageUrl.endsWith('.', story.imageUrl.length - 3) && (
+          <CardMedia
+            className={classes.media}
+            image={
+              story.imageUrl.startsWith('http')
+                ? story.imageUrl
+                : `${APP_URL}/uploads/assets${story.imageUrl}`
+            }
+            title={story.title}
+          />
+        )}
       <CardContent>
         <Box display="flex" alignItems="center">
           <Grow in={hover}>

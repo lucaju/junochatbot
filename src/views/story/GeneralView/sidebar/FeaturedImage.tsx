@@ -15,10 +15,10 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   buttonRemove: {
     position: 'relative',
     top: spacing(1),
-    left: 296,
+    left: 316,
     backgroundColor: palette.background.paper,
   },
-  media: { height: 180 },
+  media: { height: 200 },
   hide: { display: 'none' },
   show: { display: 'block' },
   dropzone: {
@@ -72,10 +72,16 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
 
   return (
     <>
-      {image && (
+      {image && image.endsWith('.', image.length - 3) && (
         <CardMedia
           className={classes.media}
-          image={uploadedImage ? image : `${APP_URL}/uploads/assets${image}`}
+          image={
+            uploadedImage
+              ? image
+              : image.startsWith('http')
+              ? image
+              : `${APP_URL}/uploads/assets${image}`
+          }
           title={title}
         >
           <IconButton

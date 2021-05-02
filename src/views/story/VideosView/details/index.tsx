@@ -31,30 +31,14 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     color: palette.primary.light,
     textAlign: 'center',
   },
-  dialogContent: {
-    // paddingRight: 0,
-    // paddingLeft: 0,
-    // marginBottom: spacing(1),
-    // minHeight: 160,
-    maxHeight: '70vh',
-  },
+  dialogContent: { maxHeight: '70vh' },
   player: {
     marginTop: -spacing(2),
     marginBottom: -spacing(3),
     marginLeft: -spacing(3),
     marginRight: -spacing(3),
   },
-  meta: {
-    backgroundColor: palette.background.default,
-    marginTop: -spacing(2),
-    marginBottom: spacing(2),
-    marginLeft: -spacing(3),
-    marginRight: -spacing(3),
-    paddingRight: spacing(3),
-    paddingLeft: spacing(3),
-    paddingTop: spacing(2),
-    paddingBottom: spacing(2),
-  },
+  meta: { backgroundColor: palette.background.default },
 }));
 
 const initialValues: Partial<Video> = {
@@ -123,7 +107,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
 
     const rawParams = match[1].split('&');
 
-    const videoParams:Map<string, string> = new Map();
+    const videoParams: Map<string, string> = new Map();
     rawParams.forEach((params) => {
       const [key, value] = params.split('=');
       videoParams.set(key, value);
@@ -135,7 +119,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
   };
 
   const fetchYoutubeData = async () => {
-    if(!youtubeVideoId) return;
+    if (!youtubeVideoId) return;
     const ytData = await actions.videos.getYoutubeData(youtubeVideoId);
     if (isError(ytData)) return;
     setVideoData({ ...videoData, ...ytData });
@@ -210,7 +194,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
         <Formik
           enableReinitialize={true}
           initialValues={videoData}
-          onSubmit={async (values) =>  await submit(values)}
+          onSubmit={async (values) => await submit(values)}
           validationSchema={formValidation}
         >
           {({
@@ -231,7 +215,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
               )}
 
               <DialogContent dividers>
-                <Box className={classes.meta}>
+                <Box mt={-2} mb={2} mx={-3} py={2} px={3}>
                   <Meta
                     handleRefresh={fetchYoutubeData}
                     values={values}
@@ -265,7 +249,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, videoId }) => {
                 handleNo={() => setDeleteDialogOpen(false)}
                 handleYes={() => {
                   setDeleteDialogOpen(false);
-                  submitDelete()
+                  submitDelete();
                 }}
                 isSubmitting={isSubmitting}
               />
