@@ -1,9 +1,7 @@
 {
-  "bracketSpacing": true,
-  "printWidth": 80,
+  "printWidth": 110,
   "react/jsx-max-props-per-line": [1, {
     "when": "always"
   }],
-  "singleQuote": true,
-  "tabs": true
+  "singleQuote": true
 }
