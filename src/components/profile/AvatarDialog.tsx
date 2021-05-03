@@ -17,10 +17,10 @@ import { DropzoneAreaBase } from 'material-ui-dropzone';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import { APP_URL } from '../../config/config.js';
-import { useApp } from '../../overmind';
-import { NotificationType } from '../../types';
-import { isError } from '../../util/utilities';
+import { APP_URL } from '@src/config/config.js';
+import { useApp } from '@src/overmind';
+import { NotificationType } from '@src/types';
+import { isError } from '@src/util/utilities';
 
 interface AvatarDialogProps {
   handleClose: () => void;

@@ -2,8 +2,8 @@ import { makeStyles, MenuItem, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../../../overmind';
-import { HandleFilterType } from '../../../../types';
+import { useApp } from '@src/overmind';
+import { HandleFilterType } from '@src/types';
 
 interface FilterEntityCategoryProps {
   className: string;

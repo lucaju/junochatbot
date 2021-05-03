@@ -11,8 +11,8 @@ import {
 import { DateTime } from 'luxon';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Story } from '../../../../types';
-import { getIcon } from '../../../../util/icons';
+import { Story } from '@src/types';
+import { getIcon } from '@src/util/icons';
 import FeaturedImage from './FeaturedImage';
 
 interface StoryCardProps {

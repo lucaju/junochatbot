@@ -8,7 +8,7 @@ import {
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Story as StoryType } from '../../../../types';
+import { Story as StoryType } from '@src/types';
 
 interface StoryProps {
   errors: FormikErrors<StoryType>;

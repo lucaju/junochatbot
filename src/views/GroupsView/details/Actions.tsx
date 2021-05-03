@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { UserGroup } from '../../../types';
+import { UserGroup } from '@src/types';
 
 interface ActionsProps {
   dirty: boolean;

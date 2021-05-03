@@ -10,7 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Part as PartType, TrainingPhrase } from '../../../../../types';
+import { Part as PartType, TrainingPhrase } from '@src/types';
 import EntitiesMenu from './EntitiesMenu';
 import Part from './Part';
 import { SelectionDataType, useSnapSelectionToWord, useUpdateParts } from './parts';

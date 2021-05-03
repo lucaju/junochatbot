@@ -9,11 +9,11 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import Logo from '../../components/Logo';
-import Page from '../../components/Page';
-import { useApp } from '../../overmind';
-import type { Credential, ErrorMessage as ErrorMessageType } from '../../types';
-import { isError } from '../../util/utilities';
+import Logo from '@src/components/Logo';
+import Page from '@src/components/Page';
+import { useApp } from '@src/overmind';
+import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
+import { isError } from '@src/util/utilities';
 import ErrorMessage from './components/ErrorMessage';
 import LoginForm from './components/LoginForm';
 

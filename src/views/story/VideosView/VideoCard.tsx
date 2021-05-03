@@ -10,7 +10,7 @@ import {
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useState, useEffect } from 'react';
-import { Video } from '../../../types';
+import { Video } from '@src/types';
 
 interface VideoCardProps {
   className: string;

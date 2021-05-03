@@ -1,7 +1,7 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import NfcRoundedIcon from '@material-ui/icons/NfcRounded';
 import React, { FC } from 'react';
-import type { Parameter as ParameterType } from '../../../../types';
+import type { Parameter as ParameterType } from '@src/types';
 
 interface ParameterProps {
   parameter: ParameterType;

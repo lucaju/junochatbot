@@ -2,12 +2,12 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles } fr
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import DeleteDialog from '../../../../components/DeleteDialog';
-import { useApp } from '../../../../overmind';
+import DeleteDialog from '@src/components/DeleteDialog';
+import { useApp } from '@src/overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
-import { NotificationType, Intent } from '../../../../types';
-import { isError } from '../../../../util/utilities';
+import { NotificationType, Intent } from '@src/types';
+import { isError } from '@src/util/utilities';
 import Header from './Header';
 import Contexts from './contexts';
 import Training from './training';

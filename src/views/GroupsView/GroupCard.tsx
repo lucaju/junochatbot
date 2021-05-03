@@ -2,7 +2,7 @@ import { Card, CardContent, makeStyles, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { UserGroup } from '../../types';
+import { UserGroup } from '@src/types';
 
 interface GroupCardProps {
   className: string;

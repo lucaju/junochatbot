@@ -18,10 +18,10 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { Formik } from 'formik';
 import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../overmind';
+import { useApp } from '@src/overmind';
 import * as Yup from 'yup';
-import { isError } from '../../util/utilities';
-import { Credential, NotificationType } from '../../types';
+import { isError } from '@src/util/utilities';
+import { Credential, NotificationType } from '@src/types';
 
 interface PasswordDialogProps {
   handleClose: () => void;

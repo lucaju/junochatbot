@@ -1,4 +1,4 @@
-import type { Video, Tag } from '../../types';
+import type { Video, Tag } from '@src/types';
 
 type State = {
   collection: Video[];

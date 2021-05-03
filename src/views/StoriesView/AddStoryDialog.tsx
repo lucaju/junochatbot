@@ -15,15 +15,15 @@ import clsx from 'clsx';
 import { Formik } from 'formik';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../overmind';
+import { useApp } from '@src/overmind';
 import * as Yup from 'yup';
-import { NotificationType, Story } from '../../types';
-import { isError } from '../../util/utilities';
+import { NotificationType, Story } from '@src/types';
+import { isError } from '@src/util/utilities';
 
 interface AddStoryDialogProps {
   open: boolean;
   handleClose: () => void;
-  triggerEditStory: (value?: number) => void;
+  triggerEditStory: (value?: number | undefined) => void;
 }
 
 const useStyles = makeStyles(({ spacing, palette }) => ({

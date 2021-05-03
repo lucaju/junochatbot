@@ -2,7 +2,7 @@ import { Box, makeStyles } from '@material-ui/core';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Intent } from '../../../../../types';
+import { Intent } from '@src/types';
 
 interface ContextsProps {
   errors: FormikErrors<Partial<Intent>>;

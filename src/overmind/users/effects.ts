@@ -1,5 +1,5 @@
-import { API_URL } from '../../config/config.js';
-import type { ErrorMessage, User, UserGroup } from '../../types';
+import { API_URL } from '@src/config/config.js';
+import type { ErrorMessage, User, UserGroup } from '@src/types';
 
 type ResponseUploadAvatar = {
   fileName: string;

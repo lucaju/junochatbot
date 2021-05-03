@@ -1,4 +1,4 @@
-import { Part } from '../../../../../types';
+import { Part } from '@src/types';
 
 export type SelectionDataType = {
   startOffset: number;

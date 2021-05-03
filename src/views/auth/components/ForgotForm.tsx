@@ -9,7 +9,7 @@ import { Formik } from 'formik';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import type { Credential } from '../../../types';
+import type { Credential } from '@src/types';
 
 interface ForgotFormProps {
   requestPassword: (credential: Credential) => void;

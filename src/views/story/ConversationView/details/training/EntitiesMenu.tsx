@@ -1,6 +1,6 @@
 import { makeStyles, Menu, MenuItem } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
-import { useApp } from '../../../../../overmind';
+import { useApp } from '@src/overmind';
 
 interface EntitiesMenuProps {
   handleProcessSelection: (value: string) => void;

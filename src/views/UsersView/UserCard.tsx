@@ -12,8 +12,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useState } from 'react';
-import { APP_URL } from '../../config/config.js';
-import { User } from '../../types';
+import { APP_URL } from '@src/config/config.js';
+import { User } from '@src/types';
 
 interface UserCarddProps {
   className: string;

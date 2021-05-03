@@ -1,6 +1,6 @@
 import { Context } from 'overmind';
-import { isError, sortBy } from '../../util/utilities';
-import type { ErrorMessage, Video, Tag } from '../../types';
+import { isError, sortBy } from '@src/util/utilities';
+import type { ErrorMessage, Video, Tag } from '@src/types';
 
 export const getVideos = async ({
   state,

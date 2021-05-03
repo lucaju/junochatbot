@@ -2,7 +2,7 @@ import { makeStyles, MenuItem, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../overmind';
+import { useApp } from '@src/overmind';
 
 interface FilterGroupProps {
   className: string;

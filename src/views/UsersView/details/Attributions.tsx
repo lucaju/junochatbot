@@ -2,8 +2,8 @@ import { Grid, makeStyles, MenuItem, TextField } from '@material-ui/core';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../../overmind';
-import { User, UserGroup } from '../../../types';
+import { useApp } from '@src/overmind';
+import { User, UserGroup } from '@src/types';
 
 interface AttributionsProps {
   errors: FormikErrors<User>;

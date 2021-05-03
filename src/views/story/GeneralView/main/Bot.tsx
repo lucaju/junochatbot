@@ -9,9 +9,9 @@ import clsx from 'clsx';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../../../overmind';
-import { Story } from '../../../../types';
-import { getIcon } from '../../../../util/icons';
+import { useApp } from '@src/overmind';
+import { Story } from '@src/types';
+import { getIcon } from '@src/util/icons';
 import BotDelaySlider from './BotDelaySlider';
 
 interface BotProps {

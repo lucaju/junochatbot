@@ -1,6 +1,6 @@
-import mock from '../../../test/mockData';
-import { API_URL } from '../../config/config';
-import type { Entity, ErrorMessage, Intent } from '../../types';
+import mock from '@src/../test/mockData';
+import { API_URL } from '@src/config/config';
+import type { Entity, ErrorMessage, Intent } from '@src/types';
 
 const MOCK_UP = true;
 

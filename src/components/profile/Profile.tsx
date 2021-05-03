@@ -23,12 +23,12 @@ import LockIcon from '@material-ui/icons/Lock';
 import React, { FC, ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../../overmind';
+import { useApp } from '@src/overmind';
 import AvatarDialog from './AvatarDialog';
 import PasswordDialog from './PasswordDialog';
-import { APP_URL } from '../../config/config.js';
-import { UserGroup } from '../../types';
-import { isError } from '../../util/utilities';
+import { APP_URL } from '@src/config/config.js';
+import { UserGroup } from '@src/types';
+import { isError } from '@src/util/utilities';
 
 interface ProfileProps {
   anchor: HTMLDivElement;

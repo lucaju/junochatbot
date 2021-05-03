@@ -15,9 +15,9 @@ import { DateTime } from 'luxon';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getIcon } from '../../util/icons';
-import { Story } from '../../types';
-import { APP_URL } from '../../config/config.js';
+import { getIcon } from '@src/util/icons';
+import { Story } from '@src/types';
+import { APP_URL } from '@src/config/config.js';
 
 interface UserCarddProps {
   className: string;

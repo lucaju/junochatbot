@@ -5,8 +5,8 @@ import { FormikErrors, FormikTouched, useField } from 'formik';
 import { json } from 'overmind';
 import React, { ChangeEvent, FC, FocusEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../../../overmind';
-import { Video } from '../../../../types';
+import { useApp } from '@src/overmind';
+import { Video } from '@src/types';
 
 interface ExtraProps {
   errors: FormikErrors<Video>;

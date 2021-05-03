@@ -2,10 +2,10 @@ import { Box, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import React, { FC, useEffect, useState } from 'react';
-import NoContent from '../../../components/NoContent';
-import { useApp } from '../../../overmind';
+import NoContent from '@src/components/NoContent';
+import { useApp } from '@src/overmind';
 import VideoCard from './VideoCard';
-import { Tag, Video } from '../../../types';
+import { Tag, Video } from '@src/types';
 
 interface CollectionProps {
   handleDetailOpen: (value: number) => void;

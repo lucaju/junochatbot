@@ -4,7 +4,7 @@ import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { APP_URL } from '../../../../config/config.js';
+import { APP_URL } from '@src/config/config.js';
 
 interface FeaturedImageProps {
   name: string;

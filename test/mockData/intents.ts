@@ -1,5 +1,5 @@
 
-import { Intent, VideoMessageSelect } from '../../src/types';
+import { Intent, VideoMessageSelect } from '@src/types';
 
 export const dataIntents: Intent[] = [
 	{

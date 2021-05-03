@@ -9,16 +9,16 @@ import {
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import DeleteDialog from '../../../../components/DeleteDialog';
-import { useApp } from '../../../../overmind';
+import DeleteDialog from '@src/components/DeleteDialog';
+import { useApp } from '@src/overmind';
 import * as Yup from 'yup';
 import Actions from './Actions';
 import Extra from './Extra';
 import Meta from './Meta';
 import Player from './Player';
 import Source from './Source';
-import { NotificationType, Video } from '../../../../types';
-import { isError } from '../../../../util/utilities';
+import { NotificationType, Video } from '@src/types';
+import { isError } from '@src/util/utilities';
 
 interface DetailsProps {
   open: boolean;

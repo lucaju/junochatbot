@@ -2,8 +2,8 @@ import { makeStyles, MenuItem, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '../../../overmind';
-import { HandleFilterType, RoleType } from '../../../types';
+import { useApp } from '@src/overmind';
+import { HandleFilterType, RoleType } from '@src/types';
 
 interface FilterStatusProps {
   className: string;

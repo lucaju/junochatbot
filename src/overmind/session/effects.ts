@@ -1,6 +1,6 @@
 import base64 from 'base-64';
-import { API_URL } from '../../config/config.js';
-import type { Credential, ErrorMessage, User, UserGroup } from '../../types';
+import { API_URL } from '@src/config/config.js';
+import type { Credential, ErrorMessage, User, UserGroup } from '@src/types';
 
 type ResponseToken = {
   token: string;

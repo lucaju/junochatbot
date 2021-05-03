@@ -10,10 +10,10 @@ import { json } from 'overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import DeleteDialog from '../../../components/DeleteDialog';
-import { useApp } from '../../../overmind';
-import { NotificationType, UserGroup } from '../../../types';
-import { isError } from '../../../util/utilities';
+import DeleteDialog from '@src/components/DeleteDialog';
+import { useApp } from '@src/overmind';
+import { NotificationType, UserGroup } from '@src/types';
+import { isError } from '@src/util/utilities';
 import Actions from './Actions';
 import Fields from './Fields';
 

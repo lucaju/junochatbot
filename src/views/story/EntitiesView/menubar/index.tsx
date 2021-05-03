@@ -1,8 +1,8 @@
 import { Box, makeStyles, Toolbar } from '@material-ui/core';
 import React, { FC } from 'react';
 import FilterEntityCategory from './FilterEntityCategory';
-import SearchBox from '../../../../components/menubar/SearchBox';
-import { HandleFilterType } from '../../../../types';
+import SearchBox from '@src/components/menubar/SearchBox';
+import { HandleFilterType } from '@src/types';
 
 interface MenuBarProps {
   handleSearch: (value: string) => void;

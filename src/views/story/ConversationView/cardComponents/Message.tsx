@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import MessageIcon from '@material-ui/icons/Message';
 import TheatersIcon from '@material-ui/icons/Theaters';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
-import type { Message as MesasgeType } from '../../../../types';
+import type { Message as MesasgeType } from '@src/types';
 
 interface MessageProps {
   message: MesasgeType;

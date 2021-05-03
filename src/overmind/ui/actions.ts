@@ -1,5 +1,5 @@
 import { Context } from 'overmind';
-import { NotificationType } from '../../types';
+import { NotificationType } from '@src/types';
 
 export const setPageTitle = ({ state }: Context, title: string) => {
   state.ui.pageTitle = title;

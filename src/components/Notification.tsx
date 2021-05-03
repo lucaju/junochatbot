@@ -1,7 +1,7 @@
 import { makeStyles, Slide, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { SyntheticEvent } from 'react';
-import { useApp } from '../overmind';
+import { useApp } from '@src/overmind';
 
 const useStyles = makeStyles(() => ({
   firstLetterUppercase: {

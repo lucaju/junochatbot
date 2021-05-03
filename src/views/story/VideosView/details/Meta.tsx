@@ -12,7 +12,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { DateTime, Duration } from 'luxon';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Video } from '../../../../types';
+import { Video } from '@src/types';
 
 interface MetaProps {
   handleRefresh: () => void;

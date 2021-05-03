@@ -2,11 +2,11 @@ import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import FilterGroup from '../../../components/menubar/FilterGroup';
-import SearchBox from '../../../components/menubar/SearchBox';
-import { useApp } from '../../../overmind';
+import FilterGroup from '@src/components/menubar/FilterGroup';
+import SearchBox from '@src/components/menubar/SearchBox';
+import { useApp } from '@src/overmind';
 import FilterRole from './FilterRole';
-import { HandleFilterType } from '../../../types';
+import { HandleFilterType } from '@src/types';
 
 interface MenuBarProps {
   handleDetailOpen: () => void;

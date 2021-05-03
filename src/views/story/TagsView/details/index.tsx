@@ -10,10 +10,10 @@ import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import DeleteDialog from '../../../../components/DeleteDialog';
-import { useApp } from '../../../../overmind';
-import { NotificationType, Tag } from '../../../../types';
-import { isError } from '../../../../util/utilities';
+import DeleteDialog from '@src/components/DeleteDialog';
+import { useApp } from '@src/overmind';
+import { NotificationType, Tag } from '@src/types';
+import { isError } from '@src/util/utilities';
 import Actions from './Actions';
 
 interface DetailsProps {

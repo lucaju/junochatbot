@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import React, { FC } from 'react';
-import { Story } from '../../../../types';
+import { Story } from '@src/types';
 import StoryCard from './StoryCard';
 
 interface SideBarProps {

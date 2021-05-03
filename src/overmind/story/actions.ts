@@ -1,6 +1,6 @@
 import { Context } from 'overmind';
-import { isError } from '../../util/utilities';
-import type { ErrorMessage, Story } from '../../types';
+import { isError } from '@src/util/utilities';
+import type { ErrorMessage, Story } from '@src/types';
 
 export const getStories = async ({
   state,

@@ -4,7 +4,7 @@ import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import UserAvatar from './UserAvatar';
-import { User } from '../../../types';
+import { User } from '@src/types';
 
 interface PersonalProps {
   errors: FormikErrors<User>;

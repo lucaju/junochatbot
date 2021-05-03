@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
-import { Story as StoryType } from '../../../../types';
+import { Story as StoryType } from '@src/types';
 import Bot from './Bot';
 import Story from './Story';
 

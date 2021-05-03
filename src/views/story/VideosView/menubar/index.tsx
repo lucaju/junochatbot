@@ -2,8 +2,8 @@ import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import SearchBox from '../../../../components/menubar/SearchBox';
-import { HandleFilterType } from '../../../../types';
+import SearchBox from '@src/components/menubar/SearchBox';
+import { HandleFilterType } from '@src/types';
 import FilterTag from './FilterTag';
 
 interface MenuBarProps {

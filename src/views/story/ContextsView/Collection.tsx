@@ -2,9 +2,9 @@ import { Box, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import React, { FC, useEffect, useState } from 'react';
-import NoContent from '../../../components/NoContent';
-import { useApp } from '../../../overmind';
-import { ContextRelation } from '../../../types';
+import NoContent from '@src/components/NoContent';
+import { useApp } from '@src/overmind';
+import { ContextRelation } from '@src/types';
 import ContextCard from './ContextCard';
 
 interface CollectionProps {

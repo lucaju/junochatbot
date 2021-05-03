@@ -2,8 +2,8 @@ import { makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import TopBar from '../../components/TopBar';
-import { useApp } from '../../overmind';
+import TopBar from '@src/components/TopBar';
+import { useApp } from '@src/overmind';
 import NavBar from './NavBar';
 
 interface AppLayoutProps {

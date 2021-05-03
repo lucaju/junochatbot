@@ -3,7 +3,7 @@ import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Video } from '../../../../types';
+import { Video } from '@src/types';
 
 interface ActionsProps {
   dirty: boolean;

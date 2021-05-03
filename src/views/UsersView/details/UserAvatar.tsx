@@ -4,7 +4,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { useField } from 'formik';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import React, { FC, useEffect, useState } from 'react';
-import { APP_URL } from '../../../config/config.js';
+import { APP_URL } from '@src/config/config.js';
 
 interface UserAvatarProps {
   name: string;

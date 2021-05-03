@@ -9,7 +9,7 @@ import {
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { ContextRelation } from '../../../types';
+import { ContextRelation } from '@src/types';
 
 interface ContextCardProps {
   className: string;

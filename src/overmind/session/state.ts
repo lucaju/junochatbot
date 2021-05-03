@@ -1,5 +1,5 @@
 import { derived } from 'overmind';
-import type { User } from '../../types';
+import type { User } from '@src/types';
 
 type State = {
   user: User | null;

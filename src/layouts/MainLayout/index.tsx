@@ -1,8 +1,8 @@
 import { Container, makeStyles } from '@material-ui/core';
 import React, { FC, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-// import TopBar from '../../components/TopBar';
-import { useApp } from '../../overmind';
+// import TopBar from '@src/components/TopBar';
+import { useApp } from '@src/overmind';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {

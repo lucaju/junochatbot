@@ -1,7 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
 import React, { FC } from 'react';
-import type { Context as ContextType } from '../../../../types';
+import type { Context as ContextType } from '@src/types';
 import Context from './Context';
 
 interface ContextProps {

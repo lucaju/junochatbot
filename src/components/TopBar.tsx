@@ -12,8 +12,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import React, { FC, MouseEvent, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { APP_URL } from '../config/config.js';
-import { useApp } from '../overmind';
+import { APP_URL } from '@src/config/config.js';
+import { useApp } from '@src/overmind';
 import Logo from './Logo';
 import Profile from './profile/Profile';
 

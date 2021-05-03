@@ -1,4 +1,4 @@
-import { Entity } from '../../src/types';
+import { Entity } from '@src/types';
 
 export const dataEntities: Entity[] = [
   {

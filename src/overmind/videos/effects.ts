@@ -1,5 +1,5 @@
-import { API_URL } from '../../config/config.js';
-import type { ErrorMessage, Video, Tag } from '../../types';
+import { API_URL } from '@src/config/config.js';
+import type { ErrorMessage, Video, Tag } from '@src/types';
 
 export const api = {
   getVideos: async (

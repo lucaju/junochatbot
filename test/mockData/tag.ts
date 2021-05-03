@@ -1,4 +1,4 @@
-import type { Tag } from '../../src/types';
+import type { Tag } from '@src/types';
 
 export const dataTags: Tag[] = [
   { id: 1, name: 'Intro' },

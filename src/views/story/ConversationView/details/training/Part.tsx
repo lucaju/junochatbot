@@ -1,7 +1,7 @@
 import { Box, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, MouseEvent } from 'react';
-import { Part as PartType } from '../../../../../types';
+import { Part as PartType } from '@src/types';
 
 interface PartProps {
   type?: 'empty' | 'text' | 'semantic';

@@ -1,4 +1,4 @@
-import { RoleType, Story } from '../../src/types';
+import { RoleType, Story } from '@src/types';
 
 export const dataStories: Story[] = [
   {

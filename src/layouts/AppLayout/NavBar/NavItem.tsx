@@ -1,6 +1,6 @@
 import { Box, Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import { useApp } from '../../../overmind';
+import { useApp } from '@src/overmind';
 import React, { FC } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 

@@ -2,9 +2,9 @@ import { Box, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import React, { FC, useEffect, useState } from 'react';
-import NoContent from '../../../components/NoContent';
-import { useApp } from '../../../overmind';
-import { Entity } from '../../../types';
+import NoContent from '@src/components/NoContent';
+import { useApp } from '@src/overmind';
+import { Entity } from '@src/types';
 import EntityCard from './EntityCard';
 
 interface CollectionProps {

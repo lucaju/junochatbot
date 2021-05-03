@@ -8,7 +8,7 @@ import {
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Entity } from '../../../types';
+import { Entity } from '@src/types';
 
 interface EntityCardProps {
   className: string;

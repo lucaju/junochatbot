@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Container, Typography, makeStyles } from '@material-ui/core';
-import Page from '../../components/Page';
-import Logo from '../../components/Logo';
+import Page from '@src/components/Page';
+import Logo from '@src/components/Logo';
 
 const useStyles = makeStyles((theme) => ({
   root: {

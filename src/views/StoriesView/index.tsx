@@ -2,10 +2,10 @@ import { Box, Container, makeStyles } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Page from '../../components/Page';
-import { useApp } from '../../overmind';
-import { HandleFilterType } from '../../types';
-import AddStoryDialog from './AddStoryDialog';
+import Page from '@src/components/Page';
+import { useApp } from '@src/overmind';
+import { HandleFilterType } from '@src/types';
+// import AddStoryDialog from './AddStoryDialog';
 import Collection from './Collection';
 import MenuBar from './menubar';
 import NoStories from './NoStories';
@@ -69,11 +69,11 @@ const Stories: FC = () => {
   return (
     <Page className={classes.root} title={state.ui.pageTitle}>
       <Container maxWidth={false}>
-        <AddStoryDialog
+        {/* <AddStoryDialog
           open={addStoryOpen}
           handleClose={handleAddDiaglogClose}
           triggerEditStory={triggerEditStory}
-        />
+        /> */}
         {!hasStories ? (
           <NoStories openDialog={handleAddDialogOpen} />
         ) : (

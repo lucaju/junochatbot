@@ -1,4 +1,4 @@
-import { RoleType, User } from '../../src/types';
+import { RoleType, User } from '@src/types';
 
 export const dataUsers: User[] = [
   {

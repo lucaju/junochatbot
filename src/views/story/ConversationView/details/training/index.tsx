@@ -4,7 +4,7 @@ import { useField } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
-import { TrainingPhrase } from '../../../../../types';
+import { TrainingPhrase } from '@src/types';
 import Phrase from './Phrase';
 
 interface TrainingProps {

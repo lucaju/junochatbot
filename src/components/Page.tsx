@@ -1,6 +1,6 @@
 import React, { FC, forwardRef } from 'react';
 import { Helmet } from 'react-helmet';
-import { useApp } from '../overmind';
+import { useApp } from '@src/overmind';
 
 interface PageProps {
   title?: string;

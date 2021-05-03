@@ -2,7 +2,7 @@ import { Card, CardContent, makeStyles, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Tag } from '../../../types';
+import { Tag } from '@src/types';
 
 interface TagCardProps {
   className: string;

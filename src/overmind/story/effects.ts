@@ -1,5 +1,5 @@
-import { API_URL } from '../../config/config.js';
-import type { ErrorMessage, Story } from '../../types';
+import { API_URL } from '@src/config/config.js';
+import type { ErrorMessage, Story } from '@src/types';
 
 type ResponseUploadImage = {
   fileName: string;

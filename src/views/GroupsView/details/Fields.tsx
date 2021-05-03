@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { UserGroup } from '../../../types';
+import { UserGroup } from '@src/types';
 
 interface FieldsProps {
   errors: FormikErrors<UserGroup>;

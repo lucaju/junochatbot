@@ -10,12 +10,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import React, { FC, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import Logo from '../../../components/Logo';
-import { useApp } from '../../../overmind';
+import Logo from '@src/components/Logo';
+import { useApp } from '@src/overmind';
 import Menu from './Menu';
 import { adminMenu } from './menus/adminMenu';
 import { storyMenu } from './menus/storyMenu';
-import { RoleType } from '../../../types';
+import { RoleType } from '@src/types';
 
 interface NavBarProps {
   compactMode?: boolean;

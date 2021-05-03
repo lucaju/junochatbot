@@ -3,7 +3,7 @@ import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import clsx from 'clsx';
 import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Intent } from '../../../types';
+import { Intent } from '@src/types';
 import Contexts from './cardComponents/Contexts';
 import Message from './cardComponents/Message';
 import Paramenter from './cardComponents/Parameter';

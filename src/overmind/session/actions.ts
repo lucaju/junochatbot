@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { Context } from 'overmind';
-import { isError } from '../../util/utilities';
-import type { Credential, ErrorMessage, User } from '../../types';
+import { isError } from '@src/util/utilities';
+import type { Credential, ErrorMessage, User } from '@src/types';
 
 export const getUserToken = (): string | undefined => Cookies.get('JunoToken');
 

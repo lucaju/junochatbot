@@ -1,5 +1,5 @@
 
-import { Language , Notification, NotificationType } from '../../types';
+import { Language , Notification, NotificationType } from '@src/types';
 
 type State = {
   appName: string;

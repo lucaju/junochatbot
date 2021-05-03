@@ -1,4 +1,4 @@
-import { RoleType, User, UserGroup } from '../../types';
+import { RoleType, User, UserGroup } from '@src/types';
 
 type State = {
   list: User[];

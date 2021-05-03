@@ -4,13 +4,13 @@ import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
-import Logo from '../../components/Logo';
-import Page from '../../components/Page';
-import { useApp } from '../../overmind';
+import Logo from '@src/components/Logo';
+import Page from '@src/components/Page';
+import { useApp } from '@src/overmind';
 import ErrorMessage from './components/ErrorMessage';
 import ResetPasswordForm from './components/ResetPasswordForm';
-import { isError } from '../../util/utilities';
-import type { Credential, ErrorMessage as ErrorMessageType } from '../../types';
+import { isError } from '@src/util/utilities';
+import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
   root: {

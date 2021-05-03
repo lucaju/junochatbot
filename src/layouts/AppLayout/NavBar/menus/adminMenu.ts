@@ -2,7 +2,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import { MenuType } from '../Menu';
-import { RoleType } from '../../../../types';
+import { RoleType } from '@src/types';
 
 export const adminMenu: MenuType[] = [
   {

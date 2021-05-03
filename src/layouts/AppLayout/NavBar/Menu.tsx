@@ -1,9 +1,9 @@
 import { Box, List, makeStyles } from '@material-ui/core';
 import React, { FC } from 'react';
 import NavItem from './NavItem';
-import { useApp } from '../../../overmind';
+import { useApp } from '@src/overmind';
 import { useTranslation } from 'react-i18next';
-import { RoleType } from '../../../types';
+import { RoleType } from '@src/types';
 
 export type MenuType = {
   title: string;

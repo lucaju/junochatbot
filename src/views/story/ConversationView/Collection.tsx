@@ -5,9 +5,9 @@ import NfcRoundedIcon from '@material-ui/icons/NfcRounded';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { MuuriComponent } from 'muuri-react';
 import React, { FC, useEffect, useState } from 'react';
-import NoContent from '../../../components/NoContent';
-import { useApp } from '../../../overmind';
-import { Intent } from '../../../types';
+import NoContent from '@src/components/NoContent';
+import { useApp } from '@src/overmind';
+import { Intent } from '@src/types';
 import IntentCard from './IntentCard';
 
 interface CollectionProps {
