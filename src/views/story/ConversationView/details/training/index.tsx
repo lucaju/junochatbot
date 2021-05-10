@@ -65,7 +65,7 @@ const Training: FC<TrainingProps> = ({ fieldName }) => {
 
   return (
     <Box>
-      <Box display="flex" flexDirection="column" alignItems="center" mt={1.5} mb={1.5}>
+      <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
         <Typography variant="caption" gutterBottom>
           Phrases you can expect from user, that will trigger the intent.
         </Typography>
