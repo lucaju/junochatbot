@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, makeStyles } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -42,7 +42,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const classes = useStyles();
   const { actions } = useApp();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
   const [intentData, setintentData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -138,7 +138,16 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           }}
           validationSchema={formValidation}
         >
-          {({ errors, dirty, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+          {({
+            errors,
+            dirty,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values,
+          }) => (
             <form onSubmit={handleSubmit}>
               <DialogTitle className={classes.header}>
                 <Header
@@ -154,11 +163,8 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
               <DialogContent dividers className={classes.dialogContent}>
                 {activeTab === 0 ? (
                   <Contexts
-                    errors={errors}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                    touched={touched}
-                    values={values}
+                    inputContextField="inputContextNames"
+                    outputContextField="outputContexts"
                   />
                 ) : activeTab === 1 ? (
                   <Training fieldName="trainingPhrases" />

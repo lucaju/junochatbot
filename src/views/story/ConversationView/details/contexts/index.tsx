@@ -1,28 +1,35 @@
-import { Box, makeStyles } from '@material-ui/core';
-import { FormikErrors, FormikTouched } from 'formik';
-import React, { ChangeEvent, FC, FocusEvent, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Intent } from '@src/types';
+import { Grid, makeStyles } from '@material-ui/core';
+import React, { FC, useState } from 'react';
+import Collection from './Collection';
 
 interface ContextsProps {
-  errors: FormikErrors<Partial<Intent>>;
-  handleBlur: (e: FocusEvent<any>) => void;
-  handleChange: (e: ChangeEvent<any>) => void;
-  touched: FormikTouched<Partial<Intent>>;
-  values: Partial<Intent>;
+  inputContextField: string;
+  outputContextField: string;
 }
 
 const useStyles = makeStyles(() => ({
-  paperTab: {
-    flexGrow: 1,
-  },
+  root: {},
 }));
 
-const Contexts: FC<ContextsProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
+const Contexts: FC<ContextsProps> = ({ inputContextField, outputContextField }) => {
   const classes = useStyles();
-  const { t } = useTranslation(['users']);
+  const [crossContext, setCrossContext] = useState<string | undefined>();
 
-  return <>Contexts</>;
+  return (
+    <Grid container direction="row" justify="space-between" spacing={3}>
+      <Grid item xs={6}>
+        <Collection type="input" fieldName={inputContextField} setCrossContext={setCrossContext} />
+      </Grid>
+      <Grid item xs={6}>
+        <Collection
+          type="output"
+          fieldName={outputContextField}
+          setCrossContext={setCrossContext}
+          crossContext={crossContext}
+        />
+      </Grid>
+    </Grid>
+  );
 };
 
 export default Contexts;

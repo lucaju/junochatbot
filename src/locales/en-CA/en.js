@@ -64,7 +64,10 @@ export default {
 	userGroups: 'User Groups'
   },
   intents: {
+	add: 'add',
 	addPhrase: 'Add Phrase',
+	addInputContext: 'Add Input Context',
+	addOutputContext: 'Add Output Context',
 	createIntent: 'Create intent',
 	editIntent: 'Edit intent',
 	intentCreated: 'Intent Created',

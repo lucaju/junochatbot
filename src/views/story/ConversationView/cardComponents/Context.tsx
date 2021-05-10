@@ -12,7 +12,7 @@ const useStyles = makeStyles(({ palette }) => ({
   content: { backgroundColor: palette.action.hover },
 }));
 
-const Context: FC<ContextProps> = ({ name, type = 'inpout', lifespan = 0 }) => {
+const Context: FC<ContextProps> = ({ name, type = 'input', lifespan = 0 }) => {
   const classes = useStyles();
 
   const splitName = name.split('/');
