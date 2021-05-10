@@ -212,6 +212,7 @@ type followupIntentInfo = {
   parentFollowupIntentName: string;
 };
 
+//https://cloud.google.com/dialogflow/es/docs/reference/rest/v2/projects.agent.intents
 export type Intent = {
   name?: string;
   displayName: string;
