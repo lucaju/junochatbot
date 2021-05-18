@@ -1,13 +1,10 @@
-import { Box, Grid, makeStyles, Typography } from '@material-ui/core';
-import FlareRoundedIcon from '@material-ui/icons/FlareRounded';
-import ForumRoundedIcon from '@material-ui/icons/ForumRounded';
-import NfcRoundedIcon from '@material-ui/icons/NfcRounded';
+import { Box, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { MuuriComponent } from 'muuri-react';
-import React, { FC, useEffect, useState } from 'react';
 import NoContent from '@src/components/NoContent';
 import { useApp } from '@src/overmind';
 import { Intent } from '@src/types';
+import { MuuriComponent } from 'muuri-react';
+import React, { FC, useEffect, useState } from 'react';
 import IntentCard from './IntentCard';
 
 interface CollectionProps {
@@ -37,7 +34,12 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const Collection: FC<CollectionProps> = ({ handleDetailOpen, filters, searchQuery, isLoading = false }) => {
+const Collection: FC<CollectionProps> = ({
+  handleDetailOpen,
+  filters,
+  searchQuery,
+  isLoading = false,
+}) => {
   const classes = useStyles();
   const { state } = useApp();
   const [filteredItems, setFilteredItems] = useState<Intent[]>([]);
