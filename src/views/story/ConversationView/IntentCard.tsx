@@ -47,7 +47,7 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
 
   //Use effects to refrech Muuri after elements sets its size
   useEffect(() => {
-    setSize(cardRef.current.offsetWidth);
+    setSize(cardRef.current.offsetHeight);
   }, []);
 
   useRefresh([size]);
