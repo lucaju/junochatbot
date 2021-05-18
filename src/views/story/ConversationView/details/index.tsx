@@ -42,7 +42,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const classes = useStyles();
   const { actions } = useApp();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(3);
   const [intentData, setintentData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -177,13 +177,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
                     values={values}
                   />
                 ) : (
-                  <Responses
-                    errors={errors}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                    touched={touched}
-                    values={values}
-                  />
+                  <Responses fieldName="messages" />
                 )}
               </DialogContent>
               <DialogActions>

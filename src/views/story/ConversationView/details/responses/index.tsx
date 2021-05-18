@@ -1,28 +1,74 @@
-import { Box, makeStyles } from '@material-ui/core';
-import { FormikErrors, FormikTouched } from 'formik';
-import React, { ChangeEvent, FC, FocusEvent, useState } from 'react';
+import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { Message as MessageType, Text, Payload } from '@src/types';
+import { useField } from 'formik';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Intent } from '@src/types';
+import Collection from './Collection';
 
 interface ResponsesProps {
-  errors: FormikErrors<Partial<Intent>>;
-  handleBlur: (e: FocusEvent<any>) => void;
-  handleChange: (e: ChangeEvent<any>) => void;
-  touched: FormikTouched<Partial<Intent>>;
-  values: Partial<Intent>;
+  fieldName: string;
 }
 
 const useStyles = makeStyles(() => ({
-  paperTab: {
-    flexGrow: 1,
-  },
+  uppercase: { textTransform: 'uppercase' },
 }));
 
-const Responses: FC<ResponsesProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
+const Responses: FC<ResponsesProps> = ({ fieldName }) => {
   const classes = useStyles();
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation(['intents']);
+  const [, meta, helpers] = useField(fieldName);
+  const { value } = meta;
+  const { setValue } = helpers;
+  const [messageList, setMessageList] = useState<MessageType[]>([] as MessageType[]);
 
-  return <>Responses</>;
+  useEffect(() => {
+    setMessageList(value);
+    return () => {};
+  }, [value]);
+
+  const handleUpdateValue = (messages: MessageType[]) => {
+    setValue(messages);
+  };
+
+  const addTextMessage = () => {
+    if (unusedLastSlot()) return;
+    const freshTextMessage: Text = { text: { text: [''] } };
+    setMessageList([...messageList, freshTextMessage]);
+  };
+
+  const addVideoMessage = () => {
+    if (unusedLastSlot()) return;
+    const freshPayloadtMessage: Payload = { payload: { type: 'tag', source: [-1] } };
+    setMessageList([...messageList, freshPayloadtMessage]);
+  };
+
+  const unusedLastSlot = () => {
+    if (messageList.length === 0) return false;
+    const last = messageList[messageList.length - 1];
+    if ('text' in last && last.text.text?.[0] === '') return true;
+    if ('payload' in last && last.payload.source[0] === -1) return true;
+    return false;
+  };
+
+  return (
+    <Box>
+      <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
+        <Typography variant="h6" className={classes.uppercase}>
+          {t('response')}
+        </Typography>
+        <Box display="flex" flexDirection="row" my={1.5}>
+          <Button color="primary" startIcon={<AddCircleOutlineIcon />} onClick={addTextMessage}>
+            {t('addText')}
+          </Button>
+          <Button color="primary" startIcon={<AddCircleOutlineIcon />} onClick={addVideoMessage}>
+            {t('addVideo')}
+          </Button>
+        </Box>
+      </Box>
+      <Collection handleUpdateMessages={handleUpdateValue} messageList={messageList} />
+    </Box>
+  );
 };
 
 export default Responses;
