@@ -7,7 +7,7 @@ import { Tag, Video } from '@src/types';
 import clsx from 'clsx';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PayloadComp } from './collection';
+import { PayloadComp } from './Collection';
 
 interface VideoMessageProps {
   index: string;

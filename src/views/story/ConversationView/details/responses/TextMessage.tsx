@@ -6,7 +6,7 @@ import ShuffleIcon from '@material-ui/icons/Shuffle';
 import clsx from 'clsx';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import TextMessageContent from './TextMessageContent';
-import { TextComp } from './collection';
+import { TextComp } from './Collection';
 
 interface TextMessageProps {
   index: string;
