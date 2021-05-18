@@ -4,6 +4,7 @@ import type { ErrorMessage, Intent, Entity } from '@src/types';
 
 export const getIntents = async ({
   state,
+  actions,
   effects,
 }: Context): Promise<Intent[] | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
@@ -12,12 +13,13 @@ export const getIntents = async ({
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.intents.api.getIntents(
-    storyId,
-    authUser.token
-  );
+  const response = await effects.intents.api.getIntents(storyId, authUser.token);
 
   if (isError(response)) return response;
+
+  //load videos and tags
+  if (state.videos.collection.length === 0) await actions.videos.getVideos();
+  if (state.videos.tagCollection.length === 0) await actions.videos.getTags();
 
   state.intents.collection = response;
   return state.intents.collection;
@@ -33,11 +35,7 @@ export const getIntent = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.intents.api.getIntent(
-    storyId,
-    intentName,
-    authUser.token
-  );
+  const response = await effects.intents.api.getIntent(storyId, intentName, authUser.token);
   if (isError(response)) return response;
 
   state.intents.currentIntent = response;
@@ -54,11 +52,7 @@ export const createIntent = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.intents.api.createIntent(
-    storyId,
-    intent,
-    authUser.token
-  );
+  const response = await effects.intents.api.createIntent(storyId, intent, authUser.token);
   if (isError(response)) return response;
 
   state.intents.collection = [intent, ...state.intents.collection];
@@ -76,11 +70,7 @@ export const updateIntent = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.intents.api.updateIntent(
-    storyId,
-    intent,
-    authUser.token
-  );
+  const response = await effects.intents.api.updateIntent(storyId, intent, authUser.token);
   if (isError(response)) return response;
 
   state.intents.collection = state.intents.collection.map((itt) => {
@@ -101,17 +91,11 @@ export const deleteIntent = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.intents.api.deleteIntent(
-    storyId,
-    intentName,
-    authUser.token
-  );
+  const response = await effects.intents.api.deleteIntent(storyId, intentName, authUser.token);
   if (isError(response)) return response;
 
   state.intents.currentIntent = undefined;
-  state.intents.collection = state.intents.collection.filter(
-    (itt) => itt.name !== intentName
-  );
+  state.intents.collection = state.intents.collection.filter((itt) => itt.name !== intentName);
   return true;
 };
 
@@ -131,4 +115,16 @@ export const getEntities = async ({
 
   state.intents.entities = response;
   return response;
+};
+
+//** VIDEOS AND TAGS */
+
+export const getVideoById = ({ state }: Context, id: number) => {
+  const video = state.videos.collection.find((v) => v.id === id);
+  return video;
+};
+
+export const getTagById = ({ state }: Context, id: number) => {
+  const tag = state.videos.tagCollection.find((t) => t.id === id);
+  return tag;
 };

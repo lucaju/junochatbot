@@ -4,6 +4,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import TheatersIcon from '@material-ui/icons/Theaters';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import type { Message as MesasgeType } from '@src/types';
+import { useApp } from '@src/overmind';
 
 interface MessageProps {
   message: MesasgeType;
@@ -15,6 +16,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 const Message: FC<MessageProps> = ({ message }) => {
   const classes = useStyles();
+  const { actions } = useApp();
 
   let type = 'text';
   let variation = false;
@@ -22,10 +24,21 @@ const Message: FC<MessageProps> = ({ message }) => {
   let show = true;
 
   if ('payload' in message) {
-    const { source } = message.payload;
     type = 'payload';
-    text = typeof source === 'string' ? source : source.join(', ');
-    variation = message.payload.type === 'TAG';
+    const { source, type: payloadType } = message.payload;
+    if (typeof source[0] === 'string') {
+      text = source[0];
+    } else {
+      if (payloadType === 'tag') {
+        const tag = actions.intents.getTagById(source[0]);
+        text = tag ? tag.name : '';
+        variation = true;
+      } else {
+        const video = actions.intents.getVideoById(source[0]);
+        text = video ? video.title : '';
+        variation = source.length > 1;
+      }
+    }
   } else if (message.text.text) {
     text = message.text.text[0];
     variation = message.text.text.length > 1;
@@ -45,9 +58,7 @@ const Message: FC<MessageProps> = ({ message }) => {
           <Typography noWrap variant="body2">
             {text}
           </Typography>
-          {variation && (
-            <ShuffleIcon fontSize="small" className={classes.icon} />
-          )}
+          {variation && <ShuffleIcon fontSize="small" className={classes.icon} />}
         </Box>
       )}
     </>
