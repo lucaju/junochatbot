@@ -191,18 +191,13 @@ export type Text = {
   };
 };
 
-export enum VideoMessageSelect {
-  SINGLE = 'SINGLE',
-  TAG = 'TAG',
-}
-
-export type VideoMessage = {
-  type: string;
-  source: string | string[];
+export type Payload = {
+  payload: VideoMessage;
 };
 
-type Payload = {
-  payload: VideoMessage;
+export type VideoMessage = {
+  type: 'tag' | 'video';
+  source: string[] | number[];
 };
 
 export type Message = Text | Payload;
