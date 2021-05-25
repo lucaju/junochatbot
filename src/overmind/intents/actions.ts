@@ -17,9 +17,10 @@ export const getIntents = async ({
 
   if (isError(response)) return response;
 
-  //load videos and tags
+  //load videos, tags, and entities
   if (state.videos.collection.length === 0) await actions.videos.getVideos();
   if (state.videos.tagCollection.length === 0) await actions.videos.getTags();
+  if (state.intents.entities.length === 0) await actions.intents.getEntities();
 
   state.intents.collection = response;
   return state.intents.collection;
