@@ -11,7 +11,7 @@ import { isError } from '@src/util/utilities';
 import Header from './Header';
 import Contexts from './contexts';
 import Training from './training';
-import Parameters from './parameters';
+import IntentParams from './parameters';
 import Responses from './responses';
 
 interface DetailsProps {
@@ -42,7 +42,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const classes = useStyles();
   const { actions } = useApp();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
-  const [activeTab, setActiveTab] = useState(3);
+  const [activeTab, setActiveTab] = useState(2);
   const [intentData, setintentData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -169,13 +169,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
                 ) : activeTab === 1 ? (
                   <Training fieldName="trainingPhrases" />
                 ) : activeTab === 2 ? (
-                  <Parameters
-                    errors={errors}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                    touched={touched}
-                    values={values}
-                  />
+                  <IntentParams fieldName="parameters" />
                 ) : (
                   <Responses fieldName="messages" />
                 )}
