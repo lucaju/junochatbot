@@ -77,12 +77,12 @@ const VideoMessage: FC<VideoMessageProps> = ({
     type !== content.payload.type ? setSource(-1) : setSource(content.payload.source[0] as number);
 
     const options = type === 'tag' ? state.videos.tagCollection : state.videos.collection;
-    const mapptedOptions = options.map((s: Tag | Video) => ({
+    const mappedOptions = options.map((s: Tag | Video) => ({
       id: s.id.toString(),
       label: 'title' in s ? s.title : s.name,
     }));
 
-    setSourceOptions([defaultSourceOption, ...mapptedOptions]);
+    setSourceOptions([defaultSourceOption, ...mappedOptions]);
   }, [type]);
 
   const handleChangeType = (event: ChangeEvent<HTMLInputElement>) => {
