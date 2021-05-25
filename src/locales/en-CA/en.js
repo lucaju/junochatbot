@@ -75,6 +75,8 @@ export default {
 	intentUpdated: 'Intent Updated',
 	newIntent: 'New intent',
 	noIntentsYet: 'No Intents yet',
+	parameters: 'Parameters',
+	addParameter: 'Add Parameter',
   },
   navMenu: {
     usersGroups: 'Users Groups',
