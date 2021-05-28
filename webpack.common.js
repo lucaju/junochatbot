@@ -23,8 +23,10 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
-    new webpack.ProgressPlugin(),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'src/assets/', to: './assets' }],
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'index.html'),
       chunks: ['app'],
@@ -32,9 +34,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',
-    }),
-    new CopyWebpackPlugin({
-      patterns: [{ from: 'src/assets/', to: './assets' }],
     }),
     new WebpackBar({ color: '#0099ff' }),
     new webpack.ProvidePlugin({
@@ -55,27 +54,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
-              plugins: [
-                '@babel/plugin-proposal-class-properties',
-                [
-                  '@babel/plugin-transform-runtime',
-                  {
-                    corejs: { version: 3, proposals: true },
-                    helpers: true, //false
-                    regenerator: true,
-                    useESModules: true,
-                    version: '^7.12.15',
-                  },
-                ],
-              ],
-            },
-          },
-        ],
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/,
