@@ -25,6 +25,7 @@ const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
       prompt,
     }));
     set_prompts(updatedPrompts);
+    return () => {};
   }, [prompts]);
 
   const addEmpty = () => {

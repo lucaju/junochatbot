@@ -6,7 +6,6 @@ import ParamsComponent from './ParamsComponent';
 
 interface CollectionProps {
   paramsList: ParameterType[];
-  handleUpdateParameters: (parameters: ParameterType[]) => void;
 }
 
 const useStyles = makeStyles(() => ({
@@ -17,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Collection: FC<CollectionProps> = ({ paramsList, handleUpdateParameters }) => {
+const Collection: FC<CollectionProps> = ({ paramsList }) => {
   const classes = useStyles();
   const [_paramsList, set_paramsList] = useState(paramsList);
 
@@ -26,32 +25,12 @@ const Collection: FC<CollectionProps> = ({ paramsList, handleUpdateParameters })
     return () => {};
   }, [paramsList]);
 
-  const handleRemove = (name: string) => {
-    const updatedList = paramsList.filter((param) => param.name !== name);
-    // set_paramsList(updatedList);
-    handleUpdateParameters(updatedList);
-  };
-
-  const handleUpdate = (name: string, updatedParam: ParameterType) => {
-    const updatedList = paramsList.map((param) => {
-      if (param.name === name) return updatedParam;
-      return param;
-    });
-    // set_paramsList(updatedList);
-    handleUpdateParameters(updatedList);
-  };
-
   return (
     <TransitionGroup className={classes.collection}>
       {_paramsList &&
         _paramsList.map((param) => (
           <Collapse key={param.name}>
-            <ParamsComponent
-              name={param.name}
-              param={param}
-              handleRemove={handleRemove}
-              handleUpdate={handleUpdate}
-            />
+            <ParamsComponent name={param.name} param={param} />
           </Collapse>
         ))}
     </TransitionGroup>

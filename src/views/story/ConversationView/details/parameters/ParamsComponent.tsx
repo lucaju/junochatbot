@@ -23,12 +23,11 @@ import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DefaultValuePanel from './DefaultValuePanel';
 import PromptsPanel from './PromptsPanel';
+import useParameter from './hooks';
 
 interface ParamsComponentProps {
   name?: string;
   param: ParameterType;
-  handleRemove: (name: string) => void;
-  handleUpdate: (name: string, value: ParameterType) => void;
 }
 
 const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
@@ -57,15 +56,11 @@ const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
   removeButton: { marginLeft: spacing(1) },
 }));
 
-const ParamsComponent: FC<ParamsComponentProps> = ({
-  name = '',
-  param,
-  handleRemove,
-  handleUpdate,
-}) => {
+const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
   const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['intents']);
+  const { removeParameter, updateParameter } = useParameter();
 
   const [_param, set_param] = useState(param);
   const [doUpdate, setDoUpdate] = useState(false);
@@ -150,7 +145,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({
   };
 
   const update = () => {
-    handleUpdate(name, _param);
+    updateParameter(name, _param);
   };
 
   const handleOpenBottomPanel = (panelId: number) => {
@@ -222,7 +217,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({
                 aria-label="delete"
                 className={classes.removeButton}
                 size="small"
-                onClick={() => handleRemove(name)}
+                onClick={() => removeParameter(name, _param.displayName)}
               >
                 <HighlightOffIcon />
               </IconButton>

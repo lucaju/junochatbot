@@ -30,14 +30,10 @@ const IntentParams: FC<IntentParamsProps> = ({ fieldName }) => {
     return () => {};
   }, [value]);
 
-  const handleUpdateParameters = (parameters: Parameter[]) => {
-    setValue(parameters);
-  };
-
   const addParameter = () => {
     if (paramsList && unusedLastSlot()) return;
     let newList = paramsList ? paramsList : [];
-    const freshParams: Parameter = { name: uuidv4(), displayName: '' };
+    const freshParams: Parameter = { name: `added-${uuidv4()}`, displayName: '' };
     setParamsList([...newList, freshParams]);
   };
 
@@ -61,7 +57,7 @@ const IntentParams: FC<IntentParamsProps> = ({ fieldName }) => {
           </Button>
         </Box>
       </Box>
-      <Collection paramsList={paramsList} handleUpdateParameters={handleUpdateParameters} />
+      <Collection paramsList={paramsList} />
     </Box>
   );
 };
