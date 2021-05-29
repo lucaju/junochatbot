@@ -1,12 +1,3 @@
-import { Parameter } from '@src/types';
-import { useField } from 'formik';
-
-export const useCallParameters = () => {
-  const [, meta] = useField('parameters');
-  const { value }: { value: Parameter[] } = meta;
-  return value;
-};
-
 /**
  * returns x, y coordinates for absolute positioning of a span within a given text input
  * at a given selection point

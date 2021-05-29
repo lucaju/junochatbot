@@ -10,6 +10,7 @@ import React, {
   useState,
 } from 'react';
 import MenuParameters from './MenuParameters';
+import useParameter from '../parameters/hooks';
 
 interface TextMessageContentProps {
   index: number;
@@ -32,6 +33,8 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
   handleUpdate,
 }) => {
   const classes = useStyles();
+  const { params } = useParameter();
+
   const TFref = useRef();
   const [elTarget, setElTarget] = useState<HTMLElement>();
   const [hover, setHover] = useState(false);
@@ -40,6 +43,7 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
 
   useEffect(() => {
     setValue(content);
+    return () => {};
   }, [content]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +52,7 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
 
   const handleKeyUp = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key !== '$') return;
+    if (!params) return;
     setElTarget(event.currentTarget);
     setShowParameters(true);
   };
@@ -93,13 +98,15 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
         onKeyUp={handleKeyUp}
         value={value}
       />
-      <MenuParameters
-        inputElement={TFref.current}
-        open={showParameters}
-        target={elTarget}
-        handleClick={handleParamSelect}
-        handleClose={handleParamsClose}
-      />
+      {params && (
+        <MenuParameters
+          inputElement={TFref.current}
+          open={showParameters}
+          target={elTarget}
+          handleClick={handleParamSelect}
+          handleClose={handleParamsClose}
+        />
+      )}
       <Zoom in={removable && hover}>
         <IconButton
           aria-label="delete"

@@ -7,10 +7,10 @@ import React, { FC, useEffect, useState } from 'react';
 import SortableItem from './SortableItem';
 import TextMessage from './TextMessage';
 import VideoMessage from './VideoMessage';
+import useMessage from './hooks'
 
 interface CollectionProps {
   messageList: MessageType[];
-  handleUpdateMessages: (messages: MessageType[]) => void;
 }
 
 export interface TextComp extends Text {
@@ -27,8 +27,9 @@ const useStyles = makeStyles(() => ({
   item: {},
 }));
 
-const Collection: FC<CollectionProps> = ({ messageList, handleUpdateMessages }) => {
+const Collection: FC<CollectionProps> = ({ messageList }) => {
   const classes = useStyles();
+  const { updateAllMessage } = useMessage();
   const sensors = useSensors(useSensor(PointerSensor));
   const [list, setList] = useState<MessageTypeComp[]>([]);
   const [reordered, setReordered] = useState(false);
@@ -39,7 +40,7 @@ const Collection: FC<CollectionProps> = ({ messageList, handleUpdateMessages }) 
       return _item;
     });
     setList(_list);
-    
+    return () => {};
   }, [messageList]);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const Collection: FC<CollectionProps> = ({ messageList, handleUpdateMessages }) 
       const { id, ...message } = messageComp;
       return message;
     });
-    handleUpdateMessages(updatedValues);
+    updateAllMessage(updatedValues);
   };
 
   return (

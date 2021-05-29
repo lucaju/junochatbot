@@ -71,6 +71,8 @@ const VideoMessage: FC<VideoMessageProps> = ({
     typeof content.payload.source[0] !== 'string'
       ? setSource(content.payload.source[0])
       : setSource(-1);
+    
+    return () => {};
   }, [content]);
 
   useEffect(() => {
@@ -83,6 +85,7 @@ const VideoMessage: FC<VideoMessageProps> = ({
     }));
 
     setSourceOptions([defaultSourceOption, ...mappedOptions]);
+    return () => {};
   }, [type]);
 
   const handleChangeType = (event: ChangeEvent<HTMLInputElement>) => {

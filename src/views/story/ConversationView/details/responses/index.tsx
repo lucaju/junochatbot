@@ -27,10 +27,6 @@ const Responses: FC<ResponsesProps> = ({ fieldName }) => {
     return () => {};
   }, [value]);
 
-  const handleUpdateValue = (messages: MessageType[]) => {
-    setValue(messages);
-  };
-
   const addTextMessage = () => {
     if (unusedLastSlot()) return;
     const freshTextMessage: Text = { text: { text: [''] } };
@@ -66,7 +62,7 @@ const Responses: FC<ResponsesProps> = ({ fieldName }) => {
           </Button>
         </Box>
       </Box>
-      <Collection handleUpdateMessages={handleUpdateValue} messageList={messageList} />
+      <Collection messageList={messageList} />
     </Box>
   );
 };

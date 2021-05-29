@@ -4,7 +4,7 @@ import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import clsx from 'clsx';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import TextMessageContent from './TextMessageContent';
 import { TextComp } from './Collection';
 
@@ -46,6 +46,7 @@ const TextMessage: FC<TextMessageProps> = ({
 
   useEffect(() => {
     setAlternatives(content.text.text ? content.text.text : []);
+    return () => {};
   }, [content]);
 
   const handleRemoveAlternative = (altIndex: number) => {
