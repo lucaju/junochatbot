@@ -34,9 +34,9 @@ const Training: FC<TrainingProps> = ({ fieldName }) => {
     let updateTrainingPhrases = value;
 
     // console.log(updatedPhrase);
-    if (updatedPhrase.name?.startsWith('new-')) {
-      (updatedPhrase.name = `added-${uuidv4()}`), //? Handle this (remove) on ACTIONS when submit, befeore send to DialogFLow
-        (updateTrainingPhrases = [updatedPhrase, ...value]);
+    if (updatedPhrase.name?.startsWith('added-')) {
+      //? remove 'name' on ACTIONS when submit, befeore send to DialogFLow
+      updateTrainingPhrases = [updatedPhrase, ...value];
     } else {
       updateTrainingPhrases = value.map((phrase) => {
         if (phrase.name === updatedPhrase.name) return updatedPhrase;
@@ -56,7 +56,7 @@ const Training: FC<TrainingProps> = ({ fieldName }) => {
 
   const addFreshPhrase = () => {
     const freshPhrase = {
-      name: `new-${uuidv4()}`,
+      name: `added-${uuidv4()}`,
       type: 'EXAMPLE',
       parts: [],
     };
