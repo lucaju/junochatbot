@@ -61,6 +61,7 @@ const Collection: FC<CollectionProps> = ({
     if (!crossContext || type === 'input') return;
     handleAdd({ name: crossContext, lifeSpan: DEFAULT_LIFESPANCOUNT });
     setCrossContext();
+    return () => {};
   }, [crossContext]);
 
   const handleUpdate = ({ id, name, lifeSpan = -1 }: ContextData) => {
