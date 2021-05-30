@@ -1,9 +1,10 @@
 import { Box, makeStyles } from '@material-ui/core';
+import { Part as PartType } from '@src/types';
 import clsx from 'clsx';
 import React, { FC, MouseEvent } from 'react';
-import { Part as PartType } from '@src/types';
 
 interface PartProps {
+  index?: number;
   type?: 'empty' | 'text' | 'semantic';
   part?: PartType;
   handleClick?: (event: MouseEvent<HTMLSpanElement>) => void;
@@ -16,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Part: FC<PartProps> = ({ type = 'empty', part = {}, handleClick }) => {
+const Part: FC<PartProps> = ({ index, type = 'empty', part = {}, handleClick }) => {
   const classes = useStyles();
 
   const { entityType, text, alias, userDefined } = part;
@@ -25,7 +26,7 @@ const Part: FC<PartProps> = ({ type = 'empty', part = {}, handleClick }) => {
     <Box
       component="span"
       className={clsx(entityType && classes.highlight)}
-      px={0.5}
+      px={entityType ? 0.5 : 0}
       py={0.25}
       borderRadius={entityType ? 'borderRadius' : 0}
       data-entity-type={entityType}

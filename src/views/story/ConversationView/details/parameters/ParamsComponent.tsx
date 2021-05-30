@@ -119,6 +119,14 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
     }
   };
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    const target = event.currentTarget;
+    if (target.name === 'value') {
+      if (target.value.indexOf('$') !== 0) {
+        const $value = `$${target.value}`;
+        set_value($value);
+        set_param({ ..._param, value: $value });
+      }
+    }
     setDoUpdate(true);
   };
 

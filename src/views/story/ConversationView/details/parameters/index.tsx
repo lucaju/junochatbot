@@ -4,8 +4,8 @@ import { Parameter } from '@src/types';
 import { useField } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuidv4 } from 'uuid';
 import Collection from './Collection';
+import useParameter from './hooks';
 
 interface IntentParamsProps {
   fieldName: string;
@@ -18,10 +18,10 @@ const useStyles = makeStyles(() => ({
 const IntentParams: FC<IntentParamsProps> = ({ fieldName }) => {
   const classes = useStyles();
   const { t } = useTranslation(['intents']);
+  const { createFreshParameter } = useParameter();
 
-  const [, meta, helpers] = useField(fieldName);
+  const [, meta] = useField(fieldName);
   const { value } = meta;
-  const { setValue } = helpers;
 
   const [paramsList, setParamsList] = useState<Parameter[]>([] as Parameter[]);
 
@@ -33,8 +33,8 @@ const IntentParams: FC<IntentParamsProps> = ({ fieldName }) => {
   const addParameter = () => {
     if (paramsList && unusedLastSlot()) return;
     let newList = paramsList ? paramsList : [];
-    const freshParams: Parameter = { name: `added-${uuidv4()}`, displayName: '' };
-    setParamsList([...newList, freshParams]);
+    const freshParam = createFreshParameter();
+    setParamsList([...newList, freshParam]);
   };
 
   const unusedLastSlot = () => {

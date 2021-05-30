@@ -20,7 +20,7 @@ interface DetailsProps {
   intentId?: string;
 }
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
+const useStyles = makeStyles(({ palette }) => ({
   header: {
     color: palette.primary.light,
     textAlign: 'center',
@@ -42,7 +42,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const classes = useStyles();
   const { actions } = useApp();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
-  const [activeTab, setActiveTab] = useState(2);
+  const [activeTab, setActiveTab] = useState(0);
   const [intentData, setintentData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 

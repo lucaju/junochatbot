@@ -1,6 +1,6 @@
 import { Collapse, makeStyles } from '@material-ui/core';
 import { Parameter as ParameterType } from '@src/types';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import ParamsComponent from './ParamsComponent';
 
@@ -18,17 +18,11 @@ const useStyles = makeStyles(() => ({
 
 const Collection: FC<CollectionProps> = ({ paramsList }) => {
   const classes = useStyles();
-  const [_paramsList, set_paramsList] = useState(paramsList);
-
-  useEffect(() => {
-    set_paramsList(paramsList);
-    return () => {};
-  }, [paramsList]);
 
   return (
     <TransitionGroup className={classes.collection}>
-      {_paramsList &&
-        _paramsList.map((param) => (
+      {paramsList &&
+        paramsList.map((param) => (
           <Collapse key={param.name}>
             <ParamsComponent name={param.name} param={param} />
           </Collapse>
