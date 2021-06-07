@@ -8,7 +8,7 @@ const theme = (darkMode:boolean) =>
         main: colors.lightBlue[500],
       },
       secondary: {
-        main: '#F7941D',
+        main: colors.orange[400],
       },
     },
   });
