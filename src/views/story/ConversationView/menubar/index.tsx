@@ -25,9 +25,13 @@ const MenuBar: FC<MenuBarProps> = ({
   const classes = useStyles();
   const { t } = useTranslation(['intents']);
 
+  const handleCreateClick = () => {
+    handleDetailOpen();
+  };
+
   return (
     <Toolbar disableGutters variant="dense">
-      <Button color="primary" onClick={handleDetailOpen} startIcon={<AddCircleOutlineIcon />}>
+      <Button color="primary" onClick={handleCreateClick} startIcon={<AddCircleOutlineIcon />}>
         {t('createIntent')}
       </Button>
       {!disabledFilters && (
