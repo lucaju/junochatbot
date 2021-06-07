@@ -1,12 +1,11 @@
-import { Box, Card, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import { Box, Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import { useRefresh } from 'muuri-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Intent } from '@src/types';
-import Contexts from './cardComponents/Contexts';
-import Message from './cardComponents/Message';
-import Paramenter from './cardComponents/Parameter';
+import General from './General';
+import Contexts from './Contexts';
+import Message from './Message';
+import Paramenter from './Parameter';
 
 interface ContextCardProps {
   className: string;
@@ -30,8 +29,6 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
   const classes = useStyles();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(1);
-  const cardRef = useRef<any | undefined>();
-  const [size, setSize] = useState();
 
   const {
     name,
@@ -42,15 +39,6 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
     parameters,
     messages,
   } = intent;
-
-  // console.log(intent);
-
-  //Use effects to refrech Muuri after elements sets its size
-  useEffect(() => {
-    setSize(cardRef.current.offsetHeight);
-  }, []);
-
-  useRefresh([size]);
 
   const mouseOver = () => {
     setHover(true);
@@ -64,7 +52,6 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
 
   return (
     <Card
-      ref={cardRef}
       className={clsx(classes.root, className, hover && classes.cardHover)}
       elevation={elevation}
       onClick={() => handleEditClick(name)}
@@ -75,17 +62,12 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
       <CardContent classes={{ root: classes.cardContent }}>
         <Grid container direction="row" spacing={1}>
           <Grid item xs={4}>
-            <Box display="flex" flexDirection="row">
-              <Typography variant="subtitle1">{displayName}</Typography>
-              <Box display="flex" flexDirection="row" ml={2} pt={0.25} color="text.secondary">
-                <FitnessCenterIcon fontSize="small" />
-                <Typography variant="body2">{trainingPhrases ? trainingPhrases.length : 0}</Typography>
-              </Box>
-            </Box>
+            <General displayName={displayName} trainingPhrases={trainingPhrases} />
           </Grid>
 
           <Grid item xs={2}>
-            {parameters && parameters.map((param) => <Paramenter key={param.name} parameter={param} />)}
+            {parameters &&
+              parameters.map((param) => <Paramenter key={param.name} parameter={param} />)}
           </Grid>
 
           <Grid item xs={6}>

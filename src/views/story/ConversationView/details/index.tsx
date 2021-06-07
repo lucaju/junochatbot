@@ -1,6 +1,19 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, makeStyles } from '@material-ui/core';
+import {
+  Box,
+  Collapse,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Grid,
+  makeStyles,
+  Slide,
+  Tabs,
+  Tab,
+} from '@material-ui/core';
 import { Formik } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DeleteDialog from '@src/components/DeleteDialog';
 import { useApp } from '@src/overmind';
@@ -13,6 +26,21 @@ import Contexts from './contexts';
 import Training from './training';
 import IntentParams from './parameters';
 import Responses from './responses';
+import { TransitionGroup } from 'react-transition-group';
+
+import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import EditAttributesIcon from '@material-ui/icons/EditAttributes';
+import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
+
+import { TransitionProps } from '@material-ui/core/transitions';
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children?: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 interface DetailsProps {
   open: boolean;
@@ -25,7 +53,17 @@ const useStyles = makeStyles(({ palette }) => ({
     color: palette.primary.light,
     textAlign: 'center',
   },
-  dialogContent: { maxHeight: '70vh' },
+  // dialogContent: { maxHeight: '70vh' },
+  // paperTab: { flexGrow: 1 },
+  dialogContent: {
+    // flexGrow: 1,
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignItems: 'stretch',
+    // minHeight: 300,
+    height: 600,
+    // maxHeight: '70vh'
+  },
 }));
 
 const initialValues: Partial<Intent> = {
@@ -42,6 +80,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const classes = useStyles();
   const { actions } = useApp();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
+  const [action, setAction] = useState<string>();
   const [activeTab, setActiveTab] = useState(0);
   const [intentData, setintentData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -49,20 +88,26 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   useEffect(() => {
     if (!open) return;
     if (!intentId) {
+      setAction('create');
       setintentData(initialValues);
       return;
     }
 
     const fetch = async () => {
       const selectedIntent = await actions.intents.getIntent(intentId);
-      // console.log(selectedIntent);
       if (!isError(selectedIntent)) {
         setintentData(selectedIntent);
+        setAction('edit');
       }
     };
     fetch();
 
-    return () => {};
+    return () => {
+      setAction(undefined);
+      setActiveTab(0);
+      setintentData(initialValues);
+      setDeleteDialogOpen(false);
+    };
   }, [open]);
 
   const formValidation = Yup.object().shape({
@@ -74,29 +119,29 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     messages: Yup.array(),
   });
 
-  // const submit = async (values: Partial<Intent>) => {
-  //   //create update
-  //   const response = !values.name
-  //     ? await actions.intents.createIntent(values as Partial<Intent>)
-  //     : await actions.intents.updateIntent({ intentData, values });
+  const submit = async (values: Partial<Intent>) => {
+    const response = await actions.intents.createIntent(values as Partial<Intent>);
 
-  //   const type = isError(response)
-  //     ? NotificationType.ERROR
-  //     : NotificationType.SUCCESS;
+    //create update
+    // const response = action === 'create'
+    //   ? await actions.intents.createIntent(values as Partial<Intent>)
+    //   : await actions.intents.updateIntent({ intentData, values });
 
-  //   //error
-  //   if (isError(response)) {
-  //     const message = t('errorMessages:somethingWentWrong');
-  //     actions.ui.showNotification({ message, type });
-  //     return;
-  //   }
+    const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
-  //   //success
-  //   const message = values.name ? t('intentUpdated') : t('intentCreated');
-  //   actions.ui.showNotification({ message, type });
+    //error
+    if (isError(response)) {
+      const message = t('errorMessages:somethingWentWrong');
+      actions.ui.showNotification({ message, type });
+      return;
+    }
 
-  //   handleClose();
-  // };
+    //success
+    const message = values.name ? t('intentUpdated') : t('intentCreated');
+    actions.ui.showNotification({ message, type });
+
+    handleClose();
+  };
 
   // const submitDelete = async () => {
   //   if (!intentData.name) return;
@@ -116,89 +161,124 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   // };
 
   return (
-    <Dialog
-      aria-labelledby="intent-details-dialog"
-      fullWidth
-      maxWidth="md"
-      onBackdropClick={handleClose}
-      onClose={handleClose}
-      open={open}
-    >
-      {!intentId ? (
-        <>
-          <DialogTitle className={classes.header}>{t('createIntent')}</DialogTitle>
-        </>
-      ) : (
-        <Formik
-          enableReinitialize={true}
-          initialValues={intentData}
-          onSubmit={async (values) => {
-            // console.log(values);
-            // await submit(values)
-          }}
-          validationSchema={formValidation}
+    <>
+      {action && (
+        <Dialog
+          aria-labelledby="intent-details-dialog"
+          fullWidth
+          TransitionComponent={Transition}
+          maxWidth={action === 'create' ? 'sm' : 'md'}
+          onBackdropClick={handleClose}
+          onClose={handleClose}
+          open={open}
         >
-          {({
-            errors,
-            dirty,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            isSubmitting,
-            touched,
-            values,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <DialogTitle className={classes.header}>
-                <Header
-                  errors={errors}
-                  handleBlur={handleBlur}
-                  handleChange={handleChange}
-                  touched={touched}
-                  values={values}
-                  handleChangeTab={setActiveTab}
-                  activeTab={activeTab}
-                />
-              </DialogTitle>
-              <DialogContent dividers className={classes.dialogContent}>
-                {activeTab === 0 ? (
-                  <Contexts
-                    inputContextField="inputContextNames"
-                    outputContextField="outputContexts"
+          <Formik
+            enableReinitialize={true}
+            initialValues={intentData}
+            onSubmit={async (values) => {
+              console.log(values);
+              await submit(values);
+            }}
+            validationSchema={formValidation}
+          >
+            {({
+              errors,
+              dirty,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+              touched,
+              values,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <DialogTitle className={classes.header}>
+                  <Header
+                    action={action}
+                    errors={errors}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    touched={touched}
+                    values={values}
                   />
-                ) : activeTab === 1 ? (
-                  <Training fieldName="trainingPhrases" />
-                ) : activeTab === 2 ? (
-                  <IntentParams fieldName="parameters" />
-                ) : (
-                  <Responses fieldName="messages" />
+                </DialogTitle>
+                <Divider />
+                {action === 'edit' && (
+                  <>
+                    <Grid container>
+                      <Grid item xs={2}>
+                        <Box mt={1}>
+                          <Tabs
+                            orientation="vertical"
+                            value={activeTab}
+                            onChange={(_event: ChangeEvent<{}>, newValue: number) =>
+                              setActiveTab(newValue)
+                            }
+                            indicatorColor="primary"
+                            textColor="primary"
+                            centered
+                          >
+                            <Tab icon={<CenterFocusWeakIcon />} label="Contexts" />
+                            <Tab icon={<FitnessCenterIcon />} label="Traning" />
+                            <Tab icon={<EditAttributesIcon />} label="Parameters" />
+                            <Tab icon={<ChatOutlinedIcon />} label="Responses" />
+                          </Tabs>
+                        </Box>
+                      </Grid>
+                      <Grid item xs>
+                        <DialogContent className={classes.dialogContent}>
+                          <TransitionGroup>
+                            <Collapse>
+                              <Contexts index={0} activeTabIndex={activeTab} />
+                              <Training
+                                index={1}
+                                activeTabIndex={activeTab}
+                                fieldName="trainingPhrases"
+                              />
+                              <IntentParams
+                                index={2}
+                                activeTabIndex={activeTab}
+                                fieldName="parameters"
+                              />
+                              <Responses
+                                index={3}
+                                activeTabIndex={activeTab}
+                                fieldName="messages"
+                              />
+                            </Collapse>
+                          </TransitionGroup>
+                        </DialogContent>
+                      </Grid>
+                    </Grid>
+                  </>
                 )}
-              </DialogContent>
-              <DialogActions>
-                <Actions
-                  dirty={dirty}
-                  handleCancel={handleClose}
-                  handleDelete={() => setDeleteDialogOpen(true)}
+                <Divider />
+                <DialogActions>
+                  <Actions
+                    dirty={dirty}
+                    handleCancel={handleClose}
+                    handleDelete={() => setDeleteDialogOpen(true)}
+                    isSubmitting={isSubmitting}
+                    values={values}
+                  />
+                </DialogActions>
+                <DeleteDialog
+                  open={deleteDialogOpen}
+                  title={t('deleteDialog:title', { object: t('intent') })}
+                  message={t('deleteDialog:message', { object: t('intent') })}
+                  handleNo={() => setDeleteDialogOpen(false)}
+                  handleYes={() => {
+                    setDeleteDialogOpen(false);
+                    // submitDelete()
+                  }}
                   isSubmitting={isSubmitting}
-                  values={values}
                 />
-              </DialogActions>
-              <DeleteDialog
-                open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('intent') })}
-                message={t('deleteDialog:message', { object: t('intent') })}
-                handleNo={() => setDeleteDialogOpen(false)}
-                handleYes={() => {
-                  setDeleteDialogOpen(false);
-                  // submitDelete()
-                }}
-                isSubmitting={isSubmitting}
-              />
-            </form>
-          )}
-        </Formik>
+              </form>
+            )}
+          </Formik>
+        </Dialog>
       )}
-    </Dialog>
+    </>
   );
 };
 

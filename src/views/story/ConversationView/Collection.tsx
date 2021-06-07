@@ -1,11 +1,11 @@
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, Collapse, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import NoContent from '@src/components/NoContent';
 import { useApp } from '@src/overmind';
 import { Intent } from '@src/types';
-import { MuuriComponent } from 'muuri-react';
 import React, { FC, useEffect, useState } from 'react';
-import IntentCard from './IntentCard';
+import { TransitionGroup } from 'react-transition-group';
+import IntentCard from './intentCard/';
 
 interface CollectionProps {
   handleDetailOpen: (value: string) => void;
@@ -21,6 +21,10 @@ const useStyles = makeStyles(({ spacing }) => ({
     marginBottom: spacing(1),
     marginLeft: spacing(1.5),
     marginRight: spacing(1.5),
+  },
+  collection: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   container: {
     maxHeight: '83vh',
@@ -83,16 +87,17 @@ const Collection: FC<CollectionProps> = ({
       ) : filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <MuuriComponent>
+        <TransitionGroup className={classes.collection}>
           {filteredItems.map((intent) => (
-            <IntentCard
-              key={intent.name}
-              className={classes.card}
-              handleEditClick={handleDetailOpen}
-              intent={intent}
-            />
+            <Collapse key={intent.name}>
+              <IntentCard
+                className={classes.card}
+                handleEditClick={handleDetailOpen}
+                intent={intent}
+              />
+            </Collapse>
           ))}
-        </MuuriComponent>
+        </TransitionGroup>
       )}
     </Box>
   );

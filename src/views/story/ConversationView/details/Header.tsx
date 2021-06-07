@@ -1,21 +1,16 @@
-import { Box, makeStyles, TextField, Tabs, Tab } from '@material-ui/core';
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import NfcRoundedIcon from '@material-ui/icons/NfcRounded';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import { makeStyles, TextField} from '@material-ui/core';
 import { FormikErrors, FormikTouched } from 'formik';
-import React, { ChangeEvent, FC, FocusEvent, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Intent } from '@src/types';
 
 interface HeadersProps {
+  action?: string;
   errors: FormikErrors<Partial<Intent>>;
   handleBlur: (e: FocusEvent<any>) => void;
   handleChange: (e: ChangeEvent<any>) => void;
   touched: FormikTouched<Partial<Intent>>;
   values: Partial<Intent>;
-  handleChangeTab: (value: number) => void;
-  activeTab?: number;
 }
 
 const useStyles = makeStyles(() => ({
@@ -25,19 +20,19 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Header: FC<HeadersProps> = ({
+  action,
   errors,
   handleBlur,
   handleChange,
   touched,
   values,
-  activeTab = 0,
-  handleChangeTab,
 }) => {
   const classes = useStyles();
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation(['intents']);
 
   return (
     <>
+      {action === 'create' && t('createIntent')}
       <TextField
         error={Boolean(touched.displayName && errors.displayName)}
         fullWidth
@@ -48,20 +43,6 @@ const Header: FC<HeadersProps> = ({
         onChange={handleChange}
         value={values.displayName}
       />
-      <Box className={classes.paperTab} mt={1}>
-        <Tabs
-          value={activeTab}
-          onChange={(e: ChangeEvent<{}>, newValue: number) => handleChangeTab(newValue)}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Tab icon={<CenterFocusWeakIcon />} label="Contexts" />
-          <Tab icon={<FitnessCenterIcon />} label="Traning" />
-          <Tab icon={<NfcRoundedIcon />} label="Parameters" />
-          <Tab icon={<QuestionAnswerIcon />} label="Responses" />
-        </Tabs>
-      </Box>
     </>
   );
 };

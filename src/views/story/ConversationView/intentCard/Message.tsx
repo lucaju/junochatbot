@@ -1,7 +1,7 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import React, { FC } from 'react';
-import MessageIcon from '@material-ui/icons/Message';
-import TheatersIcon from '@material-ui/icons/Theaters';
+import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import type { Message as MesasgeType } from '@src/types';
 import { useApp } from '@src/overmind';
@@ -51,9 +51,9 @@ const Message: FC<MessageProps> = ({ message }) => {
       {show && (
         <Box display="flex" flexDirection="row" alignItems="center" mb={1}>
           {type === 'payload' ? (
-            <TheatersIcon fontSize="small" className={classes.icon} />
+            <YouTubeIcon fontSize="small" className={classes.icon} />
           ) : (
-            <MessageIcon fontSize="small" className={classes.icon} />
+            <ChatOutlinedIcon fontSize="small" className={classes.icon} />
           )}
           <Typography noWrap variant="body2">
             {text}
