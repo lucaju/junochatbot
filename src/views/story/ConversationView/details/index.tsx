@@ -53,17 +53,7 @@ const useStyles = makeStyles(({ palette }) => ({
     color: palette.primary.light,
     textAlign: 'center',
   },
-  // dialogContent: { maxHeight: '70vh' },
-  // paperTab: { flexGrow: 1 },
-  dialogContent: {
-    // flexGrow: 1,
-    // display: 'flex',
-    // flexDirection: 'row',
-    // alignItems: 'stretch',
-    // minHeight: 300,
-    height: 600,
-    // maxHeight: '70vh'
-  },
+  dialogContent: { height: 600 },
 }));
 
 const initialValues: Partial<Intent> = {
