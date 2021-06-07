@@ -3,6 +3,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import TimerIcon from '@material-ui/icons/Timer';
 import clsx from 'clsx';
 import React, { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import useContext from './hooks';
 
 export interface ContextData {
   name: string;
@@ -16,9 +17,6 @@ interface ContextProps {
   id?: string;
   name: string;
   lifeSpan?: number;
-  addContext: ({ name, lifeSpan }: ContextData) => void;
-  updateContext: ({ id, name, lifeSpan }: ContextData) => void;
-  removeContex: (id: string) => void;
 }
 
 const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
@@ -46,28 +44,22 @@ const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
 
 const ALLOWED_KEYS_LIFESPAN = ['Backspace', 'ArrowLeft', 'ArrowRight'];
 
-const ContextComponent: FC<ContextProps> = ({
-  type = 'input',
-  id = 'new',
-  name,
-  lifeSpan = 0,
-  addContext,
-  updateContext,
-  removeContex,
-}) => {
+const ContextComponent: FC<ContextProps> = ({ type = 'input', id = 'new', name, lifeSpan = 5 }) => {
   const classes = useStyles();
-  const NameRef = useRef<any | undefined>();
-  const LifespanRef = useRef<any | undefined>();
+  const NameRef = useRef<HTMLElement>(null);
+  const LifespanRef = useRef<HTMLElement>(null);
   const [hover, setHover] = useState(false);
+  const { extractContextName, removeContex, updateContext } = useContext({
+    type,
+    id,
+    name,
+    lifeSpan,
+  });
 
-  const matchName = name.match(/contexts\/(.+)/);
-  const contextName = matchName ? matchName[1] : '';
-
-  const matchPathPrefix = name.match(/.+\//);
-  const prefix = matchPathPrefix ? matchPathPrefix[0] : '';
+  const contextName = extractContextName();
 
   useEffect(() => {
-    if (contextName === '') NameRef.current.focus();
+    if (contextName === '' && NameRef.current) NameRef.current.focus();
     return () => {};
   }, [NameRef]);
 
@@ -83,77 +75,45 @@ const ContextComponent: FC<ContextProps> = ({
     if (event.key === 'Enter') {
       event.stopPropagation();
       event.preventDefault();
-      handleUpdateContex();
+      handleUpdate();
       return;
     }
   };
 
   const handleKeyDownLife = (event: KeyboardEvent<HTMLElement>) => {
-    const content = +LifespanRef.current.textContent;
+    if (!LifespanRef || !LifespanRef.current || LifespanRef.current.textContent === null) return;
+
+    const content =
+      LifespanRef.current.textContent !== null ? +LifespanRef.current.textContent : lifeSpan;
 
     if (ALLOWED_KEYS_LIFESPAN.includes(event.key)) return;
 
     if (event.key === 'ArrowUp') {
-      LifespanRef.current.textContent = content + 1;
+      LifespanRef.current.textContent = `${content + 1}`;
       return;
     }
 
     if (event.key === 'ArrowDown' && content > 0) {
-      LifespanRef.current.textContent = content - 1;
+      LifespanRef.current.textContent = `${content - 1}`;
       return;
     }
 
     if (event.key.match(/\d/) && LifespanRef.current.textContent.length < 3) return;
 
-    if (event.key === 'Enter') handleUpdateContex();
+    if (event.key === 'Enter') handleUpdate();
 
     event.stopPropagation();
     event.preventDefault();
   };
 
-  const handleBlur = () => handleUpdateContex();
+  const handleBlur = () => handleUpdate();
 
-  const handleUpdateContex = () => {
-    type === 'output' ? updateOutContex() : updateInContex();
-  };
+  const handleUpdate = () => {
+    if (!NameRef || !NameRef.current) return;
+    const newName = NameRef.current.textContent ?? '';
 
-  const updateInContex = () => {
-    const nameContent = NameRef.current.textContent;
-
-    if (nameContent === '') {
-      removeContex(type);
-      return;
-    }
-    if (nameContent === contextName) return;
-
-    const newName = `${prefix}${nameContent}`;
-
-    if (id === 'new') {
-      addContext({ type, name: newName });
-      id = newName;
-    } else {
-      updateContext({ id, name: newName });
-    }
-  };
-
-  const updateOutContex = () => {
-    const nameContent = NameRef.current.textContent;
-    const lifeContent = +LifespanRef.current.textContent;
-
-    if (nameContent === '' || lifeContent === 0) {
-      removeContex(id);
-      return;
-    }
-    if (nameContent === contextName && lifeContent === lifeSpan) return;
-
-    const newName = `${prefix}${nameContent}`;
-
-    if (id === 'new') {
-      addContext({ type, name: newName, lifeSpan: lifeContent });
-      id = newName;
-    } else {
-      updateContext({ id, name: newName, lifeSpan: lifeContent });
-    }
+    const newLifeCount = LifespanRef.current ? Number(LifespanRef.current.textContent) : 0;
+    updateContext(newName, newLifeCount);
   };
 
   const handleRemoveClick = () => removeContex(id);

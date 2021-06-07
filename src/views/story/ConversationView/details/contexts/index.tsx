@@ -1,34 +1,37 @@
-import { Grid, makeStyles } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import { Box, Grid, makeStyles, Typography } from '@material-ui/core';
+import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 
 interface ContextsProps {
-  inputContextField: string;
-  outputContextField: string;
+  index: number;
+  activeTabIndex: number;
 }
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  uppercase: { textTransform: 'uppercase' },
 }));
 
-const Contexts: FC<ContextsProps> = ({ inputContextField, outputContextField }) => {
+const Contexts: FC<ContextsProps> = ({ index, activeTabIndex }) => {
   const classes = useStyles();
-  const [crossContext, setCrossContext] = useState<string | undefined>();
+  const { t } = useTranslation(['intents']);
 
   return (
-    <Grid container direction="row" justify="space-between" spacing={3}>
-      <Grid item xs={6}>
-        <Collection type="input" fieldName={inputContextField} setCrossContext={setCrossContext} />
+    <Box role="tabpanel" hidden={activeTabIndex !== index}>
+      <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
+        <Typography variant="h6" className={classes.uppercase}>
+          {t('contexts')}
+        </Typography>
+      </Box>
+      <Grid container direction="row" justify="space-between" spacing={3}>
+        <Grid item xs={6}>
+          <Collection type="input" />
+        </Grid>
+        <Grid item xs={6}>
+          <Collection type="output" />
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <Collection
-          type="output"
-          fieldName={outputContextField}
-          setCrossContext={setCrossContext}
-          crossContext={crossContext}
-        />
-      </Grid>
-    </Grid>
+    </Box>
   );
 };
 
