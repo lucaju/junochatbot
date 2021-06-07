@@ -45,7 +45,7 @@ export const getIntent = async (
 
 export const createIntent = async (
   { state, effects }: Context,
-  intent: Intent
+  intent: Partial<Intent>
 ): Promise<Intent | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
@@ -53,10 +53,12 @@ export const createIntent = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.intents.api.createIntent(storyId, intent, authUser.token);
+  console.log(storyId, intent, authUser.token);
+
+  const response = await effects.intents.api.createIntent(storyId, intent as Intent, authUser.token);
   if (isError(response)) return response;
 
-  state.intents.collection = [intent, ...state.intents.collection];
+  state.intents.collection = [intent as Intent, ...state.intents.collection];
 
   return response;
 };
