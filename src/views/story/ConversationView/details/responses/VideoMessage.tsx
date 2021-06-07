@@ -1,7 +1,7 @@
 import { Box, Grid, IconButton, makeStyles, MenuItem, Select, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
-import TheatersIcon from '@material-ui/icons/Theaters';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 import { useApp } from '@src/overmind';
 import { Tag, Video } from '@src/types';
 import clsx from 'clsx';
@@ -125,7 +125,7 @@ const VideoMessage: FC<VideoMessageProps> = ({
       <Grid container direction="row" spacing={2}>
         <Grid item>
           <Box display="flex" flexDirection="column" alignItems="center" mt={0.5}>
-            <TheatersIcon />
+            <YouTubeIcon />
             {type === 'tag' && <ShuffleIcon className={classes.marginTop} />}
           </Box>
         </Grid>
