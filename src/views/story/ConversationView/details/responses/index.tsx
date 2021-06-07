@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 
 interface ResponsesProps {
+  index: number;
+  activeTabIndex: number;
   fieldName: string;
 }
 
@@ -14,7 +16,7 @@ const useStyles = makeStyles(() => ({
   uppercase: { textTransform: 'uppercase' },
 }));
 
-const Responses: FC<ResponsesProps> = ({ fieldName }) => {
+const Responses: FC<ResponsesProps> = ({ index, activeTabIndex, fieldName }) => {
   const classes = useStyles();
   const { t } = useTranslation(['intents']);
   const [, meta, helpers] = useField(fieldName);
@@ -48,10 +50,13 @@ const Responses: FC<ResponsesProps> = ({ fieldName }) => {
   };
 
   return (
-    <Box>
+    <Box
+      role="tabpanel"
+      hidden={activeTabIndex !== index}
+    >
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
         <Typography variant="h6" className={classes.uppercase}>
-          {t('response')}
+          {t('responses')}
         </Typography>
         <Box display="flex" flexDirection="row" my={1.5}>
           <Button color="primary" startIcon={<AddCircleOutlineIcon />} onClick={addTextMessage}>

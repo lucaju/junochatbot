@@ -8,14 +8,16 @@ import Collection from './Collection';
 import useTrainingPhrases from './hooks';
 
 interface TrainingProps {
+  index: number;
+  activeTabIndex: number;
   fieldName: string;
 }
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  uppercase: { textTransform: 'uppercase' },
 }));
 
-const Training: FC<TrainingProps> = ({ fieldName }) => {
+const Training: FC<TrainingProps> = ({ index, activeTabIndex, fieldName }) => {
   const classes = useStyles();
   const { t } = useTranslation(['intents']);
   const [, meta] = useField(fieldName);
@@ -34,8 +36,11 @@ const Training: FC<TrainingProps> = ({ fieldName }) => {
   };
 
   return (
-    <Box>
+    <Box role="tabpanel" hidden={activeTabIndex !== index}>
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
+        <Typography variant="h6" className={classes.uppercase}>
+          {t('training phrases')}
+        </Typography>
         <Typography variant="caption" gutterBottom>
           Phrases you can expect from user, that will trigger the intent.
         </Typography>

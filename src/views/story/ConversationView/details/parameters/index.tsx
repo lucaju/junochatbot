@@ -8,6 +8,8 @@ import Collection from './Collection';
 import useParameter from './hooks';
 
 interface IntentParamsProps {
+  index: number;
+  activeTabIndex: number;
   fieldName: string;
 }
 
@@ -15,7 +17,7 @@ const useStyles = makeStyles(() => ({
   uppercase: { textTransform: 'uppercase' },
 }));
 
-const IntentParams: FC<IntentParamsProps> = ({ fieldName }) => {
+const IntentParams: FC<IntentParamsProps> = ({ index, activeTabIndex, fieldName }) => {
   const classes = useStyles();
   const { t } = useTranslation(['intents']);
   const { createFreshParameter } = useParameter();
@@ -46,7 +48,10 @@ const IntentParams: FC<IntentParamsProps> = ({ fieldName }) => {
   };
 
   return (
-    <Box>
+    <Box
+      role="tabpanel"
+      hidden={activeTabIndex !== index}
+    >
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
         <Typography variant="h6" className={classes.uppercase}>
           {t('parameters')}
