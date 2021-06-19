@@ -3,8 +3,8 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Context as ContextType } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import ContextComponent, { ContextData } from './Context';
-import useContext from './hooks';
+import ContextComponent from './Context';
+import useContext, { ContextData } from './hooks';
 
 interface CollectionProps {
   type: 'input' | 'output';
@@ -24,18 +24,20 @@ const MAX_OUPUT = 30;
 
 const Collection: FC<CollectionProps> = ({ type = 'input' }) => {
   const classes = useStyles();
-  const { value, createFreshContext } = useContext({ type });
+  const { contexts, createFreshContext, extractContextName } = useContext({ type });
   const [listContext, setListContext] = useState<ContextData[]>([]);
 
   useEffect(() => {
-    if (!value) return setListContext([]);
+    // console.log(type, contexts)
+    if (!contexts) return setListContext([]);
 
-    const list = value.map((context: string | ContextType) => {
+    const list = contexts.map((context: string | ContextType) => {
       const name = typeof context === 'string' ? context : context.name;
+      const contextName = extractContextName(name);
       return {
         type,
         id: name,
-        name,
+        name: contextName,
         lifeSpan: typeof context !== 'string' ? context.lifespanCount : undefined,
       };
     });
@@ -43,11 +45,19 @@ const Collection: FC<CollectionProps> = ({ type = 'input' }) => {
     setListContext(list);
 
     return () => setListContext([]);
-  }, [value]);
+  }, [contexts]);
 
   const handleAddNew = () => {
+    if (listContext.length > 0 && listContext[listContext.length - 1].name === '') return;
     const newContext = createFreshContext();
+    console.log(newContext);
     setListContext([...listContext, newContext]);
+  };
+
+  const removeEmptyContext = () => {
+    const newContext = createFreshContext();
+    console.log(newContext);
+    setListContext(listContext.filter(({ name }) => name !== ''));
   };
 
   return (
@@ -66,15 +76,19 @@ const Collection: FC<CollectionProps> = ({ type = 'input' }) => {
           <AddCircleOutlineIcon fontSize="small" />
         </IconButton>
       </Box>
-      {listContext && (
-        <TransitionGroup className={classes.collection}>
-          {listContext.map(({ id, name, lifeSpan }) => (
-            <Collapse key={name}>
-              <ContextComponent type={type} id={id} name={name} lifeSpan={lifeSpan} />
-            </Collapse>
-          ))}
-        </TransitionGroup>
-      )}
+      <TransitionGroup className={classes.collection}>
+        {listContext.map(({ id, name, lifeSpan }) => (
+          <Collapse key={name}>
+            <ContextComponent
+              type={type}
+              id={id}
+              name={name}
+              lifeSpan={lifeSpan}
+              handleEmptyContext={removeEmptyContext}
+            />
+          </Collapse>
+        ))}
+      </TransitionGroup>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { makeStyles, Slide, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { useApp } from '@src/overmind';
 
 const useStyles = makeStyles(() => ({

@@ -5,18 +5,12 @@ import clsx from 'clsx';
 import React, { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import useContext from './hooks';
 
-export interface ContextData {
-  name: string;
-  id?: string;
-  lifeSpan?: number;
-  type?: 'input' | 'output';
-}
-
 interface ContextProps {
   type: 'input' | 'output';
   id?: string;
   name: string;
   lifeSpan?: number;
+  handleEmptyContext: () => void;
 }
 
 const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
@@ -44,22 +38,27 @@ const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
 
 const ALLOWED_KEYS_LIFESPAN = ['Backspace', 'ArrowLeft', 'ArrowRight'];
 
-const ContextComponent: FC<ContextProps> = ({ type = 'input', id = 'new', name, lifeSpan = 5 }) => {
+const ContextComponent: FC<ContextProps> = ({
+  type = 'input',
+  id = 'new',
+  name,
+  lifeSpan = 5,
+  handleEmptyContext,
+}) => {
   const classes = useStyles();
   const NameRef = useRef<HTMLElement>(null);
   const LifespanRef = useRef<HTMLElement>(null);
   const [hover, setHover] = useState(false);
-  const { extractContextName, removeContex, updateContext } = useContext({
+
+  const { removeContex, updateContext } = useContext({
     type,
     id,
-    name,
-    lifeSpan,
+    currentName: name,
+    currentLifeSpan: lifeSpan,
   });
 
-  const contextName = extractContextName();
-
   useEffect(() => {
-    if (contextName === '' && NameRef.current) NameRef.current.focus();
+    if (name === '' && NameRef.current) NameRef.current.focus();
     return () => {};
   }, [NameRef]);
 
@@ -110,10 +109,12 @@ const ContextComponent: FC<ContextProps> = ({ type = 'input', id = 'new', name, 
 
   const handleUpdate = () => {
     if (!NameRef || !NameRef.current) return;
+
     const newName = NameRef.current.textContent ?? '';
+    if (newName === '') return handleEmptyContext();
 
     const newLifeCount = LifespanRef.current ? Number(LifespanRef.current.textContent) : 0;
-    updateContext(newName, newLifeCount);
+    updateContext({ name: newName, lifeSpan: newLifeCount });
   };
 
   const handleRemoveClick = () => removeContex(id);
@@ -145,7 +146,7 @@ const ContextComponent: FC<ContextProps> = ({ type = 'input', id = 'new', name, 
           onKeyDown={handleKeyDownName}
           suppressContentEditableWarning={true}
         >
-          {contextName}
+          {name}
         </Typography>
         {type === 'output' && (
           <>

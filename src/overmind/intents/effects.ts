@@ -1,14 +1,12 @@
 import mock from '@src/../test/mockData';
 import { API_URL } from '@src/config/config';
 import type { Entity, ErrorMessage, Intent } from '@src/types';
+import { v4 as uuidv4 } from 'uuid';
 
 const MOCK_UP = true;
 
 export const api = {
-  getIntents: async (
-    storyId: number,
-    token: string
-  ): Promise<Intent[] | ErrorMessage> => {
+  getIntents: async (storyId: number, token: string): Promise<Intent[] | ErrorMessage> => {
     if (MOCK_UP) {
       return await new Promise((resolve) => {
         setTimeout(() => {
@@ -38,17 +36,14 @@ export const api = {
       return await new Promise((resolve, reject) => {
         setTimeout(() => {
           const intent = mock.dataIntents.find((itt) => itt.name === intentName);
-          if (intent) resolve(intent);;
+          if (intent) resolve(intent);
         }, 1000);
       });
     }
 
-    const response = await fetch(
-      `${API_URL}/stories/${storyId}/intents/${intentName}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/stories/${storyId}/intents/${intentName}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -66,8 +61,9 @@ export const api = {
     if (MOCK_UP) {
       return await new Promise((resolve) => {
         setTimeout(() => {
-          mock.dataIntents = [intent, ...mock.dataIntents];
-          resolve(intent);
+          const newIntent: Intent = { ...intent, name: `new-${uuidv4()}` };
+          mock.dataIntents = [newIntent, ...mock.dataIntents];
+          resolve(newIntent);
         }, 1000);
       });
     }
@@ -133,13 +129,10 @@ export const api = {
       });
     }
 
-    const response = await fetch(
-      `${API_URL}/stories/${storyId}/intents/${intentName}`,
-      {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/stories/${storyId}/intents/${intentName}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 

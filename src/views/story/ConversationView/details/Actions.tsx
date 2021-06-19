@@ -1,16 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
-import { useFormikContext } from 'formik';
+import { useApp } from '@src/overmind';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Intent } from '@src/types';
 
 interface ActionsProps {
-  dirty: boolean;
+  handleSubmit: () => void;
   handleCancel: () => void;
   handleDelete: () => void;
   isSubmitting: boolean;
-  values: Partial<Intent>;
 }
 
 const useStyles = makeStyles(({ palette: { common, type } }) => ({
@@ -18,18 +16,16 @@ const useStyles = makeStyles(({ palette: { common, type } }) => ({
   textColor: { color: type === 'light' ? common.white : common.black },
 }));
 
-const Actions: FC<ActionsProps> = ({ dirty, handleCancel, handleDelete, isSubmitting, values }) => {
+const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, isSubmitting }) => {
   const classes = useStyles();
   const { t } = useTranslation(['common', 'videos']);
-  const { submitForm } = useFormikContext();
-
-  const handleSubmit = async () => await submitForm();
+  const { state } = useApp();
 
   return (
     <>
       <Button onClick={handleCancel}>{t('cancel')}</Button>
 
-      {values.name && (
+      {state.intents.currentIntent?.name && (
         <>
           <Box flexGrow={1} />
           <Button disabled={isSubmitting} onClick={handleDelete} variant="outlined">
@@ -43,7 +39,7 @@ const Actions: FC<ActionsProps> = ({ dirty, handleCancel, handleDelete, isSubmit
       <Button
         classes={{ containedPrimary: classes.textColor }}
         color="primary"
-        disabled={isSubmitting || !dirty}
+        disabled={isSubmitting}
         onClick={handleSubmit}
         variant="contained"
       >

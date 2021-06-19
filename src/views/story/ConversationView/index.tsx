@@ -57,11 +57,13 @@ const ConversationView: FC = () => {
   }, []);
 
   const handleDetailOpen = (intentId?: string) => {
+    if (!intentId) actions.intents.createNewIntent();
     setCurrentIntentId(intentId);
     setDetailsOpen(true);
   };
 
   const handleDetailClose = () => {
+    actions.intents.closeCurrentIntent()
     setCurrentIntentId(undefined);
     setDetailsOpen(false);
   };
