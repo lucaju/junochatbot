@@ -1,9 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, CircularProgress, Container } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,32 +12,15 @@ import BottomBar from './BottomBar';
 import Main from './main';
 import SideBar from './sidebar';
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
-  root: {
-    backgroundColor: palette.background.default,
-    minHeight: '100%',
-    paddingBottom: spacing(3),
-    paddingTop: spacing(3),
-  },
-  container: { height: 'calc(100vh - 64px - 68px - 36px)' },
-}));
-
 const title = 'Juno Chatbot';
 
 const GeneralView: FC = () => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const { storyId } = useParams();
   const { state, actions } = useApp();
-  const { t } = useTranslation([
-    'storyGeneral',
-    'common',
-    'errorMessages, deleteDialog',
-  ]);
+  const { t } = useTranslation(['storyGeneral', 'common', 'errorMessages, deleteDialog']);
   const [isLoading, setIsLoading] = useState(false);
-  const [storyData, setStoryData] = useState<Story | undefined>(
-    state.story.currentStory
-  );
+  const [storyData, setStoryData] = useState<Story | undefined>(state.story.currentStory);
 
   useEffect(() => {
     if (!storyId) return navigate('/app', { replace: true });
@@ -82,26 +60,17 @@ const GeneralView: FC = () => {
     if (!storyData) return;
     const response = actions.story.updateStory({ storyData, values });
 
-    const type = isError(response)
-      ? NotificationType.ERROR
-      : NotificationType.SUCCESS;
+    const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
-    const message = isError(response)
-      ? 'errorMessages:somethingWentWrong'
-      : t('storyUpdated');
+    const message = isError(response) ? 'errorMessages:somethingWentWrong' : t('storyUpdated');
 
     actions.ui.showNotification({ message, type });
   };
 
   return (
-    <Page className={classes.root} title={state.ui.pageTitle}>
+    <Page title={state.ui.pageTitle}>
       {isLoading ? (
-        <Box
-          display="flex"
-          height="100%"
-          justifyContent="center"
-          alignItems="flex-start"
-        >
+        <Box display="flex" height="100%" justifyContent="center" alignItems="flex-start">
           <CircularProgress size={60} thickness={4} />
         </Box>
       ) : storyData ? (
@@ -124,12 +93,8 @@ const GeneralView: FC = () => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box height="100%">
-                  <Container className={classes.container} maxWidth={false}>
-                    <Box
-                      alignItems="flex-start"
-                      display="flex"
-                      flexDirection="row"
-                    >
+                  <Container maxWidth={false} sx={{ height: 'calc(100vh - 64px - 68px - 36px)' }}>
+                    <Box alignItems="flex-start" display="flex" flexDirection="row">
                       <Box flexGrow={1} maxWidth="770px" pr={2}>
                         <Main
                           errors={errors}
@@ -145,12 +110,8 @@ const GeneralView: FC = () => {
                     </Box>
                   </Container>
                 </Box>
-                <Box ml={3} mr={3} maxWidth="1100px">
-                  <BottomBar
-                    dirty={dirty}
-                    isSubmitting={isSubmitting}
-                    name={'publishedDate'}
-                  />
+                <Box maxWidth="1100px" ml={3} mr={3}>
+                  <BottomBar dirty={dirty} name={'publishedDate'} isSubmitting={isSubmitting} />
                 </Box>
               </form>
             )}

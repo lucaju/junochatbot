@@ -1,49 +1,23 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  FormControlLabel,
-  makeStyles,
-  Switch,
-} from '@material-ui/core';
-import { DateTime } from 'luxon';
+import { Box, Divider, FormControlLabel, Switch } from '@material-ui/core';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useField, useFormikContext } from 'formik';
+import { DateTime } from 'luxon';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface BottomBarProps {
-  name: string;
   dirty: boolean;
   isSubmitting: boolean;
+  name: string;
 }
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
-  bar: {
-    paddingTop: spacing(2),
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-  },
-  buttonProgress: { position: 'absolute' },
-  divider: {
-    paddingLeft: spacing(2),
-    paddingright: spacing(2),
-  },
-  marginLeft: { marginLeft: spacing(2) },
-  textColor: {
-    color:
-      palette.type === 'light' ? palette.common.white : palette.common.black,
-  },
-}));
-
 const BottomBar: FC<BottomBarProps> = ({ name, dirty, isSubmitting }) => {
-  const classes = useStyles();
   const { t } = useTranslation(['common', 'storyGeneral']);
   const { submitForm } = useFormikContext();
-  // eslint-disable-next-line no-unused-vars
-  const [field, meta, helpers] = useField(name);
+  const [, meta, helpers] = useField(name);
   const { value } = meta;
   const { setValue } = helpers;
+
   const [publishedState, setPublishedState] = useState(value ? true : false);
 
   const handleChangePublisehdState = () => {
@@ -55,38 +29,38 @@ const BottomBar: FC<BottomBarProps> = ({ name, dirty, isSubmitting }) => {
 
   return (
     <>
-      <Divider className={classes.divider} />
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="row"
-        className={classes.bar}
-      >
+      <Divider sx={{ px: 2 }} />
+      <Box alignItems="center" display="flex" flexDirection="row" pt={2} px={2}>
         <FormControlLabel
           control={
             <Switch
-              checked={publishedState}
-              onChange={handleChangePublisehdState}
-              name="publishedState"
               color="primary"
+              checked={publishedState}
+              name="publishedState"
+              onChange={handleChangePublisehdState}
             />
           }
           label="Published"
         />
         <Box flexGrow={1} />
-        <Button
-          classes={{ containedPrimary: classes.textColor }}
+        <LoadingButton
           color="primary"
-          disabled={isSubmitting || !dirty}
+          disabled={!dirty}
+          loading={isSubmitting}
           onClick={submitForm}
+          sx={{
+            ml: 2,
+            color: ({ palette }) =>
+              dirty
+                ? 'inherent'
+                : palette.mode === 'light'
+                ? `${palette.grey[400]} !important`
+                : `${palette.grey[500]} !important`,
+          }}
           variant="contained"
-          className={classes.marginLeft}
         >
           {t('save')}
-          {isSubmitting && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
-        </Button>
+        </LoadingButton>
       </Box>
     </>
   );

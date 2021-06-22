@@ -1,5 +1,5 @@
-import { derived } from 'overmind';
 import type { User } from '@src/types';
+import { derived } from 'overmind';
 
 type State = {
   user: User | null;
@@ -7,8 +7,8 @@ type State = {
   isAdmin: boolean;
   isInstructor: boolean;
   isStudent: boolean;
-  stories?:any
-  story?:any
+  stories?: any;
+  story?: any;
 };
 
 export const state: State = {

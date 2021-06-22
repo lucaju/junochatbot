@@ -1,4 +1,4 @@
-import { Box, IconButton, makeStyles, TextField, Zoom } from '@material-ui/core';
+import { Box, IconButton, TextField, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import React, {
   ChangeEvent,
@@ -9,33 +9,27 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import MenuParameters from './MenuParameters';
 import useParameter from '../parameters/hooks';
+import MenuParameters from './MenuParameters';
 
 interface TextMessageContentProps {
-  index: number;
   content?: string;
-  removable?: boolean;
+  index: number;
   handleRemove: (index: number) => void;
   handleUpdate: (index: number, value: string) => void;
+  removable?: boolean;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  removeButton: { marginLeft: spacing(1) },
-  marginBottom: { marginBottom: spacing(1.5) },
-}));
-
 const TextMessageContent: FC<TextMessageContentProps> = ({
-  index,
   content = '',
-  removable = true,
+  index,
   handleRemove,
   handleUpdate,
+  removable = true,
 }) => {
-  const classes = useStyles();
   const { params } = useParameter();
-
   const TFref = useRef();
+
   const [elTarget, setElTarget] = useState<HTMLElement>();
   const [hover, setHover] = useState(false);
   const [value, setValue] = useState(content);
@@ -91,28 +85,28 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
     >
       <TextField
         inputRef={TFref}
-        className={classes.marginBottom}
         fullWidth
         onChange={handleChange}
         onBlur={handleBlur}
         onKeyUp={handleKeyUp}
+        sx={{ mb: 1.5 }}
         value={value}
       />
       {params && (
         <MenuParameters
+          handleClick={handleParamSelect}
+          handleClose={handleParamsClose}
           inputElement={TFref.current}
           open={showParameters}
           target={elTarget}
-          handleClick={handleParamSelect}
-          handleClose={handleParamsClose}
         />
       )}
       <Zoom in={removable && hover}>
         <IconButton
           aria-label="delete"
-          className={classes.removeButton}
-          size="small"
           onClick={() => handleRemove(index)}
+          size="small"
+          sx={{ ml: 1 }}
         >
           <HighlightOffIcon fontSize="inherit" />
         </IconButton>

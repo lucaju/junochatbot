@@ -1,30 +1,22 @@
-import { Box, Container, makeStyles } from '@material-ui/core';
-import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Box, Container } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import Page from '@src/components/Page';
 import { useApp } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import { isError } from '@src/util/utilities';
+import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 import Collection from './Collection';
-import MenuBar from './menubar';
 import Details from './details';
-
-const useStyles = makeStyles(({ spacing, palette }) => ({
-  root: {
-    backgroundColor: palette.background.default,
-    minHeight: '100%',
-    paddingTop: spacing(3),
-  },
-}));
+import MenuBar from './menubar';
 
 const ConversationView: FC = () => {
-  const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
   const { storyId } = useParams();
   const { t } = useTranslation(['intents', 'common']);
+
   const [isLoading, setIsLoading] = useState(true);
   const [hasIntents, setHasIntents] = useState(true);
   const [currentIntentId, setCurrentIntentId] = useState<string | undefined>();
@@ -63,7 +55,7 @@ const ConversationView: FC = () => {
   };
 
   const handleDetailClose = () => {
-    actions.intents.closeCurrentIntent()
+    actions.intents.closeCurrentIntent();
     setCurrentIntentId(undefined);
     setDetailsOpen(false);
   };
@@ -79,26 +71,26 @@ const ConversationView: FC = () => {
   };
 
   return (
-    <Page className={classes.root} title={state.ui.pageTitle}>
+    <Page title={state.ui.pageTitle}>
       <Container maxWidth={false}>
-        <Details open={detailsOpen} handleClose={handleDetailClose} intentId={currentIntentId} />
+        <Details handleClose={handleDetailClose} intentId={currentIntentId} open={detailsOpen} />
         {!isLoading && (
           <MenuBar
+            disabledFilters={!hasIntents}
             handleDetailOpen={handleDetailOpen}
             handleSearch={handleSearch}
             updateFilter={updateFilters}
-            disabledFilters={!hasIntents}
           />
         )}
         {!hasIntents ? (
           <NoContent heading={t('noIntentsYet')} />
         ) : (
-          <Box mt={3}>
+          <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
             <Collection
-              handleDetailOpen={handleDetailOpen}
               filters={filters}
-              searchQuery={searchQuery}
+              handleDetailOpen={handleDetailOpen}
               isLoading={isLoading}
+              searchQuery={searchQuery}
             />
           </Box>
         )}

@@ -59,7 +59,7 @@ const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
     <Box p={2}>
       <Box display="flex" flexDirection="row">
         <Typography>{t('Prompts')}</Typography>
-        <IconButton aria-label="add prompt" size="small" onClick={addEmpty}>
+        <IconButton aria-label="add prompt" onClick={addEmpty} size="small">
           <AddCircleOutlineIcon fontSize="small" />
         </IconButton>
       </Box>
@@ -68,9 +68,9 @@ const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
           <Prompt
             key={id}
             id={id}
-            prompt={prompt}
             handleRemove={handleRemovePrompt}
             handleUpdate={handleUpdatePrompt}
+            prompt={prompt}
           />
         ))}
       </Box>

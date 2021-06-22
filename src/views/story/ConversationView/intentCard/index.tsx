@@ -1,33 +1,18 @@
-import { Box, Card, CardContent, Grid, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { Box, Card, CardContent, Grid } from '@material-ui/core';
+import { alpha } from '@material-ui/core/styles';
 import { Intent } from '@src/types';
-import General from './General';
+import React, { FC, useState } from 'react';
 import Contexts from './Contexts';
+import General from './General';
 import Message from './Message';
 import Paramenter from './Parameter';
 
 interface ContextCardProps {
-  className: string;
   intent: Intent;
   handleEditClick: (value?: string) => void;
 }
 
-const useStyles = makeStyles(({ shape, spacing, palette }) => ({
-  root: {},
-  cardContent: {
-    '&:last-child': { paddingBottom: spacing(2) },
-  },
-  cardHover: { cursor: 'pointer' },
-  context: {
-    backgroundColor: palette.background.default,
-    overflowX: 'auto',
-  },
-}));
-
-const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick, ...rest }) => {
-  const classes = useStyles();
-  const [hover, setHover] = useState(false);
+const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
   const [elevation, setElevation] = useState(1);
 
   const {
@@ -40,26 +25,18 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
     messages,
   } = intent;
 
-  const mouseOver = () => {
-    setHover(true);
-    setElevation(6);
-  };
-
-  const mouseOut = () => {
-    setHover(false);
-    setElevation(1);
-  };
+  const mouseOver = () => setElevation(6);
+  const mouseOut = () => setElevation(1);
 
   return (
     <Card
-      className={clsx(classes.root, className, hover && classes.cardHover)}
       elevation={elevation}
       onClick={() => handleEditClick(name)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      {...rest}
+      sx={{ mt: 1, mx: 1.5, cursor: 'pointer' }}
     >
-      <CardContent classes={{ root: classes.cardContent }}>
+      <CardContent sx={{ '&:last-child': { pb: 2 } }}>
         <Grid container direction="row" spacing={1}>
           <Grid item xs={4}>
             <General displayName={displayName} trainingPhrases={trainingPhrases} />
@@ -83,7 +60,6 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
 
         {(inputContextNames || inputContextNames) && (
           <Box
-            className={classes.context}
             display="flex"
             flexDirection="row"
             alignItems="center"
@@ -92,13 +68,17 @@ const ContextCard: FC<ContextCardProps> = ({ className, intent, handleEditClick,
             mb={-2}
             px={2}
             py={1}
+            sx={{
+              backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02),
+              overflowX: 'auto',
+            }}
           >
             <>
               {inputContextNames && inputContextNames.length > 0 && (
-                <Contexts type="input" contexts={inputContextNames} />
+                <Contexts contexts={inputContextNames} type="input" />
               )}
               {outputContexts && outputContexts.length > 0 && (
-                <Contexts type="output" contexts={outputContexts} />
+                <Contexts contexts={outputContexts} type="output" />
               )}
             </>
           </Box>

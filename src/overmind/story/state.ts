@@ -1,4 +1,4 @@
-import type { Story, Language } from '@src/types';
+import type { Language, Story } from '@src/types';
 
 type State = {
   stories: Story[];

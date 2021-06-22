@@ -1,18 +1,18 @@
 import { useApp } from '@src/overmind';
-import { v4 as uuidv4 } from 'uuid';
 import type { Context as ContextIntent } from '@src/types';
+import { v4 as uuidv4 } from 'uuid';
 export interface ContextData {
-  name: string;
   id?: string;
   lifeSpan?: number;
+  name: string;
   type?: 'input' | 'output';
 }
 
 interface props {
-  type: 'input' | 'output';
-  id?: string;
-  currentName?: string;
   currentLifeSpan?: number;
+  currentName?: string;
+  id?: string;
+  type: 'input' | 'output';
 }
 
 const DEFAULT_LIFESPANCOUNT = 5;

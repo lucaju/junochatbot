@@ -3,17 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 declare global {
   interface Window {
-    gtag?: (
-      key: string,
-      trackingId: string,
-      config: { page_path: string }
-    ) => void;
+    gtag?: (key: string, trackingId: string, config: { page_path: string }) => void;
   }
 }
 
-export const useTracking = (
-  trackingId: string | undefined = process.env.GA_MEASUREMENT_ID
-) => {
+export const useTracking = (trackingId: string | undefined = process.env.GA_MEASUREMENT_ID) => {
   const location = useLocation();
 
   useEffect(() => {

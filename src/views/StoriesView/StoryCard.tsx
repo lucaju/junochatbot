@@ -5,77 +5,42 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  Collapse,
   Divider,
-  Grow,
-  makeStyles,
   Typography,
 } from '@material-ui/core';
-import clsx from 'clsx';
-import { DateTime } from 'luxon';
-import { useRefresh } from 'muuri-react';
-import React, { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { getIcon } from '@src/util/icons';
-import { Story } from '@src/types';
 import { APP_URL } from '@src/config/config.js';
+import { Story } from '@src/types';
+import { getIcon } from '@src/util/icons';
+import { DateTime } from 'luxon';
+import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+// import * as Vibrant from 'node-vibrant/dist/vibrant'
+//@ts-ignore
+// import Vibrant from 'node-vibrant/dist/vibrant.min.js';
 
 interface UserCarddProps {
-  className: string;
+  showEdit?: boolean;
   story: Story;
   triggerEditStory: (value: number) => void;
-  showEdit?: boolean;
 }
 
-const useStyles = makeStyles(({ palette, shape, spacing }) => ({
-  root: { width: 350 },
-  actionPanel: {
-    position: 'fixed',
-    right: 0,
-  },
-  actionPanelMarginTop: { marginTop: spacing(4) },
-  divider: { width: '30%' },
-  draft: {
-    textTransform: 'uppercase',
-    fontStyle: 'italic',
-  },
-  icon: { marginRight: spacing(1) },
-  label: {
-    paddingLeft: spacing(1),
-    paddingRight: spacing(1),
-    color: palette.text.secondary,
-    marginRight: -spacing(1),
-  },
-  language: { marginLeft: spacing(1) },
-  marginTop: { marginTop: spacing(0.5) },
-  media: { height: 200 },
-  noMedia: { backgroundColor: palette.background.default },
-  title: {
-    marginLeft: -spacing(2.5),
-    paddingLeft: spacing(2),
-    paddingRight: spacing(1),
-    borderRadius: shape.borderRadius,
-    // color: palette.type === 'light' ? palette.grey[800] : palette.common.white,
-  },
-  titleHover: {
-    backgroundColor: palette.secondary.main,
-    color: palette.type === 'light' ? palette.common.white : palette.grey[800],
-  },
-  uppercase: { textTransform: 'uppercase' },
-}));
-
-const StoryCard: FC<UserCarddProps> = ({
-  className,
-  story,
-  triggerEditStory,
-  showEdit = false,
-  ...rest
-}) => {
-  const classes = useStyles();
+const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditStory }) => {
   const { t } = useTranslation(['common']);
   const [hover, setHover] = useState(false);
-  const [elevation, setElevation] = useState(0);
+  const [elevation, setElevation] = useState(story.imageUrl ? 2 : 0);
+  const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
+  const [dominantColor, setDominantColor] = useState('#fff');
 
-  useRefresh([hover]);
+  // useEffect(() => {
+  //   const getVibrant = async () => {
+  //     const vibrant = await Vibrant.from(`${APP_URL}/uploads/assets${story.imageUrl}`).getPalette();
+  //     console.log(vibrant);
+  //   };
+  //   if (hasImage && story.title === 'After Life2') getVibrant();
+  //   return () => {};
+  // }, []);
 
   const BotAvatar = getIcon(story.botAvatar);
 
@@ -86,7 +51,7 @@ const StoryCard: FC<UserCarddProps> = ({
 
   const mouseOut = () => {
     setHover(false);
-    setElevation(0);
+    setElevation(story.imageUrl ? 2 : 0);
   };
 
   const handlePlayClick = () => {
@@ -95,96 +60,84 @@ const StoryCard: FC<UserCarddProps> = ({
   };
 
   return (
-    <Card
-      className={clsx(
-        classes.root,
-        className,
-        !story.imageUrl && classes.noMedia
+    <Card elevation={elevation} onMouseEnter={mouseOver} onMouseLeave={mouseOut} sx={{ m: 2 }}>
+      <Collapse in={hover}>
+        <Box display="flex" flexDirection="row" justifyContent="space-around" p={1}>
+          <Button onClick={handlePlayClick} size="small" variant="outlined">
+            {t('launch')}
+          </Button>
+          {showEdit && (
+            <Button onClick={() => triggerEditStory(story.id)} size="small" variant="outlined">
+              {t('edit')}
+            </Button>
+          )}
+        </Box>
+      </Collapse>
+      {hasImage && (
+        <CardMedia
+          image={
+            story.imageUrl.startsWith('http')
+              ? story.imageUrl
+              : `${APP_URL}/uploads/assets${story.imageUrl}`
+          }
+          sx={{
+            height: 200,
+            backgroundImage: 'linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)',
+          }}
+          title={story.title}
+        />
       )}
-      elevation={elevation}
-      {...rest}
-      onMouseEnter={mouseOver}
-      onMouseLeave={mouseOut}
-    >
-      {story.imageUrl &&
-        story.imageUrl.endsWith('.', story.imageUrl.length - 3) && (
-          <CardMedia
-            className={classes.media}
-            image={
-              story.imageUrl.startsWith('http')
-                ? story.imageUrl
-                : `${APP_URL}/uploads/assets${story.imageUrl}`
-            }
-            title={story.title}
-          />
-        )}
       <CardContent>
         <Box display="flex" alignItems="center">
-          <Grow in={hover}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="flex-start"
-              className={clsx(
-                classes.actionPanel,
-                !story.imageUrl && classes.noMedia,
-                showEdit && classes.actionPanelMarginTop
-              )}
-              pr={1}
-            >
-              <Button onClick={handlePlayClick} size="small" variant="outlined">
-                {t('launch')}
-              </Button>
-              {showEdit && (
-                <Button
-                  className={classes.marginTop}
-                  onClick={() => triggerEditStory(story.id)}
-                  size="small"
-                  variant="outlined"
-                >
-                  {t('edit')}
-                </Button>
-              )}
-            </Box>
-          </Grow>
           <Box
             display="flex"
             alignItems="center"
             flexDirection="row"
-            className={clsx(classes.title, hover && classes.titleHover)}
+            sx={{
+              ml: -2.5,
+              pl: 2,
+              pr: 1,
+              borderRadius: 1,
+              backgroundColor: ({ palette }) => (hover ? palette.secondary.main : 'inherent'),
+            }}
           >
             <Typography variant="h6">{story.title}</Typography>
           </Box>
           <Chip
-            className={classes.language}
             label={story.languageCode.substring(0, 2).toUpperCase()}
             size="small"
+            sx={{ ml: 1 }}
             variant="outlined"
           />
           <Box flexGrow={1} />
-          <Grow in={!hover}>
-            <Box className={classes.label}>
-              <Typography variant="overline">
-                {story.publishedDate === null ? (
-                  <span className={classes.draft}>{t('draft')}</span>
-                ) : (
-                  story.publishedDate !== null &&
-                  DateTime.fromISO(story.publishedDate).toFormat('yyyy')
-                )}
-              </Typography>
-            </Box>
-          </Grow>
+
+          <Box sx={{ mr: -1, px: 1, color: 'text.secondary' }}>
+            <Typography variant="overline">
+              {story.publishedDate === null ? (
+                <Box
+                  component="span"
+                  sx={{
+                    textTransform: 'uppercase',
+                    fontStyle: 'italic',
+                  }}
+                >
+                  {t('draft')}
+                </Box>
+              ) : (
+                story.publishedDate !== null &&
+                DateTime.fromISO(story.publishedDate).toFormat('yyyy')
+              )}
+            </Typography>
+          </Box>
         </Box>
 
-        <Box mt={1} display="flex" alignItems="flex-start">
-          <Typography className={classes.uppercase} variant="caption">
-            {story.user
-              ? `By ${story.user.firstName} ${story.user.lastName}`
-              : 'By Anonymous'}
+        <Box display="flex" alignItems="flex-start" mt={1}>
+          <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
+            {story.user ? `By ${story.user.firstName} ${story.user.lastName}` : 'By Anonymous'}
           </Typography>
         </Box>
         {story.synopsis && (
-          <Box mt={1} display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" mt={1}>
             <Typography variant="body2">{story.synopsis}</Typography>
           </Box>
         )}
@@ -195,17 +148,16 @@ const StoryCard: FC<UserCarddProps> = ({
               flexDirection="row"
               alignItems="center"
               justifyContent="space-evenly"
-              mt={2}
-              mb={2}
+              my={2}
             >
-              <Divider className={classes.divider} />
-              <Typography className={classes.uppercase} variant="caption">
+              <Divider sx={{ width: '30%' }} />
+              <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
                 {t('starring')}
               </Typography>
-              <Divider className={classes.divider} />
+              <Divider sx={{ width: '30%' }} />
             </Box>
-            <Box display="flex" alignItems="center" flexDirection="row" pl={2}>
-              <BotAvatar fontSize="small" className={classes.icon} />
+            <Box display="flex" flexDirection="row" alignItems="center" pl={2}>
+              <BotAvatar fontSize="small" sx={{ mr: 1 }} />
               <Typography variant="h6">{story.botName}</Typography>
             </Box>
             {story.botPersona && (

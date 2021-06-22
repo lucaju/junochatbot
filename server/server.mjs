@@ -1,6 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import express from 'express';
 import youtube from './routes/youtube.mjs';
 
@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const publicPath = path.join(__dirname, '..', 'dist');
 const app = express();
 
-app.use(bodyParser.json({ limit: '5mb' })); // support json encoded bodies
+app.use(express.json({ limit: '5mb' })); // support json encoded bodies
 
 // dev tools
 const loadDevTools = async () => {

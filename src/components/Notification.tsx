@@ -1,22 +1,12 @@
-import { makeStyles, Slide, Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
-import React from 'react';
+import { Alert, Slide, Snackbar } from '@material-ui/core';
 import { useApp } from '@src/overmind';
-
-const useStyles = makeStyles(() => ({
-  firstLetterUppercase: {
-    '& ::first-letter': {
-      textTransform: 'uppercase',
-    },
-  },
-}));
+import React from 'react';
 
 const TransitionRight = (props: any) => {
   return <Slide {...props} direction="right" />;
 };
 
 const Notification = () => {
-  const classes = useStyles();
   const { state, actions } = useApp();
 
   const handleInternalClose = () => actions.ui.closeNotification();
@@ -29,15 +19,17 @@ const Notification = () => {
       open={state.ui.notification.open}
       TransitionComponent={TransitionRight}
     >
-      <MuiAlert
-        className={classes.firstLetterUppercase}
+      <Alert
         elevation={6}
         onClose={handleInternalClose}
         severity={state.ui.notification.type}
+        sx={{
+          '& ::first-letter': { textTransform: 'uppercase' },
+        }}
         variant="filled"
       >
         {state.ui.notification.message}
-      </MuiAlert>
+      </Alert>
     </Snackbar>
   );
 };

@@ -1,11 +1,8 @@
-import { Context } from 'overmind';
+import type { ErrorMessage, Tag, Video } from '@src/types';
 import { isError, sortBy } from '@src/util/utilities';
-import type { ErrorMessage, Video, Tag } from '@src/types';
+import { Context } from 'overmind';
 
-export const getVideos = async ({
-  state,
-  effects,
-}: Context): Promise<Video[] | ErrorMessage> => {
+export const getVideos = async ({ state, effects }: Context): Promise<Video[] | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -30,11 +27,7 @@ export const getVideo = async (
   const authuser = state.session.user;
   if (!authuser || !authuser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.getVideo(
-    storyId,
-    videoId,
-    authuser.token
-  );
+  const response = await effects.videos.api.getVideo(storyId, videoId, authuser.token);
   if (isError(response)) return response;
 
   //Update state
@@ -59,18 +52,11 @@ export const createVideo = async (
   //1. Split data
   const newVideoData = { ...values };
 
-  const tags =
-    newVideoData.tags && newVideoData.tags.length > 0
-      ? newVideoData.tags
-      : null;
+  const tags = newVideoData.tags && newVideoData.tags.length > 0 ? newVideoData.tags : null;
   delete newVideoData.tags;
 
   //2. Create Video
-  const video = await effects.videos.api.createVideo(
-    storyId,
-    newVideoData,
-    authuser.token
-  );
+  const video = await effects.videos.api.createVideo(storyId, newVideoData, authuser.token);
   if (isError(video)) return video;
 
   //3. Assign groups
@@ -109,9 +95,7 @@ export const updateVideo = async (
   const valuesTagsSet = new Set(values.tags?.map(({ id }) => id));
 
   const tagsToAdd = values.tags?.filter(({ id }) => !videoTagsSet.has(id));
-  const tagsToRemove = videoData.tags?.filter(
-    ({ id }) => !valuesTagsSet.has(id)
-  );
+  const tagsToRemove = videoData.tags?.filter(({ id }) => !valuesTagsSet.has(id));
   delete newValues.tags;
 
   //2. Check if video data changed
@@ -128,11 +112,7 @@ export const updateVideo = async (
 
   //3. update Video
   if (videoDatahasChanged) {
-    const response = await effects.videos.api.updateVideo(
-      storyId,
-      newValues,
-      authUser.token
-    );
+    const response = await effects.videos.api.updateVideo(storyId, newValues, authUser.token);
     if (isError(response)) return response;
   } else {
     newValues = videoData as Video;
@@ -142,8 +122,8 @@ export const updateVideo = async (
   newValues.tags = videoData.tags;
   const videoId = newValues.id;
 
-   //4.1 remove from group
-   if (videoId && tagsToRemove && tagsToRemove?.length > 0) {
+  //4.1 remove from group
+  if (videoId && tagsToRemove && tagsToRemove?.length > 0) {
     for await (const tag of tagsToRemove) {
       const removeTag = await actions.videos.removeTagFromVideo({
         videoId,
@@ -169,8 +149,6 @@ export const updateVideo = async (
     }
   }
 
- 
-
   //7. update state;
   state.videos.collection = state.videos.collection.map((v: Video) => {
     if (v.id === newValues.id) v = newValues as Video;
@@ -190,16 +168,10 @@ export const deleteVideo = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.deleteVideo(
-    storyId,
-    videoId,
-    authUser.token
-  );
+  const response = await effects.videos.api.deleteVideo(storyId, videoId, authUser.token);
   if (isError(response)) return response;
 
-  state.videos.collection = state.videos.collection.filter(
-    (v: Video) => v.id !== videoId
-  );
+  state.videos.collection = state.videos.collection.filter((v: Video) => v.id !== videoId);
 
   return true;
 };
@@ -217,10 +189,7 @@ export const getYoutubeData = async (
 };
 
 // * TAGS ----------
-export const getTags = async ({
-  state,
-  effects,
-}: Context): Promise<Tag[] | ErrorMessage> => {
+export const getTags = async ({ state, effects }: Context): Promise<Tag[] | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -244,10 +213,7 @@ export const getVideoTags = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.getVideoTags(
-    videoId,
-    authUser.token
-  );
+  const response = await effects.videos.api.getVideoTags(videoId, authUser.token);
   if (isError(response)) return response;
 
   return response;
@@ -263,11 +229,7 @@ export const getTag = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.getTag(
-    storyId,
-    tagId,
-    authUser.token
-  );
+  const response = await effects.videos.api.getTag(storyId, tagId, authUser.token);
   if (isError(response)) return response;
 
   return response;
@@ -283,11 +245,7 @@ export const createTag = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.createTag(
-    storyId,
-    tag,
-    authUser.token
-  );
+  const response = await effects.videos.api.createTag(storyId, tag, authUser.token);
   if (isError(response)) return response;
 
   state.videos.tagCollection = [response, ...state.videos.tagCollection];
@@ -304,11 +262,7 @@ export const updateTag = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.updateTag(
-    storyId,
-    tag,
-    authUser.token
-  );
+  const response = await effects.videos.api.updateTag(storyId, tag, authUser.token);
   if (isError(response)) return response;
 
   state.videos.tagCollection = state.videos.tagCollection.map((t: Tag) => {
@@ -326,16 +280,10 @@ export const deleteTag = async ({ state, effects }: Context, tagId: number) => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.deleteTag(
-    storyId,
-    tagId,
-    authUser.token
-  );
+  const response = await effects.videos.api.deleteTag(storyId, tagId, authUser.token);
   if (isError(response)) return response;
 
-  state.videos.tagCollection = state.videos.tagCollection.filter(
-    (t) => t.id !== tagId
-  );
+  state.videos.tagCollection = state.videos.tagCollection.filter((t) => t.id !== tagId);
 
   return response;
 };
@@ -359,11 +307,7 @@ export const addTagToVideo = async (
   }
   if (!tag.id) return { errorMessage: 'Erros assigning tag to video' };
 
-  const response = await effects.videos.api.addTagToVideo(
-    videoId,
-    tag.id,
-    authUser.token
-  );
+  const response = await effects.videos.api.addTagToVideo(videoId, tag.id, authUser.token);
   if (isError(response)) return response;
 
   return tag as Tag;
@@ -376,11 +320,7 @@ export const removeTagFromVideo = async (
   const authuser = state.session.user;
   if (!authuser || !authuser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.videos.api.removeTagFromVideo(
-    videoId,
-    tagId,
-    authuser.token
-  );
+  const response = await effects.videos.api.removeTagFromVideo(videoId, tagId, authuser.token);
 
   if (isError(response)) return response;
 

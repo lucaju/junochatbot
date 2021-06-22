@@ -1,5 +1,4 @@
-import { Box, Collapse, makeStyles } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Box, Collapse, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import { useApp } from '@src/overmind';
 import { Intent } from '@src/types';
@@ -8,35 +7,11 @@ import { TransitionGroup } from 'react-transition-group';
 import IntentCard from './intentCard/';
 
 interface CollectionProps {
-  handleDetailOpen: (value: string) => void;
+  handleDetailOpen: (value?: string) => void;
   filters: Map<string, string>;
   searchQuery: string | undefined;
   isLoading?: boolean;
 }
-
-const useStyles = makeStyles(({ spacing }) => ({
-  card: {
-    width: '98%',
-    marginTop: spacing(1),
-    marginBottom: spacing(1),
-    marginLeft: spacing(1.5),
-    marginRight: spacing(1.5),
-  },
-  collection: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  container: {
-    maxHeight: '83vh',
-    overflowY: 'scroll',
-  },
-  header: {
-    padding: spacing(1.5),
-  },
-  iconHeader: {
-    marginRight: spacing(1),
-  },
-}));
 
 const Collection: FC<CollectionProps> = ({
   handleDetailOpen,
@@ -44,7 +19,6 @@ const Collection: FC<CollectionProps> = ({
   searchQuery,
   isLoading = false,
 }) => {
-  const classes = useStyles();
   const { state } = useApp();
   const [filteredItems, setFilteredItems] = useState<Intent[]>([]);
 
@@ -74,12 +48,17 @@ const Collection: FC<CollectionProps> = ({
   const showSkeleton = (qty = 10) => {
     const skels = new Array(qty).fill(0);
     return skels.map((sk, i) => (
-      <Skeleton key={i} className={classes.card} height={50 + Math.random() * 100} variant="rect" />
+      <Skeleton
+        key={i}
+        height={50 + Math.random() * 100}
+        sx={{ my: 1, mx: 1.5 }}
+        variant="rectangular"
+      />
     ));
   };
 
   return (
-    <Box className={classes.container}>
+    <Box>
       {isLoading ? (
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {showSkeleton(4)}
@@ -87,14 +66,10 @@ const Collection: FC<CollectionProps> = ({
       ) : filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <TransitionGroup className={classes.collection}>
+        <TransitionGroup sx={{ display: 'flex', flexDirection: 'column' }}>
           {filteredItems.map((intent) => (
             <Collapse key={intent.name}>
-              <IntentCard
-                className={classes.card}
-                handleEditClick={handleDetailOpen}
-                intent={intent}
-              />
+              <IntentCard handleEditClick={handleDetailOpen} intent={intent} />
             </Collapse>
           ))}
         </TransitionGroup>

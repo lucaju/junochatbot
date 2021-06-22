@@ -1,5 +1,5 @@
+import type { ContextRelation, Entity, Intent } from '@src/types';
 import { derived } from 'overmind';
-import type { Intent, Entity, ContextRelation } from '@src/types';
 
 type State = {
   collection: Intent[];

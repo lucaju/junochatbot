@@ -1,52 +1,22 @@
-import { makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
-import clsx from 'clsx';
-import React, { FC, useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Box, Paper, useMediaQuery, useTheme } from '@material-ui/core';
 import TopBar from '@src/components/TopBar';
 import { useApp } from '@src/overmind';
+import React, { FC, useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 
 interface AppLayoutProps {
   showStoryMenu?: boolean;
 }
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%',
-  },
-  content: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
-  },
-  contentContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-  },
-  wrapper: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: 64,
-  },
-  wrapperMobile: { paddingLeft: 0 },
-  wrapperCompact: { paddingLeft: 72 },
-  wrapperExpaned: { paddingLeft: 256 },
-}));
-
 const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const theme = useTheme();
   const { state, actions } = useApp();
 
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(false);
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const isSignedIn = state.session.isSignedIn;
 
@@ -68,7 +38,14 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        display: 'flex',
+        overflow: 'hidden',
+        height: '100%',
+        width: '100%',
+      }}
+    >
       {isSignedIn && (
         <>
           <TopBar appMode={true} handleMenuClick={handleMenuClick} />
@@ -78,23 +55,38 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
             openMobile={isMobileNavOpen}
             showStoryMenu={showStoryMenu}
           />
-          <div
-            className={clsx(
-              classes.wrapper,
-              isMobile && classes.wrapperMobile,
-              isCompactNav && classes.wrapperCompact,
-              !isCompactNav && !isMobile && classes.wrapperExpaned
-            )}
+          <Paper
+            elevation={0}
+            sx={{
+              display: 'flex',
+              flex: '1 1 auto',
+              overflow: 'hidden',
+              pt: '64px',
+              pl: isMobile ? 0 : isCompactNav ? '72px' : '256px',
+            }}
           >
-            <div className={classes.contentContainer}>
-              <div className={classes.content}>
+            <Box
+              sx={{
+                display: 'flex',
+                flex: '1 1 auto',
+                overflow: 'hidden',
+              }}
+            >
+              <Box
+                sx={{
+                  flex: '1 1 auto',
+                  overflow: 'auto',
+                  // height: '100%',
+                  height: 'calc(100vh - 64px)',
+                }}
+              >
                 <Outlet />
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Paper>
         </>
       )}
-    </div>
+    </Box>
   );
 };
 

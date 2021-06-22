@@ -28,9 +28,9 @@ const ParamsExtra: FC<ParamsExtraProps> = ({ defaultValue = '', handleUpdateDefa
         fullWidth
         label={t('defaultValue')}
         name="defaultValue"
-        value={_defaultValue}
         onBlur={handleBlur}
         onChange={handleChange}
+        value={_defaultValue}
       />
     </Box>
   );

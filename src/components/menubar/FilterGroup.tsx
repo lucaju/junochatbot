@@ -1,26 +1,14 @@
-import { makeStyles, MenuItem, TextField } from '@material-ui/core';
-import clsx from 'clsx';
-import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { MenuItem, TextField } from '@material-ui/core';
 import { useApp } from '@src/overmind';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FilterGroupProps {
-  className: string;
   handleFilter: (value: number) => void;
   value?: number;
 }
 
-const useStyles = makeStyles(({ palette }) => ({
-  capitalize: { textTransform: 'capitalize' },
-  highlight: { color: palette.primary.main },
-}));
-
-const FilterGroup: FC<FilterGroupProps> = ({
-  className,
-  handleFilter,
-  value = -1,
-}) => {
-  const classes = useStyles();
+const FilterGroup: FC<FilterGroupProps> = ({ handleFilter, value = -1 }) => {
   const { state } = useApp();
   const { t } = useTranslation(['common']);
   const [groups, setGroups] = useState([{ id: -1, name: 'all' }]);
@@ -31,22 +19,27 @@ const FilterGroup: FC<FilterGroupProps> = ({
     return () => {};
   }, [state.users.groups]);
 
-  const handleChange = (value: number) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
     setFilterValue(value);
     handleFilter(value);
   };
 
-  const isOn = () => filterValue !== -1;
+  const isOn = filterValue !== -1;
 
   return (
     <TextField
-      className={clsx(className, classes.capitalize)}
-      InputProps={{ className: clsx(isOn() && classes.highlight) }}
+      InputProps={{
+        sx: {
+          color: ({ palette }) => (isOn ? palette.primary.main : undefined),
+        },
+      }}
       label={t('group')}
       name="filterGroup"
-      onChange={(e) => handleChange(Number(e.target.value))}
+      onChange={handleChange}
       select
       size="small"
+      sx={{ textTransform: 'capitalize' }}
       variant="outlined"
       value={filterValue}
     >

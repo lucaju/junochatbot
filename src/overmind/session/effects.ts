@@ -1,6 +1,6 @@
-import base64 from 'base-64';
 import { API_URL } from '@src/config/config.js';
-import type { Credential, ErrorMessage, User, UserGroup } from '@src/types';
+import type { Credential, ErrorMessage, User } from '@src/types';
+import base64 from 'base-64';
 
 type ResponseToken = {
   token: string;
@@ -11,10 +11,7 @@ type ResponseUploadAvatar = {
 };
 
 export const api = {
-  authenticate: async ({
-    email,
-    password,
-  }: Credential): Promise<ResponseToken | ErrorMessage> => {
+  authenticate: async ({ email, password }: Credential): Promise<ResponseToken | ErrorMessage> => {
     const headers = new Headers();
     const credentials = base64.encode(`${email}:${password}`);
     headers.append('Authorization', `Basic ${credentials}`);
@@ -87,10 +84,7 @@ export const api = {
     return result as ResponseUploadAvatar;
   },
 
-  deleteAvatar: async (
-    userId: number,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  deleteAvatar: async (userId: number, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/users/${userId}/avatar`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },

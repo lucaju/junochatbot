@@ -1,51 +1,18 @@
-import { Box, Button, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+import { Box, Button, useTheme } from '@material-ui/core';
 import { useApp } from '@src/overmind';
 import React, { FC } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 
 interface NavItemProps {
+  icon: any;
+  isCompact: boolean;
   path: string;
   title: string;
-  isCompact: boolean;
-  icon: any;
 }
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    color: theme.palette.text.secondary,
-    fontWeight: theme.typography.fontWeightMedium,
-    letterSpacing: 0,
-    padding: '10px 8px',
-    textTransform: 'none',
-    width: '100%',
-  },
-  buttonExpanded: { justifyContent: 'flex-start' },
-  buttonCompact: {
-    lineHeight: '12px',
-    fontSize: '10px',
-    textAlign: 'center',
-  },
-  icon: { marginRight: theme.spacing(1) },
-  title: {
-    marginRight: 'auto',
-    textTransform: 'capitalize',
-  },
-  titleCompact: { marginTop: theme.spacing(0.5) },
-  active: {
-    color: theme.palette.primary.main,
-    '& $title': {
-      fontWeight: theme.typography.fontWeightMedium,
-    },
-    '& $icon': {
-      color: theme.palette.primary.main,
-    },
-  },
-}));
-
-const NavItem: FC<NavItemProps> = ({ path, icon: Icon, title, isCompact }) => {
-  const classes = useStyles();
+const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
   const { state } = useApp();
+  const theme = useTheme();
 
   if (path.includes(':storyId')) {
     const storyID = state.story.currentStory?.id;
@@ -56,34 +23,85 @@ const NavItem: FC<NavItemProps> = ({ path, icon: Icon, title, isCompact }) => {
     <>
       {isCompact ? (
         <Button
-          activeClassName={classes.active}
-          className={clsx(classes.button, classes.buttonCompact)}
+          activeStyle={{
+            active: {
+              color: theme.palette.primary.main,
+              '& $title': {
+                fontWeight: theme.typography.fontWeightMedium,
+              },
+              '& $icon': {
+                color: theme.palette.primary.main,
+              },
+            },
+          }}
           component={RouterLink}
-          to={path}
           fullWidth
+          sx={{
+            width: '100%',
+            // py: 1.25,
+            // px: 1.25,
+            padding: '10px 8px',
+            color: 'text.secondary',
+            fontWeight: theme.typography.fontWeightMedium,
+            fontSize: '10px',
+            letterSpacing: 0,
+            textTransform: 'none',
+            textAlign: 'center',
+            lineHeight: '12px',
+          }}
+          to={path}
         >
-          <Box
-            alignItems="center"
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-          >
+          <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
             {Icon && <Icon size="20" />}
-            <span className={clsx(classes.title, classes.titleCompact)}>
+            <Box
+              component="span"
+              sx={{
+                // mr: 'auto',
+                mt: 0.5,
+                textTransform: 'capitalize',
+              }}
+            >
               {title}
-            </span>
+            </Box>
           </Box>
         </Button>
       ) : (
         <Button
-          activeClassName={classes.active}
-          className={clsx(classes.button, classes.buttonExpanded)}
+          activeStyle={{
+            active: {
+              color: theme.palette.primary.main,
+              '& $title': {
+                fontWeight: theme.typography.fontWeightMedium,
+              },
+              '& $icon': {
+                color: theme.palette.primary.main,
+              },
+            },
+          }}
           component={RouterLink}
+          sx={{
+            width: '100%',
+            py: 1.25,
+            px: 1,
+            color: 'text.secondary',
+            fontWeight: theme.typography.fontWeightMedium,
+            letterSpacing: 0,
+            textTransform: 'none',
+            justifyContent: 'flex-start',
+          }}
           to={path}
           fullWidth
         >
-          {Icon && <Icon className={classes.icon} size="20" />}
-          <span className={classes.title}>{title}</span>
+          {Icon && <Icon sx={{ mr: 1 }} size="20" />}
+          <Box
+            component="span"
+            sx={{
+              mr: 'auto',
+              textTransform: 'capitalize',
+            }}
+          >
+            {title}
+          </Box>
         </Button>
       )}
     </>

@@ -1,23 +1,18 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { Message as MessageType, Text, Payload } from '@src/types';
+import { Message as MessageType, Payload, Text } from '@src/types';
 import { useField } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 
 interface ResponsesProps {
-  index: number;
   activeTabIndex: number;
   fieldName: string;
+  index: number;
 }
 
-const useStyles = makeStyles(() => ({
-  uppercase: { textTransform: 'uppercase' },
-}));
-
-const Responses: FC<ResponsesProps> = ({ index, activeTabIndex, fieldName }) => {
-  const classes = useStyles();
+const Responses: FC<ResponsesProps> = ({ activeTabIndex, fieldName, index }) => {
   const { t } = useTranslation(['intents']);
   const [, meta, helpers] = useField(fieldName);
   const { value } = meta;
@@ -50,19 +45,16 @@ const Responses: FC<ResponsesProps> = ({ index, activeTabIndex, fieldName }) => 
   };
 
   return (
-    <Box
-      role="tabpanel"
-      hidden={activeTabIndex !== index}
-    >
+    <Box role="tabpanel" hidden={activeTabIndex !== index}>
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
-        <Typography variant="h6" className={classes.uppercase}>
+        <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
           {t('responses')}
         </Typography>
         <Box display="flex" flexDirection="row" my={1.5}>
-          <Button color="primary" startIcon={<AddCircleOutlineIcon />} onClick={addTextMessage}>
+          <Button color="primary" onClick={addTextMessage} startIcon={<AddCircleOutlineIcon />}>
             {t('addText')}
           </Button>
-          <Button color="primary" startIcon={<AddCircleOutlineIcon />} onClick={addVideoMessage}>
+          <Button color="primary" onClick={addVideoMessage} startIcon={<AddCircleOutlineIcon />}>
             {t('addVideo')}
           </Button>
         </Box>

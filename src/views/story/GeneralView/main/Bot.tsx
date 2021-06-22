@@ -1,17 +1,10 @@
-import {
-  Box,
-  makeStyles,
-  MenuItem,
-  TextField,
-  Typography,
-} from '@material-ui/core';
-import clsx from 'clsx';
-import { FormikErrors, FormikTouched } from 'formik';
-import React, { ChangeEvent, FC, FocusEvent } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Box, MenuItem, Stack, TextField, Typography } from '@material-ui/core';
 import { useApp } from '@src/overmind';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
+import { FormikErrors, FormikTouched } from 'formik';
+import React, { ChangeEvent, FC, FocusEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import BotDelaySlider from './BotDelaySlider';
 
 interface BotProps {
@@ -22,61 +15,45 @@ interface BotProps {
   values: Story;
 }
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
-  avatarSelectBox: { marginTop: '-5px' },
-  capitalize: { textTransform: 'capitalize' },
-  marginBottom: { marginBottom: spacing(1) },
-  label: {
-    fontSize: '0.75rem',
-    color: palette.text.secondary,
-  },
-}));
-
-const Bot: FC<BotProps> = ({
-  errors,
-  handleBlur,
-  handleChange,
-  touched,
-  values,
-}) => {
-  const classes = useStyles();
+const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
   const { state } = useApp();
   const { t } = useTranslation(['storyGeneral', 'common']);
 
   return (
-    <>
-      <Typography className={classes.capitalize} variant="h6" gutterBottom>
+    <Stack direction="column" spacing={2}>
+      <Typography gutterBottom variant="h6">
         {t('characterBot')}
       </Typography>
       <Box
-        p={1}
         display="flex"
         flexDirection="row"
-        width="100%"
         alignItems="flex-start"
+        p={1}
       >
-        <Box flexGrow={1} mr={2}>
+        <Box flexGrow={1}>
           <TextField
-            className={clsx(classes.marginBottom, classes.capitalize)}
             error={Boolean(touched['botName'] && errors['botName'])}
             fullWidth
             label={t('common:name')}
             name="botName"
             onBlur={handleBlur}
             onChange={handleChange}
+            sx={{ textTransform: 'capitalize' }}
             value={values.botName}
+            variant="standard"
           />
         </Box>
-        <Box width="50px" className={classes.avatarSelectBox}>
+        <Box width="50px" ml={2} sx={{ mt: '-3px' }}>
           <TextField
-            className={classes.capitalize}
             fullWidth
             label={t('avatar')}
             name="botAvatar"
             select
             onBlur={handleBlur}
             onChange={handleChange}
+            sx={{ textTransform: 'capitalize' }}
             value={values.botAvatar}
+            variant="standard"
           >
             {state.story.icons.map(({ value }) => {
               const Icon = getIcon(value);
@@ -91,27 +68,33 @@ const Bot: FC<BotProps> = ({
       </Box>
       <Box p={1} width="100%">
         <TextField
-          className={clsx(classes.marginBottom, classes.capitalize)}
           error={Boolean(touched['botPersona'] && errors['botPersona'])}
           fullWidth
           label={t('persona')}
           name="botPersona"
           multiline
-          rowsMax={2}
           rows={2}
           onBlur={handleBlur}
           onChange={handleChange}
+          sx={{ textTransform: 'capitalize' }}
           value={values.botPersona}
           variant="outlined"
         />
       </Box>
-      <Box p={1} width="50%" minWidth={'330px'}>
+      <Box width="50%" minWidth={'330px'} p={1}>
         <Box>
-          <Typography className={classes.label}>{t('messageDelay')}</Typography>
+          <Typography
+            sx={{
+              fontSize: '0.75rem',
+              color: 'text.secondary',
+            }}
+          >
+            {t('messageDelay')}
+          </Typography>
         </Box>
         <BotDelaySlider name="botDelay" />
       </Box>
-    </>
+    </Stack>
   );
 };
 

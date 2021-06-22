@@ -16,8 +16,7 @@ export const dataEntities: Entity[] = [
     category: 'Names',
     name: '@sys.person',
     extendable: true,
-    description:
-      'Common given names, last names or their combinationsObject: name',
+    description: 'Common given names, last names or their combinationsObject: name',
     outputFormat: 'String',
     createdDate: '2020-09-15 21:16:21',
     updatedDate: '2020-09-15 21:16:21',

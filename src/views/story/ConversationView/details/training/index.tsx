@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { TrainingPhrase } from '@src/types';
 import { useField } from 'formik';
@@ -8,17 +8,12 @@ import Collection from './Collection';
 import useTrainingPhrases from './hooks';
 
 interface TrainingProps {
-  index: number;
   activeTabIndex: number;
   fieldName: string;
+  index: number;
 }
 
-const useStyles = makeStyles(() => ({
-  uppercase: { textTransform: 'uppercase' },
-}));
-
-const Training: FC<TrainingProps> = ({ index, activeTabIndex, fieldName }) => {
-  const classes = useStyles();
+const Training: FC<TrainingProps> = ({ activeTabIndex, fieldName, index }) => {
   const { t } = useTranslation(['intents']);
   const [, meta] = useField(fieldName);
   const { value }: { value: TrainingPhrase[] } = meta;
@@ -38,10 +33,10 @@ const Training: FC<TrainingProps> = ({ index, activeTabIndex, fieldName }) => {
   return (
     <Box role="tabpanel" hidden={activeTabIndex !== index}>
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
-        <Typography variant="h6" className={classes.uppercase}>
+        <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
           {t('training phrases')}
         </Typography>
-        <Typography variant="caption" gutterBottom>
+        <Typography gutterBottom variant="caption">
           Phrases you can expect from user, that will trigger the intent.
         </Typography>
         <Button color="primary" onClick={addNewPhrase} startIcon={<AddCircleOutlineIcon />}>

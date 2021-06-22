@@ -2,19 +2,17 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import AppLayout from './layouts/AppLayout';
 import BlankLayout from './layouts/BlankLayout';
+import UsersView from './views/admin/UsersView';
 import { ForgotView, LoginView, ResetPasswordView } from './views/auth';
 import NotFoundView from './views/errors/NotFoundView';
-import GroupsView from './views/GroupsView';
 import StoriesView from './views/StoriesView';
 import {
   ContextsView,
   ConversationView,
   EntitiesView,
   GeneralView,
-  TagsView,
-  VideosView
+  VideosView,
 } from './views/story';
-import UsersView from './views/UsersView';
 
 // * react-router-dom REFERENCES:
 // https://medium.com/frontend-digest/whats-new-in-react-router-6-732b06cc83e4
@@ -27,7 +25,6 @@ const routes = [
     children: [
       { path: ':storyId', element: <GeneralView /> },
       { path: ':storyId/videos', element: <VideosView /> },
-      { path: ':storyId/tags', element: <TagsView /> },
       { path: ':storyId/conversation', element: <ConversationView /> },
       { path: ':storyId/contexts', element: <ContextsView /> },
       { path: ':storyId/entities', element: <EntitiesView /> },
@@ -41,7 +38,6 @@ const routes = [
     children: [
       { path: '/', element: <StoriesView /> },
       { path: '/users', element: <UsersView /> },
-      { path: '/groups', element: <GroupsView /> },
     ],
   },
   {

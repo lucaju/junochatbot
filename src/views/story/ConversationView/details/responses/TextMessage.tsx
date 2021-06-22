@@ -1,46 +1,28 @@
-import { Box, Grid, IconButton, makeStyles, Zoom } from '@material-ui/core';
+import { Box, Grid, IconButton, Stack, useTheme, Zoom } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
-import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
-import TextMessageContent from './TextMessageContent';
 import { TextComp } from './Collection';
+import TextMessageContent from './TextMessageContent';
 
 interface TextMessageProps {
-  index: string;
   content: TextComp;
   handleRemove: (index: string) => void;
   handleUpdate: (index: string, value: TextComp) => void;
+  index: string;
   isDragging?: boolean;
 }
 
-const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
-  content: {
-    width: '100%',
-    backgroundColor: palette.action.hover,
-    '&:focus-within': {
-      boxShadow: `${palette.primary.light} 0px 0px 5px 1px !important`,
-    },
-    transition: transitions.create(['box-shadow'], {
-      duration: transitions.duration.standard,
-    }),
-  },
-  contentHover: { boxShadow: 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' },
-  dragEffect: { boxShadow: `${palette.primary.light} 0px 0px 5px 1px !important` },
-  marginTop: { marginTop: spacing(1) },
-  removeButton: { marginLeft: spacing(1) },
-}));
-
 const TextMessage: FC<TextMessageProps> = ({
-  index,
   content,
   handleRemove,
   handleUpdate,
+  index,
   isDragging = false,
 }) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const [hover, setHover] = useState(false);
   const [alternatives, setAlternatives] = useState<string[]>([]);
 
@@ -83,38 +65,43 @@ const TextMessage: FC<TextMessageProps> = ({
       my={1}
       p={2}
       borderRadius={'borderRadius'}
-      className={clsx(
-        classes.content,
-        hover && classes.contentHover,
-        isDragging && classes.dragEffect,
-      )}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      sx={{
+        width: '100%',
+        backgroundColor: theme.palette.action.hover,
+        '&:focus-within': {
+          boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+        },
+        transition: theme.transitions.create(['box-shadow'], {
+          duration: theme.transitions.duration.standard,
+        }),
+        boxShadow: hover
+          ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px'
+          : isDragging
+          ? `${theme.palette.primary.light} 0px 0px 5px 1px !important`
+          : 0,
+      }}
     >
       <Grid container direction="row" spacing={2}>
         <Grid item>
-          <Box display="flex" flexDirection="column" alignItems="center" mt={0.5}>
+          <Stack direction="row" alignItems="center" mt={0.5} spacing={1}>
             <FormatAlignLeftIcon />
-            {alternatives.length > 1 && <ShuffleIcon className={classes.marginTop} />}
-            <IconButton
-              color="primary"
-              size="small"
-              className={classes.marginTop}
-              onClick={addEmpty}
-            >
+            {alternatives.length > 1 && <ShuffleIcon />}
+            <IconButton color="primary" onClick={addEmpty} size="small">
               <AddCircleOutlineIcon fontSize="inherit" />
             </IconButton>
-          </Box>
+          </Stack>
         </Grid>
         <Grid item xs>
           {alternatives?.map((content: string, altIndex: number) => (
             <TextMessageContent
               key={altIndex}
-              index={altIndex}
               content={content}
-              removable={alternatives.length > 1}
+              index={altIndex}
               handleRemove={handleRemoveAlternative}
               handleUpdate={handleUpdateAlternative}
+              removable={alternatives.length > 1}
             />
           ))}
         </Grid>
@@ -122,9 +109,9 @@ const TextMessage: FC<TextMessageProps> = ({
           <Zoom in={hover}>
             <IconButton
               aria-label="delete"
-              className={classes.removeButton}
-              size="small"
               onClick={() => handleRemove(index)}
+              size="small"
+              sx={{ ml: 1 }}
             >
               <HighlightOffIcon />
             </IconButton>

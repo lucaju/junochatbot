@@ -1,11 +1,8 @@
-import { Context } from 'overmind';
-import { isError } from '@src/util/utilities';
 import type { ErrorMessage, Story } from '@src/types';
+import { isError } from '@src/util/utilities';
+import { Context } from 'overmind';
 
-export const getStories = async ({
-  state,
-  effects,
-}: Context): Promise<Story[] | ErrorMessage> => {
+export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
@@ -15,15 +12,9 @@ export const getStories = async ({
     response = await effects.story.api.getAllStories(authUser.token);
   } else if (state.session.isInstructor) {
     if (!authUser.groupId) return { errorMessage: 'Not authorized' };
-    response = await effects.story.api.getStoriesByGroup(
-      Number(authUser.groupId),
-      authUser.token
-    );
+    response = await effects.story.api.getStoriesByGroup(Number(authUser.groupId), authUser.token);
   } else if (state.session.isStudent) {
-    response = await effects.story.api.getStoriesByUser(
-      authUser.id,
-      authUser.token
-    );
+    response = await effects.story.api.getStoriesByUser(authUser.id, authUser.token);
   }
 
   if (isError(response)) return response;
@@ -39,10 +30,7 @@ export const getStoriesByGroup = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.story.api.getStoriesByGroup(
-    groupId,
-    authUser.token
-  );
+  const response = await effects.story.api.getStoriesByGroup(groupId, authUser.token);
 
   if (isError(response)) return response;
 
@@ -101,30 +89,19 @@ export const updateStory = async (
 
   let newImage;
   if (newValues.imageUrl?.name) newImage = newValues.imageUrl;
-  if (storyData.imageUrl !== null && newValues.imageUrl === null)
-    newImage = null;
+  if (storyData.imageUrl !== null && newValues.imageUrl === null) newImage = null;
   delete newValues.imageUrl;
 
   //update story
-  const response = await effects.story.api.updateStory(
-    newValues,
-    authUser.token
-  );
+  const response = await effects.story.api.updateStory(newValues, authUser.token);
   if (isError(response)) return response;
 
   //Upload umage
   if (newImage?.name) {
-    const response = await effects.story.api.uploadImage(
-      storyData.id,
-      newImage,
-      authUser.token
-    );
+    const response = await effects.story.api.uploadImage(storyData.id, newImage, authUser.token);
     if (!isError(response)) newValues.imageUrl = response;
   } else if (newImage === null) {
-    const response = await effects.story.api.deleteImage(
-      storyData.id,
-      authUser.token
-    );
+    const response = await effects.story.api.deleteImage(storyData.id, authUser.token);
     if (!isError(response)) newValues.imageUrl = null;
   } else {
     newValues.imageUrl = storyData.imageUrl;

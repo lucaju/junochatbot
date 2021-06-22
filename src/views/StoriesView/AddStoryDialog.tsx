@@ -1,60 +1,30 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   Grid,
-  makeStyles,
   MenuItem,
   TextField,
   Typography,
 } from '@material-ui/core';
-import clsx from 'clsx';
+import LoadingButton from '@material-ui/lab/LoadingButton';
+import { useApp } from '@src/overmind';
+import { NotificationType, Story } from '@src/types';
+import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '@src/overmind';
 import * as Yup from 'yup';
-import { NotificationType, Story } from '@src/types';
-import { isError } from '@src/util/utilities';
 
 interface AddStoryDialogProps {
-  open: boolean;
   handleClose: () => void;
+  open: boolean;
   triggerEditStory: (value?: number | undefined) => void;
 }
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
-  actionSection: {
-    paddingRight: spacing(3),
-    paddingLeft: spacing(3),
-  },
-  capitalize: { textTransform: 'capitalize' },
-  dialogSection: {
-    paddingTop: spacing(2),
-    paddingBottom: spacing(2),
-  },
-  error: {
-    marginTop: spacing(1),
-    color: palette.secondary.light,
-    textAlign: 'center',
-  },
-  heading: {
-    textAlign: 'center',
-    marginBottom: spacing(1.5),
-  },
-  marginBottom: { marginBottom: spacing(1.5) },
-  progress: { position: 'absolute' },
-}));
-
-const AddStoryDialog: FC<AddStoryDialogProps> = ({
-  open,
-  handleClose,
-  triggerEditStory,
-}) => {
-  const classes = useStyles();
+const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEditStory }) => {
   const { state, actions } = useApp();
   const { t } = useTranslation(['common', 'story', 'errorMessages']);
   const [error, setError] = useState();
@@ -64,9 +34,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({
   const submit = async (values: Partial<Story>) => {
     const response = await actions.story.createStory(values as Omit<Story, 'id'>);
 
-    const type = isError(response)
-      ? NotificationType.ERROR
-      : NotificationType.SUCCESS;
+    const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
     //error
     if (isError(response)) {
@@ -88,17 +56,16 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({
   });
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      maxWidth="sm"
-      aria-labelledby="user-details-dialog"
-    >
+    <Dialog aria-labelledby="user-details-dialog" maxWidth="sm" onClose={handleClose} open={open}>
       {error && (
         <Typography
           component="h2"
+          sx={{
+            mt: 1,
+            color: 'secondary.light',
+            textAlign: 'center',
+          }}
           variant="subtitle1"
-          className={classes.error}
         >
           Oh oh. Server Error.
         </Typography>
@@ -108,27 +75,24 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({
           title: '',
           languageCode: state.ui.languageCode,
         }}
+        onSubmit={submit}
         validationSchema={formValidation}
-        onSubmit={async (values) => await submit(values)}
       >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values,
-        }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form onSubmit={handleSubmit}>
             <DialogContent dividers>
-              <Grid container spacing={3} className={classes.dialogSection}>
+              <Grid container spacing={3} sx={{ py: 2 }}>
                 <Grid item md={12}>
-                  <Typography variant="h6" className={classes.heading}>
+                  <Typography
+                    sx={{
+                      mb: 1.5,
+                      textAlign: 'center',
+                    }}
+                    variant="h6"
+                  >
                     New Story
                   </Typography>
                   <TextField
-                    className={clsx(classes.marginBottom, classes.capitalize)}
                     error={Boolean(touched.title && errors.title)}
                     fullWidth
                     helperText={touched.title && errors.title}
@@ -137,6 +101,10 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({
                     name="title"
                     onBlur={handleBlur}
                     onChange={handleChange}
+                    sx={{
+                      mb: 1.5,
+                      textTransform: 'capitalize',
+                    }}
                     value={values.title}
                     variant="outlined"
                   />
@@ -163,22 +131,20 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({
                 </Grid>
               </Grid>
             </DialogContent>
-            <DialogActions className={classes.actionSection}>
-              <Button onClick={handleCancelButton} color="primary">
+            <DialogActions sx={{ px: 3 }}>
+              <Button color="primary" onClick={handleCancelButton}>
                 Cancel
               </Button>
               <Box flexGrow={1} />
-              <Button
+              <LoadingButton
                 color="primary"
                 disabled={isSubmitting}
+                loading={isSubmitting}
                 type="submit"
                 variant="outlined"
               >
                 Create
-                {isSubmitting && (
-                  <CircularProgress size={24} className={classes.progress} />
-                )}
-              </Button>
+              </LoadingButton>
             </DialogActions>
           </form>
         )}

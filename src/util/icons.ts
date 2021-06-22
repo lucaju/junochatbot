@@ -4,9 +4,7 @@ import BugReportIcon from '@material-ui/icons/BugReport';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import FaceIcon from '@material-ui/icons/Face';
 
-type IconsMap = Map<string, any>;
-
-const icons: IconsMap = new Map();
+const icons: Map<string, any> = new Map();
 icons.set('adb', AdbIcon);
 icons.set('face', FaceIcon);
 icons.set('account', AccountCircleIcon);

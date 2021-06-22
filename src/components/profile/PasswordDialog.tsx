@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -11,30 +10,26 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  makeStyles,
+  useTheme,
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import LoadingButton from '@material-ui/lab/LoadingButton';
+import { useApp } from '@src/overmind';
+import { Credential, NotificationType } from '@src/types';
+import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
 import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '@src/overmind';
 import * as Yup from 'yup';
-import { isError } from '@src/util/utilities';
-import { Credential, NotificationType } from '@src/types';
 
 interface PasswordDialogProps {
   handleClose: () => void;
   open: boolean;
 }
 
-const useStyles = makeStyles(({ palette: { type, common } }) => ({
-  progress: { position: 'absolute' },
-  textColor: { color: type === 'light' ? common.white : common.black },
-}));
-
 const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const { actions } = useApp();
   const { t } = useTranslation(['common', 'profile', 'auth', 'errorMessages']);
   const [showPassword, setShowPassword] = useState(false);
@@ -57,14 +52,12 @@ const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
 
     const response = await actions.session.changePassword(values.password);
 
-    const type = isError(response)
-      ? NotificationType.ERROR
-      : NotificationType.SUCCESS;
+    const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
     const message = isError(response)
       ? response.errorMessage
-      // ? t('errorMessages:somethingWentWrong')
-      : t('profile:passwordChanged');
+      : // ? t('errorMessages:somethingWentWrong')
+        t('profile:passwordChanged');
 
     actions.ui.showNotification({ message, type });
     if (type !== 'error') handleClose();
@@ -73,7 +66,7 @@ const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
   return (
     <Dialog
       aria-labelledby="change-password"
-      disableBackdropClick
+      // disableBackdropClick
       disableEscapeKeyDown
       maxWidth="md"
       open={open}
@@ -83,65 +76,50 @@ const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
         onSubmit={async (values: Credential) => await submit(values)}
         validationSchema={formValidation}
       >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values,
-        }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <>
-            <DialogTitle id="change-password">
-              {t('profile:changePassword')}
-            </DialogTitle>
+            <DialogTitle id="change-password">{t('profile:changePassword')}</DialogTitle>
             <DialogContent dividers>
               <form onSubmit={handleSubmit}>
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="password">
-                    {t('profile:newPassword')}
-                  </InputLabel>
-                  <Input
-                    autoComplete="new-password"
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          edge="end"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    error={Boolean(touched.password && errors.password)}
-                    id="password"
-                    name="password"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    type={showPassword ? 'text' : 'password'}
-                    value={values.password}
-                  />
-                </FormControl>
+                <Box sx={{ width: 300 }}>
+                  <FormControl fullWidth variant="standard">
+                    <InputLabel htmlFor="password">{t('profile:newPassword')}</InputLabel>
+                    <Input
+                      autoComplete="new-password"
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            edge="end"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      error={Boolean(touched.password && errors.password)}
+                      id="password"
+                      name="password"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      value={values.password}
+                    />
+                  </FormControl>
+                </Box>
               </form>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>{t('cancel')}</Button>
               <Box flexGrow={1} />
-              <Button
-                classes={{ containedPrimary: classes.textColor }}
-                color="primary"
-                disabled={isSubmitting}
+              <LoadingButton
+                loading={isSubmitting}
                 onClick={() => handleSubmit()}
                 variant="contained"
               >
                 {t('submit')}
-                {isSubmitting && (
-                  <CircularProgress className={classes.progress} size={24} />
-                )}
-              </Button>
+              </LoadingButton>
             </DialogActions>
           </>
         )}

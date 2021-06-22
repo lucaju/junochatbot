@@ -1,36 +1,27 @@
-import { Box, makeStyles } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { MuuriComponent } from 'muuri-react';
-import React, { FC, useEffect, useState } from 'react';
+import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import { useApp } from '@src/overmind';
 import { Story } from '@src/types';
+import React, { FC, useEffect, useState } from 'react';
+//@ts-ignore
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import StoryCard from './StoryCard';
 
 interface CollectionProps {
-  triggerEditStory: (value: number) => void;
   filters: Map<string, number>;
-  searchQuery: string | undefined;
-  groupId?: number;
   isLoading: boolean;
+  searchQuery: string | undefined;
+  triggerEditStory: (value: number) => void;
+  groupId?: number;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  card: { margin: spacing(2.5) },
-  container: {
-    maxHeight: '83vh',
-    overflowY: 'scroll',
-  },
-}));
-
 const Collection: FC<CollectionProps> = ({
-  triggerEditStory,
   filters,
-  searchQuery,
   groupId,
   isLoading,
+  searchQuery,
+  triggerEditStory,
 }) => {
-  const classes = useStyles();
   const { state, actions } = useApp();
   const [filteredItems, setFilteredItems] = useState<Story[]>([]);
 
@@ -46,9 +37,7 @@ const Collection: FC<CollectionProps> = ({
 
   const fetchStories = async () => {
     isLoading = true;
-    groupId
-      ? await actions.story.getStoriesByGroup(groupId)
-      : await actions.story.getStories();
+    groupId ? await actions.story.getStoriesByGroup(groupId) : await actions.story.getStories();
     isLoading = false;
   };
 
@@ -58,7 +47,7 @@ const Collection: FC<CollectionProps> = ({
         if (filters.size === 0) return true;
         let match = true;
         for (const [prop, value] of Array.from(filters.entries())) {
-          switch(prop) {
+          switch (prop) {
             case 'user.id': {
               if (!item.user) {
                 match = false;
@@ -77,16 +66,14 @@ const Collection: FC<CollectionProps> = ({
               break;
             }
           }
-          
+
           if (match === false) break;
         }
         return match;
       })
       .filter((item) => {
         if (!searchQuery) return item;
-        const userFullName = item.user
-          ? `${item.user.firstName} ${item.user.lastName}`
-          : '';
+        const userFullName = item.user ? `${item.user.firstName} ${item.user.lastName}` : '';
         const match =
           item.title.toLowerCase().match(searchQuery.toLowerCase()) ||
           userFullName.toLowerCase().match(searchQuery.toLowerCase());
@@ -95,20 +82,15 @@ const Collection: FC<CollectionProps> = ({
   };
 
   const showSkeleton = (qty = 5) => {
-    const skels = new Array(qty).fill(0);
-    return skels.map((sk, i) => (
-      <Skeleton
-        key={i}
-        className={classes.card}
-        width={300}
-        height={200}
-        variant="rect"
-      />
-    ));
+    return new Array(qty)
+      .fill(0)
+      .map((sk, i) => (
+        <Skeleton key={i} width={300} height={200} sx={{ m: 2.5 }} variant="rectangular" />
+      ));
   };
 
   return (
-    <Box className={classes.container}>
+    <Box>
       {isLoading ? (
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {showSkeleton(4)}
@@ -116,17 +98,18 @@ const Collection: FC<CollectionProps> = ({
       ) : filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <MuuriComponent>
-          {filteredItems.map((story) => (
-            <StoryCard
-              key={story.id}
-              className={classes.card}
-              story={story}
-              triggerEditStory={triggerEditStory}
-              showEdit={true}
-            />
-          ))}
-        </MuuriComponent>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
+          <Masonry>
+            {filteredItems.map((story) => (
+              <StoryCard
+                key={story.id}
+                showEdit={true}
+                story={story}
+                triggerEditStory={triggerEditStory}
+              />
+            ))}
+          </Masonry>
+        </ResponsiveMasonry>
       )}
     </Box>
   );

@@ -1,14 +1,11 @@
+import type { Credential, ErrorMessage, User } from '@src/types';
+import { isError } from '@src/util/utilities';
 import Cookies from 'js-cookie';
 import { Context } from 'overmind';
-import { isError } from '@src/util/utilities';
-import type { Credential, ErrorMessage, User } from '@src/types';
 
 export const getUserToken = (): string | undefined => Cookies.get('JunoToken');
 
-export const signedIn = async ({
-  state,
-  actions,
-}: Context): Promise<boolean> => {
+export const signedIn = async ({ state, actions }: Context): Promise<boolean> => {
   if (state.session.isSignedIn) return true;
 
   const token = getUserToken();
@@ -57,10 +54,7 @@ export const getUserDetails = async (
   const user = { ...responseDetails, token };
 
   //groups
-  const responseGroup = await effects.users.api.getUserGroup(
-    responseDetails.id,
-    token
-  );
+  const responseGroup = await effects.users.api.getUserGroup(responseDetails.id, token);
 
   if (responseGroup && !isError(responseGroup)) {
     user.groupId = responseGroup.id;
@@ -76,11 +70,7 @@ export const changePassword = async (
   const user = state.session.user;
   if (!user || !user.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.session.api.changePassword(
-    user.id,
-    password,
-    user.token
-  );
+  const response = await effects.session.api.changePassword(user.id, password, user.token);
   if (isError(response)) return response;
 
   return true;
@@ -93,11 +83,7 @@ export const uploadAvatar = async (
   const user = state.session.user;
   if (!user || !user.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.session.api.uploadAvatar(
-    user.id,
-    avatar,
-    user.token
-  );
+  const response = await effects.session.api.uploadAvatar(user.id, avatar, user.token);
   if (isError(response)) return response;
 
   user.avatarUrl = response.fileName;

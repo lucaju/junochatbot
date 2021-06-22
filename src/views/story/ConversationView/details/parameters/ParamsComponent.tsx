@@ -5,59 +5,48 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  IconButton,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
   Switch,
   TextField,
+  useTheme,
   Zoom,
 } from '@material-ui/core';
+import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
+import { alpha, styled } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { useApp } from '@src/overmind';
 import { Parameter as ParameterType } from '@src/types';
-import clsx from 'clsx';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DefaultValuePanel from './DefaultValuePanel';
-import PromptsPanel from './PromptsPanel';
 import useParameter from './hooks';
+import PromptsPanel from './PromptsPanel';
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: number;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 interface ParamsComponentProps {
   name?: string;
   param: ParameterType;
 }
 
-const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
-  bottomBar: { backgroundColor: palette.action.hover },
-  content: {
-    width: '100%',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: palette.action.hover,
-    '&:focus-within': {
-      boxShadow: `${palette.primary.light} 0px 0px 5px 1px !important`,
-    },
-    transition: transitions.create(['box-shadow'], {
-      duration: transitions.duration.standard,
-    }),
-  },
-  contentHover: { boxShadow: 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: transitions.create('transform', {
-      duration: transitions.duration.shortest,
-    }),
-  },
-  expandOpen: { transform: 'rotate(180deg)' },
-  removeButton: { marginLeft: spacing(1) },
-}));
-
 const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const { state } = useApp();
   const { t } = useTranslation(['intents']);
   const { removeParameter, updateParameter } = useParameter();
@@ -168,9 +157,21 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
     <Box
       my={1}
       borderRadius={'borderRadius'}
-      className={clsx(classes.content, hover && classes.contentHover)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      sx={{
+        width: '100%',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: theme.palette.action.hover,
+        '&:focus-within': {
+          boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+        },
+        transition: theme.transitions.create(['box-shadow'], {
+          duration: theme.transitions.duration.standard,
+        }),
+        boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
+      }}
     >
       <Box display="flex" flexDirection="column" p={2}>
         <Grid container direction="row" spacing={2}>
@@ -179,9 +180,9 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
               fullWidth
               label={t('name')}
               name="displayName"
-              value={_param.displayName}
               onBlur={handleBlur}
               onChange={handleChange}
+              value={_param.displayName}
             />
           </Grid>
           <Grid item xs>
@@ -190,8 +191,8 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
               <Select
                 fullWidth
                 name="entityTypeDisplayName"
-                value={entityTypeDisplayName}
                 onChange={handleChangeEntity}
+                 value={entityTypeDisplayName}
               >
                 {state.intents.entities.map(({ id, name }) => (
                   <MenuItem key={id} value={name}>
@@ -204,9 +205,9 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
               fullWidth
               label={t('entity')}
               name="entityTypeDisplayName"
-              value={entityTypeDisplayName}
               onBlur={handleBlur}
               onChange={handleChange}
+              value={entityTypeDisplayName}
             />
           </Grid>
           <Grid item xs>
@@ -214,18 +215,18 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
               fullWidth
               label={t('value')}
               name="value"
-              value={value}
               onBlur={handleBlur}
               onChange={handleChange}
+              value={value}
             />
           </Grid>
           <Grid item>
             <Zoom in={hover}>
               <IconButton
                 aria-label="delete"
-                className={classes.removeButton}
-                size="small"
                 onClick={() => removeParameter(name, _param.displayName)}
+                size="small"
+                sx={{ ml: 1 }}
               >
                 <HighlightOffIcon />
               </IconButton>
@@ -233,15 +234,22 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
           </Grid>
         </Grid>
       </Box>
-      <Box display="flex" flexDirection="row" mt={1} px={2} py={0.5} className={classes.bottomBar}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        mt={1}
+        px={2}
+        py={0.5}
+        sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02) }}
+      >
         <FormControlLabel
           control={
             <Switch
-              name="isList"
-              color="primary"
-              size="small"
               checked={isList}
+              color="primary"
+              name="isList"
               onChange={handleChange}
+              size="small"
             />
           }
           label={t('isList')}
@@ -249,11 +257,11 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
         <FormControlLabel
           control={
             <Switch
-              name="mandatory"
-              color="primary"
-              size="small"
               checked={mandatory}
+              color="primary"
+              name="mandatory"
               onChange={handleChange}
+              size="small"
             />
           }
           label={t('required')}
@@ -267,15 +275,9 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
           </Button>
         )}
         {bottomPanelActive !== 0 && (
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: bottomPanelActive !== 0,
-            })}
-            size="small"
-            onClick={handleCloseBottomPanel}
-          >
+          <ExpandMore expand={bottomPanelActive} onClick={handleCloseBottomPanel} size="small">
             <ExpandMoreIcon />
-          </IconButton>
+          </ExpandMore>
         )}
       </Box>
       <Collapse in={bottomPanelActive === 1} timeout="auto" unmountOnExit>

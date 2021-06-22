@@ -1,43 +1,25 @@
-import { Box, makeStyles, Toolbar } from '@material-ui/core';
-import React, { FC } from 'react';
-import FilterEntityCategory from './FilterEntityCategory';
+import { Box, Stack } from '@material-ui/core';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { HandleFilterType } from '@src/types';
+import React, { FC } from 'react';
+import FilterEntityCategory from './FilterEntityCategory';
 
 interface MenuBarProps {
+  disabledFilters?: boolean;
   handleSearch: (value: string) => void;
   updateFilter: ({ type, value, reset }: HandleFilterType) => void;
-  disabledFilters?: boolean;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  marginRight: { marginRight: spacing(2) },
-}));
-
-const MenuBar: FC<MenuBarProps> = ({
-  handleSearch,
-  updateFilter,
-  disabledFilters = false,
-}) => {
-  const classes = useStyles();
-
-  return (
-    <Toolbar disableGutters variant="dense">
-      {!disabledFilters && (
-        <>
-          <Box flexGrow={1} />
-          <SearchBox
-            className={classes.marginRight}
-            handleSearch={handleSearch}
-          />
-          <FilterEntityCategory
-            className={classes.marginRight}
-            handleFilter={updateFilter}
-          />
-        </>
-      )}
-    </Toolbar>
-  );
-};
+const MenuBar: FC<MenuBarProps> = ({ disabledFilters = false, handleSearch, updateFilter }) => (
+  <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
+    {!disabledFilters && (
+      <>
+        <Box flexGrow={1} />
+        <SearchBox handleSearch={handleSearch} />
+        <FilterEntityCategory handleFilter={updateFilter} />
+      </>
+    )}
+  </Stack>
+);
 
 export default MenuBar;

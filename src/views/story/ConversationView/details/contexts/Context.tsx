@@ -1,60 +1,36 @@
-import { Box, IconButton, makeStyles, Typography, Zoom } from '@material-ui/core';
+import { Box, IconButton, Typography, useTheme, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import TimerIcon from '@material-ui/icons/Timer';
-import clsx from 'clsx';
 import React, { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import useContext from './hooks';
 
 interface ContextProps {
-  type: 'input' | 'output';
-  id?: string;
-  name: string;
-  lifeSpan?: number;
   handleEmptyContext: () => void;
+  id?: string;
+  lifeSpan?: number;
+  name: string;
+  type: 'input' | 'output';
 }
-
-const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
-  content: {
-    backgroundColor: palette.action.hover,
-    '&:focus-within': {
-      boxShadow: `${palette.primary.light} 0px 0px 5px 1px !important`,
-    },
-    transition: transitions.create(['box-shadow'], {
-      duration: transitions.duration.standard,
-    }),
-  },
-  contentHover: { boxShadow: 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' },
-  field: {
-    flexGrow: 1,
-    '&:focus-visible': { outlineStyle: 'none' },
-  },
-  nameField: { minWidth: spacing(5) },
-  lifeSpanIcon: {
-    marginLeft: spacing(1),
-    marginRight: spacing(1),
-  },
-  removeButton: { marginLeft: spacing(1) },
-}));
 
 const ALLOWED_KEYS_LIFESPAN = ['Backspace', 'ArrowLeft', 'ArrowRight'];
 
 const ContextComponent: FC<ContextProps> = ({
-  type = 'input',
-  id = 'new',
-  name,
-  lifeSpan = 5,
   handleEmptyContext,
+  id = 'new',
+  lifeSpan = 5,
+  name,
+  type = 'input',
 }) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const NameRef = useRef<HTMLElement>(null);
   const LifespanRef = useRef<HTMLElement>(null);
   const [hover, setHover] = useState(false);
 
   const { removeContex, updateContext } = useContext({
-    type,
-    id,
-    currentName: name,
     currentLifeSpan: lifeSpan,
+    currentName: name,
+    id,
+    type,
   });
 
   useEffect(() => {
@@ -119,6 +95,9 @@ const ContextComponent: FC<ContextProps> = ({
 
   const handleRemoveClick = () => removeContex(id);
 
+  const ononMouseEnter = () => setHover(true);
+  const onMouseLeave = () => setHover(false);
+
   return (
     <Box
       display="flex"
@@ -126,37 +105,50 @@ const ContextComponent: FC<ContextProps> = ({
       alignItems="center"
       my={1}
       ml={1}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={ononMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <Box
-        className={clsx(classes.content, hover && classes.contentHover)}
         display="flex"
         flexDirection="row"
         alignItems="center"
-        borderRadius={24}
         py={0.5}
         px={2}
+        borderRadius={3}
         onBlur={handleBlur}
+        sx={{
+          backgroundColor: theme.palette.action.hover,
+          '&:focus-within': {
+            boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+          },
+          transition: theme.transitions.create(['box-shadow'], {
+            duration: theme.transitions.duration.standard,
+          }),
+
+          boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
+        }}
       >
         <Typography
           ref={NameRef}
-          className={clsx(classes.field, classes.nameField)}
           contentEditable={true}
           onKeyDown={handleKeyDownName}
           suppressContentEditableWarning={true}
+          sx={{ minWidth: 20 }}
         >
           {name}
         </Typography>
         {type === 'output' && (
           <>
-            <TimerIcon fontSize="small" className={classes.lifeSpanIcon} />
+            <TimerIcon fontSize="small" sx={{ mx: 1 }} />
             <Typography
               ref={LifespanRef}
-              className={classes.field}
               contentEditable={true}
               onKeyDown={handleKeyDownLife}
               suppressContentEditableWarning={true}
+              sx={{
+                flexGrow: 1,
+                '&:focus-visible': { outlineStyle: 'none' },
+              }}
             >
               {lifeSpan}
             </Typography>
@@ -164,12 +156,7 @@ const ContextComponent: FC<ContextProps> = ({
         )}
       </Box>
       <Zoom in={hover}>
-        <IconButton
-          aria-label="delete"
-          className={classes.removeButton}
-          size="small"
-          onClick={handleRemoveClick}
-        >
+        <IconButton aria-label="delete" onClick={handleRemoveClick} size="small" sx={{ ml: 1 }}>
           <HighlightOffIcon fontSize="inherit" />
         </IconButton>
       </Zoom>

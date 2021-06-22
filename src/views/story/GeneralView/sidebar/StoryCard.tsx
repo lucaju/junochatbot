@@ -1,38 +1,16 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  makeStyles,
-  Typography,
-  useTheme,
-} from '@material-ui/core';
+import { Box, Card, CardContent, Chip, Divider, Typography, useTheme } from '@material-ui/core';
+import { Story } from '@src/types';
+import { getIcon } from '@src/util/icons';
 import { DateTime } from 'luxon';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Story } from '@src/types';
-import { getIcon } from '@src/util/icons';
 import FeaturedImage from './FeaturedImage';
 
 interface StoryCardProps {
   values: Story;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  root: { width: 350 },
-  botIcon: { marginRight: spacing(1) },
-  divider: { width: '30%' },
-  draft: {
-    textTransform: 'uppercase',
-    fontStyle: 'italic',
-  },
-  language: { marginLeft: spacing(1) },
-  uppercase: { textTransform: 'uppercase' },
-}));
-
-const StoryCard: FC<StoryCardProps> = ({ values, ...rest }) => {
-  const classes = useStyles();
+const StoryCard: FC<StoryCardProps> = ({ values }) => {
   const { t } = useTranslation(['common']);
   const theme = useTheme();
   const [BotAvatar, setBotAvatar] = useState(getIcon(values.botAvatar));
@@ -44,42 +22,45 @@ const StoryCard: FC<StoryCardProps> = ({ values, ...rest }) => {
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
+      <Typography gutterBottom variant="h6">
         Poster
       </Typography>
-      <Card
-        className={classes.root}
-        elevation={theme.palette.type === 'light' ? 1 : 3}
-        {...rest}
-      >
+      <Card elevation={theme.palette.mode === 'light' ? 1 : 3} sx={{ width: 350 }}>
         <FeaturedImage name={'imageUrl'} title={values.title} />
         <CardContent>
           <Box display="flex" alignItems="center">
             <Typography variant="h6">{values.title}</Typography>
             <Chip
-              className={classes.language}
               label={values.languageCode.substring(0, 2).toUpperCase()}
               size="small"
+              sx={{ ml: 1 }}
               variant="outlined"
             />
             <Box flexGrow={1} />
             <Typography variant="overline">
               {values.publishedDate === null ? (
-                <span className={classes.draft}>{t('draft')}</span>
+                <Box
+                  component="span"
+                  sx={{
+                    textTransform: 'uppercase',
+                    fontStyle: 'italic',
+                  }}
+                >
+                  {t('draft')}
+                </Box>
               ) : (
-                values.publishedDate !== null && DateTime.fromISO(values.publishedDate).toFormat('yyyy')
+                values.publishedDate !== null &&
+                DateTime.fromISO(values.publishedDate).toFormat('yyyy')
               )}
             </Typography>
           </Box>
-          <Box mt={1} display="flex" alignItems="flex-start">
-            <Typography className={classes.uppercase} variant="caption">
-              {values.user
-                ? `By ${values.user.firstName} ${values.user.lastName}`
-                : 'By Anonymous'}
+          <Box display="flex" alignItems="flex-start" mt={1}>
+            <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
+              {values.user ? `By ${values.user.firstName} ${values.user.lastName}` : 'By Anonymous'}
             </Typography>
           </Box>
           {values.synopsis && (
-            <Box mt={1} display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" mt={1}>
               <Typography variant="body2">{values.synopsis}</Typography>
             </Box>
           )}
@@ -90,22 +71,16 @@ const StoryCard: FC<StoryCardProps> = ({ values, ...rest }) => {
                 flexDirection="row"
                 alignItems="center"
                 justifyContent="space-evenly"
-                mt={2}
-                mb={2}
+                my={2}
               >
-                <Divider className={classes.divider} />
-                <Typography className={classes.uppercase} variant="caption">
+                <Divider sx={{ width: '30%' }} />
+                <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
                   {t('starring')}
                 </Typography>
-                <Divider className={classes.divider} />
+                <Divider sx={{ width: '30%' }} />
               </Box>
-              <Box
-                display="flex"
-                alignItems="center"
-                flexDirection="row"
-                pl={2}
-              >
-                <BotAvatar fontSize="small" className={classes.botIcon} />
+              <Box display="flex" alignItems="center" flexDirection="row" pl={2}>
+                <BotAvatar fontSize="small" sx={{ mr: 1 }} />
                 <Typography variant="h6">{values.botName}</Typography>
               </Box>
               {values.botPersona && (

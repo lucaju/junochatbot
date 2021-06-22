@@ -1,18 +1,13 @@
 import { useSortable } from '@dnd-kit/sortable';
-import { ListItem, makeStyles } from '@material-ui/core';
-import React, { FC, cloneElement, isValidElement, useEffect } from 'react';
+import { ListItem } from '@material-ui/core';
+import React, { cloneElement, FC, isValidElement, useEffect } from 'react';
 
 interface SortableItemProps {
   id: string;
 }
 
-const useStyles = makeStyles(() => ({
-  item: { padding: 0 },
-}));
-
-const SortableItem: FC<SortableItemProps> = ({ id, children }) => {
-  const classes = useStyles();
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+const SortableItem: FC<SortableItemProps> = ({ children, id }) => {
+  const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({
     id,
   });
 
@@ -31,13 +26,7 @@ const SortableItem: FC<SortableItemProps> = ({ id, children }) => {
   const newChildren_ = isValidElement(children) ? cloneElement(children, { isDragging }) : children;
 
   return (
-    <ListItem
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className={classes.item}
-    >
+    <ListItem ref={setNodeRef} style={style} {...attributes} {...listeners} sx={{ p: 0 }}>
       {newChildren_}
     </ListItem>
   );

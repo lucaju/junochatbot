@@ -1,19 +1,18 @@
-import { Box, Grid, IconButton, makeStyles, MenuItem, Select, Zoom } from '@material-ui/core';
+import { Box, Grid, IconButton, MenuItem, Select, useTheme, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import { useApp } from '@src/overmind';
 import { Tag, Video } from '@src/types';
-import clsx from 'clsx';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PayloadComp } from './Collection';
 
 interface VideoMessageProps {
-  index: string;
   content: PayloadComp;
   handleRemove: (index: string) => void;
   handleUpdate: (index: string, value: PayloadComp) => void;
+  index: string;
   isDragging?: boolean;
 }
 
@@ -22,42 +21,16 @@ type sourceOptionType = {
   label: string;
 };
 
-const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
-  capitalize: { textTransform: 'capitalize' },
-  content: {
-    width: '100%',
-    backgroundColor: palette.action.hover,
-    '&:focus-within': {
-      boxShadow: `${palette.primary.light} 0px 0px 5px 1px !important`,
-    },
-    transition: transitions.create(['box-shadow'], {
-      duration: transitions.duration.standard,
-    }),
-  },
-  contentHover: { boxShadow: 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' },
-  dragEffect: { boxShadow: `${palette.primary.light} 0px 0px 5px 1px !important` },
-  dropdowSource: {
-    width: '12ch',
-    textTransform: 'capitalize',
-  },
-  dropdownType: {
-    width: '12ch',
-    textTransform: 'capitalize',
-  },
-  marginTop: { marginTop: spacing(1) },
-  removeButton: { marginLeft: spacing(1) },
-}));
-
 const defaultSourceOption: sourceOptionType = { id: '-1', label: 'Choose' };
 
 const VideoMessage: FC<VideoMessageProps> = ({
-  index,
   content,
   handleRemove,
   handleUpdate,
+  index,
   isDragging = false,
 }) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const { state } = useApp();
   const { t } = useTranslation(['intents', 'common']);
   const [hover, setHover] = useState(false);
@@ -71,7 +44,7 @@ const VideoMessage: FC<VideoMessageProps> = ({
     typeof content.payload.source[0] !== 'string'
       ? setSource(content.payload.source[0])
       : setSource(-1);
-    
+
     return () => {};
   }, [content]);
 
@@ -88,13 +61,25 @@ const VideoMessage: FC<VideoMessageProps> = ({
     return () => {};
   }, [type]);
 
-  const handleChangeType = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeType = (
+    event: ChangeEvent<{
+      name?: string | undefined;
+      value: 'tag' | 'video';
+      event: Event | React.SyntheticEvent<Element, Event>;
+    }>
+  ) => {
     const value = event.target.value;
     if (value !== 'tag' && value !== 'video') return;
     setType(value);
   };
 
-  const handleChangeSource = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeSource = (
+    event: ChangeEvent<{
+      name?: string | undefined;
+      value: number;
+      event: Event | React.SyntheticEvent<Element, Event>;
+    }>
+  ) => {
     const value = Number(event.target.value);
     setSource(value);
 
@@ -114,33 +99,46 @@ const VideoMessage: FC<VideoMessageProps> = ({
       my={1}
       p={2}
       borderRadius={'borderRadius'}
-      className={clsx(
-        classes.content,
-        hover && classes.contentHover,
-        isDragging && classes.dragEffect,
-      )}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      sx={{
+        width: '100%',
+        backgroundColor: theme.palette.action.hover,
+        '&:focus-within': {
+          boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+        },
+        transition: theme.transitions.create(['box-shadow'], {
+          duration: theme.transitions.duration.standard,
+        }),
+        boxShadow: hover
+          ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px'
+          : isDragging
+          ? `${theme.palette.primary.light} 0px 0px 5px 1px !important`
+          : 0,
+      }}
     >
       <Grid container direction="row" spacing={2}>
         <Grid item>
           <Box display="flex" flexDirection="column" alignItems="center" mt={0.5}>
             <YouTubeIcon />
-            {type === 'tag' && <ShuffleIcon className={classes.marginTop} />}
+            {type === 'tag' && <ShuffleIcon sx={{ mt: 1 }} />}
           </Box>
         </Grid>
         <Grid item>
           <Select
-            className={classes.dropdownType}
             label={t('common:type')}
             name="type"
             onChange={handleChangeType}
+            sx={{
+              width: '12ch',
+              textTransform: 'capitalize',
+            }}
             value={type}
           >
-            <MenuItem className={classes.capitalize} value="tag">
+            <MenuItem sx={{ textTransform: 'capitalize' }} value="tag">
               {t('tag')}
             </MenuItem>
-            <MenuItem className={classes.capitalize} value="video">
+            <MenuItem sx={{ textTransform: 'capitalize' }} value="video">
               {t('video')}
             </MenuItem>
           </Select>
@@ -148,7 +146,12 @@ const VideoMessage: FC<VideoMessageProps> = ({
         <Grid item xs>
           <Select displayEmpty fullWidth name="source" onChange={handleChangeSource} value={source}>
             {sourceOptions.map(({ id, label }) => (
-              <MenuItem key={id} className={classes.capitalize} disabled={id === '-1'} value={id}>
+              <MenuItem
+                key={id}
+                disabled={id === '-1'}
+                sx={{ textTransform: 'capitalize' }}
+                value={id}
+              >
                 {label}
               </MenuItem>
             ))}
@@ -158,9 +161,9 @@ const VideoMessage: FC<VideoMessageProps> = ({
           <Zoom in={hover}>
             <IconButton
               aria-label="delete"
-              className={classes.removeButton}
-              size="small"
               onClick={() => handleRemove(index)}
+              size="small"
+              sx={{ ml: 1 }}
             >
               <HighlightOffIcon />
             </IconButton>

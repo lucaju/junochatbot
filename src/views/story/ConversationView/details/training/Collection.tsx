@@ -1,4 +1,4 @@
-import { Collapse, makeStyles } from '@material-ui/core';
+import { Collapse } from '@material-ui/core';
 import { TrainingPhrase } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
@@ -9,20 +9,9 @@ interface CollectionProps {
   phraseList: TrainingPhrase[];
 }
 
-const useStyles = makeStyles(() => ({
-  test: {
-    height: 100,
-  },
-  collection: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-}));
-
 const ITEMS_PER_PAGE = 20;
 
 const Collection: FC<CollectionProps> = ({ phraseList }) => {
-  const classes = useStyles();
   const [items, setItems] = useState<TrainingPhrase[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -58,10 +47,15 @@ const Collection: FC<CollectionProps> = ({ phraseList }) => {
   });
 
   return (
-    <TransitionGroup className={classes.collection}>
+    <TransitionGroup
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       {items.map(({ name, type, parts, timesAddedCount }) => (
         <Collapse key={name}>
-          <Phrase name={name} type={type} parts={parts} timesAddedCount={timesAddedCount} />
+          <Phrase name={name} parts={parts} timesAddedCount={timesAddedCount} type={type} />
         </Collapse>
       ))}
       {hasMore && (

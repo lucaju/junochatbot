@@ -1,5 +1,4 @@
-
-import { Language , Notification, NotificationType } from '@src/types';
+import { Language, Notification, NotificationType } from '@src/types';
 
 type State = {
   appName: string;
@@ -15,8 +14,8 @@ export const state: State = {
   pageTitle: 'Juno Chatbot',
   darkMode: false,
   languages: [
-    { value: 'en-CA', name: 'english' },
-    { value: 'fr-CA', name: 'french' },
+    { value: 'en-CA', name: 'en' },
+    { value: 'fr-CA', name: 'fr' },
   ],
   notification: {
     open: false,

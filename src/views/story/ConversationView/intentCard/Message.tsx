@@ -1,21 +1,16 @@
-import { Box, makeStyles, Typography } from '@material-ui/core';
-import React, { FC } from 'react';
+import { Box, Typography } from '@material-ui/core';
 import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
-import YouTubeIcon from '@material-ui/icons/YouTube';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
-import type { Message as MesasgeType } from '@src/types';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 import { useApp } from '@src/overmind';
+import type { Message as MesasgeType } from '@src/types';
+import React, { FC } from 'react';
 
 interface MessageProps {
   message: MesasgeType;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  icon: { marginRight: spacing(1) },
-}));
-
 const Message: FC<MessageProps> = ({ message }) => {
-  const classes = useStyles();
   const { actions } = useApp();
 
   let type = 'text';
@@ -51,14 +46,14 @@ const Message: FC<MessageProps> = ({ message }) => {
       {show && (
         <Box display="flex" flexDirection="row" alignItems="center" mb={1}>
           {type === 'payload' ? (
-            <YouTubeIcon fontSize="small" className={classes.icon} />
+            <YouTubeIcon fontSize="small" sx={{ mr: 1 }} />
           ) : (
-            <ChatOutlinedIcon fontSize="small" className={classes.icon} />
+            <ChatOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
           )}
           <Typography noWrap variant="body2">
             {text}
           </Typography>
-          {variation && <ShuffleIcon fontSize="small" className={classes.icon} />}
+          {variation && <ShuffleIcon fontSize="small" sx={{ mr: 1 }} />}
         </Box>
       )}
     </>

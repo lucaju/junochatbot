@@ -1,12 +1,5 @@
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  makeStyles,
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,11 +12,6 @@ interface DeleteDialogProps {
   isSubmitting?: boolean;
 }
 
-const useStyles = makeStyles(() => ({
-  capitalize: { textTransform: 'capitalize' },
-  progress: { position: 'absolute' },
-}));
-
 const DeleteDialog: FC<DeleteDialogProps> = ({
   open,
   title,
@@ -32,18 +20,17 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
   handleYes,
   isSubmitting = false,
 }) => {
-  const classes = useStyles();
   const { t } = useTranslation(['common']);
 
   return (
     <Dialog
       aria-labelledby={title}
-      disableBackdropClick
+      // disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
       open={open}
     >
-      <DialogTitle className={classes.capitalize} id={title}>
+      <DialogTitle id={title} sx={{ textTransform: 'capitalize' }}>
         {title}
       </DialogTitle>
       <DialogContent dividers>{message}</DialogContent>
@@ -57,12 +44,14 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
         >
           {t('no')}
         </Button>
-        <Button color="secondary" disabled={isSubmitting} onClick={handleYes}>
+        <LoadingButton
+          color="secondary"
+          disabled={isSubmitting}
+          loading={isSubmitting}
+          onClick={handleYes}
+        >
           {t('yes')}
-          {isSubmitting && (
-            <CircularProgress className={classes.progress} size={24} />
-          )}
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

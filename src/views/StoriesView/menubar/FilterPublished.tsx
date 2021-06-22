@@ -1,6 +1,5 @@
-import { makeStyles, MenuItem, TextField } from '@material-ui/core';
-import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import { MenuItem, TextField } from '@material-ui/core';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type Option = {
@@ -16,15 +15,8 @@ export type HandleFilterType = {
 
 interface FilterPublishedProps {
   handleFilter: ({ type, value, reset }: HandleFilterType) => void;
-  className?: string;
   value?: number;
 }
-
-const useStyles = makeStyles(({ palette }) => ({
-  box: { width: 125 },
-  capitalize: { textTransform: 'capitalize' },
-  highlight: { color: palette.primary.main },
-}));
 
 const options: Option[] = [
   { value: 0, name: 'all' },
@@ -32,37 +24,40 @@ const options: Option[] = [
   { value: -1, name: 'draft' },
 ];
 
-const FilterPublished: FC<FilterPublishedProps> = ({
-  handleFilter,
-  className = '',
-  value = 0,
-}) => {
-  const classes = useStyles();
+const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = 0 }) => {
   const { t } = useTranslation(['stories']);
   const [filterValue, setFilterValue] = useState(value);
 
-  const handleChange = (value: number) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
     setFilterValue(value);
     const reset = value === 0 ? true : false;
     handleFilter({ type: 'published', value, reset });
   };
 
-  const isOn = () => filterValue !== 0;
+  const isOn = filterValue !== 0;
 
   return (
     <TextField
-      className={clsx(className, classes.box, classes.capitalize)}
-      InputProps={{ className: clsx(isOn() && classes.highlight) }}
+      InputProps={{
+        sx: {
+          color: ({ palette }) => (isOn ? palette.primary.main : undefined),
+        },
+      }}
       label={t('status')}
       name="filterPublished"
-      onChange={(event) => handleChange(Number(event.target.value))}
+      onChange={handleChange}
       select
       size="small"
+      sx={{
+        width: 125,
+        textTransform: 'capitalize',
+      }}
       variant="outlined"
       value={filterValue}
     >
       {options.map(({ name, value }) => (
-        <MenuItem className={classes.capitalize} key={value} value={value}>
+        <MenuItem key={value} sx={{ textTransform: 'capitalize' }} value={value}>
           {t(name)}
         </MenuItem>
       ))}

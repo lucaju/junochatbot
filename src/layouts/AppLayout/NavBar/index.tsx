@@ -1,21 +1,13 @@
-import {
-  Box,
-  Drawer,
-  IconButton,
-  makeStyles,
-  useMediaQuery,
-  useTheme,
-} from '@material-ui/core';
+import { Box, Drawer, IconButton, useMediaQuery, useTheme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import clsx from 'clsx';
-import React, { FC, useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
 import Logo from '@src/components/Logo';
 import { useApp } from '@src/overmind';
+import { RoleType } from '@src/types';
+import React, { FC, useEffect } from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import Menu from './Menu';
 import { adminMenu } from './menus/adminMenu';
 import { storyMenu } from './menus/storyMenu';
-import { RoleType } from '@src/types';
 
 interface NavBarProps {
   compactMode?: boolean;
@@ -24,33 +16,12 @@ interface NavBarProps {
   showStoryMenu?: boolean;
 }
 
-const useStyles = makeStyles(({ palette, spacing }) => ({
-  desktopDrawer: {
-    backgroundColor: palette.background.default,
-    borderRight: 0,
-    width: 256,
-    top: 64,
-    height: 'calc(100% - 64px)',
-  },
-  desktopDrawerCompact: { width: 72 },
-  logo: {
-    height: 36,
-    marginLeft: spacing(1),
-  },
-  mobileDrawer: { width: 256 },
-  topBar: {
-    height: 64,
-    marginLeft: spacing(2),
-  },
-}));
-
 const NavBar: FC<NavBarProps> = ({
   compactMode = false,
   onMobileClose = undefined,
   openMobile = false,
   showStoryMenu = false,
 }) => {
-  const classes = useStyles();
   const location = useLocation();
   const { state } = useApp();
   const theme = useTheme();
@@ -67,12 +38,19 @@ const NavBar: FC<NavBarProps> = ({
   return (
     <Drawer
       anchor="left"
-      classes={{
-        paper: clsx(
-          breakpointsUpMd && classes.desktopDrawer,
-          compactMode && classes.desktopDrawerCompact,
-          !breakpointsUpMd && classes.mobileDrawer
-        ),
+      PaperProps={{
+        sx: {
+          top: breakpointsUpMd || compactMode ? 64 : 0,
+          height: breakpointsUpMd || compactMode ? 'calc(100% - 64px)' : '100%',
+          width: () => {
+            if (breakpointsUpMd && compactMode) return 72;
+            if (!breakpointsUpMd && openMobile) return 256;
+            if (!breakpointsUpMd) return 0;
+            return 256;
+          },
+          borderRight: 0,
+          // backgroundColor: theme.palette.success.light,
+        },
       }}
       onClose={breakpointsUpMd ? undefined : onMobileClose}
       open={breakpointsUpMd ? true : openMobile}
@@ -83,24 +61,26 @@ const NavBar: FC<NavBarProps> = ({
           display="flex"
           flexDirection="row"
           alignItems="center"
-          className={classes.topBar}
+          sx={{
+            height: 64,
+            ml: 2,
+          }}
         >
           <IconButton color="inherit" onClick={onMobileClose}>
             <MenuIcon />
           </IconButton>
           <RouterLink to="/">
-            <Logo className={classes.logo} type="simplified" />
+            <Logo height={36} sx={{ ml: 1 }} type="simplified" />
           </RouterLink>
         </Box>
       )}
       {showStoryMenu && <Menu compactMode={compactMode} items={storyMenu} />}
-      {state.session.user &&
-        userTypeAllowed.includes(state.session.user.roleTypeId) && (
-          <>
-            <Box flexGrow={1} />
-            <Menu compactMode={compactMode} items={adminMenu} />
-          </>
-        )}
+      {state.session.user && userTypeAllowed.includes(state.session.user.roleTypeId) && (
+        <>
+          <Box flexGrow={1} />
+          <Menu compactMode={compactMode} items={adminMenu} />
+        </>
+      )}
     </Drawer>
   );
 };

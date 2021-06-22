@@ -1,3 +1,4 @@
+import mock from '@src/../test/mockData';
 import { API_URL } from '@src/config/config.js';
 import type { ErrorMessage, Story } from '@src/types';
 
@@ -5,8 +6,18 @@ type ResponseUploadImage = {
   fileName: string;
 };
 
+const MOCK_UP = false; //true;
+
 export const api = {
   getAllStories: async (token: string): Promise<Story[] | ErrorMessage> => {
+    if (MOCK_UP) {
+      return await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(mock.dataStories);
+        }, 1000);
+      });
+    }
+
     const response = await fetch(`${API_URL}/stories/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -19,10 +30,7 @@ export const api = {
     return result as Story[];
   },
 
-  getStoriesByGroup: async (
-    groupId: number,
-    token: string
-  ): Promise<Story[] | ErrorMessage> => {
+  getStoriesByGroup: async (groupId: number, token: string): Promise<Story[] | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/groups/${groupId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -35,10 +43,7 @@ export const api = {
     return result as Story[];
   },
 
-  getStoriesByUser: async (
-    userId: number,
-    token: string
-  ): Promise<Story[] | ErrorMessage> => {
+  getStoriesByUser: async (userId: number, token: string): Promise<Story[] | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -51,10 +56,7 @@ export const api = {
     return result as Story[];
   },
 
-  getStory: async (
-    storyId: number,
-    token: string
-  ): Promise<Story | ErrorMessage> => {
+  getStory: async (storyId: number, token: string): Promise<Story | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/${storyId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -65,10 +67,7 @@ export const api = {
     return result as Story;
   },
 
-  createStory: async (
-    story: Omit<Story, 'id'>,
-    token: string
-  ): Promise<Story | ErrorMessage> => {
+  createStory: async (story: Omit<Story, 'id'>, token: string): Promise<Story | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories`, {
       method: 'POST',
       headers: {
@@ -84,10 +83,7 @@ export const api = {
     return result as Story;
   },
 
-  updateStory: async (
-    story: Partial<Story>,
-    token: string
-  ): Promise<Story | ErrorMessage> => {
+  updateStory: async (story: Partial<Story>, token: string): Promise<Story | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories`, {
       method: 'PUT',
       headers: {
@@ -122,10 +118,7 @@ export const api = {
     return result as ResponseUploadImage;
   },
 
-  deleteImage: async (
-    storyId: number,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  deleteImage: async (storyId: number, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/${storyId}/image`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
@@ -136,10 +129,7 @@ export const api = {
     return true;
   },
 
-  deleteStory: async (
-    storyId: number,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  deleteStory: async (storyId: number, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/${storyId}`, {
       method: 'DELETE',
       headers: {

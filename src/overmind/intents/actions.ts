@@ -1,6 +1,6 @@
-import { Context } from 'overmind';
+import type { Context as ContextIntent, Entity, ErrorMessage, Intent } from '@src/types';
 import { isError } from '@src/util/utilities';
-import type { ErrorMessage, Intent, Entity, Context as ContextIntent } from '@src/types';
+import { Context } from 'overmind';
 
 export const getIntents = async ({
   state,

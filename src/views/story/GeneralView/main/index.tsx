@@ -1,7 +1,7 @@
-import { Box } from '@material-ui/core';
+import { Box, Stack } from '@material-ui/core';
+import { Story as StoryType } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
-import { Story as StoryType } from '@src/types';
 import Bot from './Bot';
 import Story from './Story';
 
@@ -21,13 +21,14 @@ const Main: FC<MainProps> = ({
   values,
 }) => {
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="flex-start"
-      alignItems="flex-start"
+    <Stack
+      // display="flex"
+      // justifyContent="flex-start"
+      // alignItems="flex-start"
+      direction="column"
+      spacing={2}
     >
-      <Box mb={2} width={'100%'}>
+      {/* <Box width={'100%'} mb={2} > */}
         <Story
           errors={errors}
           handleBlur={handleBlur}
@@ -35,8 +36,8 @@ const Main: FC<MainProps> = ({
           touched={touched}
           values={values}
         />
-      </Box>
-      <Box mb={2} width={'100%'}>
+      {/* </Box> */}
+      {/* <Box width={'100%'} mb={2}> */}
         <Bot
           errors={errors}
           handleBlur={handleBlur}
@@ -44,8 +45,8 @@ const Main: FC<MainProps> = ({
           touched={touched}
           values={values}
         />
-      </Box>
-    </Box>
+      {/* </Box> */}
+    </Stack>
   );
 };
 

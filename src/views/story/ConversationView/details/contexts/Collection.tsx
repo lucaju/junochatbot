@@ -1,4 +1,4 @@
-import { Box, Collapse, IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Box, Collapse, IconButton, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Context as ContextType } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
@@ -10,20 +10,10 @@ interface CollectionProps {
   type: 'input' | 'output';
 }
 
-const useStyles = makeStyles(() => ({
-  collection: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  uppercase: { textTransform: 'uppercase' },
-}));
-
 const MAX_INPUT = 5;
 const MAX_OUPUT = 30;
 
 const Collection: FC<CollectionProps> = ({ type = 'input' }) => {
-  const classes = useStyles();
   const { contexts, createFreshContext, extractContextName } = useContext({ type });
   const [listContext, setListContext] = useState<ContextData[]>([]);
 
@@ -63,7 +53,7 @@ const Collection: FC<CollectionProps> = ({ type = 'input' }) => {
   return (
     <>
       <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" my={1.5}>
-        <Typography variant="h6" className={classes.uppercase}>
+        <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
           {type}
         </Typography>
         <IconButton
@@ -76,15 +66,21 @@ const Collection: FC<CollectionProps> = ({ type = 'input' }) => {
           <AddCircleOutlineIcon fontSize="small" />
         </IconButton>
       </Box>
-      <TransitionGroup className={classes.collection}>
+      <TransitionGroup
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         {listContext.map(({ id, name, lifeSpan }) => (
           <Collapse key={name}>
             <ContextComponent
-              type={type}
-              id={id}
-              name={name}
-              lifeSpan={lifeSpan}
               handleEmptyContext={removeEmptyContext}
+              id={id}
+              lifeSpan={lifeSpan}
+              name={name}
+              type={type}
             />
           </Collapse>
         ))}

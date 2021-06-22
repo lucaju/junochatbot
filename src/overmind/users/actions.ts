@@ -1,6 +1,6 @@
-import { Context } from 'overmind';
-import { isError, sortBy } from '@src/util/utilities';
 import type { ErrorMessage, User, UserGroup } from '@src/types';
+import { isError, sortBy } from '@src/util/utilities';
+import { Context } from 'overmind';
 
 export const getUsers = async (
   { state, effects }: Context,
@@ -16,10 +16,7 @@ export const getUsers = async (
   }
 
   if (!groupId && state.session.isInstructor && authuser.groupId) {
-    response = await effects.users.api.getUsersByGroup(
-      Number(authuser.groupId),
-      authuser.token
-    );
+    response = await effects.users.api.getUsersByGroup(Number(authuser.groupId), authuser.token);
   }
 
   if (!groupId && state.session.isAdmin) {
@@ -44,9 +41,7 @@ export const getUser = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  let user = state.users.list.find(
-    (_user) => _user.id === userId && _user.firstName
-  );
+  let user = state.users.list.find((_user) => _user.id === userId && _user.firstName);
   if (!user) {
     let user = await effects.users.api.getUser(userId, authUser.token);
     if (isError(user)) return user;
@@ -54,10 +49,7 @@ export const getUser = async (
 
   if (!user) return { errorMessage: 'Not User found' };
 
-  const userGroup = await effects.users.api.getUserGroup(
-    userId,
-    authUser.token
-  );
+  const userGroup = await effects.users.api.getUserGroup(userId, authUser.token);
   if (userGroup && !isError(userGroup)) user.groupId = userGroup.id;
 
   return user;
@@ -120,8 +112,7 @@ export const createUser = async (
       avatar,
       authUser.token
     );
-    if (!isError(responseUploadAvatar))
-      user.avatarUrl = responseUploadAvatar.fileName;
+    if (!isError(responseUploadAvatar)) user.avatarUrl = responseUploadAvatar.fileName;
   }
 
   //5. add to state
@@ -142,12 +133,10 @@ export const updateUser = async (
 
   let newAvatar;
   if (newValues.avatarUrl?.name) newAvatar = newValues.avatarUrl;
-  if (userData.avatarUrl !== null && newValues.avatarUrl === null)
-    newAvatar = null;
+  if (userData.avatarUrl !== null && newValues.avatarUrl === null) newAvatar = null;
   delete newValues.avatarUrl;
 
-  const newGroupId =
-    newValues.groupId !== userData.groupId ? newValues.groupId : undefined;
+  const newGroupId = newValues.groupId !== userData.groupId ? newValues.groupId : undefined;
   delete newValues.groupId;
 
   //2. Check if user data changed
@@ -160,10 +149,7 @@ export const updateUser = async (
 
   //3. update User
   if (userDatahasChanged) {
-    const response = await effects.users.api.updateUser(
-      newValues,
-      authUser.token
-    );
+    const response = await effects.users.api.updateUser(newValues, authUser.token);
     if (isError(response)) return response;
   } else {
     newValues = userData as User;
@@ -181,17 +167,10 @@ export const updateUser = async (
 
   //5. Upload avatar
   if (newAvatar?.name) {
-    const response = await effects.users.api.uploadAvatar(
-      newValues.id,
-      newAvatar,
-      authUser.token
-    );
+    const response = await effects.users.api.uploadAvatar(newValues.id, newAvatar, authUser.token);
     if (!isError(response)) newValues.avatarUrl = response;
   } else if (newAvatar === null) {
-    const response = await effects.users.api.deleteAvatar(
-      newValues.id,
-      authUser.token
-    );
+    const response = await effects.users.api.deleteAvatar(newValues.id, authUser.token);
     if (!isError(response)) newValues.avatarUrl = null;
   } else {
     newValues.avatarUrl = userData.avatarUrl;
@@ -244,9 +223,7 @@ export const getGroup = async (
   { state, effects }: Context,
   groupId: number
 ): Promise<UserGroup | ErrorMessage> => {
-  let selectedGroup = state.users.groups.find(
-    (group: UserGroup) => group.id === groupId
-  );
+  let selectedGroup = state.users.groups.find((group: UserGroup) => group.id === groupId);
   if (selectedGroup) return selectedGroup;
 
   //retrieve data
@@ -271,10 +248,7 @@ export const createGroup = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.users.api.createGroup(
-    groupData,
-    authUser.token
-  );
+  const response = await effects.users.api.createGroup(groupData, authUser.token);
   if (isError(response)) return response;
 
   //add group to state
@@ -290,10 +264,7 @@ export const updateGroup = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.users.api.updateGroup(
-    groupData,
-    authUser.token
-  );
+  const response = await effects.users.api.updateGroup(groupData, authUser.token);
   if (isError(response)) return response;
 
   state.users.groups = state.users.groups.map((group: UserGroup) => {
@@ -315,9 +286,7 @@ export const deleteGroup = async (
   if (isError(response)) return response;
 
   // update state;
-  state.users.groups = state.users.groups.filter(
-    (g: UserGroup) => g.id !== groupId
-  );
+  state.users.groups = state.users.groups.filter((g: UserGroup) => g.id !== groupId);
 
   return true;
 };
@@ -355,11 +324,7 @@ export const uploadAvatar = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.users.api.uploadAvatar(
-    userId,
-    avatar,
-    authUser.token
-  );
+  const response = await effects.users.api.uploadAvatar(userId, avatar, authUser.token);
   if (isError(response)) return response;
 
   return response.fileName;

@@ -2,8 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import webpack from 'webpack';
 import Merge from 'webpack-merge';
-
-import common from './webpack.common.js';
+import common from './webpack.common.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +14,7 @@ export default Merge.merge(common, {
     contentBase: path.join(__dirname, 'dist'),
     historyApiFallback: true,
   },
-  devtool: false,
+  devtool: 'inline-source-map', //'eval-source-map' (might be faster)
   output: {
     pathinfo: true,
     publicPath: '/',
@@ -35,11 +34,6 @@ export default Merge.merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
-    }),
-    new webpack.EvalSourceMapDevToolPlugin({
-      columns: true,
-      exclude: [/luxon/, /react/],
-      module: true,
     }),
   ],
 });

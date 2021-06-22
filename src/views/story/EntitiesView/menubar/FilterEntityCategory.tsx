@@ -1,27 +1,15 @@
-import { makeStyles, MenuItem, TextField } from '@material-ui/core';
-import clsx from 'clsx';
-import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { MenuItem, TextField } from '@material-ui/core';
 import { useApp } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FilterEntityCategoryProps {
-  className: string;
   handleFilter: ({ type, value, reset }: HandleFilterType) => void;
   value?: string;
 }
 
-const useStyles = makeStyles(({ palette }) => ({
-  capitalize: { textTransform: 'capitalize' },
-  highlight: { color: palette.primary.main },
-}));
-
-const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({
-  className,
-  handleFilter,
-  value = 'All',
-}) => {
-  const classes = useStyles();
+const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, value = 'All' }) => {
   const { state } = useApp();
   const { t } = useTranslation(['common']);
   const [categories, setcategories] = useState(['All']);
@@ -34,7 +22,8 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({
     return () => {};
   }, [state.intents.entities]);
 
-  const handleChange = (value: string) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     setFilterValue(value);
     const reset = value === 'All' ? true : false;
     handleFilter({ type: 'category', value, reset });
@@ -44,13 +33,20 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({
 
   return (
     <TextField
-      className={clsx(className, classes.capitalize)}
-      InputProps={{ className: clsx(isOn && classes.highlight) }}
+      InputProps={{
+        sx: {
+          color: ({ palette }) => (isOn ? palette.primary.main : undefined),
+        },
+      }}
       label={t('category')}
       name="filterEntityCategory"
-      onChange={(e) => handleChange(e.target.value)}
+      onChange={handleChange}
       select
       size="small"
+      sx={{
+        minWidth: 100,
+        textTransform: 'capitalize',
+      }}
       variant="outlined"
       value={filterValue}
     >

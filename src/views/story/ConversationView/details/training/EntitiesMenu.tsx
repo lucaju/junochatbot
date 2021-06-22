@@ -4,9 +4,8 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  makeStyles,
   Menu,
-  MenuItem,
+  MenuItem
 } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { useApp } from '@src/overmind';
@@ -15,33 +14,25 @@ import useParameter from '../parameters/hooks';
 
 interface EntitiesMenuProps {
   anchorEl?: HTMLElement | null;
-  open?: boolean;
-  value?: string;
   addPart: (value: string) => void;
-  updatePart: (currentAlias: string, entityName?: string) => void;
-  removePart: (currentAlias?: string) => void;
   handleClose: () => void;
+  open?: boolean;
+  removePart: (currentAlias?: string) => void;
+  updatePart: (currentAlias: string, entityName?: string) => void;
+  value?: string;
 }
-
-const useStyles = makeStyles(({ spacing }) => ({
-  divider: {
-    marginTop: spacing(0.5),
-    marginBottom: spacing(0.5),
-  },
-}));
 
 const CONTEXTMENU_ITEM_HEIGHT = 48;
 
 const EntitiesMenu: FC<EntitiesMenuProps> = ({
   addPart,
-  updatePart,
-  removePart,
-  handleClose,
   anchorEl = null,
+  handleClose,
   open = false,
+  removePart,
+  updatePart,
   value,
 }) => {
-  const classes = useStyles();
   const { state, actions } = useApp();
   const { params } = useParameter();
 
@@ -60,32 +51,32 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
 
   return (
     <Menu
-      id="entities-menu"
       anchorEl={anchorEl}
       keepMounted
-      open={open}
-      onClose={handleClose}
+      id="entities-menu"
       PaperProps={{
-        style: {
+        sx: {
           maxHeight: CONTEXTMENU_ITEM_HEIGHT * 4.5,
-          marginTop: 50,
+          mt: 6.25,
         },
       }}
+      onClose={handleClose}
+      open={open}
     >
       {params &&
         params.map(({ name, displayName }) => (
-          <ListItem key={name} dense selected={value === displayName} onClick={() => handleClose()}>
+          <ListItem key={name} dense onClick={handleClose} selected={value === displayName}>
             <ListItemText primary={displayName} />
             {value === displayName && (
               <ListItemSecondaryAction>
-                <IconButton aria-label="delete" size="small" onClick={() => removePart(value)}>
+                <IconButton aria-label="delete" onClick={() => removePart(value)} size="small">
                   <HighlightOffIcon fontSize="inherit" />
                 </IconButton>
               </ListItemSecondaryAction>
             )}
           </ListItem>
         ))}
-      {params && <Divider className={classes.divider} />}
+      {params && <Divider sx={{ my: 0.5 }} />}
       {state.intents.entities.map(({ id, name }) => (
         <MenuItem key={id} dense onClick={() => handleClick(name)}>
           {name}

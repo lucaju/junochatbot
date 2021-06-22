@@ -27,6 +27,11 @@ export interface Notification {
   type: NotificationType;
 }
 
+export interface DropFile {
+  file: File;
+  preview: string;
+}
+
 //USER
 export interface Credential {
   email?: string;
@@ -100,7 +105,6 @@ export type HandleFilterType = {
   reset?: boolean;
 };
 
-
 // ENTITIES
 
 export type Entity = {
@@ -112,15 +116,13 @@ export type Entity = {
   outputFormat: string;
   createdDate: string;
   updatedDate: string;
-}
+};
 
 export type ContextRelation = {
   name: string;
   inputs?: string[];
   outputs?: string[];
 };
-
-
 
 //DIALOG FLOW INTENTS
 

@@ -1,35 +1,20 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  makeStyles,
-  TextField,
-} from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
+import LoadingButton from '@material-ui/lab/LoadingButton';
+import type { Credential } from '@src/types';
 import { Formik } from 'formik';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import type { Credential } from '@src/types';
 
 interface ForgotFormProps {
   requestPassword: (credential: Credential) => void;
 }
 
-const useStyles = makeStyles(({ palette }) => ({
-  capitalize: { textTransform: 'capitalize' },
-  submitButton: { color: palette.common.white },
-  progress: { position: 'absolute' },
-}));
-
 const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
-  const classes = useStyles();
   const { t } = useTranslation(['auth', 'common']);
 
   const formValidation = Yup.object().shape({
-    email: Yup.string()
-      .email(t('mustBeValidEmail'))
-      .max(255)
-      .required(t('common:required')),
+    email: Yup.string().email(t('mustBeValidEmail')).max(255).required(t('common:required')),
   });
 
   return (
@@ -38,19 +23,10 @@ const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
       onSubmit={async (values: Credential) => await requestPassword(values)}
       validationSchema={formValidation}
     >
-      {({
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        touched,
-        values,
-      }) => (
-        <form onSubmit={handleSubmit}>
+      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        <form onSubmit={handleSubmit} style={{width: '100%'}}>
           <TextField
             autoComplete="username"
-            className={classes.capitalize}
             error={Boolean(touched.email && errors.email)}
             fullWidth
             helperText={touched.email && errors.email}
@@ -59,28 +35,24 @@ const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
             name="email"
             onBlur={handleBlur}
             onChange={handleChange}
+            sx={{ textTransform: 'capitalize' }}
             type="email"
             value={values.email}
+            variant="standard"
           />
           <Box mt={2}>
-            <Button
-              classes={{ containedPrimary: classes.submitButton }}
+            <LoadingButton
               color="primary"
               disabled={isSubmitting}
               disableElevation
               fullWidth
+              loading={isSubmitting}
               size="large"
               type="submit"
               variant="contained"
             >
               {t('getNewPassowrd')}
-              {isSubmitting && (
-                <CircularProgress
-                  className={classes.progress}
-                  size={24}
-                />
-              )}
-            </Button>
+            </LoadingButton>
           </Box>
         </form>
       )}

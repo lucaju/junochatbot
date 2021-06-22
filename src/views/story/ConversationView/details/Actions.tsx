@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useApp } from '@src/overmind';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,13 +12,7 @@ interface ActionsProps {
   isSubmitting: boolean;
 }
 
-const useStyles = makeStyles(({ palette: { common, type } }) => ({
-  progress: { position: 'absolute' },
-  textColor: { color: type === 'light' ? common.white : common.black },
-}));
-
 const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, isSubmitting }) => {
-  const classes = useStyles();
   const { t } = useTranslation(['common', 'videos']);
   const { state } = useApp();
 
@@ -28,7 +23,7 @@ const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, i
       {state.intents.currentIntent?.name && (
         <>
           <Box flexGrow={1} />
-          <Button disabled={isSubmitting} onClick={handleDelete} variant="outlined">
+          <Button onClick={handleDelete} variant="outlined">
             {t('delete')}
           </Button>
         </>
@@ -36,16 +31,9 @@ const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, i
 
       <Box flexGrow={1} />
 
-      <Button
-        classes={{ containedPrimary: classes.textColor }}
-        color="primary"
-        disabled={isSubmitting}
-        onClick={handleSubmit}
-        variant="contained"
-      >
+      <LoadingButton onClick={handleSubmit} loading={isSubmitting} variant="contained">
         {t('save')}
-        {isSubmitting && <CircularProgress className={classes.progress} size={24} />}
-      </Button>
+      </LoadingButton>
     </>
   );
 };

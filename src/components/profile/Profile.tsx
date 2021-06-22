@@ -8,11 +8,10 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  makeStyles,
-  MenuItem,
   Popover,
-  Select,
   Switch,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -20,29 +19,22 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import LanguageIcon from '@material-ui/icons/Language';
 import LockIcon from '@material-ui/icons/Lock';
-import React, { FC, ChangeEvent, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { useApp } from '@src/overmind';
-import AvatarDialog from './AvatarDialog';
-import PasswordDialog from './PasswordDialog';
 import { APP_URL } from '@src/config/config.js';
+import { useApp } from '@src/overmind';
 import { UserGroup } from '@src/types';
 import { isError } from '@src/util/utilities';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import AvatarDialog from './AvatarDialog';
+import PasswordDialog from './PasswordDialog';
 
 interface ProfileProps {
   anchor: HTMLDivElement;
   handleClose: () => void;
 }
 
-const useStyles = makeStyles(() => ({
-  root: { width: 280 },
-  capitalize: { textTransform: 'capitalize' },
-  listItemIconRoot: { minWidth: 40 },
-}));
-
 const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
-  const classes = useStyles();
   const { state, actions } = useApp();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(['profile', 'common']);
@@ -66,7 +58,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
     actions.ui.setDarkMode(!state.ui.darkMode);
   };
 
-  const switchLanguage = (value: string) => {
+  const switchLanguage = (event: MouseEvent<HTMLElement>, value: string) => {
     i18n.changeLanguage(value);
     actions.ui.switchLanguage(value);
   };
@@ -117,18 +109,16 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
           <Typography variant="button">
             {state.session.user?.firstName} {state.session.user?.lastName}
           </Typography>
-          <Typography variant="body2">
-            {state.session.user?.userName}
-          </Typography>
+          <Typography variant="body2">{state.session.user?.userName}</Typography>
           {group && <Typography variant="caption">{group.name}</Typography>}
         </Box>
       </Box>
 
       <Divider />
 
-      <List className={classes.root}>
+      <List sx={{ width: 280 }}>
         <ListItem>
-          <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
+          <ListItemIcon sx={{ minWidth: 40 }}>
             {state.ui.darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </ListItemIcon>
           <ListItemText id="dark-mode" primary={t('darkMode')} />
@@ -144,44 +134,39 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
         </ListItem>
 
         <ListItem>
-          <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
+          <ListItemIcon sx={{ minWidth: 40 }}>
             <LanguageIcon />
           </ListItemIcon>
           <ListItemText id="language" primary={t('language')} />
           <ListItemSecondaryAction>
-            <Select
-              className={classes.capitalize}
-              onChange={(event: ChangeEvent<HTMLButtonElement>) => {
-                switchLanguage(event.target.value);
-              }}
+            <ToggleButtonGroup
               value={state.ui.languageCode}
+              exclusive
+              onChange={switchLanguage}
+              aria-label="language"
             >
               {state.ui.languages.map(({ value, name }) => (
-                <MenuItem
-                  className={classes.capitalize}
-                  key={value}
-                  value={value}
-                >
+                <ToggleButton key={value} sx={{ height: 28 }} value={value}>
                   {t(`common:${name}`)}
-                </MenuItem>
+                </ToggleButton>
               ))}
-            </Select>
+            </ToggleButtonGroup>
           </ListItemSecondaryAction>
         </ListItem>
       </List>
 
       <Divider />
 
-      <List className={classes.root}>
+      <List sx={{ width: 280 }}>
         <ListItem button onClick={() => setAvatardDialogOpen(true)}>
-          <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
+          <ListItemIcon sx={{ minWidth: 40 }}>
             <AccountCircleIcon />
           </ListItemIcon>
           <ListItemText primary={t('changeAvatar')} />
         </ListItem>
 
         <ListItem button onClick={() => setPasswordDialogOpen(true)}>
-          <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
+          <ListItemIcon sx={{ minWidth: 40 }}>
             <LockIcon />
           </ListItemIcon>
           <ListItemText primary={t('changePassword')} />
@@ -196,15 +181,9 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
         </Button>
       </Box>
 
-      <AvatarDialog
-        handleClose={() => setAvatardDialogOpen(false)}
-        open={avatardDialogOpen}
-      />
+      <AvatarDialog handleClose={() => setAvatardDialogOpen(false)} open={avatardDialogOpen} />
 
-      <PasswordDialog
-        handleClose={() => setPasswordDialogOpen(false)}
-        open={passwordDialogOpen}
-      />
+      <PasswordDialog handleClose={() => setPasswordDialogOpen(false)} open={passwordDialogOpen} />
     </Popover>
   );
 };

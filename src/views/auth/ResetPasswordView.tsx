@@ -1,46 +1,17 @@
-import { Container, Link, makeStyles, Typography } from '@material-ui/core';
+import { Container, Link, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import clsx from 'clsx';
-import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
 import { useApp } from '@src/overmind';
+import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
+import { isError } from '@src/util/utilities';
+import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import ErrorMessage from './components/ErrorMessage';
 import ResetPasswordForm from './components/ResetPasswordForm';
-import { isError } from '@src/util/utilities';
-import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
-
-const useStyles = makeStyles(({ palette, spacing }) => ({
-  root: {
-    backgroundColor: palette.background.default,
-    height: '100%',
-    paddingBottom: spacing(3),
-    paddingTop: spacing(3),
-  },
-  backArrowIcon: {
-    marginBottom: -spacing(0.5),
-    marginRight: spacing(0.5),
-  },
-  capitalize: { textTransform: 'capitalize' },
-  container: {
-    marginTop: spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  login: {
-    marginTop: spacing(4),
-    color: palette.text.hint,
-  },
-  logo: {
-    marginBottom: spacing(8),
-    width: 256,
-  },
-}));
 
 const ResetPasswordView: FC = () => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const { state, actions } = useApp();
@@ -72,9 +43,23 @@ const ResetPasswordView: FC = () => {
   };
 
   return (
-    <Page className={classes.root} title="Set Password">
-      <Container className={classes.container} maxWidth="xs">
-        <Logo className={classes.logo} type="full" />
+    <Page
+      sx={{
+        height: '100%',
+        py: 3,
+        backgroundColor: 'background.default',
+      }}
+      title="Set Password"
+    >
+      <Container
+        maxWidth="xs"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          mt: 8,
+        }}
+      >
+        <Logo height={160} sx={{ mb: 8 }} type="full" />
         <>
           {requestSent ? (
             <Typography color="textPrimary" component="h1" variant="body1">
@@ -84,11 +69,7 @@ const ResetPasswordView: FC = () => {
             <>
               {newUser ? (
                 <>
-                  <Typography
-                    className={classes.capitalize}
-                    component="h1"
-                    variant="h6"
-                  >
+                  <Typography component="h1" sx={{ textTransform: 'capitalize' }} variant="h6">
                     {t('common:welcome')} {fullName}
                   </Typography>
                   <Typography component="h2" gutterBottom variant="subtitle2">
@@ -100,24 +81,21 @@ const ResetPasswordView: FC = () => {
                   {`${t('setupPasswordFor')} ${fullName}`}
                 </Typography>
               )}
-              {error && (
-                <ErrorMessage
-                  message={t('errorMessages:notPossibleSetPassword')}
-                />
-              )}
-              <ResetPasswordForm
-                newUser={newUser}
-                resetPassword={resetPassword}
-              />
+              {error && <ErrorMessage message={t('errorMessages:notPossibleSetPassword')} />}
+              <ResetPasswordForm resetPassword={resetPassword} />
             </>
           )}
           <Link
-            className={clsx(classes.login, classes.capitalize)}
             component={RouterLink}
+            sx={{
+              mt: 4,
+              color: ({ palette }) => palette.text.disabled,
+              textTransform: 'capitalize',
+            }}
             to="/login"
             variant="body2"
           >
-            <ArrowBackIcon className={classes.backArrowIcon} fontSize="small" />
+            <ArrowBackIcon fontSize="small" sx={{ mb: -0.5, mt: 0.5, mr: 2 }} />
             {t('signin')}
           </Link>
         </>

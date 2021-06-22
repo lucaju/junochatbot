@@ -1,4 +1,4 @@
-import type { Credential, ErrorMessage, User } from '@src/types';
+import type { ErrorMessage } from '@src/types';
 
 export function isError(param: any): param is ErrorMessage {
   return (param as ErrorMessage).errorMessage !== undefined;

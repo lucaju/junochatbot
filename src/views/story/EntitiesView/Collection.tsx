@@ -1,32 +1,19 @@
-import { Box, makeStyles } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { MuuriComponent } from 'muuri-react';
-import React, { FC, useEffect, useState } from 'react';
+import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import { useApp } from '@src/overmind';
 import { Entity } from '@src/types';
+import React, { FC, useEffect, useState } from 'react';
+//@ts-ignore
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import EntityCard from './EntityCard';
 
 interface CollectionProps {
   filters: Map<string, string>;
-  searchQuery: string | undefined;
   isLoading?: boolean;
+  searchQuery: string | undefined;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  card: { margin: spacing(3) },
-  container: {
-    maxHeight: '83vh',
-    overflowY: 'scroll',
-  },
-}));
-
-const Collection: FC<CollectionProps> = ({
-  filters,
-  searchQuery,
-  isLoading = false,
-}) => {
-  const classes = useStyles();
+const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQuery }) => {
   const { state } = useApp();
   const [filteredItems, setFilteredItems] = useState<Entity[]>([]);
 
@@ -56,34 +43,22 @@ const Collection: FC<CollectionProps> = ({
   const showSkeleton = (qty = 5) => {
     const skels = new Array(qty).fill(0);
     return skels.map((sk, i) => (
-      <Skeleton
-        key={i}
-        className={classes.card}
-        height={44}
-        width={30 + Math.random() * 100}
-        variant="rect"
-      />
+      <Skeleton key={i} height={30 + Math.random() * 120} sx={{ m: 1 }} variant="rectangular" />
     ));
   };
 
   return (
-    <Box className={classes.container}>
-      {isLoading ? (
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
-          {showSkeleton(4)}
-        </Box>
-      ) : filteredItems.length === 0 ? (
+    <Box>
+      {!isLoading && filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <MuuriComponent>
-          {filteredItems.map((entity) => (
-            <EntityCard
-              key={entity.id}
-              className={classes.card}
-              entity={entity}
-            />
-          ))}
-        </MuuriComponent>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
+          <Masonry>
+            {isLoading
+              ? showSkeleton(10)
+              : filteredItems.map((entity) => <EntityCard key={entity.id} entity={entity} />)}
+          </Masonry>
+        </ResponsiveMasonry>
       )}
     </Box>
   );

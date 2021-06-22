@@ -7,31 +7,28 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  makeStyles,
-  Slide,
-  Tabs,
-  Tab,
+  Slide, Tab, Tabs
 } from '@material-ui/core';
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { TransitionProps } from '@material-ui/core/transitions';
+import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
+import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
+import EditAttributesIcon from '@material-ui/icons/EditAttributes';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import DeleteDialog from '@src/components/DeleteDialog';
 import { useApp } from '@src/overmind';
-import Actions from './Actions';
-import { NotificationType, Intent } from '@src/types';
+import { Intent, NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
-import Header from './Header';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TransitionGroup } from 'react-transition-group';
+import Actions from './Actions';
 import Contexts from './contexts';
-import Training from './training';
+import Header from './Header';
 import IntentParams from './parameters';
 import Responses from './responses';
-import { TransitionGroup } from 'react-transition-group';
+import Training from './training';
 
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import EditAttributesIcon from '@material-ui/icons/EditAttributes';
-import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 
-import { TransitionProps } from '@material-ui/core/transitions';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -46,16 +43,7 @@ interface DetailsProps {
   intentId?: string;
 }
 
-const useStyles = makeStyles(({ palette }) => ({
-  header: {
-    color: palette.primary.light,
-    textAlign: 'center',
-  },
-  dialogContent: { height: 600 },
-}));
-
 const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
-  const classes = useStyles();
   const { actions } = useApp();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
   const [action, setAction] = useState<string>();
@@ -130,13 +118,18 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
         <Dialog
           aria-labelledby="intent-details-dialog"
           fullWidth
-          TransitionComponent={Transition}
           maxWidth={action === 'create' ? 'sm' : 'md'}
           onBackdropClick={handleClose}
           onClose={handleClose}
           open={open}
+          TransitionComponent={Transition}
         >
-          <DialogTitle className={classes.header}>
+          <DialogTitle
+            sx={{
+              color: ({ palette }) => palette.primary.light,
+              textAlign: 'center',
+            }}
+          >
             <Header action={action} />
           </DialogTitle>
           <Divider />
@@ -146,12 +139,12 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
                 <Grid item xs={2}>
                   <Box mt={1}>
                     <Tabs
-                      orientation="vertical"
-                      value={activeTab}
-                      onChange={(_event: ChangeEvent, newValue: number) => setActiveTab(newValue)}
-                      indicatorColor="primary"
-                      textColor="primary"
                       centered
+                      indicatorColor="primary"
+                      onChange={(_event: ChangeEvent, newValue: number) => setActiveTab(newValue)}
+                      orientation="vertical"
+                      textColor="primary"
+                      value={activeTab}
                     >
                       <Tab icon={<CenterFocusWeakIcon />} label="Contexts" />
                       <Tab icon={<FitnessCenterIcon />} label="Traning" />
@@ -161,13 +154,13 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
                   </Box>
                 </Grid>
                 <Grid item xs>
-                  <DialogContent className={classes.dialogContent}>
+                  <DialogContent sx={{ height: 600 }}>
                     <TransitionGroup>
                       <Collapse>
-                        <Contexts index={0} activeTabIndex={activeTab} />
-                        {/* <Training index={1} activeTabIndex={activeTab} />
-                        <IntentParams index={2} activeTabIndex={activeTab} />
-                        <Responses index={3} activeTabIndex={activeTab} /> */}
+                        <Contexts activeTabIndex={activeTab} index={0} />
+                        {/* <Training activeTabIndex={activeTab} index={1} />
+                        <IntentParams  activeTabIndex={activeTab} index={2}/>
+                        <Responses activeTabIndex={activeTab} index={3} /> */}
                       </Collapse>
                     </TransitionGroup>
                   </DialogContent>
@@ -178,22 +171,22 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           <Divider />
           <DialogActions>
             <Actions
-              handleSubmit={submit}
               handleCancel={handleClose}
               handleDelete={() => setDeleteDialogOpen(true)}
               isSubmitting={isSubmitting}
+              handleSubmit={submit}
             />
           </DialogActions>
           <DeleteDialog
-            open={deleteDialogOpen}
-            title={t('deleteDialog:title', { object: t('intent') })}
-            message={t('deleteDialog:message', { object: t('intent') })}
             handleNo={() => setDeleteDialogOpen(false)}
             handleYes={() => {
               setDeleteDialogOpen(false);
               // submitDelete()
             }}
             isSubmitting={isSubmitting}
+            message={t('deleteDialog:message', { object: t('intent') })}
+            open={deleteDialogOpen}
+            title={t('deleteDialog:title', { object: t('intent') })}
           />
         </Dialog>
       )}

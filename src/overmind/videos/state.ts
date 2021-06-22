@@ -1,11 +1,11 @@
-import type { Video, Tag } from '@src/types';
+import type { Tag, Video } from '@src/types';
 
 type State = {
   collection: Video[];
-  tagCollection:  Tag[];
+  tagCollection: Tag[];
 };
 
-export const state:State = {
+export const state: State = {
   collection: [] as Video[],
   tagCollection: [] as Tag[],
 };

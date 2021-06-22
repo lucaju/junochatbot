@@ -1,43 +1,32 @@
 import {
   Box,
-  Button,
-  CircularProgress,
   FormControl,
   IconButton,
   Input,
   InputAdornment,
   InputLabel,
-  makeStyles,
+  Stack,
   TextField,
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import LoadingButton from '@material-ui/lab/LoadingButton';
+import type { Credential } from '@src/types';
 import { Formik } from 'formik';
 import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import type { Credential } from '@src/types';
 
 interface LoginFormProps {
   authenticate: (credential: Credential) => void;
 }
 
-const useStyles = makeStyles(({ palette }) => ({
-  capitalize: { textTransform: 'capitalize' },
-  submitButton: { color: palette.common.white },
-  progress: { position: 'absolute' },
-}));
-
 const LoginForm: FC<LoginFormProps> = ({ authenticate }) => {
-  const classes = useStyles();
   const { t } = useTranslation(['auth', 'common']);
   const [showPassword, setShowPassword] = useState(false);
 
   const formValidation = Yup.object().shape({
-    email: Yup.string()
-      .email(t('mustBeValidEmail'))
-      .max(255)
-      .required(t('common:required')),
+    email: Yup.string().email(t('mustBeValidEmail')).max(255).required(t('common:required')),
     password: Yup.string().max(255).required(t('common:required')),
   });
 
@@ -52,74 +41,65 @@ const LoginForm: FC<LoginFormProps> = ({ authenticate }) => {
       onSubmit={authenticate}
       validationSchema={formValidation}
     >
-      {({
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        touched,
-        values,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <TextField
-            autoComplete="username"
-            className={classes.capitalize}
-            error={Boolean(touched.email && errors.email)}
-            fullWidth
-            helperText={touched.email && errors.email}
-            label={t('common:email')}
-            margin="normal"
-            name="email"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            type="email"
-            value={values.email}
-          />
-          <FormControl fullWidth>
-            <InputLabel className={classes.capitalize} htmlFor="password">
-              {t('common:password')}
-            </InputLabel>
-            <Input
-              autoComplete={t('common:password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    edge="end"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              error={Boolean(touched.password && errors.password)}
-              id="password"
-              name="password"
+      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <Stack spacing={4} alignItems="stretch">
+            <TextField
+              autoComplete="username"
+              error={Boolean(touched.email && errors.email)}
+              fullWidth
+              helperText={touched.email && errors.email}
+              label={t('common:email')}
+              name="email"
               onBlur={handleBlur}
               onChange={handleChange}
-              type={showPassword ? 'text' : 'password'}
-              value={values.password}
+              sx={{ textTransform: 'capitalize' }}
+              type="email"
+              value={values.email}
+              variant="standard"
             />
-          </FormControl>
-          <Box my={2}>
-            <Button
-              classes={{ containedPrimary: classes.submitButton }}
-              color="primary"
-              disabled={isSubmitting}
-              disableElevation
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-            >
-              {t('signin')}
-              {isSubmitting && (
-                <CircularProgress className={classes.progress} size={24} />
-              )}
-            </Button>
-          </Box>
+            <FormControl variant="standard">
+              <InputLabel htmlFor="password" sx={{ textTransform: 'capitalize' }}>
+                {t('common:password')}
+              </InputLabel>
+              <Input
+                autoComplete={t('common:password')}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      // edge="end"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                error={Boolean(touched.password && errors.password)}
+                id="password"
+                name="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type={showPassword ? 'text' : 'password'}
+                value={values.password}
+              />
+            </FormControl>
+            <Box my={2}>
+              <LoadingButton
+                color="primary"
+                disabled={isSubmitting}
+                disableElevation
+                fullWidth
+                loading={isSubmitting}
+                size="large"
+                type="submit"
+                variant="contained"
+              >
+                {t('signin')}
+              </LoadingButton>
+            </Box>
+          </Stack>
         </form>
       )}
     </Formik>

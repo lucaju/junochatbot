@@ -1,14 +1,14 @@
 import { Menu, MenuItem } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
-import { getCursorXY } from './helper';
 import useParameter from '../parameters/hooks';
+import { getCursorXY } from './helper';
 
 interface MenuParametersProps {
-  open: boolean;
-  target: HTMLElement | undefined;
-  inputElement: HTMLInputElement | undefined;
   handleClick: (value: string, position: number) => void;
   handleClose: () => void;
+  inputElement: HTMLInputElement | undefined;
+  open: boolean;
+  target: HTMLElement | undefined;
 }
 
 type MenuAnchorPositionType = {
@@ -17,11 +17,11 @@ type MenuAnchorPositionType = {
 };
 
 const MenuParameters: FC<MenuParametersProps> = ({
+  handleClick,
+  handleClose,
   inputElement,
   open,
   target,
-  handleClick,
-  handleClose,
 }) => {
   const { params } = useParameter();
   const [charPosition, setCharPosition] = useState(0);
@@ -52,17 +52,17 @@ const MenuParameters: FC<MenuParametersProps> = ({
     <Menu
       anchorPosition={anchorPosition}
       anchorReference="anchorPosition"
-      open={open}
       onClose={handleClose}
+      open={open}
     >
       {params.map(({ value }, i) => (
         <MenuItem
           key={i}
-          value={value}
           onClick={() => {
             if (!value) return;
             handleClick(value, charPosition);
           }}
+          value={value}
         >
           {value}
         </MenuItem>

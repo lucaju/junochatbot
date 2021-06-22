@@ -1,13 +1,12 @@
 import { DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { makeStyles } from '@material-ui/core';
 import { Message as MessageType, Payload, Text } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
+import useMessage from './hooks';
 import SortableItem from './SortableItem';
 import TextMessage from './TextMessage';
 import VideoMessage from './VideoMessage';
-import useMessage from './hooks'
 
 interface CollectionProps {
   messageList: MessageType[];
@@ -23,12 +22,7 @@ export interface PayloadComp extends Payload {
 
 type MessageTypeComp = TextComp | PayloadComp;
 
-const useStyles = makeStyles(() => ({
-  item: {},
-}));
-
 const Collection: FC<CollectionProps> = ({ messageList }) => {
-  const classes = useStyles();
   const { updateAllMessage } = useMessage();
   const sensors = useSensors(useSensor(PointerSensor));
   const [list, setList] = useState<MessageTypeComp[]>([]);
@@ -87,7 +81,7 @@ const Collection: FC<CollectionProps> = ({ messageList }) => {
   };
 
   return (
-    <DndContext onDragEnd={handleReoder} modifiers={[restrictToVerticalAxis]} sensors={sensors}>
+    <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={handleReoder} sensors={sensors}>
       <SortableContext items={list.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
         {list.map((message) => (
           <SortableItem key={message.id} id={message.id}>

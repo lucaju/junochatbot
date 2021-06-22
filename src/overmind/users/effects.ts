@@ -1,5 +1,8 @@
+import mock from '@src/../test/mockData';
 import { API_URL } from '@src/config/config.js';
 import type { ErrorMessage, User, UserGroup } from '@src/types';
+
+const MOCK_UP = false;
 
 type ResponseUploadAvatar = {
   fileName: string;
@@ -7,6 +10,14 @@ type ResponseUploadAvatar = {
 
 export const api = {
   getAllUsers: async (token: string): Promise<User[] | ErrorMessage> => {
+    if (MOCK_UP) {
+      return await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(mock.dataUsers);
+        }, 1000);
+      });
+    }
+
     const response = await fetch(`${API_URL}/users/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -17,10 +28,7 @@ export const api = {
     return result as User[];
   },
 
-  getUsersByGroup: async (
-    groupId: number,
-    token: string
-  ): Promise<User[] | ErrorMessage> => {
+  getUsersByGroup: async (groupId: number, token: string): Promise<User[] | ErrorMessage> => {
     const response = await fetch(`${API_URL}/groups/${groupId}/users/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -31,10 +39,7 @@ export const api = {
     return result as User[];
   },
 
-  getUser: async (
-    userId: number,
-    token: string
-  ): Promise<User | ErrorMessage> => {
+  getUser: async (userId: number, token: string): Promise<User | ErrorMessage> => {
     const response = await fetch(`${API_URL}/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -45,10 +50,7 @@ export const api = {
     return result as User;
   },
 
-  getUserGroup: async (
-    userId: number,
-    token: string
-  ): Promise<UserGroup | ErrorMessage | void> => {
+  getUserGroup: async (userId: number, token: string): Promise<UserGroup | ErrorMessage | void> => {
     const response = await fetch(`${API_URL}/groups/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -62,10 +64,7 @@ export const api = {
     return result as UserGroup;
   },
 
-  createUser: async (
-    userData: Omit<User, 'id'>,
-    token: string
-  ): Promise<User | ErrorMessage> => {
+  createUser: async (userData: Omit<User, 'id'>, token: string): Promise<User | ErrorMessage> => {
     const response = await fetch(`${API_URL}/users`, {
       method: 'POST',
       headers: {
@@ -81,10 +80,7 @@ export const api = {
     return result as User;
   },
 
-  updateUser: async (
-    userData: User,
-    token: string
-  ): Promise<User | ErrorMessage> => {
+  updateUser: async (userData: User, token: string): Promise<User | ErrorMessage> => {
     const response = await fetch(`${API_URL}/users`, {
       method: 'PUT',
       headers: {
@@ -100,10 +96,7 @@ export const api = {
     return result as User;
   },
 
-  deleteUser: async (
-    userId: number,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  deleteUser: async (userId: number, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/users/${userId}`, {
       method: 'DELETE',
       headers: {
@@ -122,13 +115,10 @@ export const api = {
     userId: number,
     token: string
   ): Promise<boolean | ErrorMessage> => {
-    const response = await fetch(
-      `${API_URL}/groups/${groupId}/users/${userId}`,
-      {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/groups/${groupId}/users/${userId}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -140,13 +130,10 @@ export const api = {
     userId: number,
     token: string
   ): Promise<boolean | ErrorMessage> => {
-    const response = await fetch(
-      `${API_URL}/groups/${groupId}/users/${userId}`,
-      {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/groups/${groupId}/users/${userId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -154,6 +141,14 @@ export const api = {
   },
 
   getGroups: async (token: string): Promise<UserGroup[] | ErrorMessage> => {
+    if (MOCK_UP) {
+      return await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(mock.dataUserGroups);
+        }, 1000);
+      });
+    }
+
     const response = await fetch(`${API_URL}/groups/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -164,10 +159,7 @@ export const api = {
     return result as UserGroup[];
   },
 
-  getGroup: async (
-    groupId: number,
-    token: string
-  ): Promise<UserGroup | ErrorMessage> => {
+  getGroup: async (groupId: number, token: string): Promise<UserGroup | ErrorMessage> => {
     const response = await fetch(`${API_URL}/groups/${groupId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -197,10 +189,7 @@ export const api = {
     return result as UserGroup;
   },
 
-  updateGroup: async (
-    groupData: UserGroup,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  updateGroup: async (groupData: UserGroup, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/groups`, {
       method: 'PUT',
       headers: {
@@ -215,10 +204,7 @@ export const api = {
     return true;
   },
 
-  deleteGroup: async (
-    groupId: number,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  deleteGroup: async (groupId: number, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/groups/${groupId}`, {
       method: 'DELETE',
       headers: {
@@ -252,10 +238,7 @@ export const api = {
     return result as ResponseUploadAvatar;
   },
 
-  deleteAvatar: async (
-    userId: number,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  deleteAvatar: async (userId: number, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/users/${userId}/avatar`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
@@ -267,22 +250,16 @@ export const api = {
   },
 
   requestPassword: async (email: string): Promise<boolean | ErrorMessage> => {
-    const response = await fetch(
-      `${API_URL}/authentication/users/${email}/password`,
-      {
-        method: 'POST',
-      }
-    );
+    const response = await fetch(`${API_URL}/authentication/users/${email}/password`, {
+      method: 'POST',
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
     return true;
   },
 
-  resetPassword: async (
-    password: string,
-    token: string
-  ): Promise<boolean | ErrorMessage> => {
+  resetPassword: async (password: string, token: string): Promise<boolean | ErrorMessage> => {
     const response = await fetch(`${API_URL}/authentication/users/password`, {
       method: 'PUT',
       headers: {

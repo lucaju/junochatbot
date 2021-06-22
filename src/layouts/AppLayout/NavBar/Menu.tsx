@@ -1,9 +1,9 @@
-import { Box, List, makeStyles } from '@material-ui/core';
-import React, { FC } from 'react';
-import NavItem from './NavItem';
+import { Box, List } from '@material-ui/core';
 import { useApp } from '@src/overmind';
-import { useTranslation } from 'react-i18next';
 import { RoleType } from '@src/types';
+import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import NavItem from './NavItem';
 
 export type MenuType = {
   title: string;
@@ -18,21 +18,17 @@ interface MenuProps {
   items: MenuType[];
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  listCompacted: { padding: spacing(0) },
-  listExanded: {
-    padding: spacing(2),
-    paddingTop: 0,
-  },
-}));
-
 const Menu: FC<MenuProps> = ({ compactMode, items }) => {
-  const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['navMenu', 'common']);
 
   return (
-    <Box className={compactMode ? classes.listCompacted : classes.listExanded}>
+    <Box
+      sx={{
+        padding: compactMode ? 0.5 : 2,
+        pt: compactMode ? 2 : 0,
+      }}
+    >
       <List>
         {items.map(({ path, icon, restricted, title, tKey }) => {
           if (
@@ -42,13 +38,7 @@ const Menu: FC<MenuProps> = ({ compactMode, items }) => {
           )
             return;
           return (
-            <NavItem
-              key={title}
-              isCompact={compactMode}
-              icon={icon}
-              path={path}
-              title={t(tKey)}
-            />
+            <NavItem key={title} isCompact={compactMode} icon={icon} path={path} title={t(tKey)} />
           );
         })}
       </List>

@@ -1,4 +1,37 @@
-import { RoleType, User } from '@src/types';
+import { RoleType, User, UserGroup } from '@src/types';
+
+export const dataUserGroups: UserGroup[] = [
+  {
+    id: 1,
+    name: 'test',
+    description: 'description',
+    institution: 'institution',
+  },
+  {
+    id: 2,
+    name: 'test2',
+    description: 'description',
+    institution: 'institution',
+  },
+  {
+    id: 3,
+    name: 'test3',
+    description: 'description',
+    institution: 'institution',
+  },
+  {
+    id: 4,
+    name: 'test4',
+    description: 'description',
+    institution: 'institution',
+  },
+  {
+    id: 5,
+    name: 'test5',
+    description: 'description',
+    institution: 'institution',
+  },
+];
 
 export const dataUsers: User[] = [
   {
@@ -63,6 +96,70 @@ export const dataUsers: User[] = [
     lastName: 'Simchenko',
     avatarUrl: '',
     userName: 'emilee.simchenko@userName.io',
+    roleTypeId: RoleType.STUDENT,
+  },
+  {
+    id: 9,
+    firstName: 'Luciano',
+    lastName: 'Frizzera',
+    avatarUrl: 'lucaju.jpg',
+    userName: '_lucaju@gmail.com',
+    roleTypeId: RoleType.ADMIN,
+  },
+  {
+    id: 10,
+    firstName: 'Cao',
+    lastName: 'Yu',
+    avatarUrl: '',
+    userName: '_cao.yu@userName.io',
+    roleTypeId: RoleType.INSTRUCTOR,
+  },
+  {
+    id: 11,
+    firstName: 'Alexa',
+    lastName: 'Richardson',
+    avatarUrl: '',
+    userName: '_alex.ri@userName.io',
+    roleTypeId: RoleType.STUDENT,
+  },
+  {
+    id: 12,
+    firstName: 'Anje',
+    lastName: 'Keizer',
+    avatarUrl: '',
+    userName: '_anje.keizer@userName.io',
+    roleTypeId: RoleType.STUDENT,
+  },
+  {
+    id: 13,
+    firstName: 'Clarke',
+    lastName: 'Gillebert',
+    avatarUrl: '',
+    userName: '_clarke.gillebert@userName.io',
+    roleTypeId: RoleType.STUDENT,
+  },
+  {
+    id: 14,
+    firstName: 'Adam',
+    lastName: 'Denisov',
+    avatarUrl: '',
+    userName: '_adam.denisov@userName.io',
+    roleTypeId: RoleType.STUDENT,
+  },
+  {
+    id: 15,
+    firstName: 'Ava',
+    lastName: 'Gregoraci',
+    avatarUrl: '',
+    userName: '_ava.gregoraci@userName.io',
+    roleTypeId: RoleType.STUDENT,
+  },
+  {
+    id: 16,
+    firstName: 'Emilee',
+    lastName: 'Simchenko',
+    avatarUrl: '',
+    userName: '_emilee.simchenko@userName.io',
     roleTypeId: RoleType.STUDENT,
   },
 ];

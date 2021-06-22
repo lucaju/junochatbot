@@ -19,8 +19,7 @@ const marks = [
 const BotDelaySlider: FC<BotDelaySliderProps> = ({ name }) => {
   // This isn't an input, so instead of using the values in 'field' directly,
   // we'll use 'meta' and 'helpers'.
-  // eslint-disable-next-line no-unused-vars
-  const [field, meta, helpers] = useField(name);
+  const [, meta, helpers] = useField(name);
   const { value } = meta;
   const { setValue } = helpers;
   const [sliderValue, setSliderValue] = useState(0);

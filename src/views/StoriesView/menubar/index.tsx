@@ -1,13 +1,13 @@
-import { Box, Button, makeStyles, Toolbar } from '@material-ui/core';
+import { Box, Button, Stack } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import FilterGroup from '@src/components/menubar/FilterGroup';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { useApp } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
-import FilterPublished from './FilterPublished';
+import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import FilterMyStory from './FilterMyStory';
+import FilterPublished from './FilterPublished';
 
 interface MenuBarProps {
   handleDetailOpen: () => void;
@@ -16,23 +16,17 @@ interface MenuBarProps {
   handleSearch: (value: string) => void;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  capitalize: { textTransform: 'capitalize' },
-  marginRight: { marginRight: spacing(2) },
-}));
-
 const MenuBar: FC<MenuBarProps> = ({
   handleDetailOpen,
   handleFilterByGroup,
   updateFilter,
   handleSearch,
 }) => {
-  const classes = useStyles();
   const { state } = useApp();
   const { t } = useTranslation(['stories']);
 
   return (
-    <Toolbar disableGutters variant="dense">
+    <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
       {!state.story.stories.some((story) => {
         return story.user?.id === state.session.user?.id;
       }) ? (
@@ -44,27 +38,17 @@ const MenuBar: FC<MenuBarProps> = ({
           >
             {t('createStory')}
           </Button>
-          <Box flexGrow={1} />
         </>
       ) : (
         <>
-          <Box flexGrow={1} />
-          <FilterMyStory
-            className={classes.marginRight}
-            handleFilter={updateFilter}
-            value={state.session.user?.id}
-          />
+          <FilterMyStory handleFilter={updateFilter} value={state.session.user?.id} />
         </>
       )}
-      <SearchBox className={classes.marginRight} handleSearch={handleSearch} />
-      {state.session.isAdmin && (
-        <FilterGroup
-          className={classes.marginRight}
-          handleFilter={handleFilterByGroup}
-        />
-      )}
+      <Box flexGrow={1} />
+      <SearchBox handleSearch={handleSearch} />
+      {state.session.isAdmin && <FilterGroup handleFilter={handleFilterByGroup} />}
       <FilterPublished handleFilter={updateFilter} />
-    </Toolbar>
+    </Stack>
   );
 };
 

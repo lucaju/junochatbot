@@ -1,7 +1,6 @@
-import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Box, IconButton, Typography, useTheme } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { Part as PartType, TrainingPhrase } from '@src/types';
-import clsx from 'clsx';
 import React, {
   FC,
   Fragment,
@@ -27,39 +26,15 @@ import Part from './Part';
 interface PhraseProps {
   name?: string;
   parts: PartType[];
-  type?: string;
   timesAddedCount?: number;
+  type?: string;
 }
 
 //DialogFlow limit: 768 -> https://cloud.google.com/dialogflow/quotas#es-agent_1
 const CHART_MAX_LIMIT = 768;
 
-const useStyles = makeStyles(({ palette, spacing, transitions }) => ({
-  content: {
-    borderStartStartRadius: spacing(1.5),
-    borderStartEndRadius: spacing(1.5),
-    borderEndStartRadius: spacing(1.5),
-    backgroundColor: palette.action.hover,
-    '&:focus-within': {
-      boxShadow: `${palette.primary.light} 0px 0px 5px 1px !important`,
-    },
-    transition: transitions.create(['box-shadow'], {
-      duration: transitions.duration.standard,
-    }),
-    minWidth: 50,
-  },
-  contentHover: {
-    boxShadow: 'rgb(0 0 0 / 20%) 0px 0px 10px 1px',
-  },
-  editable: {
-    flexGrow: 1,
-    '&:focus-visible': { outlineStyle: 'none' },
-  },
-  removeButton: { marginLeft: spacing(1) },
-}));
-
-const Phrase: FC<PhraseProps> = ({ name, parts, type = 'EXAMPLE', timesAddedCount = 1 }) => {
-  const classes = useStyles();
+const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXAMPLE' }) => {
+  const theme = useTheme();
   const { isSinglePhraseParam, updatePhrase, removePhrase } = useTrainingPhrases();
   const { addParameter, removeParameterByDisplayName, updateParameterByAlias } = useParameter();
 
@@ -227,27 +202,43 @@ const Phrase: FC<PhraseProps> = ({ name, parts, type = 'EXAMPLE', timesAddedCoun
     >
       <Box
         p={1}
-        className={clsx(classes.content, hover && classes.contentHover)}
         onMouseEnter={() => setHover(true)}
+        sx={{
+          minWidth: 50,
+          boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
+          borderStartStartRadius: 1.5,
+          borderStartEndRadius: 1.5,
+          borderEndStartRadius: 1.5,
+          backgroundColor: theme.palette.action.hover,
+          '&:focus-within': {
+            boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+          },
+          transition: theme.transitions.create(['box-shadow'], {
+            duration: theme.transitions.duration.standard,
+          }),
+        }}
       >
         <EntitiesMenu
           addPart={handleAddPart}
-          updatePart={handleUpdatePart}
-          removePart={handleRemovePart}
-          handleClose={handleEntitiesMenuClose}
           anchorEl={contextMenuAnchorEl}
+          handleClose={handleEntitiesMenuClose}
           open={contextMenuOpen}
+          removePart={handleRemovePart}
+          updatePart={handleUpdatePart}
           value={parameterAlias}
         />
         {!changed && (
           <Typography
             ref={TypRef}
-            className={classes.editable}
             contentEditable={true}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
             onSelect={handleSelectionChange}
             suppressContentEditableWarning={true}
+            sx={{
+              flexGrow: 1,
+              '&:focus-visible': { outlineStyle: 'none' },
+            }}
           >
             {_parts.length > 0 && (
               <>
@@ -257,9 +248,9 @@ const Phrase: FC<PhraseProps> = ({ name, parts, type = 'EXAMPLE', timesAddedCoun
                     {i !== 0 && part.entityType && _parts[i - 1]?.entityType && <Part />}
                     <Part
                       index={i}
-                      type={part.entityType ? 'semantic' : 'text'}
-                      part={part}
                       handleClick={handleHihglightClick}
+                      part={part}
+                      type={part.entityType ? 'semantic' : 'text'}
                     />
                   </Fragment>
                 ))}
@@ -272,9 +263,9 @@ const Phrase: FC<PhraseProps> = ({ name, parts, type = 'EXAMPLE', timesAddedCoun
       {hover && (
         <IconButton
           aria-label="delete"
-          className={classes.removeButton}
-          size="small"
           onClick={() => removePhrase(name)}
+          size="small"
+          sx={{ ml: 1 }}
         >
           <HighlightOffIcon fontSize="inherit" />
         </IconButton>

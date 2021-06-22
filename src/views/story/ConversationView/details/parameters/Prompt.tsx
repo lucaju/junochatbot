@@ -1,20 +1,15 @@
-import { Box, IconButton, makeStyles, TextField, Zoom } from '@material-ui/core';
+import { Box, IconButton, TextField, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import React, { ChangeEvent, FC, FocusEvent, useState } from 'react';
 
 interface PromptProps {
-  id: number;
-  prompt: string;
   handleRemove: (id: number) => void;
   handleUpdate: (id: number, value: string) => void;
+  id: number;
+  prompt: string;
 }
 
-const useStyles = makeStyles(({ spacing }) => ({
-  removeButton: { marginLeft: spacing(1) },
-}));
-
-const Prompt: FC<PromptProps> = ({ id, prompt, handleRemove, handleUpdate }) => {
-  const classes = useStyles();
+const Prompt: FC<PromptProps> = ({ handleRemove, handleUpdate, id, prompt }) => {
   const [hover, setHover] = useState(false);
   const [_prompt, set_prompt] = useState(prompt);
 
@@ -41,9 +36,9 @@ const Prompt: FC<PromptProps> = ({ id, prompt, handleRemove, handleUpdate }) => 
       <Zoom in={hover}>
         <IconButton
           aria-label="delete"
-          className={classes.removeButton}
-          size="small"
           onClick={() => handleRemove(id)}
+          size="small"
+          sx={{ ml: 1 }}
         >
           <HighlightOffIcon />
         </IconButton>

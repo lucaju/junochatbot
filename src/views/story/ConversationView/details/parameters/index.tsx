@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Parameter } from '@src/types';
 import { useField } from 'formik';
@@ -8,17 +8,12 @@ import Collection from './Collection';
 import useParameter from './hooks';
 
 interface IntentParamsProps {
-  index: number;
   activeTabIndex: number;
   fieldName: string;
+  index: number;
 }
 
-const useStyles = makeStyles(() => ({
-  uppercase: { textTransform: 'uppercase' },
-}));
-
-const IntentParams: FC<IntentParamsProps> = ({ index, activeTabIndex, fieldName }) => {
-  const classes = useStyles();
+const IntentParams: FC<IntentParamsProps> = ({ activeTabIndex, fieldName, index }) => {
   const { t } = useTranslation(['intents']);
   const { createFreshParameter } = useParameter();
 
@@ -48,16 +43,13 @@ const IntentParams: FC<IntentParamsProps> = ({ index, activeTabIndex, fieldName 
   };
 
   return (
-    <Box
-      role="tabpanel"
-      hidden={activeTabIndex !== index}
-    >
+    <Box role="tabpanel" hidden={activeTabIndex !== index}>
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
-        <Typography variant="h6" className={classes.uppercase}>
+        <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
           {t('parameters')}
         </Typography>
         <Box display="flex" flexDirection="row" my={1.5}>
-          <Button color="primary" startIcon={<AddCircleOutlineIcon />} onClick={addParameter}>
+          <Button color="primary" onClick={addParameter} startIcon={<AddCircleOutlineIcon />}>
             {t('addParameter')}
           </Button>
         </Box>

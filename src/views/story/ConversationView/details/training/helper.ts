@@ -1,10 +1,10 @@
 import { Part } from '@src/types';
 
 export type SelectionDataType = {
-  startOffset: number;
-  endOffset: number;
   content: string;
+  endOffset: number;
   entityName: string;
+  startOffset: number;
 };
 
 export const getSelectionData = (selection: Selection) => {

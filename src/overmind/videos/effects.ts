@@ -1,11 +1,19 @@
+import mock from '@src/../test/mockData';
 import { API_URL } from '@src/config/config.js';
-import type { ErrorMessage, Video, Tag } from '@src/types';
+import type { ErrorMessage, Tag, Video } from '@src/types';
+
+const MOCK_UP = false;
 
 export const api = {
-  getVideos: async (
-    storyId: number,
-    token: string
-  ): Promise<Video[] | ErrorMessage> => {
+  getVideos: async (storyId: number, token: string): Promise<Video[] | ErrorMessage> => {
+    if (MOCK_UP) {
+      return await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(mock.dataVideoCollection);
+        }, 1000);
+      });
+    }
+
     const response = await fetch(`${API_URL}/stories/${storyId}/videos/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -21,13 +29,9 @@ export const api = {
     videoId: number,
     token: string
   ): Promise<Video | ErrorMessage> => {
-    
-    const response = await fetch(
-      `${API_URL}/stories/${storyId}/videos/${videoId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/stories/${storyId}/videos/${videoId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -80,13 +84,10 @@ export const api = {
     videoId: number,
     token: string
   ): Promise<boolean | ErrorMessage> => {
-    const response = await fetch(
-      `${API_URL}/stories/${storyId}/videos/${videoId}`,
-      {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/stories/${storyId}/videos/${videoId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -95,9 +96,7 @@ export const api = {
 
   // * YOUTUBE DATA ----------
 
-  getYoutubeData: async (
-    youtubeVideoId: string
-  ): Promise<Partial<Video> | ErrorMessage> => {
+  getYoutubeData: async (youtubeVideoId: string): Promise<Partial<Video> | ErrorMessage> => {
     const response = await fetch(`/youtube/video/${youtubeVideoId}`);
 
     if (!response.ok) return { errorMessage: response.statusText };
@@ -108,10 +107,7 @@ export const api = {
 
   // * TAGS ----------
 
-  getTags: async (
-    storyId: number,
-    token: string
-  ): Promise<Tag[] | ErrorMessage> => {
+  getTags: async (storyId: number, token: string): Promise<Tag[] | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/${storyId}/tags/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -122,17 +118,10 @@ export const api = {
     return result as Tag[];
   },
 
-  getTag: async (
-    storyId: number,
-    tagId: number,
-    token: string
-  ): Promise<Tag | ErrorMessage> => {
-    const response = await fetch(
-      `${API_URL}/stories/${storyId}/tags/${tagId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+  getTag: async (storyId: number, tagId: number, token: string): Promise<Tag | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/${storyId}/tags/${tagId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
@@ -140,10 +129,7 @@ export const api = {
     return result as Tag;
   },
 
-  getVideoTags: async (
-    videoId: number,
-    token: string
-  ): Promise<Tag[] | ErrorMessage> => {
+  getVideoTags: async (videoId: number, token: string): Promise<Tag[] | ErrorMessage> => {
     const response = await fetch(`${API_URL}/videos/${videoId}/tags/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -174,11 +160,7 @@ export const api = {
     return result as Tag;
   },
 
-  updateTag: async (
-    storyId: number,
-    tag: Tag,
-    token: string
-  ): Promise<Tag | ErrorMessage> => {
+  updateTag: async (storyId: number, tag: Tag, token: string): Promise<Tag | ErrorMessage> => {
     const response = await fetch(`${API_URL}/stories/${storyId}/tags`, {
       method: 'PUT',
       headers: {
@@ -199,13 +181,10 @@ export const api = {
     tagId: number,
     token: string
   ): Promise<boolean | ErrorMessage> => {
-    const response = await fetch(
-      `${API_URL}/stories/${storyId}/tags/${tagId}`,
-      {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${API_URL}/stories/${storyId}/tags/${tagId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (!response.ok) return { errorMessage: response.statusText };
 

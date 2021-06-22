@@ -1,116 +1,168 @@
-import { Box, CardMedia, IconButton, makeStyles } from '@material-ui/core';
+import { Box, CardMedia, IconButton, useTheme } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useField } from 'formik';
-import { DropzoneAreaBase } from 'material-ui-dropzone';
-import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import PanoramaIcon from '@material-ui/icons/Panorama';
 import { APP_URL } from '@src/config/config.js';
+import type { DropFile } from '@src/types';
+import { useField } from 'formik';
+import { motion, useAnimation } from 'framer-motion';
+import React, { FC, useEffect, useState } from 'react';
+import { FileRejection, useDropzone } from 'react-dropzone';
+import { useTranslation } from 'react-i18next';
 
 interface FeaturedImageProps {
   name: string;
   title: string;
 }
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
-  buttonRemove: {
-    position: 'relative',
-    top: spacing(1),
-    left: 316,
-    backgroundColor: palette.background.paper,
-  },
-  media: { height: 200 },
-  hide: { display: 'none' },
-  show: { display: 'block' },
-  dropzone: {
-    borderWidth: 2,
-    maxWidth: 314,
-    minHeight: 60,
-    backgroundColor: palette.background.paper,
-    margin: spacing(1),
-  },
-  dropzoneText: { fontSize: 14 },
-  icon: {
-    width: 0,
-    height: 0,
-    display: 'none',
-  },
-}));
-
 const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const { t } = useTranslation(['storyGeneral']);
-  // eslint-disable-next-line no-unused-vars
-  const [field, meta, helpers] = useField(name);
+  const [, meta, helpers] = useField(name);
   const { value } = meta;
   const { setValue } = helpers;
+  const dropZoneAnim = useAnimation();
+
+  const [file, setFile] = useState<DropFile | null>(null);
   const [image, setImage] = useState<string | null>(null);
-  const [uploadedImage, setUploadedImage] = useState(null);
   const [showDropzone, setShowDropzone] = useState(false);
 
   useEffect(() => {
     const posterFile = typeof value === 'string' ? value : value?.file?.name;
-    uploadedImage ? setImage(uploadedImage) : setImage(posterFile);
-    value === null || value === ''
-      ? setShowDropzone(true)
-      : setShowDropzone(false);
+    file ? setImage(file.preview) : setImage(posterFile);
+    value === null || value === '' ? setShowDropzone(true) : setShowDropzone(false);
     return () => {};
   }, []);
 
-  const handleUpdateImage = (files: any[]) => {
-    setImage(files[0].data);
-    setUploadedImage(files[0].data);
-    setValue(files[0].file);
+  useEffect(() => {
+    if (file) setImage(file.preview);
+    return () => {
+      if (file) URL.revokeObjectURL(file.preview);
+    };
+  }, [file]);
+
+  const onDragEnter = () => {
+    dropZoneAnim.start({
+      height: isDragReject ? 90 : isDragAccept ? 110 : 100,
+      color: isDragReject
+        ? theme.palette.error.light
+        : isDragAccept
+        ? theme.palette.success.light
+        : theme.palette.grey[400],
+      borderColor: isDragReject
+        ? theme.palette.error.light
+        : isDragAccept
+        ? theme.palette.success.light
+        : theme.palette.grey[400],
+      borderStyle: isDragReject || isDragReject ? 'inset' : 'dashed',
+      borderWidth: isDragReject || isDragReject ? '2px' : '1px',
+    });
+  };
+
+  const onDragLeave = () => {
+    dropZoneAnim.start({
+      height: 100,
+      color: theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+      borderColor: theme.palette.grey[400],
+      borderStyle: 'dashed',
+      borderWidth: '1px',
+    });
+  };
+
+  const onDrop = async (acceptedFiles: Array<File>, fileRejections: Array<FileRejection>) => {
+    const accepted = acceptedFiles.length > 0;
+
+    await dropZoneAnim.start({
+      height: accepted ? 0 : 100,
+      color: theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+      borderColor: theme.palette.grey[400],
+      borderStyle: 'dashed',
+      borderWidth: accepted ? '0px' : '1px',
+    });
+
+    if (accepted) handleUpdateImage(acceptedFiles[0]);
+  };
+
+  const { getRootProps, getInputProps, isDragReject, isDragAccept } = useDropzone({
+    onDrop,
+    onDragEnter,
+    onDragLeave,
+    maxFiles: 1,
+    accept: 'image/jpeg, image/png',
+    noDragEventsBubbling: true,
+  });
+
+  const handleUpdateImage = (file: File) => {
+    setFile({ file, preview: URL.createObjectURL(file) });
+    setValue(file);
     setShowDropzone(false);
   };
 
   const handleDeleteImage = () => {
     setImage(null);
     setValue(null);
-    setUploadedImage(null);
     setShowDropzone(true);
+    setFile(null);
   };
 
   return (
     <>
-      {image && image.endsWith('.', image.length - 3) && (
+      {image && (
         <CardMedia
-          className={classes.media}
           image={
-            uploadedImage
-              ? image
+            file
+              ? file.preview
               : image.startsWith('http')
               ? image
               : `${APP_URL}/uploads/assets${image}`
           }
+          sx={{ height: 200 }}
           title={title}
         >
           <IconButton
             aria-label="delete"
-            className={classes.buttonRemove}
             onClick={handleDeleteImage}
             size="small"
+            sx={{
+              position: 'relative',
+              top: 8,
+              left: 316,
+              backgroundColor: ({ palette }) => palette.background.paper,
+            }}
           >
             <DeleteIcon fontSize="inherit" />
           </IconButton>
         </CardMedia>
       )}
 
-      <Box className={showDropzone ? classes.show : classes.hide}>
-        <DropzoneAreaBase
-          acceptedFiles={['image/*']}
-          classes={{
-            root: classes.dropzone,
-            icon: classes.icon,
-          }}
-          dropzoneText={t('addImage')}
-          dropzoneParagraphClass={classes.dropzoneText}
-          filesLimit={1}
-          fileObjects={[]}
-          onAdd={(files) => handleUpdateImage(files)}
-          showAlerts={['error']}
-          showPreviewsInDropzone={false}
-        />
-      </Box>
+      {showDropzone && (
+        <Box {...getRootProps()}>
+          <input {...getInputProps()} />
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            animate={dropZoneAnim}
+            component={motion.div}
+            sx={{
+              cursor: 'pointer',
+              height: 100,
+              width: 334,
+              m: 1,
+              borderStyle: 'dashed',
+              borderWidth: 1,
+              borderRadius: 1,
+              borderColor: theme.palette.grey[400],
+              color:
+                theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+              backgroundColor:
+                theme.palette.mode === 'light' ? theme.palette.grey[50] : theme.palette.grey[800],
+            }}
+          >
+            {/* <Typgography >Drag 'n' drop some an image here</Typgography> */}
+            <PanoramaIcon sx={{ height: '100%', width: '100%' }} />
+          </Box>
+        </Box>
+      )}
     </>
   );
 };
