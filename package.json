@@ -29,7 +29,7 @@
 		"build": "webpack --config webpack.prod.mjs",
 		"cm": "git-cz"
 	},
-	"main": "index.js",
+	"main": "src/index.tsx",
 	"homepage": "https://github.com/lucaju/junochatbot#readme",
 	"dependencies": {
 		"@dnd-kit/core": "^3.1.1",
