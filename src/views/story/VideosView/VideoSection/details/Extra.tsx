@@ -1,5 +1,5 @@
 import { Autocomplete, Grid, Stack, TextField } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { Video } from '@src/types';
 import { FormikErrors, FormikTouched, useField } from 'formik';
 import { json } from 'overmind';
@@ -15,7 +15,8 @@ interface ExtraProps {
 }
 
 const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
-  const { state, actions } = useApp();
+  const { videos } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['common']);
   const [, meta, helpers] = useField('tags');
   // eslint-disable-next-line no-unused-vars
@@ -24,7 +25,7 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
 
   useEffect(() => {
     const fetchData = async () => await actions.videos.getTags();
-    if (state.videos.tagCollection.length === 0) fetchData();
+    if (videos.tagCollection.length === 0) fetchData();
     return () => {};
   }, []);
 
@@ -45,7 +46,7 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
           value={values.description}
           variant="outlined"
         />
-        {state.videos.tagCollection.length > 0 && (
+        {videos.tagCollection.length > 0 && (
           <Autocomplete
             filterSelectedOptions
             getOptionLabel={(tag) => tag.name}
@@ -56,7 +57,7 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
               if (reason === 'blur') return handleBlur(event);
               setValue(json(value));
             }}
-            options={state.videos.tagCollection}
+            options={videos.tagCollection}
             value={values.tags}
             renderInput={(params) => (
               <TextField

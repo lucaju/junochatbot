@@ -1,6 +1,6 @@
 import { Box, Skeleton, useMediaQuery, useTheme } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import React, { FC } from 'react';
 import TagCard from './TagCard';
 
@@ -10,7 +10,7 @@ interface CollectionProps {
 }
 
 const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }) => {
-  const { state } = useApp();
+  const { videos } = useAppState();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -23,13 +23,13 @@ const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }
   };
 
   return (
-    <Box display="flex" flexDirection={isMobile ? 'row' : 'column'} sx={{ overflow: 'scroll'}}>
-      {state.videos.tagCollection.length === 0 ? (
+    <Box display="flex" flexDirection={isMobile ? 'row' : 'column'} sx={{ overflow: 'scroll' }}>
+      {videos.tagCollection.length === 0 ? (
         <NoContent />
       ) : isLoading ? (
         showSkeleton(4)
       ) : (
-        state.videos.tagCollection.map((tag) => (
+        videos.tagCollection.map((tag) => (
           <TagCard key={tag.id} handleEditClick={handleDetailOpen} tag={tag} />
         ))
       )}

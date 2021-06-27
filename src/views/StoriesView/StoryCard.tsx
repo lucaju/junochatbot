@@ -13,12 +13,8 @@ import { APP_URL } from '@src/config/config.js';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { DateTime } from 'luxon';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-// import * as Vibrant from 'node-vibrant/dist/vibrant'
-//@ts-ignore
-// import Vibrant from 'node-vibrant/dist/vibrant.min.js';
 
 interface UserCarddProps {
   showEdit?: boolean;
@@ -32,16 +28,6 @@ const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditSto
   const [elevation, setElevation] = useState(story.imageUrl ? 2 : 0);
   const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
   const [dominantColor, setDominantColor] = useState('#fff');
-
-  // useEffect(() => {
-  //   const getVibrant = async () => {
-  //     const vibrant = await Vibrant.from(`${APP_URL}/uploads/assets${story.imageUrl}`).getPalette();
-  //     console.log(vibrant);
-  //   };
-  //   if (hasImage && story.title === 'After Life2') getVibrant();
-  //   return () => {};
-  // }, []);
-
   const BotAvatar = getIcon(story.botAvatar);
 
   const mouseOver = () => {

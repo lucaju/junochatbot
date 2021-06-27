@@ -1,5 +1,5 @@
 import { Box, MenuItem, Stack, TextField, Typography } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { FormikErrors, FormikTouched } from 'formik';
@@ -16,7 +16,7 @@ interface BotProps {
 }
 
 const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
-  const { state } = useApp();
+  const { story } = useAppState();
   const { t } = useTranslation(['storyGeneral', 'common']);
 
   return (
@@ -24,12 +24,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
       <Typography gutterBottom variant="h6">
         {t('characterBot')}
       </Typography>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="flex-start"
-        p={1}
-      >
+      <Box display="flex" flexDirection="row" alignItems="flex-start" p={1}>
         <Box flexGrow={1}>
           <TextField
             error={Boolean(touched['botName'] && errors['botName'])}
@@ -55,7 +50,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
             value={values.botAvatar}
             variant="standard"
           >
-            {state.story.icons.map(({ value }) => {
+            {story.icons.map(({ value }) => {
               const Icon = getIcon(value);
               return (
                 <MenuItem key={value} value={value}>

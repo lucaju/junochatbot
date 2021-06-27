@@ -5,10 +5,10 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Menu,
-  MenuItem
+  MenuItem,
 } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import React, { FC, useEffect } from 'react';
 import useParameter from '../parameters/hooks';
 
@@ -33,12 +33,13 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
   updatePart,
   value,
 }) => {
-  const { state, actions } = useApp();
+  const { intents } = useAppState();
+  const actions = useActions();
   const { params } = useParameter();
 
   useEffect(() => {
     const fetchEntities = async () => {
-      if (state.intents.entities.length === 0) await actions.intents.getEntities();
+      if (intents.entities.length === 0) await actions.intents.getEntities();
     };
     if (open) fetchEntities();
     return () => {};
@@ -77,7 +78,7 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
           </ListItem>
         ))}
       {params && <Divider sx={{ my: 0.5 }} />}
-      {state.intents.entities.map(({ id, name }) => (
+      {intents.entities.map(({ id, name }) => (
         <MenuItem key={id} dense onClick={() => handleClick(name)}>
           {name}
         </MenuItem>

@@ -2,7 +2,7 @@ import { Box, Typography } from '@material-ui/core';
 import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import YouTubeIcon from '@material-ui/icons/YouTube';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import type { Message as MesasgeType } from '@src/types';
 import React, { FC } from 'react';
 
@@ -11,7 +11,7 @@ interface MessageProps {
 }
 
 const Message: FC<MessageProps> = ({ message }) => {
-  const { actions } = useApp();
+  const actions = useActions();
 
   let type = 'text';
   let variation = false;

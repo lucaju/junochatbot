@@ -46,7 +46,6 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
         </Button>
         <LoadingButton
           color="secondary"
-          disabled={isSubmitting}
           loading={isSubmitting}
           onClick={handleYes}
         >

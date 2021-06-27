@@ -1,5 +1,16 @@
 import { NotificationType } from '@src/types';
-import { Context } from 'overmind';
+import { Context } from '../';
+
+export const onInitializeOvermind = ({ state }: Context, overmind: any) => {
+  //LANGUAGE
+  const prefLanguage = localStorage.getItem('i18nextLng');
+  if (prefLanguage) state.ui.languageCode = prefLanguage;
+
+  //DARK MODE
+  const prefDarkMode = localStorage.getItem('darkMode');
+  const darkMode = prefDarkMode === 'true' ? true : false;
+  state.ui.darkMode = darkMode;
+};
 
 export const setPageTitle = ({ state }: Context, title: string) => {
   state.ui.pageTitle = title;

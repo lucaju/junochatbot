@@ -1,5 +1,5 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType, RoleType } from '@src/types';
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,11 +10,11 @@ interface FilterStatusProps {
 }
 
 const FilterRole: FC<FilterStatusProps> = ({ handleFilter, value = 'All' }) => {
-  const { state } = useApp();
+  const { session, users } = useAppState();
   const { t } = useTranslation(['users']);
   const [filterValue, setFilterValue] = useState(value);
 
-  const filterRoleOptions = ['All', ...state.users.roleTypes];
+  const filterRoleOptions = ['All', ...users.roleTypes];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -46,8 +46,8 @@ const FilterRole: FC<FilterStatusProps> = ({ handleFilter, value = 'All' }) => {
     >
       {filterRoleOptions
         .filter((option) => {
-          if (state.session.isAdmin) return true;
-          if (state.session.isInstructor && option === RoleType.ADMIN) return false;
+          if (session.isAdmin) return true;
+          if (session.isInstructor && option === RoleType.ADMIN) return false;
         })
         .map((value) => (
           <MenuItem key={value} sx={{ textTransform: 'capitalize' }} value={value}>

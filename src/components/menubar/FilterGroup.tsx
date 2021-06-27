@@ -1,5 +1,5 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -9,15 +9,15 @@ interface FilterGroupProps {
 }
 
 const FilterGroup: FC<FilterGroupProps> = ({ handleFilter, value = -1 }) => {
-  const { state } = useApp();
+  const { users } = useAppState();
   const { t } = useTranslation(['common']);
   const [groups, setGroups] = useState([{ id: -1, name: 'all' }]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
-    setGroups([{ id: -1, name: 'all' }, ...state.users.groups]);
+    setGroups([{ id: -1, name: 'all' }, ...users.groups]);
     return () => {};
-  }, [state.users.groups]);
+  }, [users.groups]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);

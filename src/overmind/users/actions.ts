@@ -1,6 +1,6 @@
 import type { ErrorMessage, User, UserGroup } from '@src/types';
 import { isError, sortBy } from '@src/util/utilities';
-import { Context } from 'overmind';
+import { Context } from '../';
 
 export const getUsers = async (
   { state, effects }: Context,

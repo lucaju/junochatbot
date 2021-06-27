@@ -1,6 +1,6 @@
 import { Box, Paper, useMediaQuery, useTheme } from '@material-ui/core';
 import TopBar from '@src/components/TopBar';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
@@ -12,13 +12,14 @@ interface AppLayoutProps {
 const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const { state, actions } = useApp();
+  const { session } = useAppState();
+  const actions = useActions();
 
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const isSignedIn = state.session.isSignedIn;
+  const isSignedIn = session.isSignedIn;
 
   useEffect(() => {
     const checkUser = async () => {

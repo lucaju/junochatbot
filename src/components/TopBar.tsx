@@ -2,7 +2,7 @@ import { AppBar, Avatar, Box, IconButton, Toolbar, Typography } from '@material-
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import { APP_URL } from '@src/config/config.js';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from './Logo';
@@ -14,7 +14,7 @@ interface TopBarProps {
 }
 
 const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
-  const { state } = useApp();
+  const { session, ui } = useAppState();
   const [anchorProfileEl, setAnchorProfileEl] = useState<HTMLDivElement | undefined>();
 
   const handleProfileClick = (event: MouseEvent<HTMLDivElement>) => {
@@ -41,7 +41,7 @@ const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
           </Box>
           <Box flexGrow={1} />
           <Typography component="h1" noWrap sx={{ textTransform: 'capitalize' }} variant="h5">
-            {state.ui.pageTitle}
+            {ui.pageTitle}
           </Typography>
           <Box flexGrow={1} />
           <Box
@@ -51,20 +51,17 @@ const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
             justifyContent="flex-end"
             mr={2}
           >
-            {state.session.user && (
+            {session.user && (
               <Avatar
                 onClick={handleProfileClick}
-                src={
-                  state.session.user.avatarUrl &&
-                  `${APP_URL}/uploads/assets${state.session.user.avatarUrl}`
-                }
+                src={session.user.avatarUrl && `${APP_URL}/uploads/assets${session.user.avatarUrl}`}
                 sx={{
                   height: 32,
                   width: 32,
                   cursor: 'pointer',
                 }}
               >
-                {!state.session.user.avatarUrl && <AccountCircleIcon />}
+                {!session.user.avatarUrl && <AccountCircleIcon />}
               </Avatar>
             )}
           </Box>

@@ -10,12 +10,11 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  useTheme,
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import LoadingButton from '@material-ui/lab/LoadingButton';
-import { useApp } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import { Credential, NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -29,8 +28,7 @@ interface PasswordDialogProps {
 }
 
 const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
-  const theme = useTheme();
-  const { actions } = useApp();
+  const actions = useActions();
   const { t } = useTranslation(['common', 'profile', 'auth', 'errorMessages']);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -64,13 +62,7 @@ const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
   };
 
   return (
-    <Dialog
-      aria-labelledby="change-password"
-      // disableBackdropClick
-      disableEscapeKeyDown
-      maxWidth="md"
-      open={open}
-    >
+    <Dialog aria-labelledby="change-password" disableEscapeKeyDown maxWidth="md" open={open}>
       <Formik
         initialValues={{ password: '' }}
         onSubmit={async (values: Credential) => await submit(values)}

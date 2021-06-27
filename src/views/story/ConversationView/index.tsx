@@ -1,7 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import Page from '@src/components/Page';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -12,7 +12,8 @@ import Details from './details';
 import MenuBar from './menubar';
 
 const ConversationView: FC = () => {
-  const { state, actions } = useApp();
+  const { intents, story, ui } = useAppState();
+  const actions = useActions();
   const navigate = useNavigate();
   const { storyId } = useParams();
   const { t } = useTranslation(['intents', 'common']);
@@ -29,8 +30,8 @@ const ConversationView: FC = () => {
 
     const getCollection = async () => {
       await actions.intents.getIntents();
-      actions.ui.setPageTitle(`${state.story.currentStory?.title} - ${t('common:intents')}`);
-      setHasIntents(state.intents.collection.length > 0);
+      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:intents')}`);
+      setHasIntents(intents.collection.length > 0);
       setIsLoading(false);
     };
 
@@ -43,7 +44,7 @@ const ConversationView: FC = () => {
       getCollection();
     };
 
-    state.story.currentStory ? getCollection() : getStory();
+    story.currentStory ? getCollection() : getStory();
 
     return () => {};
   }, []);
@@ -71,7 +72,7 @@ const ConversationView: FC = () => {
   };
 
   return (
-    <Page title={state.ui.pageTitle}>
+    <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
         <Details handleClose={handleDetailClose} intentId={currentIntentId} open={detailsOpen} />
         {!isLoading && (

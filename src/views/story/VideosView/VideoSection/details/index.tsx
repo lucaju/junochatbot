@@ -1,6 +1,6 @@
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import DeleteDialog from '@src/components/DeleteDialog';
-import { useApp } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import { NotificationType, Video } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -31,7 +31,7 @@ const initialValues: Partial<Video> = {
 };
 
 const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
-  const { actions } = useApp();
+  const actions = useActions();
   const { t } = useTranslation(['videos', 'common', 'errorMessages', 'deleteDialog']);
   const [videoData, setVideoData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

@@ -13,7 +13,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import { APP_URL } from '@src/config/config.js';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { DropFile, NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -34,9 +34,10 @@ const formValidation = Yup.object().shape({
 
 const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
   const theme = useTheme();
-  const { state, actions } = useApp();
+  const { session } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['common', 'profile', 'errorMessages']);
-  const [value, setValue] = useState(state.session.user?.avatarUrl);
+  const [value, setValue] = useState(session.user?.avatarUrl);
   const dropZoneAnim = useAnimation();
   const dropInnerZoneAnim = useAnimation();
 
@@ -149,7 +150,7 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
   };
 
   const handleClosePanel = () => {
-    setValue(state.session.user?.avatarUrl);
+    setValue(session.user?.avatarUrl);
     setImage(typeof value === 'string' ? value : null);
     setFile(null);
     handleClose();
@@ -250,19 +251,9 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
               <Button onClick={handleClosePanel}>{t('cancel')}</Button>
               <Box flexGrow={1} />
               <LoadingButton
-                disabled={value === state.session.user?.avatarUrl}
+                disabled={value === session.user?.avatarUrl}
                 loading={isSubmitting}
                 onClick={() => handleSubmit()}
-                sx={{
-                  color: ({ palette }) => {
-                    if (value === state.session.user?.avatarUrl) {
-                      const color =
-                        palette.mode === 'light' ? palette.grey[400] : palette.grey[500];
-                      return `${color} !important`;
-                    }
-                    return 'inherent';
-                  },
-                }}
                 variant="contained"
               >
                 {t('submit')}

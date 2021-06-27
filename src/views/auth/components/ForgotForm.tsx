@@ -43,7 +43,6 @@ const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
           <Box mt={2}>
             <LoadingButton
               color="primary"
-              disabled={isSubmitting}
               disableElevation
               fullWidth
               loading={isSubmitting}

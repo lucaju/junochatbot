@@ -1,14 +1,15 @@
 import { Box, IconButton, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 import Details from './details';
 
 const GroupsView: FC = () => {
-  const { state, actions } = useApp();
+  const { users } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['groups']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasGroups, setHasGroups] = useState(true);
@@ -20,7 +21,7 @@ const GroupsView: FC = () => {
       setIsLoading(true);
       await actions.users.getGroups();
       setIsLoading(false);
-      setHasGroups(state.users.groups.length > 0);
+      setHasGroups(users.groups.length > 0);
     };
 
     getCollection();

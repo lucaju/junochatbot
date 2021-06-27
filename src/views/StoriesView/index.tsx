@@ -1,6 +1,6 @@
 import { Box, Container } from '@material-ui/core';
 import Page from '@src/components/Page';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,8 @@ import NoStories from './NoStories';
 const Stories: FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(['common']);
-  const { state, actions } = useApp();
+  const { session, story, ui } = useAppState();
+  const actions = useActions();
   const [isLoading, setIsLoading] = useState(true);
   const [hasStories, setHasStories] = useState(true);
   const [addStoryOpen, setAddStoryOpenn] = useState(false);
@@ -26,9 +27,9 @@ const Stories: FC = () => {
 
     const getCollection = async () => {
       await actions.story.getStories();
-      if (state.session.isAdmin) await actions.users.getGroups();
+      if (session.isAdmin) await actions.users.getGroups();
       setIsLoading(false);
-      setHasStories(state.story.stories.length > 0);
+      setHasStories(story.stories.length > 0);
     };
     getCollection();
 
@@ -58,7 +59,7 @@ const Stories: FC = () => {
   };
 
   return (
-    <Page title={state.ui.pageTitle}>
+    <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
         {/* <AddStoryDialog
           open={addStoryOpen}

@@ -1,5 +1,5 @@
 import { Box, List } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { RoleType } from '@src/types';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ interface MenuProps {
 }
 
 const Menu: FC<MenuProps> = ({ compactMode, items }) => {
-  const { state } = useApp();
+  const { session } = useAppState();
   const { t } = useTranslation(['navMenu', 'common']);
 
   return (
@@ -31,12 +31,7 @@ const Menu: FC<MenuProps> = ({ compactMode, items }) => {
     >
       <List>
         {items.map(({ path, icon, restricted, title, tKey }) => {
-          if (
-            restricted &&
-            state.session.user &&
-            !restricted.includes(state.session.user.roleTypeId)
-          )
-            return;
+          if (restricted && session.user && !restricted.includes(session.user.roleTypeId)) return;
           return (
             <NavItem key={title} isCompact={compactMode} icon={icon} path={path} title={t(tKey)} />
           );

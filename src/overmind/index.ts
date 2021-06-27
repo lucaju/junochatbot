@@ -1,5 +1,10 @@
-import { IConfig } from 'overmind';
-import { createHook } from 'overmind-react';
+import { IContext } from 'overmind';
+import {
+  createActionsHook,
+  createEffectsHook,
+  createReactionHook,
+  createStateHook,
+} from 'overmind-react';
 import { namespaced } from 'overmind/config';
 import * as intents from './intents';
 import * as session from './session';
@@ -17,9 +22,9 @@ export const config = namespaced({
   intents,
 });
 
+export type Context = IContext<typeof config>;
 
-export const useApp = createHook<typeof config>();
-
-declare module 'overmind' {
-  interface Config extends IConfig<typeof config> {}
-}
+export const useAppState = createStateHook<Context>();
+export const useActions = createActionsHook<Context>();
+export const useEffects = createEffectsHook<Context>();
+export const useReaction = createReactionHook<Context>();

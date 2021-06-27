@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Container, Link, Typography } from '@material-ui/core';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -12,7 +12,8 @@ import LoginForm from './components/LoginForm';
 
 const LoginView: FC = () => {
   const navigate = useNavigate();
-  const { state, actions } = useApp();
+  const { session } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['auth', 'errorMessages']);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
@@ -24,10 +25,11 @@ const LoginView: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (state.session.isSignedIn) {
+    if (session.isSignedIn) {
       navigate('/app', { replace: true });
     }
-  }, [state.session.isSignedIn]);
+    return () => {};
+  }, [session.isSignedIn]);
 
   const authenticate = async (credential?: Credential) => {
     setIsAuthenticating(true);

@@ -1,6 +1,6 @@
 import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { Story } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 //@ts-ignore
@@ -22,13 +22,14 @@ const Collection: FC<CollectionProps> = ({
   searchQuery,
   triggerEditStory,
 }) => {
-  const { state, actions } = useApp();
+  const { story } = useAppState();
+  const actions = useActions();
   const [filteredItems, setFilteredItems] = useState<Story[]>([]);
 
   useEffect(() => {
     setFilteredItems(items());
     return () => {};
-  }, [filters, searchQuery, groupId, state.story.stories]);
+  }, [filters, searchQuery, groupId, story.stories]);
 
   useEffect(() => {
     fetchStories();
@@ -42,7 +43,7 @@ const Collection: FC<CollectionProps> = ({
   };
 
   const items = () => {
-    return state.story.stories
+    return story.stories
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;

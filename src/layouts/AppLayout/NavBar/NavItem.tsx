@@ -1,5 +1,5 @@
 import { Box, Button, useTheme } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import React, { FC } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 
@@ -11,11 +11,11 @@ interface NavItemProps {
 }
 
 const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
-  const { state } = useApp();
+  const { story } = useAppState();
   const theme = useTheme();
 
   if (path.includes(':storyId')) {
-    const storyID = state.story.currentStory?.id;
+    const storyID = story.currentStory?.id;
     path = storyID ? path.replace(':storyId', storyID.toString()) : '/app';
   }
 

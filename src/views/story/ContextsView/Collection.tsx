@@ -1,6 +1,6 @@
 import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { ContextRelation } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 //@ts-ignore
@@ -14,16 +14,16 @@ interface CollectionProps {
 }
 
 const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQuery }) => {
-  const { state } = useApp();
+  const { intents } = useAppState();
   const [filteredItems, setFilteredItems] = useState<ContextRelation[]>([]);
 
   useEffect(() => {
     setFilteredItems(items());
     return () => {};
-  }, [filters, searchQuery, state.intents.contexts]);
+  }, [filters, searchQuery, intents.contexts]);
 
   const items = () => {
-    return state.intents.contexts
+    return intents.contexts
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;

@@ -1,6 +1,6 @@
 import { Box, ImageList, ImageListItem, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { Tag, Video } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import VideoCard from './VideoCard';
@@ -22,16 +22,16 @@ const Collection: FC<CollectionProps> = ({
   searchQuery,
   tagId,
 }) => {
-  const { state } = useApp();
+  const { videos } = useAppState();
   const [filteredItems, setFilteredItems] = useState<Video[]>([]);
 
   useEffect(() => {
     setFilteredItems(items());
     return () => {};
-  }, [filters, searchQuery, tagId, state.videos.collection]);
+  }, [filters, searchQuery, tagId, videos.collection]);
 
   const items = () => {
-    return state.videos.collection
+    return videos.collection
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;

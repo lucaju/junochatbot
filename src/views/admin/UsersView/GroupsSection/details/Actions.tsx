@@ -36,14 +36,6 @@ const Actions: FC<ActionsProps> = ({ dirty, handleCancel, handleDelete, isSubmit
         disabled={!dirty}
         loading={isSubmitting}
         onClick={submitForm}
-        sx={{
-          color: ({ palette }) =>
-            dirty
-              ? 'inherent'
-              : palette.mode === 'light'
-              ? `${palette.grey[400]} !important`
-              : `${palette.grey[500]} !important`,
-        }}
         variant="contained"
       >
         {t('save')}

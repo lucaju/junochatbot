@@ -67,7 +67,6 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = ({ resetPassword }) => {
           <Box my={2}>
             <LoadingButton
               color="primary"
-              disabled={isSubmitting}
               disableElevation
               fullWidth
               loading={isSubmitting}

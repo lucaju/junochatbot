@@ -1,7 +1,7 @@
 import { Box, Drawer, IconButton, useMediaQuery, useTheme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import Logo from '@src/components/Logo';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { RoleType } from '@src/types';
 import React, { FC, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
@@ -23,7 +23,7 @@ const NavBar: FC<NavBarProps> = ({
   showStoryMenu = false,
 }) => {
   const location = useLocation();
-  const { state } = useApp();
+  const { session } = useAppState();
   const theme = useTheme();
   const breakpointsUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -75,7 +75,7 @@ const NavBar: FC<NavBarProps> = ({
         </Box>
       )}
       {showStoryMenu && <Menu compactMode={compactMode} items={storyMenu} />}
-      {state.session.user && userTypeAllowed.includes(state.session.user.roleTypeId) && (
+      {session.user && userTypeAllowed.includes(session.user.roleTypeId) && (
         <>
           <Box flexGrow={1} />
           <Menu compactMode={compactMode} items={adminMenu} />

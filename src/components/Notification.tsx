@@ -1,5 +1,5 @@
 import { Alert, Slide, Snackbar } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import React from 'react';
 
 const TransitionRight = (props: any) => {
@@ -7,7 +7,8 @@ const TransitionRight = (props: any) => {
 };
 
 const Notification = () => {
-  const { state, actions } = useApp();
+  const { ui } = useAppState();
+  const actions = useActions();
 
   const handleInternalClose = () => actions.ui.closeNotification();
 
@@ -16,19 +17,19 @@ const Notification = () => {
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       autoHideDuration={6000}
       onClose={handleInternalClose}
-      open={state.ui.notification.open}
+      open={ui.notification.open}
       TransitionComponent={TransitionRight}
     >
       <Alert
         elevation={6}
         onClose={handleInternalClose}
-        severity={state.ui.notification.type}
+        severity={ui.notification.type}
         sx={{
           '& ::first-letter': { textTransform: 'uppercase' },
         }}
         variant="filled"
       >
-        {state.ui.notification.message}
+        {ui.notification.message}
       </Alert>
     </Snackbar>
   );

@@ -1,14 +1,15 @@
 import { Box, IconButton, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 import Details from './details';
 
 const TagsSection: FC = () => {
-  const { state, actions } = useApp();
+  const { videos } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['tags', 'common']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasTags, setHasTags] = useState(true);
@@ -20,7 +21,7 @@ const TagsSection: FC = () => {
       setIsLoading(true);
       await actions.videos.getTags();
       setIsLoading(false);
-      setHasTags(state.videos.tagCollection.length > 0);
+      setHasTags(videos.tagCollection.length > 0);
     };
 
     getCollection();

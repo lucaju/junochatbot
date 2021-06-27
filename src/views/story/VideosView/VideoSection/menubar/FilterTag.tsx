@@ -1,5 +1,5 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -9,15 +9,15 @@ interface FilterTagProps {
 }
 
 const FilterTag: FC<FilterTagProps> = ({ handleFilter, value = -1 }) => {
-  const { state } = useApp();
+  const { videos } = useAppState();
   const { t } = useTranslation(['common']);
   const [tags, setTags] = useState([{ id: -1, name: 'all' }]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
-    setTags([{ id: -1, name: 'all' }, ...state.videos.tagCollection]);
+    setTags([{ id: -1, name: 'all' }, ...videos.tagCollection]);
     return () => {};
-  }, [state.videos.tagCollection]);
+  }, [videos.tagCollection]);
 
   const handleChange = (value: number) => {
     setFilterValue(value);

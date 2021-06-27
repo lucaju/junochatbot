@@ -45,14 +45,6 @@ const Actions: FC<ActionsProps> = ({
         disabled={!dirty && !dirtyFromYoutube}
         loading={isSubmitting}
         onClick={submitForm}
-        sx={{
-          color: ({ palette }) =>
-            dirty
-              ? 'inherent'
-              : palette.mode === 'light'
-              ? `${palette.grey[400]} !important`
-              : `${palette.grey[500]} !important`,
-        }}
         variant="contained"
       >
         {t('save')}

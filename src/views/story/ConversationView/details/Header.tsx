@@ -1,5 +1,5 @@
 import { TextField } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import React, { ChangeEvent, FC, FocusEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,8 +8,9 @@ interface HeadersProps {
 }
 
 const Header: FC<HeadersProps> = ({ action }) => {
-  const { state, actions } = useApp();
-  const [displayName, setDisplayName] = useState(state.intents.currentIntent?.displayName);
+  const { intents } = useAppState();
+  const actions = useActions();
+  const [displayName, setDisplayName] = useState(intents.currentIntent?.displayName);
   const { t } = useTranslation(['intents']);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

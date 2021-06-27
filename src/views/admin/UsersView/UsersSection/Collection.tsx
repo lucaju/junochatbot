@@ -1,6 +1,6 @@
 import { Box, Collapse, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { User } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
@@ -14,19 +14,20 @@ interface CollectionProps {
 }
 
 const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, searchQuery }) => {
-  const { actions, state } = useApp();
+  const { session, users } = useAppState();
+  const actions = useActions();
   const [filteredItems, setFilteredItems] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
     const getCollection = async () => {
-      if (state.session.isAdmin) await actions.users.getGroups();
+      if (session.isAdmin) await actions.users.getGroups();
       fetchUsers();
     };
     getCollection();
     return () => {};
-  }, [state.session.user?.groupId]);
+  }, [session.user?.groupId]);
 
   useEffect(() => {
     fetchUsers();
@@ -36,7 +37,7 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
   useEffect(() => {
     setFilteredItems(items());
     return () => {};
-  }, [filters, searchQuery, state.users.list]);
+  }, [filters, searchQuery, users.list]);
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -45,9 +46,9 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
   };
 
   const items = () => {
-    return state.users.list
+    return users.list
       .filter(() => {
-        if (state.session.isAdmin) return true;
+        if (session.isAdmin) return true;
       })
       .filter((item) => {
         if (filters.size === 0) return true;

@@ -7,7 +7,9 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  Slide, Tab, Tabs
+  Slide,
+  Tab,
+  Tabs,
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
 import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
@@ -15,7 +17,7 @@ import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 import EditAttributesIcon from '@material-ui/icons/EditAttributes';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import DeleteDialog from '@src/components/DeleteDialog';
-import { useApp } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import { Intent, NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
@@ -27,8 +29,6 @@ import Header from './Header';
 import IntentParams from './parameters';
 import Responses from './responses';
 import Training from './training';
-
-
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -44,7 +44,7 @@ interface DetailsProps {
 }
 
 const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
-  const { actions } = useApp();
+  const actions = useActions();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
   const [action, setAction] = useState<string>();
   const [activeTab, setActiveTab] = useState(0);

@@ -17,7 +17,7 @@ import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import { alpha, styled } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { Parameter as ParameterType } from '@src/types';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -47,7 +47,7 @@ interface ParamsComponentProps {
 
 const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
   const theme = useTheme();
-  const { state } = useApp();
+  const { intents } = useAppState();
   const { t } = useTranslation(['intents']);
   const { removeParameter, updateParameter } = useParameter();
 
@@ -194,7 +194,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
                 onChange={handleChangeEntity}
                  value={entityTypeDisplayName}
               >
-                {state.intents.entities.map(({ id, name }) => (
+                {intents.entities.map(({ id, name }) => (
                   <MenuItem key={id} value={name}>
                     {name}
                   </MenuItem>

@@ -2,7 +2,7 @@ import { Container, Link, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -14,13 +14,14 @@ import ResetPasswordForm from './components/ResetPasswordForm';
 const ResetPasswordView: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { state, actions } = useApp();
+  const { session } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['auth', 'common', 'errorMessages']);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
 
   useEffect(() => {
-    if (state.session.isSignedIn || !resetToken) {
+    if (session.isSignedIn || !resetToken) {
       navigate('/app', { replace: true });
     }
     return () => {};

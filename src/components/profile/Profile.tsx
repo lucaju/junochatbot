@@ -20,7 +20,7 @@ import Brightness7Icon from '@material-ui/icons/Brightness7';
 import LanguageIcon from '@material-ui/icons/Language';
 import LockIcon from '@material-ui/icons/Lock';
 import { APP_URL } from '@src/config/config.js';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { UserGroup } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, MouseEvent, useEffect, useState } from 'react';
@@ -35,7 +35,8 @@ interface ProfileProps {
 }
 
 const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
-  const { state, actions } = useApp();
+  const { session, ui } = useAppState();
+  const actions = useActions();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(['profile', 'common']);
 
@@ -46,8 +47,8 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
 
   useEffect(() => {
     const fetchGroup = async () => {
-      if (!state.session.user || !state.session.user.groupId) return;
-      const response = await actions.users.getGroup(Number(state.session.user.groupId));
+      if (!session.user || !session.user.groupId) return;
+      const response = await actions.users.getGroup(Number(session.user.groupId));
       if (!isError(response)) setGroup(response);
     };
     fetchGroup();
@@ -55,7 +56,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
   }, []);
 
   const switchAppearenceMode = () => {
-    actions.ui.setDarkMode(!state.ui.darkMode);
+    actions.ui.setDarkMode(!ui.darkMode);
   };
 
   const switchLanguage = (event: MouseEvent<HTMLElement>, value: string) => {
@@ -92,11 +93,11 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
       >
         <Avatar
           src={
-            state.session.user?.avatarUrl &&
-            `${APP_URL}/uploads/assets${state.session.user.avatarUrl}`
+            session.user?.avatarUrl &&
+            `${APP_URL}/uploads/assets${session.user.avatarUrl}`
           }
         >
-          {!state.session.user?.avatarUrl && <AccountCircleIcon />}
+          {!session.user?.avatarUrl && <AccountCircleIcon />}
         </Avatar>
         <Box
           display="flex"
@@ -107,9 +108,9 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
           pt={0}
         >
           <Typography variant="button">
-            {state.session.user?.firstName} {state.session.user?.lastName}
+            {session.user?.firstName} {session.user?.lastName}
           </Typography>
-          <Typography variant="body2">{state.session.user?.userName}</Typography>
+          <Typography variant="body2">{session.user?.userName}</Typography>
           {group && <Typography variant="caption">{group.name}</Typography>}
         </Box>
       </Box>
@@ -119,12 +120,12 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
       <List sx={{ width: 280 }}>
         <ListItem>
           <ListItemIcon sx={{ minWidth: 40 }}>
-            {state.ui.darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+            {ui.darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </ListItemIcon>
           <ListItemText id="dark-mode" primary={t('darkMode')} />
           <ListItemSecondaryAction>
             <Switch
-              checked={state.ui.darkMode}
+              checked={ui.darkMode}
               color="primary"
               edge="end"
               inputProps={{ 'aria-labelledby': 'dark-mode' }}
@@ -140,12 +141,12 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
           <ListItemText id="language" primary={t('language')} />
           <ListItemSecondaryAction>
             <ToggleButtonGroup
-              value={state.ui.languageCode}
+              value={ui.languageCode}
               exclusive
               onChange={switchLanguage}
               aria-label="language"
             >
-              {state.ui.languages.map(({ value, name }) => (
+              {ui.languages.map(({ value, name }) => (
                 <ToggleButton key={value} sx={{ height: 28 }} value={value}>
                   {t(`common:${name}`)}
                 </ToggleButton>

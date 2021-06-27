@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { NotificationType, Story } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -25,7 +25,8 @@ interface AddStoryDialogProps {
 }
 
 const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEditStory }) => {
-  const { state, actions } = useApp();
+  const { story, ui } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['common', 'story', 'errorMessages']);
   const [error, setError] = useState();
 
@@ -73,7 +74,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
       <Formik
         initialValues={{
           title: '',
-          languageCode: state.ui.languageCode,
+          languageCode: ui.languageCode,
         }}
         onSubmit={submit}
         validationSchema={formValidation}
@@ -122,7 +123,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
                     value={values.languageCode}
                     variant="outlined"
                   >
-                    {state.story.languages.map((option) => (
+                    {story.languages.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.name}
                       </MenuItem>
@@ -138,7 +139,6 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
               <Box flexGrow={1} />
               <LoadingButton
                 color="primary"
-                disabled={isSubmitting}
                 loading={isSubmitting}
                 type="submit"
                 variant="outlined"

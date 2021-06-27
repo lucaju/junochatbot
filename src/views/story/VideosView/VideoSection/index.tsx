@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,8 @@ import Details from './details';
 import MenuBar from './menubar';
 
 const VideosSection: FC = () => {
-  const { state, actions } = useApp();
+  const { story, videos } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['videos', 'common']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasVideos, setHasVideos] = useState(true);
@@ -24,9 +25,9 @@ const VideosSection: FC = () => {
       setIsLoading(true);
       await actions.videos.getVideos();
       await actions.videos.getTags();
-      actions.ui.setPageTitle(`${state.story.currentStory?.title} - ${t('common:videos')}`);
+      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:videos')}`);
       setIsLoading(false);
-      setHasVideos(state.videos.collection.length > 0);
+      setHasVideos(videos.collection.length > 0);
     };
 
     getCollection();

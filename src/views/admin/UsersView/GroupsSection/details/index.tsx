@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import DeleteDialog from '@src/components/DeleteDialog';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { NotificationType, UserGroup } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -24,7 +24,7 @@ const initialValues: Partial<UserGroup> = {
 };
 
 const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
-  const { actions } = useApp();
+  const { ui, users } = useActions();
   const { t } = useTranslation(['groups', 'common', 'errorMessages', 'deleteDialog']);
   const [groupData, setGroupData] = useState<UserGroup | Partial<UserGroup>>(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -37,7 +37,7 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
     }
 
     const fetch = async () => {
-      const selectedGroup = await actions.users.getGroup(groupId);
+      const selectedGroup = await users.getGroup(groupId);
       if (!isError(selectedGroup)) setGroupData(json(selectedGroup));
     };
     fetch();
@@ -54,34 +54,34 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
 
   const submit = async (values: Partial<UserGroup>): Promise<void> => {
     const response = !values.id
-      ? await actions.users.createGroup(values as Omit<UserGroup, 'id'>)
-      : await actions.users.updateGroup(values as UserGroup);
+      ? await users.createGroup(values as Omit<UserGroup, 'id'>)
+      : await users.updateGroup(values as UserGroup);
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
     //error
     if (isError(response)) {
       const message = t('errorMessages:somethingWentWrong');
-      actions.ui.showNotification({ message, type });
+      ui.showNotification({ message, type });
       return;
     }
 
     //success
     const message = values.id ? t('groupUpdated') : 'groupCreated';
-    actions.ui.showNotification({ message, type });
+    ui.showNotification({ message, type });
 
     handleClose();
   };
 
   const submitDelete = async () => {
     if (!groupData.id) return;
-    const response = await actions.users.deleteGroup(groupData.id);
+    const response = await users.deleteGroup(groupData.id);
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
     const message = isError(response) ? t('errorMessages:somethingWentWrong') : t('groupDeleted');
 
-    actions.ui.showNotification({ message, type });
+    ui.showNotification({ message, type });
 
     handleClose();
   };

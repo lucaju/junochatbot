@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import DeleteDialog from '@src/components/DeleteDialog';
-import { useApp } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import { NotificationType, Tag } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -20,7 +20,7 @@ const initialValues: Partial<Tag> = {
 };
 
 const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
-  const { actions } = useApp();
+  const actions = useActions();
   const { t } = useTranslation(['tags', 'common', 'errorMessages', 'deleteDialog']);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [tagData, setTagData] = useState(initialValues);

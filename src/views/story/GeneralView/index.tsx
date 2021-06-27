@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import Page from '@src/components/Page';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { NotificationType, Story } from '@src/types';
 import { isError } from '@src/util/utilities';
 import BottomBar from './BottomBar';
@@ -17,10 +17,11 @@ const title = 'Juno Chatbot';
 const GeneralView: FC = () => {
   const navigate = useNavigate();
   const { storyId } = useParams();
-  const { state, actions } = useApp();
+  const { story, ui } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['storyGeneral', 'common', 'errorMessages, deleteDialog']);
   const [isLoading, setIsLoading] = useState(false);
-  const [storyData, setStoryData] = useState<Story | undefined>(state.story.currentStory);
+  const [storyData, setStoryData] = useState<Story | undefined>(story.currentStory);
 
   useEffect(() => {
     if (!storyId) return navigate('/app', { replace: true });
@@ -36,9 +37,7 @@ const GeneralView: FC = () => {
       setIsLoading(false);
     };
 
-    !state.story.currentStory
-      ? getStory()
-      : actions.ui.setPageTitle(state.story.currentStory.title);
+    !story.currentStory ? getStory() : actions.ui.setPageTitle(story.currentStory.title);
 
     return () => {};
   }, []);
@@ -68,7 +67,7 @@ const GeneralView: FC = () => {
   };
 
   return (
-    <Page title={state.ui.pageTitle}>
+    <Page title={ui.pageTitle}>
       {isLoading ? (
         <Box display="flex" height="100%" justifyContent="center" alignItems="flex-start">
           <CircularProgress size={60} thickness={4} />

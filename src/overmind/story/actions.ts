@@ -1,6 +1,6 @@
 import type { ErrorMessage, Story } from '@src/types';
 import { isError } from '@src/util/utilities';
-import { Context } from 'overmind';
+import { Context } from '../';
 
 export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {
   const authUser = state.session.user;

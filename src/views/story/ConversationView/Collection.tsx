@@ -1,6 +1,6 @@
 import { Box, Collapse, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { Intent } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
@@ -19,16 +19,16 @@ const Collection: FC<CollectionProps> = ({
   searchQuery,
   isLoading = false,
 }) => {
-  const { state } = useApp();
+  const { intents } = useAppState();
   const [filteredItems, setFilteredItems] = useState<Intent[]>([]);
 
   useEffect(() => {
     setFilteredItems(items());
     return () => {};
-  }, [filters, searchQuery, state.intents.collection]);
+  }, [filters, searchQuery, intents.collection]);
 
   const items = () => {
-    return state.intents.collection
+    return intents.collection
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;

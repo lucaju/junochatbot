@@ -48,15 +48,7 @@ const BottomBar: FC<BottomBarProps> = ({ name, dirty, isSubmitting }) => {
           disabled={!dirty}
           loading={isSubmitting}
           onClick={submitForm}
-          sx={{
-            ml: 2,
-            color: ({ palette }) =>
-              dirty
-                ? 'inherent'
-                : palette.mode === 'light'
-                ? `${palette.grey[400]} !important`
-                : `${palette.grey[500]} !important`,
-          }}
+          sx={{ ml: 2 }}
           variant="contained"
         >
           {t('save')}

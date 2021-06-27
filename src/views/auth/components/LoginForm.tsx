@@ -88,7 +88,6 @@ const LoginForm: FC<LoginFormProps> = ({ authenticate }) => {
             <Box my={2}>
               <LoadingButton
                 color="primary"
-                disabled={isSubmitting}
                 disableElevation
                 fullWidth
                 loading={isSubmitting}

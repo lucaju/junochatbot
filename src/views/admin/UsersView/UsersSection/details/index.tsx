@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, Grid } from '@material-ui/core';
 import DeleteDialog from '@src/components/DeleteDialog';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { NotificationType, RoleType, User } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -28,7 +28,8 @@ const initialValues: Partial<User> = {
 };
 
 const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
-  const { state, actions } = useApp();
+  const { session } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['users', 'common', 'errorMessages', 'deleteDialog']);
   const [userData, setUserData] = useState<User | Partial<User>>(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -40,8 +41,8 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
     if (!userId) {
       const selectedUserData: Partial<User> = Object.assign(initialValues);
       selectedUserData.groupId = '';
-      if (state.session.user && state.session.isInstructor) {
-        selectedUserData.groupId = state.session.user.groupId;
+      if (session.user && session.isInstructor) {
+        selectedUserData.groupId = session.user.groupId;
       }
       setUserData(selectedUserData);
       setLoaded(true);
@@ -90,20 +91,16 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
     // const response = !values.id
     //   ? await actions.users.createUser(values as Omit<User, 'id'>)
     //   : await actions.users.updateUser({ userData, values });
-
     // const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
-
     // //error
     // if (isError(response)) {
     //   const message = t('errorMessages:somethingWentWrong');
     //   actions.ui.showNotification({ message, type });
     //   return;
     // }
-
     // //success
     // const message = values.id ? t('userUpdated') : t('userCreated');
     // actions.ui.showNotification({ message, type });
-
     // handleClose();
   };
 

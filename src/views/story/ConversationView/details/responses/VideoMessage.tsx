@@ -2,7 +2,7 @@ import { Box, Grid, IconButton, MenuItem, Select, useTheme, Zoom } from '@materi
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import YouTubeIcon from '@material-ui/icons/YouTube';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { Tag, Video } from '@src/types';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +31,7 @@ const VideoMessage: FC<VideoMessageProps> = ({
   isDragging = false,
 }) => {
   const theme = useTheme();
-  const { state } = useApp();
+  const { videos } = useAppState();
   const { t } = useTranslation(['intents', 'common']);
   const [hover, setHover] = useState(false);
   const [type, setType] = useState<'tag' | 'video'>(content.payload.type);
@@ -51,7 +51,7 @@ const VideoMessage: FC<VideoMessageProps> = ({
   useEffect(() => {
     type !== content.payload.type ? setSource(-1) : setSource(content.payload.source[0] as number);
 
-    const options = type === 'tag' ? state.videos.tagCollection : state.videos.collection;
+    const options = type === 'tag' ? videos.tagCollection : videos.collection;
     const mappedOptions = options.map((s: Tag | Video) => ({
       id: s.id.toString(),
       label: 'title' in s ? s.title : s.name,

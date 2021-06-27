@@ -1,7 +1,7 @@
 import type { Credential, ErrorMessage, User } from '@src/types';
 import { isError } from '@src/util/utilities';
 import Cookies from 'js-cookie';
-import { Context } from 'overmind';
+import { Context } from '../';
 
 export const getUserToken = (): string | undefined => Cookies.get('JunoToken');
 

@@ -2,7 +2,7 @@ import { Box, Button, Stack } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FilterGroup from '@src/components/menubar/FilterGroup';
 import SearchBox from '@src/components/menubar/SearchBox';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ const MenuBar: FC<MenuBarProps> = ({
   handleSearch,
   updateFilter,
 }) => {
-  const { state } = useApp();
+  const { session } = useAppState();
   const { t } = useTranslation(['users']);
 
   return (
@@ -35,7 +35,7 @@ const MenuBar: FC<MenuBarProps> = ({
       </Button>
       <Box flexGrow={1} />
       <SearchBox handleSearch={handleSearch} />
-      {state.session.isAdmin && <FilterGroup handleFilter={handleFilterByGroup} />}
+      {session.isAdmin && <FilterGroup handleFilter={handleFilterByGroup} />}
       <FilterRole handleFilter={updateFilter} />
     </Stack>
   );

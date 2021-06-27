@@ -1,4 +1,4 @@
-import { useApp } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import React, { forwardRef } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -7,12 +7,12 @@ interface PageProps {
 }
 
 const Page = forwardRef<PageProps, any>(({ children, title = '', ...rest }, ref) => {
-  const { state } = useApp();
+  const { ui } = useAppState();
 
   return (
     <div ref={ref} {...rest}>
       <Helmet>
-        <title>{`${state.ui.appName} - ${title}`}</title>
+        <title>{`${ui.appName} - ${title}`}</title>
       </Helmet>
       {children}
     </div>

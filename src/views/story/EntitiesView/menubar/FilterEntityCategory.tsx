@@ -1,5 +1,5 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,17 +10,17 @@ interface FilterEntityCategoryProps {
 }
 
 const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, value = 'All' }) => {
-  const { state } = useApp();
+  const { intents } = useAppState();
   const { t } = useTranslation(['common']);
   const [categories, setcategories] = useState(['All']);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
     const catSet: Set<string> = new Set();
-    state.intents.entities.forEach(({ category }) => catSet.add(category));
+    intents.entities.forEach(({ category }) => catSet.add(category));
     setcategories(['All', ...Array.from(catSet)]);
     return () => {};
-  }, [state.intents.entities]);
+  }, [intents.entities]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

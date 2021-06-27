@@ -1,4 +1,4 @@
-import { useApp } from '@src/overmind';
+import { useAppState, useActions } from '@src/overmind';
 import type { Context as ContextIntent } from '@src/types';
 import { v4 as uuidv4 } from 'uuid';
 export interface ContextData {
@@ -18,10 +18,11 @@ interface props {
 const DEFAULT_LIFESPANCOUNT = 5;
 
 const useContext = ({ type, id = '', currentName = '', currentLifeSpan }: props) => {
-  const { state, actions } = useApp();
-  const currentIntent = state.intents.currentIntent;
+  const { intents } = useAppState();
+  const actions = useActions();
+  const currentIntent = intents.currentIntent;
 
-  const NAME_PREFIX = `projects/${state.intents.currentProjectName}/agent/sessions/-/contexts/`;
+  const NAME_PREFIX = `projects/${intents.currentProjectName}/agent/sessions/-/contexts/`;
 
   const addInputContext = ({ name }: ContextData) => {
     const fullName = `${NAME_PREFIX}${name}`;
