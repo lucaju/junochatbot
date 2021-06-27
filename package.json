@@ -25,8 +25,8 @@
 	"scripts": {
 		"start": "env-cmd -e production node ./server/index.mjs",
 		"server:dev": "env-cmd -e development nodemon ./server/index.mjs",
-		"build:dev-watch": "env-cmd -e development webpack --config webpack.dev.mjs --watch",
-		"build": "webpack --config webpack.prod.mjs",
+		"build:dev-watch": "env-cmd -e development webpack --watch",
+		"build": "env-cmd -e production webpack",
 		"cm": "git-cz"
 	},
 	"main": "src/index.tsx",

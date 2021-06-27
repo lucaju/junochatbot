@@ -1,6 +1,5 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-// import bodyParser from 'body-parser';
 import express from 'express';
 import youtube from './routes/youtube.mjs';
 
