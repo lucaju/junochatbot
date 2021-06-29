@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from '@material-ui/core';
+import { Box, Button, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FilterGroup from '@src/components/menubar/FilterGroup';
 import SearchBox from '@src/components/menubar/SearchBox';
@@ -25,8 +25,12 @@ const MenuBar: FC<MenuBarProps> = ({
   const { session, story } = useAppState();
   const { t } = useTranslation(['stories']);
 
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const isLG = useMediaQuery(theme.breakpoints.down('lg'));
+
   return (
-    <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
+    <Stack direction={isSM ? 'column' : 'row'} spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
       {!story.stories.some((story) => {
         return story.user?.id === session.user?.id;
       }) ? (
@@ -44,10 +48,12 @@ const MenuBar: FC<MenuBarProps> = ({
           <FilterMyStory handleFilter={updateFilter} value={session.user?.id} />
         </>
       )}
-      <Box flexGrow={1} />
-      <SearchBox handleSearch={handleSearch} />
-      {session.isAdmin && <FilterGroup handleFilter={handleFilterByGroup} />}
-      <FilterPublished handleFilter={updateFilter} />
+      {!isSM && <Box flexGrow={1} />}
+      <Stack direction="row" spacing={2} justifyContent="flex-end">
+        <SearchBox handleSearch={handleSearch} />
+        {session.isAdmin && !isLG && <FilterGroup handleFilter={handleFilterByGroup} />}
+        <FilterPublished handleFilter={updateFilter} />
+      </Stack>
     </Stack>
   );
 };

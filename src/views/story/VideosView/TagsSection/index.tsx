@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@material-ui/core';
+import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import NoContent from '@src/components/NoContent';
 import { useAppState, useActions } from '@src/overmind';
@@ -15,6 +15,9 @@ const TagsSection: FC = () => {
   const [hasTags, setHasTags] = useState(true);
   const [currentTagId, setCurrentTagId] = useState<number | undefined>();
   const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const getCollection = async () => {
@@ -43,10 +46,14 @@ const TagsSection: FC = () => {
     <Box
       sx={{
         mt: 2.5,
-        pl: 1.5,
-        borderLeftWidth: 1,
-        borderLeftStyle: 'solid',
-        borderLeftColor: ({ palette }) => palette.action.disabledBackground,
+        pl: isMobile ? 0 : 1.5,
+        pb: isMobile ? 1.5 : 0,
+        borderStyle: 'solid',
+        borderColor: ({ palette }) => palette.action.disabledBackground,
+        borderTopWidth: 0,
+        borderBottomWidth: isMobile ? 1 : 0,
+        borderLeftWidth: isMobile ? 0 : 1,
+        borderRightWidth: 0,
       }}
     >
       <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
@@ -59,9 +66,9 @@ const TagsSection: FC = () => {
       </Box>
       <Details handleClose={handleDetailClose} open={detailsOpen} tagId={currentTagId} />
       {!hasTags ? (
-        <NoContent heading={t('noTagsYet')} />
+        !isMobile && <NoContent heading={t('noTagsYet')} />
       ) : (
-        <Box maxHeight={'calc(100vh - 154px)'} mt={3} sx={{ overflowY: 'scroll' }}>
+        <Box mt={3} sx={{ overflowY: 'scroll' }}>
           <Collection handleDetailOpen={handleDetailOpen} isLoading={isLoading} />
         </Box>
       )}

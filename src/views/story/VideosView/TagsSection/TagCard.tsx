@@ -19,7 +19,7 @@ const TagCard: FC<TagCardProps> = ({ handleEditClick, tag }) => {
       onClick={() => handleEditClick(tag.id)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      sx={{ cursor: 'pointer', m: 1, p: 1, borderRadius: 0.5 }}
+      sx={{ cursor: 'pointer', width: 'max-content', m: 1, p: 1, borderRadius: 0.5 }}
     >
       <Typography variant="body2" sx={{ textTransform: 'uppercase' }}>
         {tag.name}

@@ -1,5 +1,6 @@
-import { Box, IconButton, Typography, useTheme } from '@material-ui/core';
+import { Box, IconButton, Typography, useTheme, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { useActions } from '@src/overmind';
 import { Part as PartType, TrainingPhrase } from '@src/types';
 import React, {
   FC,
@@ -11,7 +12,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import useParameter from '../parameters/hooks';
 import EntitiesMenu from './EntitiesMenu';
 import {
   getSelectionData,
@@ -20,7 +20,6 @@ import {
   updateParts,
   updatePartSemantic,
 } from './helper';
-import useTrainingPhrases from './hooks';
 import Part from './Part';
 
 interface PhraseProps {
@@ -33,10 +32,14 @@ interface PhraseProps {
 //DialogFlow limit: 768 -> https://cloud.google.com/dialogflow/quotas#es-agent_1
 const CHART_MAX_LIMIT = 768;
 
-const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXAMPLE' }) => {
+const Phrase: FC<PhraseProps> = ({
+  name = 'new-',
+  parts,
+  timesAddedCount = 1,
+  type = 'EXAMPLE',
+}) => {
+  const actions = useActions();
   const theme = useTheme();
-  const { isSinglePhraseParam, updatePhrase, removePhrase } = useTrainingPhrases();
-  const { addParameter, removeParameterByDisplayName, updateParameterByAlias } = useParameter();
 
   const TypRef = useRef<any | undefined>();
   const [hover, setHover] = useState(false);
@@ -47,7 +50,7 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
   const [parameterAlias, setParameterAlias] = useState<string | undefined>();
 
   useEffect(() => {
-    if (name?.includes('added')) TypRef.current.focus();
+    if (name?.includes('new-')) TypRef.current.focus();
     return () => {};
   }, []);
 
@@ -59,7 +62,7 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
       parts: _parts,
       timesAddedCount,
     };
-    updatePhrase(updatedPhrase);
+    actions.intents.updatePhrase(updatedPhrase);
 
     setChanged(false);
     return () => {};
@@ -139,9 +142,9 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
     //schedule changes
     setChanged(true);
 
-    isSinglePhraseParam(currentAlias)
-      ? updateParameterByAlias(currentAlias, entityName)
-      : addParameter(entityName);
+    actions.intents.isSinglePhraseParam(currentAlias)
+      ? actions.intents.updateParameterByAlias({ alias: currentAlias, entityName: entityName })
+      : actions.intents.addParameter(entityName);
   };
 
   const handleRemovePart = (currentAlias?: string) => {
@@ -155,8 +158,8 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
     //schedule changes
     setChanged(true);
 
-    if (isSinglePhraseParam(currentAlias)) {
-      removeParameterByDisplayName(currentAlias);
+    if (actions.intents.isSinglePhraseParam(currentAlias)) {
+      actions.intents.removeParameterByDisplayName(currentAlias);
     }
 
     handleEntitiesMenuClose();
@@ -173,7 +176,7 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
     const element = TypRef.current as HTMLElement;
     const protoParts: PartType[] = updateParts(element, selectionData);
 
-    if (protoParts.length === 0) return removePhrase(name);
+    if (protoParts.length === 0) return handleRemovePhrase(name);
 
     //update parts the component internally
     _setParts(protoParts);
@@ -183,7 +186,7 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
 
     //add new Parameter
     if (!selectionData) return;
-    addParameter(selectionData.entityName);
+    actions.intents.addParameter(selectionData.entityName);
   };
 
   const handleEntitiesMenuClose = () => {
@@ -192,12 +195,16 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
     setContextMenuOpen(false);
   };
 
+  const handleRemovePhrase = (name: string) => {
+    actions.intents.removePhrase(name);
+  };
+
   return (
     <Box
       display="flex"
       flexDirection="row"
       alignItems="center"
-      my={1}
+      my={1.5}
       onMouseLeave={() => setHover(false)}
     >
       <Box
@@ -206,9 +213,9 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
         sx={{
           minWidth: 50,
           boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
-          borderStartStartRadius: 1.5,
-          borderStartEndRadius: 1.5,
-          borderEndStartRadius: 1.5,
+          borderStartStartRadius: 12,
+          borderStartEndRadius: 12,
+          borderEndStartRadius: 12,
           backgroundColor: theme.palette.action.hover,
           '&:focus-within': {
             boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
@@ -260,16 +267,16 @@ const Phrase: FC<PhraseProps> = ({ name, parts, timesAddedCount = 1, type = 'EXA
           </Typography>
         )}
       </Box>
-      {hover && (
+      <Zoom in={hover}>
         <IconButton
           aria-label="delete"
-          onClick={() => removePhrase(name)}
+          onClick={() => handleRemovePhrase(name)}
           size="small"
-          sx={{ ml: 1 }}
+          sx={{ right: 4, bottom: 12 }}
         >
           <HighlightOffIcon fontSize="inherit" />
         </IconButton>
-      )}
+      </Zoom>
     </Box>
   );
 };

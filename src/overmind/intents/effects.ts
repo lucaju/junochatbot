@@ -91,9 +91,15 @@ export const api = {
     if (MOCK_UP) {
       return await new Promise((resolve) => {
         setTimeout(() => {
-          mock.dataIntents.map((itt) => {
-            if (itt.name === intent.name) return intent;
-            return itt;
+          mock.dataIntents = mock.dataIntents.map((itt) => {
+            if (itt.name !== intent.name) return itt;
+            if (intent.trainingPhrases) {
+              intent.trainingPhrases = intent.trainingPhrases.map((phrase) => ({...phrase, name: uuidv4()}));
+            }
+            if (intent.parameters) {
+              intent.parameters = intent.parameters.map((parameter) => ({...parameter, name: uuidv4()}));
+            }
+            return intent;
           });
           resolve(intent);
         }, 1000);
@@ -123,7 +129,7 @@ export const api = {
     if (MOCK_UP) {
       return await new Promise((resolve) => {
         setTimeout(() => {
-          mock.dataIntents.filter((itt) => itt.name !== intentName);
+          mock.dataIntents = mock.dataIntents.filter((itt) => itt.name !== intentName);
           resolve(true);
         }, 1000);
       });

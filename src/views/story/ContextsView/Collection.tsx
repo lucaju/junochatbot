@@ -2,6 +2,7 @@ import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import { useAppState } from '@src/overmind';
 import { ContextRelation } from '@src/types';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -58,15 +59,25 @@ const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQue
       {!isLoading && filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
-          <Masonry>
-            {isLoading
-              ? showSkeleton(10)
-              : filteredItems.map((context) => (
-                  <ContextCard key={context.name} context={context} />
-                ))}
-          </Masonry>
-        </ResponsiveMasonry>
+        <AnimatePresence initial={false}>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 700: 2, 1150: 3, 1300: 4 }}>
+            <Masonry>
+              {isLoading
+                ? showSkeleton(10)
+                : filteredItems.map((context) => (
+                    <Box
+                      key={context.name}
+                      component={motion.div}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                    >
+                      <ContextCard context={context} />
+                    </Box>
+                  ))}
+            </Masonry>
+          </ResponsiveMasonry>
+        </AnimatePresence>
       )}
     </Box>
   );

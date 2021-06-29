@@ -29,7 +29,7 @@ const BottomBar: FC<BottomBarProps> = ({ name, dirty, isSubmitting }) => {
 
   return (
     <>
-      <Divider sx={{ px: 2 }} />
+      <Divider sx={{ mt: 1, px: 2 }} />
       <Box alignItems="center" display="flex" flexDirection="row" pt={2} px={2}>
         <FormControlLabel
           control={

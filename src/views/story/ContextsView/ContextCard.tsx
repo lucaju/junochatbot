@@ -10,7 +10,7 @@ interface ContextCardProps {
 const ContextCard: FC<ContextCardProps> = ({ context }) => {
   const [hover, setHover] = useState(false);
 
-  const { name, inputs, outputs } = context;
+  const { shortname, inputs, outputs } = context;
 
   const mouseOver = () => setHover(true);
   const mouseOut = () => setHover(false);
@@ -29,7 +29,7 @@ const ContextCard: FC<ContextCardProps> = ({ context }) => {
         }}
       >
         <Typography gutterBottom variant="h6">
-          {name}
+          {shortname}
         </Typography>
 
         {inputs && (

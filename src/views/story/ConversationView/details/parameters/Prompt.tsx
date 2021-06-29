@@ -32,7 +32,13 @@ const Prompt: FC<PromptProps> = ({ handleRemove, handleUpdate, id, prompt }) => 
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <TextField fullWidth value={_prompt} onBlur={handleBlur} onChange={handleChange} />
+      <TextField
+        fullWidth
+        value={_prompt}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        variant="standard"
+      />
       <Zoom in={hover}>
         <IconButton
           aria-label="delete"

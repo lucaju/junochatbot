@@ -1,35 +1,41 @@
-import { Collapse } from '@material-ui/core';
+import { Box } from '@material-ui/core';
+import { useAppState } from '@src/overmind';
 import { TrainingPhrase } from '@src/types';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
-import { TransitionGroup } from 'react-transition-group';
-import Phrase from './Phrase';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
-
-interface CollectionProps {
-  phraseList: TrainingPhrase[];
-}
+import Phrase from './Phrase';
 
 const ITEMS_PER_PAGE = 20;
 
-const Collection: FC<CollectionProps> = ({ phraseList }) => {
+const Collection: FC = () => {
+  const {
+    intents: { currentIntent },
+  } = useAppState();
+
   const [items, setItems] = useState<TrainingPhrase[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
+  const totalLength = currentIntent?.trainingPhrases?.length ?? 0;
+
   useEffect(() => {
-    if (phraseList.length !== 0) fetch();
+    if (!currentIntent?.trainingPhrases) return;
+    if (currentIntent?.trainingPhrases?.length !== 0) fetch();
     return () => {
       setItems([]);
       setPage(1);
     };
-  }, [phraseList]);
+  }, [currentIntent?.trainingPhrases]);
 
   const fetch = () => {
-    const list = phraseList.filter((item, i) => i < page * ITEMS_PER_PAGE);
+    if (!currentIntent?.trainingPhrases) return;
+    const list = currentIntent?.trainingPhrases?.filter((item, i) => i < page * ITEMS_PER_PAGE);
+
     setItems(list);
     setPage(page + 1);
-    setHasMore(list.length < phraseList.length);
+    setHasMore(list.length < totalLength);
   };
 
   const [sentryRef] = useInfiniteScroll({
@@ -38,7 +44,7 @@ const Collection: FC<CollectionProps> = ({ phraseList }) => {
     onLoadMore: fetch,
     // When there is an error, we stop infinite loading.
     // It can be reactivated by setting "error" state as undefined.
-    disabled: items.length >= phraseList.length,
+    disabled: items.length >= totalLength,
     // `rootMargin` is passed to `IntersectionObserver`.
     // We can use it to trigger 'onLoadMore' when the sentry comes near to become
     // visible, instead of becoming fully visible on the screen.
@@ -47,23 +53,26 @@ const Collection: FC<CollectionProps> = ({ phraseList }) => {
   });
 
   return (
-    <TransitionGroup
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {items.map(({ name, type, parts, timesAddedCount }) => (
-        <Collapse key={name}>
-          <Phrase name={name} parts={parts} timesAddedCount={timesAddedCount} type={type} />
-        </Collapse>
-      ))}
-      {hasMore && (
-        <>
-          <div ref={sentryRef} />
-        </>
-      )}
-    </TransitionGroup>
+    <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center" columnGap={0.5}>
+      <AnimatePresence initial={false}>
+        {items.map(({ name, type, parts, timesAddedCount }) => (
+          <Box
+            key={name}
+            component={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Phrase name={name} parts={parts} timesAddedCount={timesAddedCount} type={type} />
+          </Box>
+        ))}
+        {hasMore && (
+          <>
+            <div ref={sentryRef} />
+          </>
+        )}
+      </AnimatePresence>
+    </Box>
   );
 };
 

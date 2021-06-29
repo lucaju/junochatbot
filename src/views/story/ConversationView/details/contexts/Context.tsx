@@ -1,42 +1,30 @@
 import { Box, IconButton, Typography, useTheme, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import TimerIcon from '@material-ui/icons/Timer';
+import { useActions } from '@src/overmind';
+import type { Context as ContextType } from '@src/types';
 import React, { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import useContext from './hooks';
 
-interface ContextProps {
-  handleEmptyContext: () => void;
-  id?: string;
-  lifeSpan?: number;
-  name: string;
-  type: 'input' | 'output';
+export interface ContextComponentProps {
+  context: ContextType;
 }
 
 const ALLOWED_KEYS_LIFESPAN = ['Backspace', 'ArrowLeft', 'ArrowRight'];
 
-const ContextComponent: FC<ContextProps> = ({
-  handleEmptyContext,
-  id = 'new',
-  lifeSpan = 5,
-  name,
-  type = 'input',
-}) => {
+const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
+  const actions = useActions();
   const theme = useTheme();
-  const NameRef = useRef<HTMLElement>(null);
-  const LifespanRef = useRef<HTMLElement>(null);
+
+  const NameHTMLRef = useRef<HTMLElement>(null);
+  const LifespanHTMLRef = useRef<HTMLElement>(null);
   const [hover, setHover] = useState(false);
 
-  const { removeContex, updateContext } = useContext({
-    currentLifeSpan: lifeSpan,
-    currentName: name,
-    id,
-    type,
-  });
+  const { lifespanCount = 5, shortName, type } = context;
 
   useEffect(() => {
-    if (name === '' && NameRef.current) NameRef.current.focus();
+    if (shortName === '' && NameHTMLRef.current) NameHTMLRef.current.focus();
     return () => {};
-  }, [NameRef]);
+  }, [NameHTMLRef]);
 
   const handleKeyDownName = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === ' ') {
@@ -56,24 +44,31 @@ const ContextComponent: FC<ContextProps> = ({
   };
 
   const handleKeyDownLife = (event: KeyboardEvent<HTMLElement>) => {
-    if (!LifespanRef || !LifespanRef.current || LifespanRef.current.textContent === null) return;
+    if (
+      !LifespanHTMLRef ||
+      !LifespanHTMLRef.current ||
+      LifespanHTMLRef.current.textContent === null
+    )
+      return;
 
     const content =
-      LifespanRef.current.textContent !== null ? +LifespanRef.current.textContent : lifeSpan;
+      LifespanHTMLRef.current.textContent !== null
+        ? +LifespanHTMLRef.current.textContent
+        : lifespanCount;
 
     if (ALLOWED_KEYS_LIFESPAN.includes(event.key)) return;
 
     if (event.key === 'ArrowUp') {
-      LifespanRef.current.textContent = `${content + 1}`;
+      LifespanHTMLRef.current.textContent = `${content + 1}`;
       return;
     }
 
     if (event.key === 'ArrowDown' && content > 0) {
-      LifespanRef.current.textContent = `${content - 1}`;
+      LifespanHTMLRef.current.textContent = `${content - 1}`;
       return;
     }
 
-    if (event.key.match(/\d/) && LifespanRef.current.textContent.length < 3) return;
+    if (event.key.match(/\d/) && LifespanHTMLRef.current.textContent.length < 3) return;
 
     if (event.key === 'Enter') handleUpdate();
 
@@ -84,16 +79,22 @@ const ContextComponent: FC<ContextProps> = ({
   const handleBlur = () => handleUpdate();
 
   const handleUpdate = () => {
-    if (!NameRef || !NameRef.current) return;
+    if (!NameHTMLRef || !NameHTMLRef.current) return;
 
-    const newName = NameRef.current.textContent ?? '';
-    if (newName === '') return handleEmptyContext();
+    const newName = NameHTMLRef.current.textContent ?? '';
+    const newLifeCount = LifespanHTMLRef.current ? Number(LifespanHTMLRef.current.textContent) : 0;
 
-    const newLifeCount = LifespanRef.current ? Number(LifespanRef.current.textContent) : 0;
-    updateContext({ name: newName, lifeSpan: newLifeCount });
+    const updatedContext: ContextType = {
+      ...context,
+      shortName: newName,
+      lifespanCount: newLifeCount,
+    };
+    actions.intents.updateContext(updatedContext);
   };
 
-  const handleRemoveClick = () => removeContex(id);
+  const handleRemoveClick = () => {
+    actions.intents.removeContext(context);
+  };
 
   const ononMouseEnter = () => setHover(true);
   const onMouseLeave = () => setHover(false);
@@ -104,7 +105,6 @@ const ContextComponent: FC<ContextProps> = ({
       flexDirection="row"
       alignItems="center"
       my={1}
-      ml={1}
       onMouseEnter={ononMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -129,19 +129,22 @@ const ContextComponent: FC<ContextProps> = ({
         }}
       >
         <Typography
-          ref={NameRef}
+          ref={NameHTMLRef}
           contentEditable={true}
           onKeyDown={handleKeyDownName}
           suppressContentEditableWarning={true}
-          sx={{ minWidth: 20 }}
+          sx={{
+            minWidth: 20,
+            '&:focus-visible': { outlineStyle: 'none' },
+          }}
         >
-          {name}
+          {shortName}
         </Typography>
         {type === 'output' && (
           <>
             <TimerIcon fontSize="small" sx={{ mx: 1 }} />
             <Typography
-              ref={LifespanRef}
+              ref={LifespanHTMLRef}
               contentEditable={true}
               onKeyDown={handleKeyDownLife}
               suppressContentEditableWarning={true}
@@ -150,13 +153,18 @@ const ContextComponent: FC<ContextProps> = ({
                 '&:focus-visible': { outlineStyle: 'none' },
               }}
             >
-              {lifeSpan}
+              {lifespanCount}
             </Typography>
           </>
         )}
       </Box>
       <Zoom in={hover}>
-        <IconButton aria-label="delete" onClick={handleRemoveClick} size="small" sx={{ ml: 1 }}>
+        <IconButton
+          aria-label="delete"
+          onClick={handleRemoveClick}
+          size="small"
+          sx={{ right: 4, bottom: 12 }}
+        >
           <HighlightOffIcon fontSize="inherit" />
         </IconButton>
       </Zoom>

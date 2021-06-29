@@ -8,8 +8,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   Switch,
   TextField,
+  useMediaQuery,
   useTheme,
   Zoom,
 } from '@material-ui/core';
@@ -17,12 +19,11 @@ import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import { alpha, styled } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { useAppState } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import { Parameter as ParameterType } from '@src/types';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DefaultValuePanel from './DefaultValuePanel';
-import useParameter from './hooks';
 import PromptsPanel from './PromptsPanel';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -47,9 +48,10 @@ interface ParamsComponentProps {
 
 const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
   const theme = useTheme();
-  const { intents } = useAppState();
+  const actions = useActions();
   const { t } = useTranslation(['intents']);
-  const { removeParameter, updateParameter } = useParameter();
+
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [_param, set_param] = useState(param);
   const [doUpdate, setDoUpdate] = useState(false);
@@ -142,7 +144,11 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
   };
 
   const update = () => {
-    updateParameter(name, _param);
+    actions.intents.updateParameter(_param);
+  };
+
+  const handleRemoveParameter = () => {
+    actions.intents.removeParameter(name);
   };
 
   const handleOpenBottomPanel = (panelId: number) => {
@@ -154,39 +160,45 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
   };
 
   return (
-    <Box
-      my={1}
-      borderRadius={'borderRadius'}
+    <Stack
+      direction="row"
+      alignItems="flex-start"
+      flexGrow={1}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      sx={{
-        width: '100%',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: theme.palette.action.hover,
-        '&:focus-within': {
-          boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
-        },
-        transition: theme.transitions.create(['box-shadow'], {
-          duration: theme.transitions.duration.standard,
-        }),
-        boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
-      }}
     >
-      <Box display="flex" flexDirection="column" p={2}>
-        <Grid container direction="row" spacing={2}>
-          <Grid item xs>
-            <TextField
-              fullWidth
-              label={t('name')}
-              name="displayName"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={_param.displayName}
-            />
-          </Grid>
-          <Grid item xs>
-            {/* <FormControl>
+      <Box
+        my={1}
+        borderRadius={'borderRadius'}
+        sx={{
+          width: '100%',
+          borderWidth: 1,
+          borderStyle: 'solid',
+          borderColor: theme.palette.action.hover,
+          '&:focus-within': {
+            boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+          },
+          transition: theme.transitions.create(['box-shadow'], {
+            duration: theme.transitions.duration.standard,
+          }),
+          boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
+        }}
+      >
+        <Box display="flex" flexDirection="column" p={2}>
+          <Grid container direction={isSM ? 'column' : 'row'} spacing={2}>
+            <Grid item xs>
+              <TextField
+                fullWidth
+                label={t('name')}
+                name="displayName"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={_param.displayName}
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs>
+              {/* <FormControl>
               <InputLabel >{t('entity')}</InputLabel>
               <Select
                 fullWidth
@@ -201,95 +213,100 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
                 ))}
               </Select>
             </FormControl> */}
-            <TextField
-              fullWidth
-              label={t('entity')}
-              name="entityTypeDisplayName"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={entityTypeDisplayName}
+              <TextField
+                fullWidth
+                label={t('entity')}
+                name="entityTypeDisplayName"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={entityTypeDisplayName}
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs>
+              <TextField
+                fullWidth
+                label={t('value')}
+                name="value"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={value}
+                variant="standard"
+              />
+            </Grid>
+          </Grid>
+        </Box>
+        <Box
+          display="flex"
+          flexDirection={isSM ? 'column' : 'row'}
+          mt={1}
+          px={2}
+          py={0.5}
+          sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02) }}
+        >
+          <Stack direction="row" justifyContent="center">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isList}
+                  color="primary"
+                  name="isList"
+                  onChange={handleChange}
+                  size="small"
+                />
+              }
+              label={t('isList')}
             />
-          </Grid>
-          <Grid item xs>
-            <TextField
-              fullWidth
-              label={t('value')}
-              name="value"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={value}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={mandatory}
+                  color="primary"
+                  name="mandatory"
+                  onChange={handleChange}
+                  size="small"
+                />
+              }
+              label={t('required')}
             />
-          </Grid>
-          <Grid item>
-            <Zoom in={hover}>
-              <IconButton
-                aria-label="delete"
-                onClick={() => removeParameter(name, _param.displayName)}
-                size="small"
-                sx={{ ml: 1 }}
-              >
-                <HighlightOffIcon />
-              </IconButton>
-            </Zoom>
-          </Grid>
-        </Grid>
+          </Stack>
+          <Stack direction="row" justifyContent="center">
+            <Button disabled={bottomPanelActive === 1} onClick={() => handleOpenBottomPanel(1)}>
+              {t('defaultValue')}
+            </Button>
+            {_param.mandatory && (
+              <Button disabled={bottomPanelActive === 2} onClick={() => handleOpenBottomPanel(2)}>
+                {t('prompts')}
+              </Button>
+            )}
+          </Stack>
+          {bottomPanelActive !== 0 && (
+            <ExpandMore expand={bottomPanelActive} onClick={handleCloseBottomPanel} size="small">
+              <ExpandMoreIcon />
+            </ExpandMore>
+          )}
+        </Box>
+        <Collapse in={bottomPanelActive === 1} timeout="auto" unmountOnExit>
+          <DefaultValuePanel
+            defaultValue={_param.defaultValue}
+            handleUpdateDefault={handleUpdateDefault}
+          />
+        </Collapse>
+        <Collapse in={bottomPanelActive === 2} timeout="auto" unmountOnExit>
+          <PromptsPanel prompts={_param.prompts} handleUpdate={handleUpdatePrompts} />
+        </Collapse>
       </Box>
-      <Box
-        display="flex"
-        flexDirection="row"
-        mt={1}
-        px={2}
-        py={0.5}
-        sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02) }}
-      >
-        <FormControlLabel
-          control={
-            <Switch
-              checked={isList}
-              color="primary"
-              name="isList"
-              onChange={handleChange}
-              size="small"
-            />
-          }
-          label={t('isList')}
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={mandatory}
-              color="primary"
-              name="mandatory"
-              onChange={handleChange}
-              size="small"
-            />
-          }
-          label={t('required')}
-        />
-        <Button disabled={bottomPanelActive === 1} onClick={() => handleOpenBottomPanel(1)}>
-          {t('defaultValue')}
-        </Button>
-        {_param.mandatory && (
-          <Button disabled={bottomPanelActive === 2} onClick={() => handleOpenBottomPanel(2)}>
-            {t('prompts')}
-          </Button>
-        )}
-        {bottomPanelActive !== 0 && (
-          <ExpandMore expand={bottomPanelActive} onClick={handleCloseBottomPanel} size="small">
-            <ExpandMoreIcon />
-          </ExpandMore>
-        )}
-      </Box>
-      <Collapse in={bottomPanelActive === 1} timeout="auto" unmountOnExit>
-        <DefaultValuePanel
-          defaultValue={_param.defaultValue}
-          handleUpdateDefault={handleUpdateDefault}
-        />
-      </Collapse>
-      <Collapse in={bottomPanelActive === 2} timeout="auto" unmountOnExit>
-        <PromptsPanel prompts={_param.prompts} handleUpdate={handleUpdatePrompts} />
-      </Collapse>
-    </Box>
+      <Zoom in={hover}>
+        <IconButton
+          aria-label="delete"
+          onClick={handleRemoveParameter}
+          size="small"
+          sx={{ right: 16, bottom: 8 }}
+        >
+          <HighlightOffIcon />
+        </IconButton>
+      </Zoom>
+    </Stack>
   );
 };
 

@@ -39,11 +39,16 @@ const VideosView: FC = () => {
     <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
         {!isLoading && (
-          <Grid container direction={isMobile ? 'column-reverse' : 'row'} spacing={5}>
-            <Grid item xs={12} sm={8} md={9} lg={10}>
+          <Grid
+            container
+            direction={isMobile ? 'column-reverse' : 'row'}
+            spacing={5}
+            flexWrap="nowrap"
+          >
+            <Grid item xs={12} sm={8} md={8} lg={9}>
               <VideosSection />
             </Grid>
-            <Grid item xs={12} sm={4} md={3} lg={2}>
+            <Grid item xs={12} sm={4} md={4} lg={3}>
               <TagsSection />
             </Grid>
           </Grid>

@@ -3,122 +3,107 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
-import React, { FC, useEffect, useState } from 'react';
-import { TextComp } from './Collection';
+import { useActions } from '@src/overmind';
+import { Text } from '@src/types';
+import React, { FC, useState } from 'react';
 import TextMessageContent from './TextMessageContent';
 
 interface TextMessageProps {
-  content: TextComp;
-  handleRemove: (index: string) => void;
-  handleUpdate: (index: string, value: TextComp) => void;
-  index: string;
+  message: Text;
   isDragging?: boolean;
 }
 
-const TextMessage: FC<TextMessageProps> = ({
-  content,
-  handleRemove,
-  handleUpdate,
-  index,
-  isDragging = false,
-}) => {
+const TextMessage: FC<TextMessageProps> = ({ message, isDragging = false }) => {
+  const actions = useActions();
   const theme = useTheme();
+
   const [hover, setHover] = useState(false);
-  const [alternatives, setAlternatives] = useState<string[]>([]);
+  const numberOfAlternatives = message.text.text?.length ?? 0;
 
-  useEffect(() => {
-    setAlternatives(content.text.text ? content.text.text : []);
-    return () => {};
-  }, [content]);
-
-  const handleRemoveAlternative = (altIndex: number) => {
-    const updatedAlternatives = alternatives.filter((_text: string, i: number) => i !== altIndex);
-    setAlternatives(updatedAlternatives);
-
-    if (updatedAlternatives.length === 0) return handleRemove(index);
-
-    const updatedContent = content;
-    updatedContent.text.text = updatedAlternatives;
-    handleUpdate(index, updatedContent);
-  };
+  const addAlternative = () => actions.intents.addTextMessageAlternative(message.id);
 
   const handleUpdateAlternative = (altIndex: number, value: string) => {
-    const updatedAlternatives = alternatives.map((text, i) => {
-      if (i === altIndex) return value;
-      return text;
+    actions.intents.updateTextMessageAlternative({
+      messageId: message.id,
+      alternativeIndex: altIndex,
+      value,
     });
-
-    setAlternatives(updatedAlternatives);
-
-    const updatedContent = content;
-    updatedContent.text.text = updatedAlternatives;
-    handleUpdate(index, updatedContent);
   };
 
-  const addEmpty = () => {
-    if (alternatives[alternatives.length - 1] === '') return;
-    setAlternatives([...alternatives, '']);
+  const handleRemoveAlternative = (altIndex: number) => {
+    actions.intents.removeTextMessageAlternative({
+      messageId: message.id,
+      alternativeIndex: altIndex,
+    });
   };
+
+  const handleRemove = () => actions.intents.removeMessage(message.id);
 
   return (
-    <Box
+    <Stack
+      direction="row"
+      alignItems="flex-start"
+      flexGrow={1}
+      spacing={0}
       my={1}
-      p={2}
-      borderRadius={'borderRadius'}
+      ml={3}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      sx={{
-        width: '100%',
-        backgroundColor: theme.palette.action.hover,
-        '&:focus-within': {
-          boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
-        },
-        transition: theme.transitions.create(['box-shadow'], {
-          duration: theme.transitions.duration.standard,
-        }),
-        boxShadow: hover
-          ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px'
-          : isDragging
-          ? `${theme.palette.primary.light} 0px 0px 5px 1px !important`
-          : 0,
-      }}
     >
-      <Grid container direction="row" spacing={2}>
-        <Grid item>
-          <Stack direction="row" alignItems="center" mt={0.5} spacing={1}>
-            <FormatAlignLeftIcon />
-            {alternatives.length > 1 && <ShuffleIcon />}
-            <IconButton color="primary" onClick={addEmpty} size="small">
-              <AddCircleOutlineIcon fontSize="inherit" />
-            </IconButton>
-          </Stack>
+      <Box
+        p={2}
+        borderRadius={'borderRadius'}
+        sx={{
+          width: '100%',
+          backgroundColor: theme.palette.action.hover,
+          '&:focus-within': {
+            boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+          },
+          transition: theme.transitions.create(['box-shadow'], {
+            duration: theme.transitions.duration.standard,
+          }),
+          boxShadow: hover
+            ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px'
+            : isDragging
+            ? `${theme.palette.primary.light} 0px 0px 5px 1px !important`
+            : 0,
+        }}
+      >
+        <Grid container direction="row" spacing={2}>
+          <Grid item>
+            <Stack direction="column" alignItems="center" mt={0.5} spacing={1}>
+              <FormatAlignLeftIcon />
+              {numberOfAlternatives > 1 && <ShuffleIcon />}
+              <IconButton color="primary" onClick={addAlternative} size="small">
+                <AddCircleOutlineIcon fontSize="inherit" />
+              </IconButton>
+            </Stack>
+          </Grid>
+          <Grid item xs>
+            {message.text.text?.map((text, i) => (
+              <TextMessageContent
+                key={i}
+                content={text}
+                index={i}
+                handleRemove={handleRemoveAlternative}
+                handleUpdate={handleUpdateAlternative}
+                removable={numberOfAlternatives > 1}
+              />
+            ))}
+          </Grid>
         </Grid>
-        <Grid item xs>
-          {alternatives?.map((content: string, altIndex: number) => (
-            <TextMessageContent
-              key={altIndex}
-              content={content}
-              index={altIndex}
-              handleRemove={handleRemoveAlternative}
-              handleUpdate={handleUpdateAlternative}
-              removable={alternatives.length > 1}
-            />
-          ))}
-        </Grid>
-        <Grid item>
-          <Zoom in={hover}>
-            <IconButton
-              aria-label="delete"
-              onClick={() => handleRemove(index)}
-              size="small"
-              sx={{ ml: 1 }}
-            >
-              <HighlightOffIcon />
-            </IconButton>
-          </Zoom>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+      <Zoom in={hover}>
+        <IconButton
+          aria-label="delete"
+          onClick={handleRemove}
+          size="small"
+          sx={{ right: 16, bottom: 16 }}
+        >
+          <HighlightOffIcon />
+        </IconButton>
+      </Zoom>
+    </Stack>
   );
 };
 

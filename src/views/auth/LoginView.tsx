@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Container, Link, Typography } from '@material-ui/core';
+import { Box, CircularProgress, Container, Link, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
 import { useAppState, useActions } from '@src/overmind';
@@ -18,6 +18,9 @@ const LoginView: FC = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
   const [hasToken, setHasToken] = useState(!!actions.session.getUserToken());
+
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (hasToken) authenticate();
@@ -53,7 +56,7 @@ const LoginView: FC = () => {
           mt: 8,
         }}
       >
-        <Logo height={160} sx={{ mb: 8 }} type="full" />
+        <Logo height={isSM ? 120 : 160} sx={{ mb: 8 }} type="full" />
         {hasToken ? (
           <Box display="flex" height="100%" justifyContent="center" alignItems="center">
             <>

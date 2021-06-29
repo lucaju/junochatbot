@@ -1,5 +1,4 @@
-import { Box, Skeleton } from '@material-ui/core';
-import NoContent from '@src/components/NoContent';
+import { Box, Skeleton, useMediaQuery, useTheme } from '@material-ui/core';
 import { useAppState } from '@src/overmind';
 import React, { FC } from 'react';
 import GroupCard from './GroupCard';
@@ -12,6 +11,9 @@ interface CollectionProps {
 const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }) => {
   const { users } = useAppState();
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const showSkeleton = (qty = 5) => {
     const skels = new Array(qty).fill(0);
     return skels.map((sk, i) => (
@@ -22,11 +24,9 @@ const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }
   return (
     <Box>
       {isLoading ? (
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
+        <Box display="inline-flex" flexDirection={isMobile ? 'row' : 'column'}>
           {showSkeleton(4)}
         </Box>
-      ) : users.groups.length === 0 ? (
-        <NoContent />
       ) : (
         users.groups.map((group) => (
           <GroupCard key={group.id} group={group} handleEditClick={handleDetailOpen} />

@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Grid } from '@material-ui/core';
+import { Box, Card, CardContent, Grid, Stack, useMediaQuery, useTheme  } from '@material-ui/core';
 import { alpha } from '@material-ui/core/styles';
 import { Intent } from '@src/types';
 import React, { FC, useState } from 'react';
@@ -25,6 +25,11 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
     messages,
   } = intent;
 
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMD = useMediaQuery(theme.breakpoints.down('md'));
+  const isLG = useMediaQuery(theme.breakpoints.down('lg'));
+
   const mouseOver = () => setElevation(6);
   const mouseOut = () => setElevation(1);
 
@@ -34,10 +39,10 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
       onClick={() => handleEditClick(name)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      sx={{ mt: 1, mx: 1.5, cursor: 'pointer' }}
+      sx={{ my: 1, mx: 1.5, cursor: 'pointer' }}
     >
       <CardContent sx={{ '&:last-child': { pb: 2 } }}>
-        <Grid container direction="row" spacing={1}>
+        <Grid container  direction={isLG ? 'column' : 'row'} spacing={1}>
           <Grid item xs={4}>
             <General displayName={displayName} trainingPhrases={trainingPhrases} />
           </Grid>
@@ -59,10 +64,10 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
         </Grid>
 
         {(inputContextNames || inputContextNames) && (
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
+          <Stack
+            direction={isSM ? 'column' : 'row'}
+            alignItems={isSM ? 'flex-start' : 'center'}
+            spacing={1}
             mx={-2}
             mt={1}
             mb={-2}
@@ -81,7 +86,7 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
                 <Contexts contexts={outputContexts} type="output" />
               )}
             </>
-          </Box>
+          </Stack>
         )}
       </CardContent>
     </Card>

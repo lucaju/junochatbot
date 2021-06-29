@@ -21,57 +21,40 @@ export const state: State = {
     return projectName;
   }),
   contexts: derived((state: State) => {
-    let contextCollection = [] as ContextRelation[];
+    const contextCollection = [] as ContextRelation[];
 
     state.collection.forEach(({ displayName, inputContextNames, outputContexts }) => {
-      if (!inputContextNames && !outputContexts) return;
+      inputContextNames?.forEach((contextIn) => {
+        const existingContext = contextCollection.find((ctx) => ctx.name === contextIn);
+        if (existingContext) {
+          existingContext.inputs = existingContext.inputs
+            ? [...existingContext.inputs, displayName]
+            : [displayName];
+        } else {
+          const inContextName = contextIn.split('/');
+          contextCollection.push({
+            shortname: inContextName[inContextName.length - 1],
+            name: contextIn,
+            inputs: [displayName],
+          });
+        }
+      });
 
-      if (inputContextNames) {
-        inputContextNames.forEach((contextIn) => {
-          const existingContext =
-            contextCollection.length > 0
-              ? contextCollection.find((ctx) => ctx.name === contextIn)
-              : undefined;
-
-          if (existingContext) {
-            if (existingContext.inputs) {
-              existingContext.inputs = [...existingContext.inputs, displayName];
-            }
-          } else {
-            const inContextName = contextIn.split('/');
-            contextCollection = [
-              {
-                name: inContextName[inContextName.length - 1],
-                inputs: [displayName],
-              },
-              ...contextCollection,
-            ];
-          }
-        });
-      }
-
-      if (outputContexts) {
-        outputContexts.forEach((contextOut) => {
-          const existingContext =
-            contextCollection.length > 0
-              ? contextCollection.find((ctx) => ctx.name === contextOut.name)
-              : undefined;
-
-          if (existingContext) {
-            if (existingContext.outputs)
-              existingContext.outputs = [...existingContext.outputs, displayName];
-          } else {
-            const outContextName = contextOut.name.split('/');
-            contextCollection = [
-              {
-                name: outContextName[outContextName.length - 1],
-                outputs: [displayName],
-              },
-              ...contextCollection,
-            ];
-          }
-        });
-      }
+      outputContexts?.forEach((contextOut) => {
+        const existingContext = contextCollection.find((ctx) => ctx.name === contextOut.name);
+        if (existingContext) {
+          existingContext.outputs = existingContext.outputs
+            ? [...existingContext.outputs, displayName]
+            : [displayName];
+        } else {
+          const outContextName = contextOut.name.split('/');
+          contextCollection.push({
+            shortname: outContextName[outContextName.length - 1],
+            name: contextOut.name,
+            outputs: [displayName],
+          });
+        }
+      });
     });
 
     return contextCollection;

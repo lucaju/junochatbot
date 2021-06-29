@@ -1,4 +1,4 @@
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, useMediaQuery, useTheme } from '@material-ui/core';
 import Page from '@src/components/Page';
 import { useAppState, useActions } from '@src/overmind';
 import { RoleType } from '@src/types';
@@ -14,6 +14,9 @@ const UsersView: FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(['users']);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   useEffect(() => {
     const userTypeAllowed = [RoleType.ADMIN, RoleType.INSTRUCTOR];
     if (!session.user || !userTypeAllowed.includes(session.user.roleTypeId)) {
@@ -26,12 +29,23 @@ const UsersView: FC = () => {
   return (
     <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
-        <Grid container spacing={5}>
-          <Grid item xs={session.isAdmin ? 8 : 12}>
+        <Grid
+          container
+          direction={isMobile ? 'column-reverse' : 'row'}
+          spacing={5}
+          flexWrap="nowrap"
+        >
+          <Grid
+            item
+            xs={12}
+            sm={session.isAdmin ? 8 : 12}
+            md={session.isAdmin ? 8 : 12}
+            lg={session.isAdmin ? 9 : 12}
+          >
             <UsersSection />
           </Grid>
           {session.isAdmin && (
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={4} md={4} lg={3}>
               <GroupsSection />
             </Grid>
           )}

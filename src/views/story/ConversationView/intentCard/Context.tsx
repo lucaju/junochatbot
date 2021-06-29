@@ -21,7 +21,10 @@ const Context: FC<ContextProps> = ({ lifespan = 0, name, type = 'input' }) => {
       mr={1}
       py={0.5}
       px={1.5}
-      sx={{ backgroundColor: ({ palette }) => palette.action.hover }}
+      sx={{
+        width: 'max-content',
+        backgroundColor: ({ palette }) => palette.action.hover
+      }}
     >
       <Typography variant="body2">{text}</Typography>
       {type === 'output' && (

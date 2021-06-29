@@ -27,6 +27,7 @@ const Fields: FC<FieldsProps> = ({ errors, handleBlur, handleChange, touched, va
         onChange={handleChange}
         sx={{ textTransform: 'capitalize' }}
         value={values.name}
+        variant="standard"
       />
       <TextField
         error={Boolean(touched.institution && errors.institution)}
@@ -38,6 +39,7 @@ const Fields: FC<FieldsProps> = ({ errors, handleBlur, handleChange, touched, va
         onChange={handleChange}
         sx={{ textTransform: 'capitalize' }}
         value={values.institution}
+        variant="standard"
       />
       <TextField
         error={Boolean(touched.description && errors.description)}
@@ -49,6 +51,7 @@ const Fields: FC<FieldsProps> = ({ errors, handleBlur, handleChange, touched, va
         onChange={handleChange}
         sx={{ textTransform: 'capitalize' }}
         value={values.description}
+        variant="standard"
       />
     </Stack>
   );

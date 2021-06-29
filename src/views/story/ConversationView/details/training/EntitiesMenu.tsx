@@ -5,12 +5,11 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Menu,
-  MenuItem,
+  MenuItem
 } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect } from 'react';
-import useParameter from '../parameters/hooks';
 
 interface EntitiesMenuProps {
   anchorEl?: HTMLElement | null;
@@ -35,7 +34,6 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
 }) => {
   const { intents } = useAppState();
   const actions = useActions();
-  const { params } = useParameter();
 
   useEffect(() => {
     const fetchEntities = async () => {
@@ -64,8 +62,7 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
       onClose={handleClose}
       open={open}
     >
-      {params &&
-        params.map(({ name, displayName }) => (
+      {intents.currentIntent?.parameters?.map(({ name, displayName }) => (
           <ListItem key={name} dense onClick={handleClose} selected={value === displayName}>
             <ListItemText primary={displayName} />
             {value === displayName && (
@@ -77,7 +74,7 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
             )}
           </ListItem>
         ))}
-      {params && <Divider sx={{ my: 0.5 }} />}
+      {intents.currentIntent?.parameters && <Divider sx={{ my: 0.5 }} />}
       {intents.entities.map(({ id, name }) => (
         <MenuItem key={id} dense onClick={() => handleClick(name)}>
           {name}

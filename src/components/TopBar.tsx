@@ -1,4 +1,13 @@
-import { AppBar, Avatar, Box, IconButton, Toolbar, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  IconButton,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import { APP_URL } from '@src/config/config.js';
@@ -16,6 +25,9 @@ interface TopBarProps {
 const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
   const { session, ui } = useAppState();
   const [anchorProfileEl, setAnchorProfileEl] = useState<HTMLDivElement | undefined>();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleProfileClick = (event: MouseEvent<HTMLDivElement>) => {
     setAnchorProfileEl(event.currentTarget);
@@ -35,9 +47,13 @@ const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
                 <MenuIcon />
               </IconButton>
             )}
-            <RouterLink to="/">
-              <Logo height={32} sx={{ ml: 1, mt: 1 }} type="simplified" />
-            </RouterLink>
+            {
+              !isMobile && (
+                <RouterLink to="/">
+                  <Logo height={32} sx={{ ml: 1, mt: 1 }} type="simplified" />
+                </RouterLink>
+              )
+            }
           </Box>
           <Box flexGrow={1} />
           <Typography component="h1" noWrap sx={{ textTransform: 'capitalize' }} variant="h5">

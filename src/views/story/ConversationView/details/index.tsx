@@ -1,28 +1,18 @@
 import {
-  Box,
-  Collapse,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
-  Grid,
   Slide,
-  Tab,
-  Tabs,
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
-import EditAttributesIcon from '@material-ui/icons/EditAttributes';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import DeleteDialog from '@src/components/DeleteDialog';
-import { useActions } from '@src/overmind';
-import { Intent, NotificationType } from '@src/types';
+import { useActions, useAppState } from '@src/overmind';
+import { NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TransitionGroup } from 'react-transition-group';
 import Actions from './Actions';
 import Contexts from './contexts';
 import Header from './Header';
@@ -44,10 +34,12 @@ interface DetailsProps {
 }
 
 const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
+  const { intents } = useAppState();
   const actions = useActions();
   const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
+
   const [action, setAction] = useState<string>();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState('context');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -64,10 +56,12 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
 
     return () => {
       setAction(undefined);
-      setActiveTab(0);
+      setActiveTab('context');
       setDeleteDialogOpen(false);
     };
   }, [open]);
+
+  const changeTab = (value: string) => setActiveTab(value);
 
   const submit = async () => {
     setIsSubmitting(true);
@@ -90,27 +84,21 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     const message = action === 'create' ? t('intentCreated') : t('intentUpdated');
     actions.ui.showNotification({ message, type });
 
-    // handleClose();
-    if (action === 'create') setAction('edit');
     setIsSubmitting(false);
+
+    if (action === 'create') return setAction('edit');
+    handleClose();
   };
 
-  // const submitDelete = async () => {
-  //   if (!intentData.name) return;
-  //   const response = await actions.intents.deleteIntent(intentData.name);
+  const submitDelete = async () => {
+    const response = await actions.intents.deleteIntent(intents.currentIntent?.name);
 
-  //   const type = isError(response)
-  //     ? NotificationType.ERROR
-  //     : NotificationType.SUCCESS;
+    const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
+    const message = isError(response) ? t('errorMessages:somethingWentWrong') : t('intentDeleted');
 
-  //   const message = isError(response)
-  //     ? t('errorMessages:somethingWentWrong')
-  //     : t('intentDeleted');
-
-  //   actions.ui.showNotification({ message, type });
-
-  //   handleClose();
-  // };
+    actions.ui.showNotification({ message, type });
+    handleClose();
+  };
 
   return (
     <>
@@ -118,9 +106,8 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
         <Dialog
           aria-labelledby="intent-details-dialog"
           fullWidth
+          keepMounted
           maxWidth={action === 'create' ? 'sm' : 'md'}
-          onBackdropClick={handleClose}
-          onClose={handleClose}
           open={open}
           TransitionComponent={Transition}
         >
@@ -130,43 +117,16 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
               textAlign: 'center',
             }}
           >
-            <Header action={action} />
+            <Header action={action} activeTab={activeTab} changeTab={changeTab} />
           </DialogTitle>
           <Divider />
           {action === 'edit' && (
-            <>
-              <Grid container>
-                <Grid item xs={2}>
-                  <Box mt={1}>
-                    <Tabs
-                      centered
-                      indicatorColor="primary"
-                      onChange={(_event: ChangeEvent, newValue: number) => setActiveTab(newValue)}
-                      orientation="vertical"
-                      textColor="primary"
-                      value={activeTab}
-                    >
-                      <Tab icon={<CenterFocusWeakIcon />} label="Contexts" />
-                      <Tab icon={<FitnessCenterIcon />} label="Traning" />
-                      <Tab icon={<EditAttributesIcon />} label="Parameters" />
-                      <Tab icon={<ChatOutlinedIcon />} label="Responses" />
-                    </Tabs>
-                  </Box>
-                </Grid>
-                <Grid item xs>
-                  <DialogContent sx={{ height: 600 }}>
-                    <TransitionGroup>
-                      <Collapse>
-                        <Contexts activeTabIndex={activeTab} index={0} />
-                        {/* <Training activeTabIndex={activeTab} index={1} />
-                        <IntentParams  activeTabIndex={activeTab} index={2}/>
-                        <Responses activeTabIndex={activeTab} index={3} /> */}
-                      </Collapse>
-                    </TransitionGroup>
-                  </DialogContent>
-                </Grid>
-              </Grid>
-            </>
+            <DialogContent sx={{ height: 600 }}>
+              {activeTab === 'context' && <Contexts />}
+              {activeTab === 'training' && <Training />}
+              {activeTab === 'parameters' && <IntentParams />}
+              {activeTab === 'responses' && <Responses />}
+            </DialogContent>
           )}
           <Divider />
           <DialogActions>
@@ -181,7 +141,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
             handleNo={() => setDeleteDialogOpen(false)}
             handleYes={() => {
               setDeleteDialogOpen(false);
-              // submitDelete()
+              submitDelete();
             }}
             isSubmitting={isSubmitting}
             message={t('deleteDialog:message', { object: t('intent') })}

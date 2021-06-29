@@ -1,4 +1,12 @@
-import { Box, MenuItem, Stack, TextField, Typography } from '@material-ui/core';
+import {
+  Box,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import { useAppState } from '@src/overmind';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
@@ -18,6 +26,10 @@ interface BotProps {
 const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
   const { story } = useAppState();
   const { t } = useTranslation(['storyGeneral', 'common']);
+
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMD = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Stack direction="column" spacing={2}>
@@ -61,7 +73,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
           </TextField>
         </Box>
       </Box>
-      <Box p={1} width="100%">
+      <Box p={1}>
         <TextField
           error={Boolean(touched['botPersona'] && errors['botPersona'])}
           fullWidth
@@ -76,7 +88,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
           variant="outlined"
         />
       </Box>
-      <Box width="50%" minWidth={'330px'} p={1}>
+      <Box width={isMD ? '100%' : '50%'} p={1}>
         <Box>
           <Typography
             sx={{

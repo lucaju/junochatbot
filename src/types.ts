@@ -120,6 +120,7 @@ export type Entity = {
 
 export type ContextRelation = {
   name: string;
+  shortname: string;
   inputs?: string[];
   outputs?: string[];
 };
@@ -171,6 +172,9 @@ type Value = {
 };
 
 export type Context = {
+  id?: string;
+  type?: 'input' | 'output';
+  shortName?: string;
   name: string;
   lifespanCount?: number;
   parameters?: Map<string, Value>;
@@ -188,12 +192,14 @@ export type Parameter = {
 };
 
 export type Text = {
+  id?: string;
   text: {
     text?: string[];
   };
 };
 
 export type Payload = {
+  id?: string;
   payload: VideoMessage;
 };
 
@@ -220,6 +226,7 @@ export type Intent = {
   liveAgentHandoff?: boolean;
   endInteraction?: boolean;
   inputContextNames?: string[];
+  inputContexts?: Context[];
   events?: string[];
   trainingPhrases?: TrainingPhrase[];
   action?: string;

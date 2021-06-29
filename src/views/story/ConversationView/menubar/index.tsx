@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from '@material-ui/core';
+import { Box, Button, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { HandleFilterType } from '@src/types';
@@ -20,16 +20,19 @@ const MenuBar: FC<MenuBarProps> = ({
 }) => {
   const { t } = useTranslation(['intents']);
 
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleCreateClick = () => handleDetailOpen();
 
   return (
-    <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
+    <Stack direction={isSM ? 'column' : 'row'} spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
       <Button color="primary" onClick={handleCreateClick} startIcon={<AddCircleOutlineIcon />}>
         {t('createIntent')}
       </Button>
       {!disabledFilters && (
         <>
-          <Box flexGrow={1} />
+          {!isSM && <Box flexGrow={1} />}
           <SearchBox handleSearch={handleSearch} />
         </>
       )}

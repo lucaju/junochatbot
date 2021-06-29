@@ -1,4 +1,11 @@
-import { Box, CircularProgress, Container } from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +29,11 @@ const GeneralView: FC = () => {
   const { t } = useTranslation(['storyGeneral', 'common', 'errorMessages, deleteDialog']);
   const [isLoading, setIsLoading] = useState(false);
   const [storyData, setStoryData] = useState<Story | undefined>(story.currentStory);
+
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMD = useMediaQuery(theme.breakpoints.down('md'));
+  const isLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   useEffect(() => {
     if (!storyId) return navigate('/app', { replace: true });
@@ -91,27 +103,26 @@ const GeneralView: FC = () => {
               values,
             }) => (
               <form onSubmit={handleSubmit}>
-                <Box height="100%">
-                  <Container maxWidth={false} sx={{ height: 'calc(100vh - 64px - 68px - 36px)' }}>
-                    <Box alignItems="flex-start" display="flex" flexDirection="row">
-                      <Box flexGrow={1} maxWidth="770px" pr={2}>
-                        <Main
-                          errors={errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                          touched={touched}
-                          values={values}
-                        />
-                      </Box>
-                      <Box width="330px">
-                        <SideBar values={values} />
-                      </Box>
+                <Container maxWidth={false} sx={{ height: 'calc(100vh - 64px - 68px - 36px)' }}>
+                  <Stack
+                    direction={isSM ? 'column' : 'row'}
+                    alignItems={isSM ? 'stretch' : 'flex-start'}
+                  >
+                    <Box flexGrow={1} pr={2}>
+                      <Main
+                        errors={errors}
+                        handleBlur={handleBlur}
+                        handleChange={handleChange}
+                        touched={touched}
+                        values={values}
+                      />
                     </Box>
-                  </Container>
-                </Box>
-                <Box maxWidth="1100px" ml={3} mr={3}>
-                  <BottomBar dirty={dirty} name={'publishedDate'} isSubmitting={isSubmitting} />
-                </Box>
+                    <SideBar values={values} />
+                  </Stack>
+                  <Box maxWidth="1100px" ml={3} mr={3}>
+                    <BottomBar dirty={dirty} name={'publishedDate'} isSubmitting={isSubmitting} />
+                  </Box>
+                </Container>
               </form>
             )}
           </Formik>

@@ -1,4 +1,4 @@
-import { Container, Link, Typography } from '@material-ui/core';
+import { Container, Link, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
@@ -19,6 +19,9 @@ const ResetPasswordView: FC = () => {
   const { t } = useTranslation(['auth', 'common', 'errorMessages']);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
+
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (session.isSignedIn || !resetToken) {
@@ -60,7 +63,7 @@ const ResetPasswordView: FC = () => {
           mt: 8,
         }}
       >
-        <Logo height={160} sx={{ mb: 8 }} type="full" />
+        <Logo height={isSM ? 120 : 160} sx={{ mb: 8 }} type="full" />
         <>
           {requestSent ? (
             <Typography color="textPrimary" component="h1" variant="body1">

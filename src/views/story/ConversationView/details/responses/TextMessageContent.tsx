@@ -1,15 +1,7 @@
 import { Box, IconButton, TextField, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import React, {
-  ChangeEvent,
-  FC,
-  FocusEvent,
-  KeyboardEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import useParameter from '../parameters/hooks';
+import { useAppState } from '@src/overmind';
+import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, useRef, useState } from 'react';
 import MenuParameters from './MenuParameters';
 
 interface TextMessageContentProps {
@@ -27,7 +19,9 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
   handleUpdate,
   removable = true,
 }) => {
-  const { params } = useParameter();
+  const {
+    intents: { currentIntent },
+  } = useAppState();
   const TFref = useRef();
 
   const [elTarget, setElTarget] = useState<HTMLElement>();
@@ -35,18 +29,13 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
   const [value, setValue] = useState(content);
   const [showParameters, setShowParameters] = useState(false);
 
-  useEffect(() => {
-    setValue(content);
-    return () => {};
-  }, [content]);
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.currentTarget.value);
   };
 
   const handleKeyUp = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key !== '$') return;
-    if (!params) return;
+    if (!currentIntent?.parameters) return;
     setElTarget(event.currentTarget);
     setShowParameters(true);
   };
@@ -91,8 +80,9 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
         onKeyUp={handleKeyUp}
         sx={{ mb: 1.5 }}
         value={value}
+        variant="standard"
       />
-      {params && (
+      {currentIntent?.parameters && (
         <MenuParameters
           handleClick={handleParamSelect}
           handleClose={handleParamsClose}

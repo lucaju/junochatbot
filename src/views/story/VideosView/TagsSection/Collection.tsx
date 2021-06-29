@@ -1,5 +1,4 @@
 import { Box, Skeleton, useMediaQuery, useTheme } from '@material-ui/core';
-import NoContent from '@src/components/NoContent';
 import { useAppState, useActions } from '@src/overmind';
 import React, { FC } from 'react';
 import TagCard from './TagCard';
@@ -23,10 +22,8 @@ const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }
   };
 
   return (
-    <Box display="flex" flexDirection={isMobile ? 'row' : 'column'} sx={{ overflow: 'scroll' }}>
-      {videos.tagCollection.length === 0 ? (
-        <NoContent />
-      ) : isLoading ? (
+    <Box display="inline-flex" flexDirection={isMobile ? 'row' : 'column'}>
+      {isLoading ? (
         showSkeleton(4)
       ) : (
         videos.tagCollection.map((tag) => (

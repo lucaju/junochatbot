@@ -1,41 +1,19 @@
 import { Box, Button, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { TrainingPhrase } from '@src/types';
-import { useField } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import { useActions } from '@src/overmind';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
-import useTrainingPhrases from './hooks';
 
-interface TrainingProps {
-  activeTabIndex: number;
-  fieldName: string;
-  index: number;
-}
-
-const Training: FC<TrainingProps> = ({ activeTabIndex, fieldName, index }) => {
+const Training: FC = () => {
+  const actions = useActions();
   const { t } = useTranslation(['intents']);
-  const [, meta] = useField(fieldName);
-  const { value }: { value: TrainingPhrase[] } = meta;
-  const { createNewPhrase } = useTrainingPhrases();
-  const [training, setTraining] = useState<TrainingPhrase[]>([]);
 
-  useEffect(() => {
-    setTraining(value);
-    return () => {};
-  }, [value]);
-
-  const addNewPhrase = () => {
-    const freshPhrase = createNewPhrase();
-    setTraining([freshPhrase, ...value]);
-  };
+  const addNewPhrase = () => actions.intents.createPhrase();
 
   return (
-    <Box role="tabpanel" hidden={activeTabIndex !== index}>
+    <Box>
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
-        <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
-          {t('training phrases')}
-        </Typography>
         <Typography gutterBottom variant="caption">
           Phrases you can expect from user, that will trigger the intent.
         </Typography>
@@ -43,7 +21,7 @@ const Training: FC<TrainingProps> = ({ activeTabIndex, fieldName, index }) => {
           {t('addPhrase')}
         </Button>
       </Box>
-      <Collection phraseList={training} />
+      <Collection />
     </Box>
   );
 };

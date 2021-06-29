@@ -20,7 +20,7 @@ const GroupCard: FC<GroupCardProps> = ({ group, handleEditClick, ...rest }) => {
       onClick={() => handleEditClick(group.id)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      sx={{ cursor: 'pointer', my: 2, mx: 1 }}
+      sx={{ cursor: 'pointer', width: 'max-content', my: 2, mx: 1 }}
       {...rest}
     >
       <CardContent sx={{ py: 1, px: 2, '&:last-child': { pb: 1 } }}>

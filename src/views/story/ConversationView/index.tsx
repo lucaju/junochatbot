@@ -1,7 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -86,7 +86,7 @@ const ConversationView: FC = () => {
         {!hasIntents ? (
           <NoContent heading={t('noIntentsYet')} />
         ) : (
-          <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
+          <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'auto' }}>
             <Collection
               filters={filters}
               handleDetailOpen={handleDetailOpen}

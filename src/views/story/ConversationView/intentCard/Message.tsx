@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -12,6 +12,9 @@ interface MessageProps {
 
 const Message: FC<MessageProps> = ({ message }) => {
   const actions = useActions();
+
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   let type = 'text';
   let variation = false;
@@ -44,13 +47,13 @@ const Message: FC<MessageProps> = ({ message }) => {
   return (
     <>
       {show && (
-        <Box display="flex" flexDirection="row" alignItems="center" mb={1}>
+        <Box display="flex" flexDirection="row" alignItems={isSM ? 'flex-start' : 'center'} mb={1}>
           {type === 'payload' ? (
             <YouTubeIcon fontSize="small" sx={{ mr: 1 }} />
           ) : (
             <ChatOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
           )}
-          <Typography noWrap variant="body2">
+          <Typography noWrap={isSM ? false : true} variant="body2">
             {text}
           </Typography>
           {variation && <ShuffleIcon fontSize="small" sx={{ mr: 1 }} />}

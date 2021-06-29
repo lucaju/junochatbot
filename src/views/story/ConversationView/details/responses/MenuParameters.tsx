@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from '@material-ui/core';
+import { useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
-import useParameter from '../parameters/hooks';
 import { getCursorXY } from './helper';
 
 interface MenuParametersProps {
@@ -23,7 +23,9 @@ const MenuParameters: FC<MenuParametersProps> = ({
   open,
   target,
 }) => {
-  const { params } = useParameter();
+  const {
+    intents: { currentIntent },
+  } = useAppState();
   const [charPosition, setCharPosition] = useState(0);
   const [anchorPosition, setAnchorPosition] = useState<MenuAnchorPositionType>({ top: 0, left: 0 });
 
@@ -55,7 +57,7 @@ const MenuParameters: FC<MenuParametersProps> = ({
       onClose={handleClose}
       open={open}
     >
-      {params.map(({ value }, i) => (
+      {currentIntent?.parameters?.map(({ value }, i) => (
         <MenuItem
           key={i}
           onClick={() => {

@@ -1,4 +1,13 @@
-import { Box, Card, CardContent, Chip, Divider, Typography, useTheme } from '@material-ui/core';
+import {
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Divider,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { DateTime } from 'luxon';
@@ -13,6 +22,8 @@ interface StoryCardProps {
 const StoryCard: FC<StoryCardProps> = ({ values }) => {
   const { t } = useTranslation(['common']);
   const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [BotAvatar, setBotAvatar] = useState(getIcon(values.botAvatar));
 
   useEffect(() => {
@@ -25,7 +36,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
       <Typography gutterBottom variant="h6">
         Poster
       </Typography>
-      <Card elevation={theme.palette.mode === 'light' ? 1 : 3} sx={{ width: 350 }}>
+      <Card elevation={theme.palette.mode === 'light' ? 1 : 3} sx={{ width: isSM ? 'auto' : 300 }}>
         <FeaturedImage name={'imageUrl'} title={values.title} />
         <CardContent>
           <Box display="flex" alignItems="center">

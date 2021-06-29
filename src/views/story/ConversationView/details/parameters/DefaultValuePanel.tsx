@@ -31,6 +31,7 @@ const ParamsExtra: FC<ParamsExtraProps> = ({ defaultValue = '', handleUpdateDefa
         onBlur={handleBlur}
         onChange={handleChange}
         value={_defaultValue}
+        variant="standard"
       />
     </Box>
   );

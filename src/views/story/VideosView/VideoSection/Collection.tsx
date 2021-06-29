@@ -1,11 +1,12 @@
-import { Box, ImageList, ImageListItem, Skeleton } from '@material-ui/core';
+import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useAppState, useActions } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { Tag, Video } from '@src/types';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
-import VideoCard from './VideoCard';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import VideoCard from './VideoCard';
 
 interface CollectionProps {
   filters: Map<string, number>;
@@ -71,13 +72,23 @@ const Collection: FC<CollectionProps> = ({
       ) : filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 1050: 2, 1350: 3, 1650: 4 }}>
-          <Masonry>
-            {filteredItems.map((video) => (
-              <VideoCard key={video.id} handleEditClick={handleDetailOpen} video={video} />
-            ))}
-          </Masonry>
-        </ResponsiveMasonry>
+        <AnimatePresence initial={false}>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 1000: 2, 1400: 3, 1650: 4 }}>
+            <Masonry>
+              {filteredItems.map((video) => (
+                <Box
+                  key={video.id}
+                  component={motion.div}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                >
+                  <VideoCard handleEditClick={handleDetailOpen} video={video} />
+                </Box>
+              ))}
+            </Masonry>
+          </ResponsiveMasonry>
+        </AnimatePresence>
       )}
     </Box>
   );

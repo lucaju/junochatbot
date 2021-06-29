@@ -1,7 +1,7 @@
 import { Box, Skeleton } from '@material-ui/core';
-import NoContent from '@src/components/NoContent';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { Story } from '@src/types';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -96,21 +96,24 @@ const Collection: FC<CollectionProps> = ({
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {showSkeleton(4)}
         </Box>
-      ) : filteredItems.length === 0 ? (
-        <NoContent />
       ) : (
-        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
-          <Masonry>
-            {filteredItems.map((story) => (
-              <StoryCard
-                key={story.id}
-                showEdit={true}
-                story={story}
-                triggerEditStory={triggerEditStory}
-              />
-            ))}
-          </Masonry>
-        </ResponsiveMasonry>
+        <AnimatePresence initial={false}>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
+            <Masonry>
+              {filteredItems.map((story) => (
+                <Box
+                  key={story.id}
+                  component={motion.div}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                >
+                  <StoryCard showEdit={true} story={story} triggerEditStory={triggerEditStory} />
+                </Box>
+              ))}
+            </Masonry>
+          </ResponsiveMasonry>
+        </AnimatePresence>
       )}
     </Box>
   );

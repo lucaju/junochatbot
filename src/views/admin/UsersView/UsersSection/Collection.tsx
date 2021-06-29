@@ -1,9 +1,9 @@
-import { Box, Collapse, Skeleton } from '@material-ui/core';
+import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { User } from '@src/types';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
-import { TransitionGroup } from 'react-transition-group';
 import UserCard from './UserCard';
 
 interface CollectionProps {
@@ -84,13 +84,20 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
       ) : filteredItems.length === 0 ? (
         <NoContent />
       ) : (
-        <TransitionGroup>
+        <AnimatePresence initial={false}>
           {filteredItems.map((user) => (
-            <Collapse key={user.id}>
+            <Box
+              key={user.id}
+              component={motion.div}
+              initial={{ height: 0 }}
+              animate={{ height: 'auto' }}
+              exit={{ height: 0 }}
+              sx={{ overflowY: 'hidden' }}
+            >
               <UserCard handleEditClick={handleDetailOpen} user={user} />
-            </Collapse>
+            </Box>
           ))}
-        </TransitionGroup>
+        </AnimatePresence>
       )}
     </Box>
   );

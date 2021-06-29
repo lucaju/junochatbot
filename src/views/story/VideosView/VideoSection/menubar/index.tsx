@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from '@material-ui/core';
+import { Box, Button, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { HandleFilterType } from '@src/types';
@@ -23,8 +23,12 @@ const MenuBar: FC<MenuBarProps> = ({
 }) => {
   const { t } = useTranslation(['videos']);
 
+  const theme = useTheme();
+  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const isLG = useMediaQuery(theme.breakpoints.down('lg'));
+
   return (
-    <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
+    <Stack direction={isSM ? 'column' : 'row'} spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
       <Button
         color="primary"
         onClick={() => handleDetailOpen()}
@@ -36,7 +40,7 @@ const MenuBar: FC<MenuBarProps> = ({
         <>
           <Box flexGrow={1} />
           <SearchBox handleSearch={handleSearch} />
-          <FilterTag handleFilter={handleFilterByTag} />
+          {!isLG && <FilterTag handleFilter={handleFilterByTag} />}
         </>
       )}
     </Stack>
