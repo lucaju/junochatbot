@@ -1,10 +1,7 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
 import express from 'express';
-import youtube from './routes/youtube.mjs';
+import youtube from './routes/youtube';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const publicPath = path.join(__dirname, '..', 'dist');
 const app = express();
 
@@ -12,7 +9,7 @@ app.use(express.json({ limit: '5mb' })); // support json encoded bodies
 
 // dev tools
 const loadDevTools = async () => {
-  const { devTools } = await import('./dev/dev.mjs');
+  const { devTools } = await import('./dev/dev');
   devTools(app);
 };
 

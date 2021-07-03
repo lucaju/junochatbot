@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'juno',
-      script: './server/index.mjs',
+      script: 'ts-node ./server/index.tjs',
       args: '--no-daemon',
       node_args: '--experimental-top-level-await',
       env: {

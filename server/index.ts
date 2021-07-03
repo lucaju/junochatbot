@@ -1,4 +1,4 @@
-import app from './server.mjs';
+import app from './server';
 import chalk from 'chalk';
 const port = process.env.PORT || 3000;
 

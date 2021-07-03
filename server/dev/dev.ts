@@ -1,11 +1,11 @@
 import chalk from 'chalk';
+import { Express } from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 // import webpackHotMiddleware from 'webpack-hot-middleware';
+import config from '../../webpack.config';
 
-import config from '../../webpack.config.mjs';
-
-export const devTools = (app) => {
+export const devTools = (app: Express) => {
   // webpack middleware and hot reload
   // config.entry.app.unshift(
   //   'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true&timeout=1000'
@@ -14,7 +14,7 @@ export const devTools = (app) => {
   const compiler = webpack(config);
   app.use(
     webpackDevMiddleware(compiler, {
-      publicPath: config.output.publicPath,
+      publicPath: '/',
       writeToDisk: true,
       stats: { colors: true },
     })

@@ -1,18 +1,15 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 // import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import { ESBuildMinifyPlugin } from 'esbuild-loader';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 // import TerserPlugin from 'terser-webpack-plugin';
-import webpack from 'webpack';
+import webpack, { EntryObject, ResolveOptions, RuleSetRule, WebpackPluginInstance } from 'webpack';
 import WebpackBar from 'webpackbar';
-import { ESBuildMinifyPlugin } from 'esbuild-loader';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const env = process.env.NODE_ENV;
 
 const mode = env === 'development' ? 'development' : 'production';
@@ -27,7 +24,7 @@ const devServer =
       }
     : {};
 
-const entry = {
+const entry: EntryObject = {
   app: [path.resolve(__dirname, 'src', 'index.tsx')],
 };
 
@@ -37,7 +34,7 @@ const output = {
   pathinfo: env === 'development' ? true : false,
 };
 
-const resolve = {
+const resolve: ResolveOptions = {
   alias: {
     '@src': path.resolve(__dirname, 'src/'),
   },
@@ -54,7 +51,7 @@ const optimization = {
   usedExports: env === 'development' ? false : true,
 };
 
-const plugins = [
+const plugins: WebpackPluginInstance[] = [
   new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
   new CopyWebpackPlugin({
     patterns: [{ from: path.resolve(__dirname, 'src', 'assets'), to: 'assets' }],
@@ -72,78 +69,77 @@ const plugins = [
     'process.env.NODE_ENV': JSON.stringify(env),
   }),
 ];
-const module = {
-  rules: [
-    // {
-    //   rules: [
-    //     {
-    //       test: /\.tsx?$/,
-    //       exclude: /node_modules/,
-    //       use: 'ts-loader',
-    //     },
-    //   ],
-    // },
-    {
-      test: /\.tsx?$/,
-      loader: 'esbuild-loader',
-      options: {
-        loader: 'tsx', // Or 'ts' if you don't need tsx
-        target: 'es2020',
-      },
-    },
-    // {
-    //   test: /\.jsx?$/,
-    //   exclude: /node_modules/,
-    //   use: 'babel-loader',
-    // },
-    {
-      test: /\.js$/,
-      loader: 'esbuild-loader',
-      options: {
-        loader: 'js', // Remove this if you're not using JSX
-        target: 'es2020', // Syntax to compile to (see options below for possible values)
-      },
-    },
-    {
-      test: /\.css$/,
-      use: [MiniCssExtractPlugin.loader, 'css-loader'],
-    },
-    {
-      test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-      type: 'asset',
-      generator: {
-        filename: 'fonts/[name][ext][query]',
-      },
-    },
-    {
-      test: /\.(png|jpg|jpeg|gif)$/i,
-      type: 'asset/resource',
-      generator: {
-        filename: 'images/[name][ext][query]',
-      },
-    },
-    // {
-    //   test: /\.svg$/,
-    //   loader: 'svg-inline-loader',
-    // },
-  ],
-};
 
-const performance = { hints: env === 'development' ? false : 'warning' };
+const rules: RuleSetRule[] = [
+  // {
+  //   rules: [
+  //     {
+  //       test: /\.tsx?$/,
+  //       exclude: /node_modules/,
+  //       use: 'ts-loader',
+  //     },
+  //   ],
+  // },
+  {
+    test: /\.tsx?$/,
+    loader: 'esbuild-loader',
+    options: {
+      loader: 'tsx', // Or 'ts' if you don't need tsx
+      target: 'es2020',
+    },
+  },
+  // {
+  //   test: /\.jsx?$/,
+  //   exclude: /node_modules/,
+  //   use: 'babel-loader',
+  // },
+  {
+    test: /\.js$/,
+    loader: 'esbuild-loader',
+    options: {
+      loader: 'js', // Remove this if you're not using JSX
+      target: 'es2020', // Syntax to compile to (see options below for possible values)
+    },
+  },
+  {
+    test: /\.css$/,
+    use: [MiniCssExtractPlugin.loader, 'css-loader'],
+  },
+  {
+    test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+    type: 'asset',
+    generator: {
+      filename: 'fonts/[name][ext][query]',
+    },
+  },
+  {
+    test: /\.(png|jpg|jpeg|gif)$/i,
+    type: 'asset/resource',
+    generator: {
+      filename: 'images/[name][ext][query]',
+    },
+  },
+  // {
+  //   test: /\.svg$/,
+  //   loader: 'svg-inline-loader',
+  // },
+];
+
+const hints = env === 'development' ? false : 'warning';
 
 const debug = env === 'development' && false;
 const stats = debug ? { children: true } : {};
 
-const webpackConfig = {
+const webpackConfig: webpack.Configuration = {
   cache,
   devServer,
   devtool,
   entry,
   mode,
-  module,
+  module: { rules },
   optimization,
   output,
-  performance,
+  performance: { hints },
   plugins,
   resolve,
   stats,
