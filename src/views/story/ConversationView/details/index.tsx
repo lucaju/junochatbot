@@ -77,6 +77,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     if (isError(response)) {
       const message = t('errorMessages:somethingWentWrong');
       actions.ui.showNotification({ message, type });
+      setIsSubmitting(false);
       return;
     }
 
