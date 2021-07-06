@@ -20,6 +20,12 @@ const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) 
       (param) => param.entityTypeDisplayName === entityType
     ) ?? 0;
   paramIndex = paramIndex < intentParamColorPalette.length ? paramIndex : 0;
+
+  const onContextMenu = (event: MouseEvent<HTMLSpanElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
   return (
     <Box
       component="span"
@@ -28,6 +34,7 @@ const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) 
       data-entity-type={entityType}
       data-alias={alias}
       data-user-define={userDefined}
+      onContextMenu={onContextMenu}
       onClick={entityType ? handleClick : undefined}
       sx={{
         backgroundColor: entityType ? intentParamColorPalette[paramIndex] : 'inherent',
