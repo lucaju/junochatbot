@@ -12,17 +12,17 @@ const Collection: FC = () => {
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" rowGap={0.5}>
       <AnimatePresence initial={false}>
-        {currentIntent?.parameters?.map((param) => (
-            <Box
-              key={param.name}
-              component={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <ParamsComponent name={param.name} param={param} />
-            </Box>
-          ))}
+        {currentIntent?.parameters?.map((param, index) => (
+          <Box
+            key={param.name}
+            component={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <ParamsComponent index={index} name={param.name} param={param} />
+          </Box>
+        ))}
       </AnimatePresence>
     </Box>
   );

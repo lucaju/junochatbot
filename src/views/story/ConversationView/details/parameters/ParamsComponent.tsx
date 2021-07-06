@@ -19,8 +19,9 @@ import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import { alpha, styled } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { Parameter as ParameterType } from '@src/types';
+import { intentParamColorPalette, sortBy } from '@src/util/utilities';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DefaultValuePanel from './DefaultValuePanel';
@@ -42,12 +43,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 interface ParamsComponentProps {
+  index: number;
   name?: string;
   param: ParameterType;
 }
 
-const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
+const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) => {
   const theme = useTheme();
+  const { intents } = useAppState();
   const actions = useActions();
   const { t } = useTranslation(['intents']);
 
@@ -173,8 +176,10 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ name = '', param }) => {
         sx={{
           width: '100%',
           borderWidth: 1,
+          borderLeftWidth: 4,
           borderStyle: 'solid',
           borderColor: theme.palette.action.hover,
+          borderLeftColor: intentParamColorPalette[index],
           '&:focus-within': {
             boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
           },

@@ -14,3 +14,14 @@ export const sortBy = (items: any[], prop: any): any[] => {
   });
   return items;
 };
+
+export const intentParamColorPalette = [
+  '#ffd6a5ff',
+  '#fdffb6ff',
+  '#caffbfff',
+  '#9bf6ffff',
+  '#a0c4ffff',
+  '#bdb2ffff',
+  '#ffc6ffff',
+  '#ffadadff',
+];
