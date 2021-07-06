@@ -3,22 +3,32 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface NoContentProps {
+  align?: 'left' | 'center' | 'right';
   heading?: string;
+  size?: 'large' | 'medium' | 'small';
 }
 
-const NoContent: FC<NoContentProps> = ({ heading = 'noMatch' }) => {
+const NoContent: FC<NoContentProps> = ({
+  align = 'center',
+  heading = 'noMatch',
+  size = 'medium',
+}) => {
   const { t } = useTranslation(['noContent']);
+
+  const marginTop = size === 'large' ? 4 : size === 'small' ? 2 : 3;
+  const fontWeight = size === 'large' ? 700 : 500;
+  const variant = size === 'large' ? 'h4' : size === 'small' ? 'h5' : 'h6';
 
   return (
     <Typography
       sx={{
-        marginTop: '50px',
+        marginTop,
         color: ({ palette }) => palette.grey[700],
-        textAlign: 'center',
-        fontWeight: 700,
+        textAlign: align,
+        fontWeight,
         textTransform: 'uppercase',
       }}
-      variant="h4"
+      variant={variant}
     >
       {t(heading)}
     </Typography>
