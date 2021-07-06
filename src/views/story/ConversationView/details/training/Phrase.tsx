@@ -45,6 +45,11 @@ const Phrase: FC<PhraseProps> = ({
   const [hover, setHover] = useState(false);
   const [changed, setChanged] = useState(false);
   const [_parts, _setParts] = useState<PartType[]>(parts);
+
+  const [contextMenuAnchorRef, setContextMenuAnchorRef] = useState<
+    'none' | 'anchorEl' | 'anchorPosition'
+  >('none');
+  const [contextMenuAnchorPos, setContextMenuAnchorPos] = useState<{ top: number; left: number }>();
   const [contextMenuAnchorEl, setContextMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const [parameterAlias, setParameterAlias] = useState<string | undefined>();
@@ -104,33 +109,39 @@ const Phrase: FC<PhraseProps> = ({
     // @ts-ignore
     if (selection.baseOffset === selection.extentOffset) return;
 
-    openContextMenu(event.currentTarget);
+    setContextMenuAnchorRef('anchorPosition');
+    const mouseEvent = event.nativeEvent;
+    //@ts-ignore
+    setContextMenuAnchorPos({ top: mouseEvent.pageY, left: mouseEvent.pageX });
+    openContextMenu();
   };
 
   const handleHihglightClick = (event: MouseEvent<HTMLSpanElement>) => {
     if (contextMenuOpen) return;
 
-    // const entityType = event.currentTarget.dataset.entityType;
     const paramAlias = event.currentTarget.dataset.alias;
     if (!paramAlias) return;
 
-    openContextMenu(event.currentTarget, paramAlias);
+    setContextMenuAnchorRef('anchorEl');
+    setContextMenuAnchorEl(event.currentTarget);
+
+    openContextMenu(paramAlias);
   };
 
-  const handleAddPart = (entityName: string) => {
+  const handleAddPart = (entityName: string, paramName?: string) => {
     const selection = window.getSelection();
     if (!selection) return handleEntitiesMenuClose();
 
     const selectionData = getSelectionData(selection);
     if (!selectionData) return handleEntitiesMenuClose();
 
-    processUpdatePhrase({ ...selectionData, entityName });
+    processUpdatePhrase({ ...selectionData, entityName }, paramName);
 
     selection.removeAllRanges();
     handleEntitiesMenuClose();
   };
 
-  const handleUpdatePart = (currentAlias: string, entityName?: string) => {
+  const handleUpdatePart = (currentAlias: string, entityName?: string, paramName?: string) => {
     if (!entityName) return;
 
     const element = TypRef.current as HTMLElement;
@@ -142,9 +153,12 @@ const Phrase: FC<PhraseProps> = ({
     //schedule changes
     setChanged(true);
 
+    console.log(entityName);
+    console.log(actions.intents.isSinglePhraseParam(currentAlias));
+
     actions.intents.isSinglePhraseParam(currentAlias)
       ? actions.intents.updateParameterByAlias({ alias: currentAlias, entityName: entityName })
-      : actions.intents.addParameter(entityName);
+      : paramName && actions.intents.addParameter(entityName);
   };
 
   const handleRemovePart = (currentAlias?: string) => {
@@ -165,14 +179,13 @@ const Phrase: FC<PhraseProps> = ({
     handleEntitiesMenuClose();
   };
 
-  const openContextMenu = async (anchor: HTMLElement, contextValue?: string) => {
+  const openContextMenu = async (contextValue?: string) => {
     if (contextMenuOpen) return;
     if (contextValue) setParameterAlias(contextValue);
-    setContextMenuAnchorEl(anchor);
     setContextMenuOpen(true);
   };
 
-  const processUpdatePhrase = (selectionData?: SelectionDataType) => {
+  const processUpdatePhrase = (selectionData?: SelectionDataType, paramName?: string) => {
     const element = TypRef.current as HTMLElement;
     const protoParts: PartType[] = updateParts(element, selectionData);
 
@@ -184,9 +197,10 @@ const Phrase: FC<PhraseProps> = ({
     //schedule changes
     setChanged(true);
 
-    //add new Parameter
     if (!selectionData) return;
-    actions.intents.addParameter(selectionData.entityName);
+
+    //add new Parameter
+    if (!paramName) actions.intents.addParameter(selectionData.entityName);
   };
 
   const handleEntitiesMenuClose = () => {
@@ -225,15 +239,19 @@ const Phrase: FC<PhraseProps> = ({
           }),
         }}
       >
-        <EntitiesMenu
-          addPart={handleAddPart}
-          anchorEl={contextMenuAnchorEl}
-          handleClose={handleEntitiesMenuClose}
-          open={contextMenuOpen}
-          removePart={handleRemovePart}
-          updatePart={handleUpdatePart}
-          value={parameterAlias}
-        />
+        {contextMenuOpen && (
+          <EntitiesMenu
+            addPart={handleAddPart}
+            anchorEl={contextMenuAnchorEl}
+            anchorPos={contextMenuAnchorPos}
+            anchorReference={contextMenuAnchorRef}
+            handleClose={handleEntitiesMenuClose}
+            open={contextMenuOpen}
+            removePart={handleRemovePart}
+            updatePart={handleUpdatePart}
+            value={parameterAlias}
+          />
+        )}
         {!changed && (
           <Typography
             ref={TypRef}
