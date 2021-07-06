@@ -97,7 +97,11 @@ export const createIntent = async ({ state, effects }: Context): Promise<Intent 
   return response;
 };
 
-export const updateIntent = async ({ state, effects }: Context): Promise<Intent | ErrorMessage> => {
+export const updateIntent = async ({
+  state,
+  actions,
+  effects,
+}: Context): Promise<Intent | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -112,10 +116,15 @@ export const updateIntent = async ({ state, effects }: Context): Promise<Intent 
   const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
   if (isError(response)) return response;
 
+  const fetchCurrentIntent = response.name
+    ? await actions.intents.getIntent(response.name)
+    : response;
+  const updatedIntent = 'name' in fetchCurrentIntent ? fetchCurrentIntent : response;
+
   state.intents.currentIntent = undefined;
 
   state.intents.collection = state.intents.collection.map((intent) =>
-    response.name === intent.name ? response : intent
+    response.name === intent.name ? updatedIntent : intent
   );
 
   return response;
