@@ -6,6 +6,7 @@ import Contexts from './Contexts';
 import General from './General';
 import Message from './Message';
 import Paramenter from './Parameter';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface ContextCardProps {
   intent: Intent;
@@ -27,7 +28,6 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
 
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMD = useMediaQuery(theme.breakpoints.down('md'));
   const isLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   const mouseOver = () => setElevation(6);
@@ -39,7 +39,16 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
       onClick={() => handleEditClick(name)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      sx={{ my: 1, mx: 1.5, cursor: 'pointer' }}
+      sx={{
+        my: 1,
+        mx: 1.5,
+        cursor: 'pointer',
+
+      }}
+      component={motion.div}
+      initial={{ height: 0 }}
+      animate={{ height: 'auto' }}
+      exit={{ height: 0 }}
     >
       <CardContent sx={{ '&:last-child': { pb: 2 } }}>
         <Grid container  direction={isLG ? 'column' : 'row'} spacing={1}>
