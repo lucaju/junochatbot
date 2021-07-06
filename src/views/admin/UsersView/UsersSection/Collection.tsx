@@ -4,6 +4,7 @@ import { useActions, useAppState } from '@src/overmind';
 import { User } from '@src/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import UserCard from './UserCard';
 
 interface CollectionProps {
@@ -16,6 +17,8 @@ interface CollectionProps {
 const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, searchQuery }) => {
   const { session, users } = useAppState();
   const actions = useActions();
+  const { t } = useTranslation(['users']);
+
   const [filteredItems, setFilteredItems] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -77,28 +80,25 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
 
   return (
     <Box>
-      {isLoading ? (
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
-          {showSkeleton(4)}
-        </Box>
-      ) : filteredItems.length === 0 ? (
-        <NoContent />
-      ) : (
-        <AnimatePresence initial={false}>
-          {filteredItems.map((user) => (
-            <Box
-              key={user.id}
-              component={motion.div}
-              initial={{ height: 0 }}
-              animate={{ height: 'auto' }}
-              exit={{ height: 0 }}
-              sx={{ overflowY: 'hidden' }}
-            >
-              <UserCard handleEditClick={handleDetailOpen} user={user} />
-            </Box>
-          ))}
-        </AnimatePresence>
+      {!isLoading && filteredItems.length == 0 && (
+        <NoContent align="left" heading={t('noUsersYet')} size="large" />
       )}
+      <AnimatePresence initial={false}>
+        {isLoading
+          ? showSkeleton(4)
+          : filteredItems.map((user) => (
+              <Box
+                key={user.id}
+                component={motion.div}
+                initial={{ height: 0 }}
+                animate={{ height: 'auto' }}
+                exit={{ height: 0 }}
+                sx={{ overflowY: 'hidden' }}
+              >
+                <UserCard handleEditClick={handleDetailOpen} user={user} />
+              </Box>
+            ))}
+      </AnimatePresence>
     </Box>
   );
 };

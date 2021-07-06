@@ -2,7 +2,7 @@ import { Box, Button, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FilterGroup from '@src/components/menubar/FilterGroup';
 import SearchBox from '@src/components/menubar/SearchBox';
-import { useAppState, useActions } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,13 +15,15 @@ interface MenuBarProps {
   updateFilter: ({ type, value, reset }: HandleFilterType) => void;
 }
 
+const THRESHOOLD_SHOW_SEARCH = 3; //items
+
 const MenuBar: FC<MenuBarProps> = ({
   handleDetailOpen,
   handleFilterByGroup,
   handleSearch,
   updateFilter,
 }) => {
-  const { session } = useAppState();
+  const { session, users } = useAppState();
   const { t } = useTranslation(['users']);
 
   const theme = useTheme();
@@ -30,7 +32,7 @@ const MenuBar: FC<MenuBarProps> = ({
 
   return (
     <Stack
-      direction={isSM? 'column' : 'row'}
+      direction={isSM ? 'column' : 'row'}
       spacing={2}
       justifyContent="flex-end"
       alignItems={isSM ? 'stretch' : 'flex-start'}
@@ -45,7 +47,7 @@ const MenuBar: FC<MenuBarProps> = ({
       </Button>
       <Box flexGrow={1} />
       <Stack direction={isLG ? 'column' : 'row'} spacing={2}>
-        <SearchBox handleSearch={handleSearch} />
+        {users.list.length > THRESHOOLD_SHOW_SEARCH && <SearchBox handleSearch={handleSearch} />}
 
         <Stack direction={'row'} spacing={2} justifyContent="flex-end">
           {session.isAdmin && <FilterGroup handleFilter={handleFilterByGroup} />}

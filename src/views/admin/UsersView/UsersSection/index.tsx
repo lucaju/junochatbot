@@ -1,13 +1,11 @@
 import { Box } from '@material-ui/core';
 import { HandleFilterType } from '@src/types';
 import React, { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 import Details from './details';
 import MenuBar from './menubar';
 
 const UsersSection: FC = () => {
-  const { t } = useTranslation(['users']);
   const [currentUserId, setCurrentUserId] = useState<number | undefined>();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [filters, setFilters] = useState<Map<string, number | string>>(new Map());
