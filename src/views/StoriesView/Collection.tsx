@@ -5,11 +5,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import NoStories from './NoStories';
 import StoryCard from './StoryCard';
 
 interface CollectionProps {
   filters: Map<string, number>;
   isLoading: boolean;
+  handleAddDialogOpen: () => void;
   searchQuery: string | undefined;
   triggerEditStory: (value: number) => void;
   groupId?: number;
@@ -18,6 +20,7 @@ interface CollectionProps {
 const Collection: FC<CollectionProps> = ({
   filters,
   groupId,
+  handleAddDialogOpen,
   isLoading,
   searchQuery,
   triggerEditStory,
@@ -86,35 +89,32 @@ const Collection: FC<CollectionProps> = ({
     return new Array(qty)
       .fill(0)
       .map((sk, i) => (
-        <Skeleton key={i} width={300} height={200} sx={{ m: 2.5 }} variant="rectangular" />
+        <Skeleton key={i} height={200} sx={{ m: 2.5 }} variant="rectangular" />
       ));
   };
 
   return (
     <Box>
-      {isLoading ? (
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
-          {showSkeleton(4)}
-        </Box>
-      ) : (
-        <AnimatePresence initial={false}>
-          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
-            <Masonry>
-              {filteredItems.map((story) => (
-                <Box
-                  key={story.id}
-                  component={motion.div}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
-                >
-                  <StoryCard showEdit={true} story={story} triggerEditStory={triggerEditStory} />
-                </Box>
-              ))}
-            </Masonry>
-          </ResponsiveMasonry>
-        </AnimatePresence>
-      )}
+      {!isLoading && filteredItems.length == 0 && <NoStories openDialog={handleAddDialogOpen} />}
+      <AnimatePresence initial={false}>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
+          <Masonry>
+            {isLoading
+              ? showSkeleton(4)
+              : filteredItems.map((story) => (
+                  <Box
+                    key={story.id}
+                    component={motion.div}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                  >
+                    <StoryCard showEdit={true} story={story} triggerEditStory={triggerEditStory} />
+                  </Box>
+                ))}
+          </Masonry>
+        </ResponsiveMasonry>
+      </AnimatePresence>
     </Box>
   );
 };

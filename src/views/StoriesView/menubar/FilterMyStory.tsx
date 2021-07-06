@@ -27,13 +27,6 @@ const FilterMyStory: FC<FilterMyStoryProps> = ({ handleFilter, value = 0 }) => {
 
   return (
     <ToggleButton
-      // classes={{
-      //   selected: {
-      //     color: 'primary',
-      //     borderColor: 'primary',
-      //     backgroundColor: 'background.default',
-      //   },
-      // }}
       onChange={handleChange}
       name="filterMyStory"
       selected={filterValue}

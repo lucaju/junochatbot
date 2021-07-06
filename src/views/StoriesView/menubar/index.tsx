@@ -2,7 +2,7 @@ import { Box, Button, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FilterGroup from '@src/components/menubar/FilterGroup';
 import SearchBox from '@src/components/menubar/SearchBox';
-import { useAppState, useActions } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';

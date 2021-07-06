@@ -1,6 +1,6 @@
 import { Box, Container } from '@material-ui/core';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 // import AddStoryDialog from './AddStoryDialog';
 import Collection from './Collection';
 import MenuBar from './menubar';
-import NoStories from './NoStories';
 
 const Stories: FC = () => {
   const navigate = useNavigate();
@@ -66,29 +65,24 @@ const Stories: FC = () => {
           handleClose={handleAddDiaglogClose}
           triggerEditStory={triggerEditStory}
         /> */}
-        {!hasStories ? (
-          <NoStories openDialog={handleAddDialogOpen} />
-        ) : (
-          <>
-            {!isLoading && (
-              <MenuBar
-                handleDetailOpen={handleAddDialogOpen}
-                handleFilterByGroup={handleFilterByGroup}
-                handleSearch={handleSearch}
-                updateFilter={updateFilters}
-              />
-            )}
-            <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
-              <Collection
-                filters={filters}
-                groupId={groupId}
-                isLoading={isLoading}
-                searchQuery={searchQuery}
-                triggerEditStory={triggerEditStory}
-              />
-            </Box>
-          </>
+        {!isLoading && hasStories && (
+          <MenuBar
+            handleDetailOpen={handleAddDialogOpen}
+            handleFilterByGroup={handleFilterByGroup}
+            handleSearch={handleSearch}
+            updateFilter={updateFilters}
+          />
         )}
+        <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
+          <Collection
+            filters={filters}
+            groupId={groupId}
+            handleAddDialogOpen={handleAddDialogOpen}
+            isLoading={isLoading}
+            searchQuery={searchQuery}
+            triggerEditStory={triggerEditStory}
+          />
+        </Box>
       </Container>
     </Page>
   );
