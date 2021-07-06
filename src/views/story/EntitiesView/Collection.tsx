@@ -2,8 +2,10 @@ import { Box, Skeleton } from '@material-ui/core';
 import NoContent from '@src/components/NoContent';
 import { useAppState } from '@src/overmind';
 import { Entity } from '@src/types';
+import { sortBy } from '@src/util/utilities';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import EntityCard from './EntityCard';
@@ -16,15 +18,18 @@ interface CollectionProps {
 
 const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQuery }) => {
   const { intents } = useAppState();
+  const { t } = useTranslation(['contexts', 'common']);
+
   const [filteredItems, setFilteredItems] = useState<Entity[]>([]);
 
   useEffect(() => {
     setFilteredItems(items());
     return () => {};
-  }, [filters, searchQuery, intents.entities]);
+  }, [filters, searchQuery, intents.entities, intents.customEntities]);
 
   const items = () => {
-    return intents.entities
+    let list = [...intents.customEntities, ...intents.entities];
+    list = list
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;
@@ -39,40 +44,42 @@ const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQue
         const match = item.name.toLowerCase().match(searchQuery.toLowerCase());
         return match;
       });
+
+    list = sortBy(list, 'name');
+    return list;
   };
 
   const showSkeleton = (qty = 5) => {
     const skels = new Array(qty).fill(0);
     return skels.map((sk, i) => (
-      <Skeleton key={i} height={30 + Math.random() * 120} sx={{ m: 1 }} variant="rectangular" />
+      <Skeleton key={i} height={100} sx={{ m: 1 }} variant="rectangular" />
     ));
   };
 
   return (
     <Box>
-      {!isLoading && filteredItems.length === 0 ? (
-        <NoContent />
-      ) : (
-        <AnimatePresence initial={false}>
-          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 700: 2, 1150: 3, 1300: 4 }}>
-            <Masonry>
-              {isLoading
-                ? showSkeleton(10)
-                : filteredItems.map((entity) => (
-                    <Box
-                      key={entity.id}
-                      component={motion.div}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                    >
-                      <EntityCard entity={entity} />
-                    </Box>
-                  ))}
-            </Masonry>
-          </ResponsiveMasonry>
-        </AnimatePresence>
+      {!isLoading && filteredItems.length === 0 && (
+        <NoContent align="left" heading={t('noEntities')} size="large" />
       )}
+      <AnimatePresence initial={false}>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 700: 2, 1150: 3, 1300: 4 }}>
+          <Masonry>
+            {isLoading
+              ? showSkeleton(10)
+              : filteredItems.map((entity) => (
+                  <Box
+                    key={entity.id}
+                    component={motion.div}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                  >
+                    <EntityCard entity={entity} />
+                  </Box>
+                ))}
+          </Masonry>
+        </ResponsiveMasonry>
+      </AnimatePresence>
     </Box>
   );
 };

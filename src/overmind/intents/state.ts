@@ -5,8 +5,9 @@ type State = {
   collection: Intent[];
   currentIntent?: Intent;
   currentProjectName?: string;
-  entities: Entity[];
   contexts: ContextRelation[];
+  entities: Entity[];
+  customEntities: Entity[];
 };
 
 export const state: State = {
@@ -21,7 +22,7 @@ export const state: State = {
     return projectName;
   }),
   contexts: derived((state: State) => {
-    const contextCollection = [] as ContextRelation[];
+    const contextCollection: ContextRelation[] = [];
 
     state.collection.forEach(({ displayName, inputContextNames, outputContexts }) => {
       inputContextNames?.forEach((contextIn) => {
@@ -58,5 +59,28 @@ export const state: State = {
     });
 
     return contextCollection;
+  }),
+  customEntities: derived((state: State) => {
+    const list: Entity[] = [];
+
+    state.collection.forEach(({ parameters }) => {
+      if (!parameters) return;
+
+      parameters.forEach(({ entityTypeDisplayName }) => {
+        if (!entityTypeDisplayName) return;
+        if (entityTypeDisplayName.includes('@sys')) return;
+
+        const entity = {
+          id: list.length + 1000,
+          category: 'Custom',
+          name: entityTypeDisplayName,
+          description: '',
+        };
+
+        list.push(entity);
+      });
+    });
+
+    return list;
   }),
 };

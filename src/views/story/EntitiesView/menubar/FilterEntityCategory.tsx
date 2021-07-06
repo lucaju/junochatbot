@@ -1,5 +1,5 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import { useAppState, useActions } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,8 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
   useEffect(() => {
     const catSet: Set<string> = new Set();
     intents.entities.forEach(({ category }) => catSet.add(category));
-    setcategories(['All', ...Array.from(catSet)]);
+    if (intents.customEntities.length > 0) catSet.add('Custom');
+    setcategories(['All', ...Array.from(catSet).sort()]);
     return () => {};
   }, [intents.entities]);
 
