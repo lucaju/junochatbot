@@ -54,11 +54,13 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
     changeTab(value);
   };
 
-  const handleSelect = (event: ChangeEvent<{
-    name?: string | undefined;
-    value: string;
-    event: Event | React.SyntheticEvent<Element, Event>;
-}>) => {
+  const handleSelect = (
+    event: ChangeEvent<{
+      name?: string | undefined;
+      value: string;
+      event: Event | React.SyntheticEvent<Element, Event>;
+    }>
+  ) => {
     console.log(event.target.value);
     changeTab(event.target.value);
   };
@@ -79,46 +81,44 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
         value={displayName}
         variant="standard"
       />
-      {action !== 'create' && isSM ? (
-        <Select
-          fullWidth
-          labelId="tab"
-          id="tab"
-          onChange={handleSelect}
-          value={activeTab}
-        >
-          <MenuItem value={'context'}>Contexts</MenuItem>
-          <MenuItem value={'training'}>Training</MenuItem>
-          <MenuItem value={'parameters'}>Parameters</MenuItem>
-          <MenuItem value={'responses'}>Responses</MenuItem>
-        </Select>
-      ) : (
-        <StyledToggleButtonGroup
-          aria-label="tab"
-          color="primary"
-          exclusive
-          fullWidth
-          orientation={isSM ? 'vertical' : 'horizontal'}
-          onChange={handleToggleChage}
-          value={activeTab}
-        >
-          <ToggleButton aria-label="contexts" value="context">
-            <CenterFocusWeakIcon sx={{ mr: 1 }} />
-            Contexts
-          </ToggleButton>
-          <ToggleButton aria-label="training" value="training">
-            <FitnessCenterIcon sx={{ mr: 1 }} />
-            Training
-          </ToggleButton>
-          <ToggleButton aria-label="parameters" value="parameters">
-            <EditAttributesIcon sx={{ mr: 1 }} />
-            Parameters
-          </ToggleButton>
-          <ToggleButton aria-label="responses" value="responses">
-            <ChatOutlinedIcon sx={{ mr: 1 }} />
-            Responses
-          </ToggleButton>
-        </StyledToggleButtonGroup>
+      {action !== 'create' && (
+        <>
+          {isSM ? (
+            <Select fullWidth labelId="tab" id="tab" onChange={handleSelect} value={activeTab}>
+              <MenuItem value={'context'}>Contexts</MenuItem>
+              <MenuItem value={'training'}>Training</MenuItem>
+              <MenuItem value={'parameters'}>Parameters</MenuItem>
+              <MenuItem value={'responses'}>Responses</MenuItem>
+            </Select>
+          ) : (
+            <StyledToggleButtonGroup
+              aria-label="tab"
+              color="primary"
+              exclusive
+              fullWidth
+              orientation={isSM ? 'vertical' : 'horizontal'}
+              onChange={handleToggleChage}
+              value={activeTab}
+            >
+              <ToggleButton aria-label="contexts" value="context">
+                <CenterFocusWeakIcon sx={{ mr: 1 }} />
+                Contexts
+              </ToggleButton>
+              <ToggleButton aria-label="training" value="training">
+                <FitnessCenterIcon sx={{ mr: 1 }} />
+                Training
+              </ToggleButton>
+              <ToggleButton aria-label="parameters" value="parameters">
+                <EditAttributesIcon sx={{ mr: 1 }} />
+                Parameters
+              </ToggleButton>
+              <ToggleButton aria-label="responses" value="responses">
+                <ChatOutlinedIcon sx={{ mr: 1 }} />
+                Responses
+              </ToggleButton>
+            </StyledToggleButtonGroup>
+          )}
+        </>
       )}
     </Stack>
   );
