@@ -41,7 +41,8 @@ export const api = {
       });
     }
 
-    const response = await fetch(`${API_URL}/stories/${storyId}/intents/${intentName}`, {
+    const encodedIntentName = encodeURIComponent(intentName);
+    const response = await fetch(`${API_URL}/stories/${storyId}/intents/${encodedIntentName}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -135,7 +136,8 @@ export const api = {
       });
     }
 
-    const response = await fetch(`${API_URL}/stories/${storyId}/intents/${intentName}`, {
+    const encodedIntentName = encodeURIComponent(intentName);
+    const response = await fetch(`${API_URL}/stories/${storyId}/intents/${encodedIntentName}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     });
