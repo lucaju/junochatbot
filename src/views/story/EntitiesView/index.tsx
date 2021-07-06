@@ -1,5 +1,4 @@
 import { Box, Container } from '@material-ui/core';
-import NoContent from '@src/components/NoContent';
 import Page from '@src/components/Page';
 import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
@@ -18,7 +17,6 @@ const EntitiesView: FC = () => {
   const { t } = useTranslation(['entities', 'common']);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [hasEntities, setHasEntities] = useState(true);
   const [filters, setFilters] = useState<Map<string, string>>(new Map());
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
@@ -30,7 +28,6 @@ const EntitiesView: FC = () => {
       if (intents.collection.length === 0) await actions.intents.getIntents();
       actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:entities')}`);
       setIsLoading(false);
-      setHasEntities(intents.entities.length > 0);
     };
 
     const getStory = async () => {
@@ -60,20 +57,10 @@ const EntitiesView: FC = () => {
   return (
     <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
-        {!isLoading && (
-          <MenuBar
-            disabledFilters={!hasEntities}
-            handleSearch={handleSearch}
-            updateFilter={updateFilters}
-          />
-        )}
-        {!hasEntities ? (
-          <NoContent heading={t('noEntitiesYet')} />
-        ) : (
-          <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
-            <Collection filters={filters} isLoading={isLoading} searchQuery={searchQuery} />
-          </Box>
-        )}
+        {!isLoading && <MenuBar handleSearch={handleSearch} updateFilter={updateFilters} />}
+        <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
+          <Collection filters={filters} isLoading={isLoading} searchQuery={searchQuery} />
+        </Box>
       </Container>
     </Page>
   );
