@@ -37,7 +37,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
         Poster
       </Typography>
       <Card elevation={theme.palette.mode === 'light' ? 1 : 3} sx={{ width: isSM ? 'auto' : 300 }}>
-        <FeaturedImage name={'imageUrl'} title={values.title} />
+        <FeaturedImage title={values.title} />
         <CardContent>
           <Box display="flex" alignItems="center">
             <Typography variant="h6">{values.title}</Typography>

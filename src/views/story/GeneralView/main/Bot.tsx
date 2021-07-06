@@ -28,8 +28,8 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
   const { t } = useTranslation(['storyGeneral', 'common']);
 
   const theme = useTheme();
-  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMD = useMediaQuery(theme.breakpoints.down('md'));
+  const isLG = useMediaQuery(theme.breakpoints.down('lg'));
+  const isXL = useMediaQuery(theme.breakpoints.between('lg', 'xl'));
 
   return (
     <Stack direction="column" spacing={2}>
@@ -88,7 +88,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
           variant="outlined"
         />
       </Box>
-      <Box width={isMD ? '100%' : '50%'} p={1}>
+      <Box width={isLG ? '100%' : isXL ? '75%' : '50%'} p={1}>
         <Box>
           <Typography
             sx={{
@@ -99,7 +99,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
             {t('messageDelay')}
           </Typography>
         </Box>
-        <BotDelaySlider name="botDelay" />
+        <BotDelaySlider />
       </Box>
     </Stack>
   );

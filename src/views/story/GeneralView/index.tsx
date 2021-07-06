@@ -119,7 +119,7 @@ const GeneralView: FC = () => {
                     </Box>
                     <SideBar values={values} />
                   </Stack>
-                  <Box maxWidth="1100px" ml={3} mr={3}>
+                  <Box ml={3} mr={3}>
                     <BottomBar dirty={dirty} name={'publishedDate'} isSubmitting={isSubmitting} />
                   </Box>
                 </Container>
