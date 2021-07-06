@@ -7,8 +7,6 @@ export const createParameter = ({ state }: Context) => {
   const { currentIntent } = state.intents;
   const parameters = currentIntent.parameters ?? [];
 
-  if (parameters[0].displayName === '') return;
-
   const freshParam: Parameter = {
     name: `new-${uuidv4()}`,
     displayName: '',
