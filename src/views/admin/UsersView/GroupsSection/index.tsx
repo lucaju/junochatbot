@@ -1,7 +1,6 @@
 import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import NoContent from '@src/components/NoContent';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
@@ -11,8 +10,8 @@ const GroupsView: FC = () => {
   const { users } = useAppState();
   const actions = useActions();
   const { t } = useTranslation(['groups']);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [hasGroups, setHasGroups] = useState(true);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [currentGroupId, setCurrentGroupId] = useState<number | undefined>();
 
@@ -24,7 +23,6 @@ const GroupsView: FC = () => {
       setIsLoading(true);
       await actions.users.getGroups();
       setIsLoading(false);
-      setHasGroups(users.groups.length > 0);
     };
 
     getCollection();
@@ -65,13 +63,9 @@ const GroupsView: FC = () => {
         </IconButton>
       </Box>
       <Details groupId={currentGroupId} handleClose={handleDetailClose} open={detailsOpen} />
-      {!hasGroups ? (
-        !isMobile && <NoContent heading={t('noGroupsYet')} />
-      ) : (
-        <Box maxHeight={'calc(100vh - 154px)'} mt={3} sx={{ overflowY: 'scroll' }}>
-          <Collection isLoading={isLoading} handleDetailOpen={handleDetailOpen} />
-        </Box>
-      )}
+      <Box maxHeight={'calc(100vh - 154px)'} mt={3} sx={{ overflowY: 'scroll' }}>
+        <Collection isLoading={isLoading} handleDetailOpen={handleDetailOpen} />
+      </Box>
     </Box>
   );
 };

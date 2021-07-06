@@ -26,10 +26,13 @@ const GroupCard: FC<GroupCardProps> = ({ group, handleEditClick, ...rest }) => {
       <CardContent sx={{ py: 1, px: 2, '&:last-child': { pb: 1 } }}>
         <Typography variant="subtitle1">{group.name}</Typography>
         <Typography variant="body2">
-          <Typography component="span" variant="overline">
-            {group.description}
-          </Typography>{' '}
-          | {group.description}
+          {group.institution && (
+            <Typography component="span" variant="overline">
+              {group.institution}
+            </Typography>
+          )}
+          {group.institution && group.description && <>{` | `}</>}
+          {group.description && <>{group.description}</>}
         </Typography>
       </CardContent>
     </Card>
