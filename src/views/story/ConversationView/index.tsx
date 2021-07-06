@@ -1,5 +1,4 @@
 import { Box, Container } from '@material-ui/core';
-import NoContent from '@src/components/NoContent';
 import Page from '@src/components/Page';
 import { useActions, useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
@@ -75,26 +74,21 @@ const ConversationView: FC = () => {
     <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
         <Details handleClose={handleDetailClose} intentId={currentIntentId} open={detailsOpen} />
-        {!isLoading && (
+        {!isLoading && intents.collection && (
           <MenuBar
-            disabledFilters={!hasIntents}
             handleDetailOpen={handleDetailOpen}
             handleSearch={handleSearch}
             updateFilter={updateFilters}
           />
         )}
-        {!hasIntents ? (
-          <NoContent heading={t('noIntentsYet')} />
-        ) : (
-          <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'auto' }}>
-            <Collection
-              filters={filters}
-              handleDetailOpen={handleDetailOpen}
-              isLoading={isLoading}
-              searchQuery={searchQuery}
-            />
-          </Box>
-        )}
+        <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'auto' }}>
+          <Collection
+            filters={filters}
+            handleDetailOpen={handleDetailOpen}
+            isLoading={isLoading}
+            searchQuery={searchQuery}
+          />
+        </Box>
       </Container>
     </Page>
   );

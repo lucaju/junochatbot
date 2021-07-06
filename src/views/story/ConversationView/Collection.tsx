@@ -4,6 +4,7 @@ import { useAppState } from '@src/overmind';
 import { Intent } from '@src/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import IntentCard from './intentCard/';
 
 interface CollectionProps {
@@ -20,6 +21,8 @@ const Collection: FC<CollectionProps> = ({
   isLoading = false,
 }) => {
   const { intents } = useAppState();
+  const { t } = useTranslation(['intents']);
+
   const [filteredItems, setFilteredItems] = useState<Intent[]>([]);
 
   useEffect(() => {
@@ -50,7 +53,7 @@ const Collection: FC<CollectionProps> = ({
     return skels.map((sk, i) => (
       <Skeleton
         key={i}
-        height={50 + Math.random() * 100}
+        height={100 + Math.random() * 100}
         sx={{ my: 1, mx: 1.5 }}
         variant="rectangular"
       />
@@ -59,28 +62,16 @@ const Collection: FC<CollectionProps> = ({
 
   return (
     <Box>
-      {isLoading ? (
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
-          {showSkeleton(4)}
-        </Box>
-      ) : filteredItems.length === 0 ? (
-        <NoContent />
-      ) : (
-        <AnimatePresence initial={false}>
-          {filteredItems.map((intent) => (
-            <Box
-              key={intent.name}
-              component={motion.div}
-              initial={{ height: 0 }}
-              animate={{ height: 'auto' }}
-              exit={{ height: 0 }}
-              sx={{overflowY: 'hidden'}}
-            >
-              <IntentCard handleEditClick={handleDetailOpen} intent={intent} />
-            </Box>
-          ))}
-        </AnimatePresence>
+      {!isLoading && filteredItems.length == 0 && (
+        <NoContent align="left" heading={t('noIntentsYet')} size="large" />
       )}
+      <AnimatePresence initial={false}>
+        {isLoading
+          ? showSkeleton(4)
+          : filteredItems.map((intent) => (
+              <IntentCard key={intent.name} handleEditClick={handleDetailOpen} intent={intent} />
+            ))}
+      </AnimatePresence>
     </Box>
   );
 };

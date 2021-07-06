@@ -1,23 +1,21 @@
 import { Box, Button, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import SearchBox from '@src/components/menubar/SearchBox';
+import { useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface MenuBarProps {
-  disabledFilters?: boolean;
   handleDetailOpen: () => void;
   handleSearch: (value: string) => void;
   updateFilter: ({ type, value, reset }: HandleFilterType) => void;
 }
 
-const MenuBar: FC<MenuBarProps> = ({
-  disabledFilters = false,
-  handleDetailOpen,
-  handleSearch,
-  updateFilter,
-}) => {
+const THRESHOOLD_SHOW_SEARCH = 3; //items
+
+const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch, updateFilter }) => {
+  const { intents } = useAppState();
   const { t } = useTranslation(['intents']);
 
   const theme = useTheme();
@@ -30,11 +28,9 @@ const MenuBar: FC<MenuBarProps> = ({
       <Button color="primary" onClick={handleCreateClick} startIcon={<AddCircleOutlineIcon />}>
         {t('createIntent')}
       </Button>
-      {!disabledFilters && (
-        <>
-          {!isSM && <Box flexGrow={1} />}
-          <SearchBox handleSearch={handleSearch} />
-        </>
+      {!isSM && <Box flexGrow={1} />}
+      {intents.collection.length > THRESHOOLD_SHOW_SEARCH && (
+        <SearchBox handleSearch={handleSearch} />
       )}
     </Stack>
   );
