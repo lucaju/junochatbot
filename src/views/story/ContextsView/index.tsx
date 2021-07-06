@@ -1,8 +1,6 @@
 import { Box, Container } from '@material-ui/core';
-import NoContent from '@src/components/NoContent';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
-import { HandleFilterType } from '@src/types';
+import { useActions, useAppState } from '@src/overmind';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,14 +17,13 @@ const ContextView: FC = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [hasContexts, setHasContexts] = useState(true);
-  const [filters, setFilters] = useState<Map<string, string>>(new Map());
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
     if (!storyId) return navigate('/app', { replace: true });
 
     const getCollection = async () => {
-      await actions.intents.getIntents();
+      if (intents.collection.length === 0) await actions.intents.getIntents();
       actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:contexts')}`);
       setIsLoading(false);
       setHasContexts(intents.contexts.length > 0);
@@ -46,12 +43,6 @@ const ContextView: FC = () => {
     return () => {};
   }, []);
 
-  const updateFilters = ({ type, value, reset }: HandleFilterType) => {
-    if (typeof value !== 'string') return;
-    reset ? filters.delete(type) : filters.set(type, value);
-    setFilters(new Map(filters));
-  };
-
   const handleSearch = async (value: string | undefined) => {
     setSearchQuery(value);
   };
@@ -59,20 +50,10 @@ const ContextView: FC = () => {
   return (
     <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
-        {!isLoading && (
-          <MenuBar
-            disabledFilters={!hasContexts}
-            handleSearch={handleSearch}
-            updateFilter={updateFilters}
-          />
-        )}
-        {!hasContexts ? (
-          <NoContent heading={t('noContextsYet')} />
-        ) : (
-          <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
-            <Collection filters={filters} isLoading={isLoading} searchQuery={searchQuery} />
-          </Box>
-        )}
+        {!isLoading && hasContexts && <MenuBar handleSearch={handleSearch} />}
+        <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
+          <Collection isLoading={isLoading} searchQuery={searchQuery} />
+        </Box>
       </Container>
     </Page>
   );
