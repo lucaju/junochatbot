@@ -8,13 +8,9 @@ import { motion, useAnimation } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 
-interface UserAvatarProps {
-  name: string;
-}
-
-const UserAvatar: FC<UserAvatarProps> = ({ name }) => {
+const UserAvatar: FC = () => {
   const theme = useTheme();
-  const [, meta, helpers] = useField(name);
+  const [, meta, helpers] = useField('avatarUrl');
   const { value } = meta;
   const { setValue } = helpers;
   const dropZoneAnim = useAnimation();

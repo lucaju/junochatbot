@@ -19,7 +19,7 @@ const Personal: FC<PersonalProps> = ({ errors, handleBlur, handleChange, touched
   return (
     <>
       <Grid item md={3} xs={12}>
-        <UserAvatar name="avatarUrl" />
+        <UserAvatar />
       </Grid>
       <Grid item md={9} xs={12}>
         <TextField

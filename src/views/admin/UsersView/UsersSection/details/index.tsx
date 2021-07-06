@@ -87,21 +87,21 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
   });
 
   const submit = async (values: Partial<User>) => {
-    //create update
-    // const response = !values.id
-    //   ? await actions.users.createUser(values as Omit<User, 'id'>)
-    //   : await actions.users.updateUser({ userData, values });
-    // const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
-    // //error
-    // if (isError(response)) {
-    //   const message = t('errorMessages:somethingWentWrong');
-    //   actions.ui.showNotification({ message, type });
-    //   return;
-    // }
-    // //success
-    // const message = values.id ? t('userUpdated') : t('userCreated');
-    // actions.ui.showNotification({ message, type });
-    // handleClose();
+    // create update
+    const response = !values.id
+      ? await actions.users.createUser(values as Omit<User, 'id'>)
+      : await actions.users.updateUser({ userData, values });
+    const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
+    //error
+    if (isError(response)) {
+      const message = t('errorMessages:somethingWentWrong');
+      actions.ui.showNotification({ message, type });
+      return;
+    }
+    //success
+    const message = values.id ? t('userUpdated') : t('userCreated');
+    actions.ui.showNotification({ message, type });
+    handleClose();
   };
 
   const submitDelete = async () => {
