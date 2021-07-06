@@ -1,10 +1,6 @@
 import { Slider } from '@material-ui/core';
 import { useField } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
-
-interface BotDelaySliderProps {
-  name: string;
-}
+import React, { FC, SyntheticEvent, useState } from 'react';
 
 const marks = [
   { value: 0, label: '0' },
@@ -16,24 +12,25 @@ const marks = [
   { value: 180, label: '180' },
 ];
 
-const BotDelaySlider: FC<BotDelaySliderProps> = ({ name }) => {
-  // This isn't an input, so instead of using the values in 'field' directly,
-  // we'll use 'meta' and 'helpers'.
-  const [, meta, helpers] = useField(name);
+const BotDelaySlider: FC = () => {
+  const [, meta, helpers] = useField('botDelay');
   const { value } = meta;
   const { setValue } = helpers;
-  const [sliderValue, setSliderValue] = useState(0);
+  const [sliderValue, setSliderValue] = useState(value);
 
-  useEffect(() => {
-    setSliderValue(value);
-    return () => {};
-  }, []);
+  const onChangeCommitted = (
+    event: Event | SyntheticEvent<Element, Event>,
+    value: number | number[]
+  ) => {
+    if (Array.isArray(value)) return;
+    setValue(value);
+  };
 
   return (
     <Slider
       aria-labelledby="discrete-slider"
       defaultValue={sliderValue}
-      onChangeCommitted={(event, newValue) => setValue(newValue)}
+      onChangeCommitted={onChangeCommitted}
       marks={marks}
       max={180}
       step={null}
