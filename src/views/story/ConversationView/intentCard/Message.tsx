@@ -2,7 +2,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import YouTubeIcon from '@material-ui/icons/YouTube';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import type { Message as MesasgeType } from '@src/types';
 import React, { FC } from 'react';
 
@@ -24,18 +24,13 @@ const Message: FC<MessageProps> = ({ message }) => {
   if ('payload' in message) {
     type = 'payload';
     const { source, type: payloadType } = message.payload;
-    if (typeof source[0] === 'string') {
-      text = source[0];
+    if (payloadType === 'tag') {
+      const tag = actions.intents.getTagById(Number(source));
+      text = tag ? tag.name : '';
+      variation = true;
     } else {
-      if (payloadType === 'tag') {
-        const tag = actions.intents.getTagById(source[0]);
-        text = tag ? tag.name : '';
-        variation = true;
-      } else {
-        const video = actions.intents.getVideoById(source[0]);
-        text = video ? video.title : '';
-        variation = source.length > 1;
-      }
+      const video = actions.intents.getVideoById(Number(source));
+      text = video ? video.title : '';
     }
   } else if (message.text.text) {
     text = message.text.text[0];
