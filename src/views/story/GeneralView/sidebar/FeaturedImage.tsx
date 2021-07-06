@@ -1,4 +1,5 @@
 import { Box, CardMedia, IconButton, useTheme } from '@material-ui/core';
+import { alpha } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PanoramaIcon from '@material-ui/icons/Panorama';
 import { APP_URL } from '@src/config/config.js';
@@ -10,14 +11,13 @@ import { FileRejection, useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 
 interface FeaturedImageProps {
-  name: string;
   title: string;
 }
 
-const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
+const FeaturedImage: FC<FeaturedImageProps> = ({ title }) => {
   const theme = useTheme();
   const { t } = useTranslation(['storyGeneral']);
-  const [, meta, helpers] = useField(name);
+  const [, meta, helpers] = useField('imageUrl');
   const { value } = meta;
   const { setValue } = helpers;
   const dropZoneAnim = useAnimation();
@@ -87,7 +87,7 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
     onDragEnter,
     onDragLeave,
     maxFiles: 1,
-    accept: 'image/jpeg, image/png',
+    accept: 'image/jpeg, image/jpg, image/png',
     noDragEventsBubbling: true,
   });
 
@@ -125,8 +125,11 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
             sx={{
               position: 'relative',
               top: 8,
-              left: 316,
+              left: 'calc(100% - 36px)',
               backgroundColor: ({ palette }) => palette.background.paper,
+              '&:hover': {
+                backgroundColor: ({ palette }) => alpha(palette.background.paper, 0.5),
+              },
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -146,7 +149,6 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
             sx={{
               cursor: 'pointer',
               height: 100,
-              width: 334,
               m: 1,
               borderStyle: 'dashed',
               borderWidth: 1,
@@ -158,7 +160,6 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ name, title }) => {
                 theme.palette.mode === 'light' ? theme.palette.grey[50] : theme.palette.grey[800],
             }}
           >
-            {/* <Typgography >Drag 'n' drop some an image here</Typgography> */}
             <PanoramaIcon sx={{ height: '100%', width: '100%' }} />
           </Box>
         </Box>

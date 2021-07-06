@@ -60,6 +60,7 @@ const GeneralView: FC = () => {
     languageCode: Yup.string(),
     synopsis: Yup.string(),
     imageUrl: Yup.mixed(),
+    uploadFile: Yup.mixed(), 
     publishedDate: Yup.mixed(),
     botAvatar: Yup.string(),
     botName: Yup.string(),
