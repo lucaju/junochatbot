@@ -2,12 +2,9 @@ import {
   Box,
   Button,
   Collapse,
-  FormControl,
   FormControlLabel,
   Grid,
-  InputLabel,
   MenuItem,
-  Select,
   Stack,
   Switch,
   TextField,
@@ -67,6 +64,8 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   const [hover, setHover] = useState(false);
   const [bottomPanelActive, setBottomPanelActive] = useState(0);
 
+  const entitiesList = sortBy([...intents.customEntities, ...intents.entities], 'name');
+
   useEffect(() => {
     set_param(param);
 
@@ -91,10 +90,6 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
     switch (target.name) {
       case 'displayName':
         set_param({ ..._param, displayName: target.value });
-        return;
-      case 'entityTypeDisplayName':
-        setEntityTypeDisplayName(target.value);
-        set_param({ ..._param, entityTypeDisplayName: target.value });
         return;
       case 'value':
         set_value(target.value);
@@ -124,11 +119,11 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
     setDoUpdate(true);
   };
 
-  const handleChangeEntity = (event: ChangeEvent<HTMLInputElement>) => {
-    // const value = Number(event.target.value);
-    // console.log(value);
-    // set_param({ ..._param, set_entityTypeDisplayName: value });
-    // setDoUpdate(true);
+  const handleChangeEntity = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const value = event.target.value;
+    setEntityTypeDisplayName(value);
+    set_param({ ..._param, entityTypeDisplayName: value });
+    setDoUpdate(true);
   };
 
   const handleUpdateDefault = (value: string) => {
@@ -203,30 +198,26 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
               />
             </Grid>
             <Grid item xs>
-              {/* <FormControl>
-              <InputLabel >{t('entity')}</InputLabel>
-              <Select
-                fullWidth
-                name="entityTypeDisplayName"
-                onChange={handleChangeEntity}
-                 value={entityTypeDisplayName}
-              >
-                {intents.entities.map(({ id, name }) => (
-                  <MenuItem key={id} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
               <TextField
                 fullWidth
                 label={t('entity')}
                 name="entityTypeDisplayName"
-                onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={handleChangeEntity}
+                select
+                SelectProps={{
+                  MenuProps: {
+                    sx: { maxHeight: 300 },
+                  },
+                }}
                 value={entityTypeDisplayName}
                 variant="standard"
-              />
+              >
+                {entitiesList.map(({ name }) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs>
               <TextField
@@ -250,7 +241,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
           sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02) }}
         >
           <Stack direction="row" justifyContent="center">
-            <FormControlLabel
+            {/* <FormControlLabel
               control={
                 <Switch
                   checked={isList}
@@ -261,7 +252,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
                 />
               }
               label={t('isList')}
-            />
+            /> */}
             <FormControlLabel
               control={
                 <Switch
@@ -276,11 +267,19 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
             />
           </Stack>
           <Stack direction="row" justifyContent="center">
-            <Button disabled={bottomPanelActive === 1} onClick={() => handleOpenBottomPanel(1)}>
+            {/* <Button
+              disabled={bottomPanelActive === 1}
+              onClick={() => handleOpenBottomPanel(1)}
+              size="small"
+            >
               {t('defaultValue')}
-            </Button>
+            </Button> */}
             {_param.mandatory && (
-              <Button disabled={bottomPanelActive === 2} onClick={() => handleOpenBottomPanel(2)}>
+              <Button
+                disabled={bottomPanelActive === 2}
+                onClick={() => handleOpenBottomPanel(2)}
+                size="small"
+              >
                 {t('prompts')}
               </Button>
             )}
