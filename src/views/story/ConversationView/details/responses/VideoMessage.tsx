@@ -7,7 +7,7 @@ import {
   Stack,
   useMediaQuery,
   useTheme,
-  Zoom,
+  Zoom
 } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
@@ -38,7 +38,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [hover, setHover] = useState(false);
-  const [source, setSource] = useState(-1);
+  const [source, setSource] = useState('-1');
   const [sourceOptions, setSourceOptions] = useState<sourceOptionType[]>([defaultSourceOption]);
 
   useEffect(() => {
@@ -48,18 +48,16 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
       id: option.id.toString(),
       label: 'title' in option ? option.title : option.name,
     }));
-    setSourceOptions([defaultSourceOption, ...mappedOptions]);
 
-    typeof message.payload.source[0] !== 'string'
-      ? setSource(message.payload.source[0])
-      : setSource(-1);
+    setSourceOptions([defaultSourceOption, ...mappedOptions]);
+    setSource('-1')
     return () => {};
   }, [message.payload.type]);
 
   useEffect(() => {
-    typeof message.payload.source[0] !== 'string'
-      ? setSource(message.payload.source[0])
-      : setSource(-1);
+    const sourceValue = message.payload.source;
+    setSource(sourceValue === '' ? '-1' : sourceValue);
+
     return () => {};
   }, [message.payload.source]);
 
@@ -80,18 +78,19 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
   const handleChangeSource = (
     event: ChangeEvent<{
       name?: string | undefined;
-      value: number;
+      value: string;
       event: Event | React.SyntheticEvent<Element, Event>;
     }>
   ) => {
-    const value = Number(event.target.value);
+    const value = event.target.value;
     actions.intents.updateVideoSource({
       messageId: message.id,
-      source: [value],
+      source: value,
     });
   };
 
   const handleRemove = () => {
+    if (!message.id) return;
     actions.intents.removeMessage(message.id);
   };
 
