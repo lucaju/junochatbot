@@ -3,7 +3,7 @@ import { API_URL } from '@src/config/config';
 import type { Entity, ErrorMessage, Intent } from '@src/types';
 import { v4 as uuidv4 } from 'uuid';
 
-const MOCK_UP = true;
+const MOCK_UP = false;
 
 export const api = {
   getIntents: async (storyId: number, token: string): Promise<Intent[] | ErrorMessage> => {
