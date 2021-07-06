@@ -27,6 +27,7 @@ const EntitiesView: FC = () => {
 
     const getCollection = async () => {
       await actions.intents.getEntities();
+      if (intents.collection.length === 0) await actions.intents.getIntents();
       actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:entities')}`);
       setIsLoading(false);
       setHasEntities(intents.entities.length > 0);
