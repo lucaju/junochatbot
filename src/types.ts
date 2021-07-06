@@ -66,10 +66,10 @@ export interface Story {
   id: number;
   title: string;
   imageUrl?: string | any;
+  uploadFile?: File;
   user: User; //not present
   languageCode: string;
   publishedDate: string | null;
-  active?: boolean; //To be removed
   synopsis: string;
   botAvatar: string;
   botName: string;
@@ -111,11 +111,11 @@ export type Entity = {
   id: number;
   category: string;
   name: string;
-  extendable: boolean;
+  extendable?: boolean;
   description: string;
-  outputFormat: string;
-  createdDate: string;
-  updatedDate: string;
+  outputFormat?: string;
+  createdDate?: string;
+  updatedDate?: string;
 };
 
 export type ContextRelation = {
@@ -205,12 +205,12 @@ export type Payload = {
 
 export type VideoMessage = {
   type: 'tag' | 'video';
-  source: string[] | number[];
+  source: string;
 };
 
 export type Message = Text | Payload;
 
-type followupIntentInfo = {
+type FollowupIntentInfo = {
   followupIntentName: string;
   parentFollowupIntentName: string;
 };
@@ -237,5 +237,5 @@ export type Intent = {
   defaultResponsePlatforms?: string; //PLATFORM_UNSPECIFIED
   rootFollowupIntentName?: string;
   parentFollowupIntentName?: string;
-  followupIntentInfo?: followupIntentInfo[];
+  followupIntentInfo?: FollowupIntentInfo[];
 };
