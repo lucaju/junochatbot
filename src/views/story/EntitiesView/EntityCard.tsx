@@ -39,12 +39,12 @@ const EntityCard: FC<EntityCardProps> = ({ entity }) => {
         <Typography gutterBottom variant="body2">
           {description}
         </Typography>
-        <Typography gutterBottom variant="body2">
+        {/* <Typography gutterBottom variant="body2">
           <Box component="span" sx={{ textDecoration: 'underline' }}>
             Output Format
           </Box>
           : {outputFormat}
-        </Typography>
+        </Typography> */}
       </CardContent>
     </Card>
   );
