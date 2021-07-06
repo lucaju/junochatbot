@@ -1,16 +1,25 @@
-import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import NoContent from '@src/components/NoContent';
-import { useAppState, useActions } from '@src/overmind';
+import CloseIcon from '@material-ui/icons/Close';
+import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 import Details from './details';
 
 const TagsSection: FC = () => {
-  const { videos } = useAppState();
+  const { ui, videos } = useAppState();
   const actions = useActions();
   const { t } = useTranslation(['tags', 'common']);
+
   const [isLoading, setIsLoading] = useState(true);
   const [hasTags, setHasTags] = useState(true);
   const [currentTagId, setCurrentTagId] = useState<number | undefined>();
@@ -42,6 +51,11 @@ const TagsSection: FC = () => {
     setDetailsOpen(false);
   };
 
+  const handleSwitchTags = () => {
+    actions.ui.setTagsPanelVisible(!ui.videoView.tagsPanelVisible);
+    actions.ui.resetTagFilter();
+  };
+
   return (
     <Box
       sx={{
@@ -50,28 +64,52 @@ const TagsSection: FC = () => {
         pb: isMobile ? 1.5 : 0,
         borderStyle: 'solid',
         borderColor: ({ palette }) => palette.action.disabledBackground,
+        borderRadius: 1,
         borderTopWidth: 0,
         borderBottomWidth: isMobile ? 1 : 0,
         borderLeftWidth: isMobile ? 0 : 1,
         borderRightWidth: 0,
       }}
     >
-      <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
-        <Typography sx={{ textTransform: 'capitalize' }} variant="h6">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        p={1}
+      >
+        <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
           {t('tags')}
         </Typography>
-        <IconButton color="primary" onClick={() => handleDetailOpen()} size="small">
-          <AddCircleOutlineIcon fontSize="inherit" />
+        <IconButton color="inherit" onClick={handleSwitchTags}>
+          <CloseIcon />
         </IconButton>
       </Box>
       <Details handleClose={handleDetailClose} open={detailsOpen} tagId={currentTagId} />
-      {!hasTags ? (
-        !isMobile && <NoContent heading={t('noTagsYet')} />
-      ) : (
-        <Box mt={3} sx={{ overflowY: 'scroll' }}>
-          <Collection handleDetailOpen={handleDetailOpen} isLoading={isLoading} />
-        </Box>
-      )}
+      <Stack
+        direction={isMobile ? 'row' : 'column'}
+        alignItems={isMobile ? 'center' : 'flex-start'}
+        sx={{ overflowY: 'scroll' }}
+      >
+        {!isLoading && (
+          <>
+            {isMobile ? (
+              <IconButton onClick={() => handleDetailOpen()} size="small" sx={{ mr: 2 }}>
+                <AddCircleOutlineIcon fontSize="inherit" />
+              </IconButton>
+            ) : (
+              <Button
+                onClick={() => handleDetailOpen()}
+                startIcon={<AddCircleOutlineIcon />}
+                sx={{ mb: 1 }}
+              >
+                {t('addTag')}
+              </Button>
+            )}
+          </>
+        )}
+        <Collection handleDetailOpen={handleDetailOpen} isLoading={isLoading} />
+      </Stack>
     </Box>
   );
 };

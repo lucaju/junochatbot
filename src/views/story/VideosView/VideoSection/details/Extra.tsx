@@ -46,30 +46,30 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
           value={values.description}
           variant="outlined"
         />
-        {videos.tagCollection.length > 0 && (
-          <Autocomplete
-            filterSelectedOptions
-            getOptionLabel={(tag) => tag.name}
-            id="tags"
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            multiple
-            onChange={(event: FocusEvent, value, reason) => {
-              if (reason === 'blur') return handleBlur(event);
-              setValue(json(value));
-            }}
-            options={videos.tagCollection}
-            value={values.tags}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={t('tags')}
-                fullWidth
-                sx={{ textTransform: 'capitalize' }}
-                variant="standard"
-              />
-            )}
-          />
-        )}
+        {/* {videos.tagCollection.length > 0 && ( */}
+        <Autocomplete
+          filterSelectedOptions
+          getOptionLabel={(tag) => tag.name}
+          id="tags"
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          multiple
+          onChange={(event: FocusEvent, value, reason) => {
+            if (reason === 'blur') return handleBlur(event);
+            setValue(json(value));
+          }}
+          options={videos.tagCollection}
+          value={values.tags}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={t('tags')}
+              fullWidth
+              sx={{ textTransform: 'capitalize' }}
+              variant="standard"
+            />
+          )}
+        />
+        {/* )} */}
       </Stack>
     </Grid>
   );

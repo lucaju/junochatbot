@@ -7,6 +7,10 @@ type State = {
   languages: Language[];
   notification: Notification;
   languageCode?: string;
+  videoView: {
+    tagFilter: number | null,
+    tagsPanelVisible: boolean;
+  }
 };
 
 export const state: State = {
@@ -22,4 +26,8 @@ export const state: State = {
     type: NotificationType.INFO,
     message: '',
   },
+  videoView: {
+    tagFilter: null,
+    tagsPanelVisible: false,
+  }
 };

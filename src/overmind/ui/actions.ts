@@ -39,3 +39,15 @@ export const closeNotification = ({ state }: Context) => {
     message: state.ui.notification.message,
   };
 };
+
+export const setTagsPanelVisible = ({ state }: Context, value: boolean) => {
+  state.ui.videoView.tagsPanelVisible = value;
+};
+
+export const setTagFilter = ({ state }: Context, value: number | null) => {
+  state.ui.videoView.tagFilter = value;
+};
+
+export const resetTagFilter = ({ state }: Context) => {
+  state.ui.videoView.tagFilter = null;
+};

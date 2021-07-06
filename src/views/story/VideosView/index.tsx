@@ -45,12 +45,21 @@ const VideosView: FC = () => {
             spacing={5}
             flexWrap="nowrap"
           >
-            <Grid item xs={12} sm={8} md={8} lg={9}>
+            <Grid
+              item
+              xs={12}
+              sm={ui.videoView.tagsPanelVisible ? 8 : 12}
+              md={ui.videoView.tagsPanelVisible ? 8 : 12}
+              lg={ui.videoView.tagsPanelVisible ? 9 : 12}
+            >
               <VideosSection />
             </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={3}>
-              <TagsSection />
-            </Grid>
+
+            {ui.videoView.tagsPanelVisible && (
+              <Grid item xs={12} sm={4} md={4} lg={3}>
+                <TagsSection />
+              </Grid>
+            )}
           </Grid>
         )}
       </Container>

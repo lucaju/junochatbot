@@ -1,7 +1,5 @@
 import { Box } from '@material-ui/core';
-import NoContent from '@src/components/NoContent';
-import { useAppState, useActions } from '@src/overmind';
-import { HandleFilterType } from '@src/types';
+import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
@@ -14,10 +12,9 @@ const VideosSection: FC = () => {
   const { t } = useTranslation(['videos', 'common']);
   const [isLoading, setIsLoading] = useState(true);
   const [hasVideos, setHasVideos] = useState(true);
+
   const [currentVideoId, setCurrentVideoId] = useState<number | undefined>();
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const [filters, setFilters] = useState<Map<string, number>>(new Map());
-  const [tagId, setTagId] = useState<number | undefined>();
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
@@ -32,7 +29,9 @@ const VideosSection: FC = () => {
 
     getCollection();
 
-    return () => {};
+    return () => {
+      actions.ui.resetTagFilter();
+    };
   }, []);
 
   const handleDetailOpen = (videoId?: number) => {
@@ -45,17 +44,6 @@ const VideosSection: FC = () => {
     setDetailsOpen(false);
   };
 
-  const updateFilters = ({ type, value, reset }: HandleFilterType) => {
-    if (typeof value !== 'number') return;
-    reset ? filters.delete(type) : filters.set(type, value);
-    setFilters(new Map(filters));
-  };
-
-  const handleFilterByTag = async (value: number | undefined) => {
-    if (value === -1) value = undefined;
-    setTagId(value);
-  };
-
   const handleSearch = async (value: string | undefined) => {
     setSearchQuery(value);
   };
@@ -63,28 +51,14 @@ const VideosSection: FC = () => {
   return (
     <Box>
       <Details open={detailsOpen} handleClose={handleDetailClose} videoId={currentVideoId} />
-      {!isLoading && (
-        <MenuBar
-          disabledFilters={!hasVideos}
+      {!isLoading && <MenuBar handleDetailOpen={handleDetailOpen} handleSearch={handleSearch} />}
+      <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
+        <Collection
           handleDetailOpen={handleDetailOpen}
-          handleFilterByTag={handleFilterByTag}
-          handleSearch={handleSearch}
-          updateFilter={updateFilters}
+          isLoading={isLoading}
+          searchQuery={searchQuery}
         />
-      )}
-      {!hasVideos ? (
-        <NoContent heading={t('noVideosYet')} />
-      ) : (
-        <Box mt={3} maxHeight={'calc(100vh - 154px)'} sx={{ overflowY: 'scroll' }}>
-          <Collection
-            filters={filters}
-            handleDetailOpen={handleDetailOpen}
-            isLoading={isLoading}
-            searchQuery={searchQuery}
-            tagId={tagId}
-          />
-        </Box>
-      )}
+      </Box>
     </Box>
   );
 };
