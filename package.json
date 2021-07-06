@@ -25,8 +25,8 @@
 	"scripts": {
 		"start": "env-cmd -e production ts-node ./server/index.ts",
 		"server:dev": "env-cmd -e development nodemon",
-		"build": "env-cmd -e production webpack",
-		"cm": "git-cz"
+		"build": "NODE_ENV=production webpack",
+		"cm": "git-cz"	
 	},
 	"main": "src/index.tsx",
 	"homepage": "https://github.com/lucaju/junochatbot#readme",
