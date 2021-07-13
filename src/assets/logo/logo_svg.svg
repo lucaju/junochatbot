@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 124.56 32">
+    <defs>
+        <style>.cls-1,.cls-2,.cls-3,.cls-4{fill:none;stroke-miterlimit:10;stroke-width:5px;}.cls-1{stroke:url(#linear-gradient);}.cls-2{stroke:url(#linear-gradient-2);}.cls-3{stroke:url(#linear-gradient-3);}.cls-4{stroke:url(#linear-gradient-4);}</style>
+        <linearGradient id="linear-gradient" x1="0.85" y1="16.04" x2="28.78" y2="16.04" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#00aeef"/>
+            <stop offset="0.35" stop-color="#229dce"/>
+            <stop offset="1" stop-color="#687988"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1="29.29" y1="17.03" x2="60.32" y2="17.03" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#00aeef"/>
+            <stop offset="1" stop-color="#687988"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-3" x1="63.84" y1="17.93" x2="94.88" y2="17.93" gradientTransform="translate(155.7 34.6) rotate(180)" gradientUnits="userSpaceOnUse">
+            <stop offset="0.6" stop-color="#687988"/>
+            <stop offset="1" stop-color="#00aeef"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-4" x1="92.37" y1="15.91" x2="123.4" y2="15.91" xlink:href="#linear-gradient-2"/>
+    </defs>
+    <path class="cls-1" d="M2.87,23.25A12.93,12.93,0,1,0,17.2,3.35"/>
+    <path class="cls-2" d="M52,5.05a13,13,0,1,1-13.93-.28"/>
+    <path class="cls-3" d="M69.16,28.65a13,13,0,1,1,13.93.27"/>
+    <circle class="cls-4" cx="107.88" cy="15.91" r="13.02"/>
+</svg>

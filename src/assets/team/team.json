@@ -1,0 +1,37 @@
+[{
+    "name": "Francisco A. Loiola",
+    "email": "",
+    "institution": "Université de Montréal",
+    "picture": "loiola.png"
+  },
+  {
+    "name": "Julia Salles",
+    "email": "",
+    "institution": "Université de Montréal",
+    "picture": "julia.png"
+  },
+  {
+    "name": "Luciano Frizzera",
+    "email": "lucaju@me.com",
+    "institution": "Concordia University",
+    "picture": "luciano.png"
+  },
+  {
+    "name": "Myriam Rafla",
+    "email": "",
+    "institution": "Dawson College, Concordia University",
+    "picture": "myriam.png"
+  },
+  {
+    "name": "Maria Grullon",
+    "email": "",
+    "institution": "Université de Montréal",
+    "picture": "maria.png"
+  },
+  {
+    "name": "Sirleia Rosa",
+    "email": "",
+    "institution": "Cégep de Saint Laurent",
+    "picture": "sirleia.png"
+  }
+]
