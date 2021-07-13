@@ -3,9 +3,10 @@ import {
   createActionsHook,
   createEffectsHook,
   createReactionHook,
-  createStateHook,
+  createStateHook
 } from 'overmind-react';
 import { namespaced } from 'overmind/config';
+import * as chat from './chat';
 import * as intents from './intents';
 import * as session from './session';
 import * as story from './story';
@@ -16,6 +17,7 @@ import * as videos from './videos';
 export const config = namespaced({
   ui,
   session,
+  chat,
   users,
   story,
   videos,

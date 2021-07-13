@@ -5,6 +5,7 @@ import BlankLayout from './layouts/BlankLayout';
 import UsersView from './views/admin/UsersView';
 import { ForgotView, LoginView, ResetPasswordView } from './views/auth';
 import NotFoundView from './views/errors/NotFoundView';
+import HomeView from './views/homepage';
 import StoriesView from './views/StoriesView';
 import {
   ContextsView,
@@ -50,7 +51,7 @@ const routes = [
       { path: 'resetpassword', element: <ResetPasswordView /> },
       { path: '404', element: <NotFoundView /> },
       // { path: '*', element: <Navigate to="/404" /> },
-      { path: '/', element: <Navigate to="/app" /> },
+      { path: '/', element: <HomeView /> },
     ],
   },
 ];
