@@ -24,7 +24,7 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
   useEffect(() => {
     const checkUser = async () => {
       const isSignIn = await actions.session.signedIn();
-      if (!isSignIn) navigate('/login', { replace: true });
+      if (!isSignIn) navigate('/', { replace: true });
     };
     checkUser();
     return () => {};

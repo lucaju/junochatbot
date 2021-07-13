@@ -1,7 +1,17 @@
-import { Box, CircularProgress, Container, Link, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Link,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -76,7 +86,7 @@ const LoginView: FC = () => {
             </Typography>
             {error && <ErrorMessage message={error.errorMessage} />}
             <LoginForm authenticate={authenticate} />
-            <Box mt={2}>
+            <Stack spacing={2} mt={2}>
               <Link
                 component={RouterLink}
                 sx={{ color: ({ palette }) => palette.text.disabled }}
@@ -85,7 +95,20 @@ const LoginView: FC = () => {
               >
                 {`${t('forgotPassword')}?`}
               </Link>
-            </Box>
+              <Link
+                component={RouterLink}
+                sx={{
+                  mt: 4,
+                  color: ({ palette }) => palette.text.disabled,
+                  textTransform: 'capitalize',
+                }}
+                to="/"
+                variant="body2"
+              >
+                <ArrowBackIcon fontSize="small" sx={{ mb: -0.5, mt: 0.5, mr: 2 }} />
+                Homepage
+              </Link>
+            </Stack>
           </>
         )}
       </Container>

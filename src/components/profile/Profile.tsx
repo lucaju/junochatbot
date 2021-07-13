@@ -66,7 +66,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
 
   const handleSignOut = () => {
     actions.session.signOut();
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
 
   return (
