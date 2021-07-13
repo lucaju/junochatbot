@@ -5,7 +5,6 @@ import { Context } from '../';
 export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {
 
   const response = await effects.chat.api.getStories();
-  console.log(response)
 
   if (isError(response)) return response;
 
