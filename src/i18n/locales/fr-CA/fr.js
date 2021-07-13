@@ -67,6 +67,18 @@ export default {
     noGroupsYet: 'No groups yet',
     userGroups: 'User Groups',
   },
+  home: {
+    about: 'à propos',
+    stories: 'recit',
+    pedagogicalMaterial: 'matériel pédagogique',
+    researchActivities: 'activités de recherche',
+    team: 'équipe',
+    sponsors: 'commanditaires',
+    signin: 'se connecter',
+    title: 'Chatbot et Récit',
+    subtitle: 'Recherche-développement sur l’utilisation des agents conversationnels (chatbots) pour le récit audiovisuel',
+    watch: 'regardez',
+    },
   intents: {
     createIntent: 'Crate intent',
     editIntent: 'Edit intent',

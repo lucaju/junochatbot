@@ -63,6 +63,18 @@ export default {
 	noGroupsYet: 'No groups yet',
 	userGroups: 'User Groups'
   },
+  home: {
+	about: 'about',
+	stories: 'stories',
+	pedagogicalMaterial: 'pedagogical material',
+	researchActivities: 'research activities',
+	team: 'team',
+	sponsors: 'sponsors',
+	signin: 'sign in',
+	title: 'Chatbot & Storytelling',
+	subtitle: 'Research-development on the use of chatbots for audiovisual storytelling',
+	watch: 'watch',
+  },
   intents: {
 	add: 'add',
 	addPhrase: 'Add Phrase',
