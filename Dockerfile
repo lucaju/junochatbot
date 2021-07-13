@@ -2,7 +2,7 @@ FROM node:16.3.0
 
 WORKDIR /app
 
-RUN npm install pm2 -g
+RUN npm install pm2 ts-node -g
 
 COPY package*.json ./
 
