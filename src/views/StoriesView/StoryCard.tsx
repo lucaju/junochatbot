@@ -19,15 +19,15 @@ import { useTranslation } from 'react-i18next';
 interface UserCarddProps {
   showEdit?: boolean;
   story: Story;
-  triggerEditStory: (value: number) => void;
+  triggerEditStory?: (value: number) => void;
+  triggerPlayStory?: (value: number) => void;
 }
 
-const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditStory }) => {
+const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditStory, triggerPlayStory }) => {
   const { t } = useTranslation(['common']);
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(story.imageUrl ? 2 : 0);
   const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
-  const [dominantColor, setDominantColor] = useState('#fff');
   const BotAvatar = getIcon(story.botAvatar);
 
   const mouseOver = () => {
@@ -43,6 +43,13 @@ const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditSto
   const handlePlayClick = () => {
     //TODO
     console.log(story);
+    if (!triggerPlayStory) return;
+    triggerPlayStory(story.id)
+  };
+
+  const handleEditClick = () => {
+    if (!triggerEditStory) return;
+    triggerEditStory(story.id)
   };
 
   return (
@@ -53,7 +60,7 @@ const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditSto
             {t('launch')}
           </Button>
           {showEdit && (
-            <Button onClick={() => triggerEditStory(story.id)} size="small" variant="outlined">
+            <Button onClick={handleEditClick} size="small" variant="outlined">
               {t('edit')}
             </Button>
           )}
