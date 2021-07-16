@@ -4,6 +4,7 @@
     "title_fr-CA": "Atelier de méthodologie de recherche: Anasynthèse",
     "description_fr-CA": "Atelier proposé par Maria Grullon sur la méthodologie de recherche, Anasynthèse",
     "picture": "activity1.jpg",
+    "mediaType": "video",
     "link": "https://www.youtube.com/watch?v=RvRhUHTV_8k"
   },
   {
@@ -12,6 +13,7 @@
     "title_fr-CA": "Atelier de création de chatbot",
     "description_fr-CA": "L’atelier de création de chatbot a eu lieu le vendredi 14 août 2020, de 10h à midi sur Zoom. Dans cet atelier bilingue proposé par Julia Salles et Luciano Frizzera, les participant.e.s ont été accompagné.e.s dans la création d’un chatbot sur la plateforme Dialogflow",
     "picture": "",
+    "mediaType": "video",
     "link": ""
   },
   {
@@ -20,6 +22,7 @@
     "title_fr-CA": "Design de scénarios pédagogiques",
     "description_fr-CA": "Atelier de Myriam Rafla sur le design de scénarios pédagogiques pour la création de récits audiovisuels interactifs",
     "picture": "",
+    "mediaType": "video",
     "link": ""
   },
   {
@@ -28,6 +31,16 @@
     "title_fr-CA": "Plan de communication et design thinking",
     "description_fr-CA": "Atelier proposé par François Haurat sur le design thinking et le plan de communication",
     "picture": "",
+    "mediaType": "video",
     "link": ""
+  },
+  {
+    "title_en-CA": "Conference Presentation",
+    "description_en-CA": "Conference Presentation",
+    "title_fr-CA": "Conference Presentation",
+    "description_fr-CA": "Conference Presentation",
+    "picture": "",
+    "mediaType": "print",
+    "link": "http://localhost:3000/"
   }
 ]

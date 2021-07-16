@@ -12,10 +12,11 @@ import { useTranslation } from 'react-i18next';
 import { useAppState } from '@src/overmind';
 
 export interface ActivityProps {
-  title: string;
-  picture: string;
   description?: string;
   link?: string;
+  mediaType: string;
+  picture: string;
+  title: string;
 }
 
 interface CardProps {
@@ -49,7 +50,7 @@ const Card: FC<CardProps> = ({
   const { ui } = useAppState();
   const lang = ui.languageCode ?? 'en_CA';
 
-  const { picture, link } = activity;
+  const { link, mediaType, picture } = activity;
   //@ts-ignore
   const title = activity[`title_${lang}`];
   //@ts-ignore
@@ -76,7 +77,7 @@ const Card: FC<CardProps> = ({
   const handleCardActionClick = () => {
     if (!showContent || !stopAutoplay) return;
     stopAutoplay();
-    showContent(activity)
+    showContent(activity);
   };
 
   return (
@@ -132,7 +133,7 @@ const Card: FC<CardProps> = ({
         {link && (
           <CardActions sx={{ justifyContent: 'center' }}>
             <Button onClick={handleCardActionClick} size="small">
-              {t('watch')}
+              {t(mediaType === 'video' ? 'watch' : 'read')}
             </Button>
           </CardActions>
         )}

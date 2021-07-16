@@ -69,15 +69,17 @@ export default {
   },
   home: {
     about: 'à propos',
-    stories: 'recit',
     pedagogicalMaterial: 'matériel pédagogique',
+    read: 'lire',
     researchActivities: 'activités de recherche',
-    team: 'équipe',
-    sponsors: 'commanditaires',
     signin: 'se connecter',
-    title: 'Chatbot et Récit',
+    sponsors: 'commanditaires',
+    stories: 'recit',
     subtitle: 'Recherche-développement sur l’utilisation des agents conversationnels (chatbots) pour le récit audiovisuel',
+    team: 'équipe',
+    title: 'Chatbot et Récit',
     watch: 'regardez',
+    
     },
   intents: {
     createIntent: 'Crate intent',

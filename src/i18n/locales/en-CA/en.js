@@ -65,15 +65,17 @@ export default {
   },
   home: {
 	about: 'about',
-	stories: 'stories',
 	pedagogicalMaterial: 'pedagogical material',
+	read: 'read',
 	researchActivities: 'research activities',
-	team: 'team',
-	sponsors: 'sponsors',
 	signin: 'sign in',
-	title: 'Chatbot & Storytelling',
+	sponsors: 'sponsors',
+	stories: 'stories',
 	subtitle: 'Research-development on the use of chatbots for audiovisual storytelling',
+	title: 'Chatbot & Storytelling',
+	team: 'team',
 	watch: 'watch',
+	
   },
   intents: {
 	add: 'add',
