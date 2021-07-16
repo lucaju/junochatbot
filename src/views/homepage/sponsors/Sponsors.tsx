@@ -3,6 +3,7 @@ import {
   Container,
   Divider,
   Grid,
+  Link,
   Stack,
   Typography,
   useMediaQuery,
@@ -62,7 +63,9 @@ const Sponsors: FC = () => {
                     md={sponsors.length > 2 ? 4 : 6}
                     lg={sponsors.length === 2 ? 6 : sponsors.length === 3 ? 4 : 3}
                   >
-                    {imageLogo(name, logo)}
+                    <Link href={link} target="blank" rel="noopener noreferrer">
+                      {imageLogo(name, logo)}
+                    </Link>
                   </Grid>
                 ))}
             </Grid>
