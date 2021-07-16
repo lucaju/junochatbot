@@ -17,7 +17,7 @@ const Team: FC = () => {
 
   return (
     <Box id="team" display="flex" alignItems="flext-start" py={15}>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Stack spacing={6}>
           <Typography align="center" sx={{ textTransform: 'capitalize' }} variant="h4">
             {t('team')}
@@ -25,7 +25,7 @@ const Team: FC = () => {
           <Grid container>
             {team &&
               team.map((profile) => (
-                <Grid item key={profile.name} xs={12} sm={6} md={4} lg={3}>
+                <Grid item key={profile.name} xs={12} sm={6} md={4} lg={3} xl={2}>
                   <TeamProfile {...profile} />
                 </Grid>
               ))}

@@ -14,7 +14,7 @@
     "name": "Luciano Frizzera",
     "email": "lucaju@me.com",
     "institution": "Concordia University",
-    "picture": "luciano.png"
+    "picture": "luciano.jpg"
   },
   {
     "name": "Myriam Rafla",
@@ -33,5 +33,29 @@
     "email": "",
     "institution": "Cégep de Saint Laurent",
     "picture": "sirleia.png"
+  },
+  {
+    "name": "Dave Racek",
+    "email": "dpracek@yahoo.com",
+    "institution": "-",
+    "picture": ""
+  },
+  {
+    "name": "Samia Alves Pedraça",
+    "email": "spedraca1@gmail.com",
+    "institution": "Concordia University",
+    "picture": ""
+  },
+  {
+    "name": "Sami _",
+    "email": "",
+    "institution": "-",
+    "picture": ""
+  },
+  {
+    "name": "Pierre Mark",
+    "email": "",
+    "institution": "-",
+    "picture": ""
   }
 ]
