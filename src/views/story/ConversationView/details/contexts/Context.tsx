@@ -1,9 +1,18 @@
-import { Box, IconButton, Typography, useTheme, Zoom } from '@material-ui/core';
+import {
+  Box,
+  ClickAwayListener,
+  IconButton,
+  Stack,
+  Typography,
+  useTheme,
+  Zoom,
+} from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import TimerIcon from '@material-ui/icons/Timer';
 import { useActions } from '@src/overmind';
 import type { Context as ContextType } from '@src/types';
 import React, { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import AutocompleteContextMenu from './AutocompleteContextMenu';
 
 export interface ContextComponentProps {
   context: ContextType;
@@ -15,11 +24,13 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
   const actions = useActions();
   const theme = useTheme();
 
+  const [containerRef, setContainerRef] = useState<HTMLElement | undefined>();
   const NameHTMLRef = useRef<HTMLElement>(null);
   const LifespanHTMLRef = useRef<HTMLElement>(null);
   const [hover, setHover] = useState(false);
 
   const { lifespanCount = 5, shortName, type } = context;
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     if (shortName === '' && NameHTMLRef.current) NameHTMLRef.current.focus();
@@ -41,6 +52,13 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
       handleUpdate();
       return;
     }
+
+    if (!NameHTMLRef || !NameHTMLRef.current) return;
+
+    if (!containerRef) setContainerRef(event.currentTarget.parentElement ?? event.currentTarget);
+    const currentText = NameHTMLRef.current.textContent ?? '';
+    setQuery(currentText + event.key);
+    NameHTMLRef.current.focus();
   };
 
   const handleKeyDownLife = (event: KeyboardEvent<HTMLElement>) => {
@@ -76,10 +94,13 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
     event.preventDefault();
   };
 
-  const handleBlur = () => handleUpdate();
+  const handleBlur = () => {
+    // handleUpdate();
+  };
 
   const handleUpdate = () => {
     if (!NameHTMLRef || !NameHTMLRef.current) return;
+    setQuery('');
 
     const newName = NameHTMLRef.current.textContent ?? '';
     const sanitizedNewName = newName.trim().replace(/\s+/g, ''); //remove spaces.
@@ -100,76 +121,92 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
   const ononMouseEnter = () => setHover(true);
   const onMouseLeave = () => setHover(false);
 
-  return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      alignItems="center"
-      my={1}
-      onMouseEnter={ononMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        py={0.5}
-        px={2}
-        borderRadius={3}
-        onBlur={handleBlur}
-        sx={{
-          backgroundColor: theme.palette.action.hover,
-          '&:focus-within': {
-            boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
-          },
-          transition: theme.transitions.create(['box-shadow'], {
-            duration: theme.transitions.duration.standard,
-          }),
+  const handleAutocompleteClick = (value: string) => {
+    if (value === '') return;
+    if (!NameHTMLRef || !NameHTMLRef.current) return;
+    NameHTMLRef.current.textContent = value;
+    handleUpdate();
+  };
 
-          boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
-        }}
-      >
-        <Typography
-          ref={NameHTMLRef}
-          contentEditable={true}
-          onKeyDown={handleKeyDownName}
-          suppressContentEditableWarning={true}
-          sx={{
-            minWidth: 20,
-            '&:focus-visible': { outlineStyle: 'none' },
-          }}
+  return (
+    <ClickAwayListener onClickAway={handleUpdate}>
+      <Stack>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          my={1}
+          onMouseEnter={ononMouseEnter}
+          onMouseLeave={onMouseLeave}
         >
-          {shortName}
-        </Typography>
-        {type === 'output' && (
-          <>
-            <TimerIcon fontSize="small" sx={{ mx: 1 }} />
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            py={0.5}
+            px={2}
+            borderRadius={3}
+            onBlur={handleBlur}
+            sx={{
+              backgroundColor: theme.palette.action.hover,
+              '&:focus-within': {
+                boxShadow: `${theme.palette.primary.light} 0px 0px 5px 1px !important`,
+              },
+              transition: theme.transitions.create(['box-shadow'], {
+                duration: theme.transitions.duration.standard,
+              }),
+
+              boxShadow: hover ? 'rgb(0 0 0 / 20%) 0px 0px 10px 1px' : 0,
+            }}
+          >
             <Typography
-              ref={LifespanHTMLRef}
+              ref={NameHTMLRef}
               contentEditable={true}
-              onKeyDown={handleKeyDownLife}
+              onKeyDown={handleKeyDownName}
               suppressContentEditableWarning={true}
               sx={{
-                flexGrow: 1,
+                minWidth: 20,
                 '&:focus-visible': { outlineStyle: 'none' },
               }}
             >
-              {lifespanCount}
+              {shortName}
             </Typography>
-          </>
-        )}
-      </Box>
-      <Zoom in={hover}>
-        <IconButton
-          aria-label="delete"
-          onClick={handleRemoveClick}
-          size="small"
-          sx={{ right: 4, bottom: 12 }}
-        >
-          <HighlightOffIcon fontSize="inherit" />
-        </IconButton>
-      </Zoom>
-    </Box>
+            {type === 'output' && (
+              <>
+                <TimerIcon fontSize="small" sx={{ mx: 1 }} />
+                <Typography
+                  ref={LifespanHTMLRef}
+                  contentEditable={true}
+                  onKeyDown={handleKeyDownLife}
+                  suppressContentEditableWarning={true}
+                  sx={{
+                    flexGrow: 1,
+                    '&:focus-visible': { outlineStyle: 'none' },
+                  }}
+                >
+                  {lifespanCount}
+                </Typography>
+              </>
+            )}
+          </Box>
+          <Zoom in={hover}>
+            <IconButton
+              aria-label="delete"
+              onClick={handleRemoveClick}
+              size="small"
+              sx={{ right: 4, bottom: 12 }}
+            >
+              <HighlightOffIcon fontSize="inherit" />
+            </IconButton>
+          </Zoom>
+        </Box>
+        <AutocompleteContextMenu
+          anchorEl={containerRef}
+          handleSelect={handleAutocompleteClick}
+          query={query}
+        />
+      </Stack>
+    </ClickAwayListener>
   );
 };
 
