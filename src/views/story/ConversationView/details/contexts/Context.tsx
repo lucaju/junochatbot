@@ -82,11 +82,12 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
     if (!NameHTMLRef || !NameHTMLRef.current) return;
 
     const newName = NameHTMLRef.current.textContent ?? '';
+    const sanitizedNewName = newName.trim().replace(/\s+/g, ''); //remove spaces.
     const newLifeCount = LifespanHTMLRef.current ? Number(LifespanHTMLRef.current.textContent) : 0;
 
     const updatedContext: ContextType = {
       ...context,
-      shortName: newName,
+      shortName: sanitizedNewName,
       lifespanCount: newLifeCount,
     };
     actions.intents.updateContext(updatedContext);
