@@ -1,14 +1,14 @@
 import { Dialog, useMediaQuery, useTheme } from '@material-ui/core';
 import React, { FC } from 'react';
 import ReactPlayer from 'react-player/youtube';
-import { ActivityProps } from './Card';
+import { ActivityProps } from './ActivityCard';
 
-interface ContentDialogProps {
+interface VideoContentProps {
   onClose: (value: string) => void;
   content: ActivityProps | undefined;
 }
 
-const ContentDialog: FC<ContentDialogProps> = ({ onClose, content }) => {
+const VideoContent: FC<VideoContentProps> = ({ onClose, content }) => {
   const open = !!content;
   const { link } = content ?? {};
 
@@ -26,4 +26,4 @@ const ContentDialog: FC<ContentDialogProps> = ({ onClose, content }) => {
   );
 };
 
-export default ContentDialog;
+export default VideoContent;

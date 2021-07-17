@@ -40,7 +40,7 @@
     "title_fr-CA": "Conference Presentation",
     "description_fr-CA": "Conference Presentation",
     "picture": "",
-    "mediaType": "print",
-    "link": "http://localhost:3000/"
+    "mediaType": "text",
+    "link": ""
   }
 ]
