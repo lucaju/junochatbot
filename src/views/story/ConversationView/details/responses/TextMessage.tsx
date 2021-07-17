@@ -20,7 +20,10 @@ const TextMessage: FC<TextMessageProps> = ({ message, isDragging = false }) => {
   const [hover, setHover] = useState(false);
   const numberOfAlternatives = message.text.text?.length ?? 0;
 
-  const addAlternative = () => actions.intents.addTextMessageAlternative(message.id);
+  const addAlternative = () => {
+    if (!message.id) return;
+    actions.intents.addTextMessageAlternative(message.id);
+  }
 
   const handleUpdateAlternative = (altIndex: number, value: string) => {
     actions.intents.updateTextMessageAlternative({
@@ -37,7 +40,10 @@ const TextMessage: FC<TextMessageProps> = ({ message, isDragging = false }) => {
     });
   };
 
-  const handleRemove = () => actions.intents.removeMessage(message.id);
+  const handleRemove = () => {
+    if (!message.id) return;
+    actions.intents.removeMessage(message.id);
+  }
 
   return (
     <Stack
