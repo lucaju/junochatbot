@@ -15,22 +15,30 @@ import { getIcon } from '@src/util/icons';
 import { DateTime } from 'luxon';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 interface UserCarddProps {
+  showLaunch?: boolean;
   showEdit?: boolean;
   story: Story;
   triggerEditStory?: (value: number) => void;
-  triggerPlayStory?: (value: number) => void;
 }
 
-const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditStory, triggerPlayStory }) => {
+const StoryCard: FC<UserCarddProps> = ({
+  showLaunch = true,
+  showEdit = false,
+  story,
+  triggerEditStory,
+}) => {
   const { t } = useTranslation(['common']);
+  const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [elevation, setElevation] = useState(story.imageUrl ? 2 : 0);
   const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
   const BotAvatar = getIcon(story.botAvatar);
 
   const mouseOver = () => {
+    if (!showLaunch && !showEdit) return;
     setHover(true);
     setElevation(6);
   };
@@ -41,31 +49,31 @@ const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditSto
   };
 
   const handlePlayClick = () => {
-    //TODO
-    console.log(story);
-    if (!triggerPlayStory) return;
-    triggerPlayStory(story.id)
+    navigate(`/story/${story.id}`, { replace: true });
   };
 
   const handleEditClick = () => {
     if (!triggerEditStory) return;
-    triggerEditStory(story.id)
+    triggerEditStory(story.id);
   };
 
   return (
     <Card elevation={elevation} onMouseEnter={mouseOver} onMouseLeave={mouseOut} sx={{ m: 2 }}>
-      <Collapse in={hover}>
-        <Box display="flex" flexDirection="row" justifyContent="space-around" p={1}>
-          <Button onClick={handlePlayClick} size="small" variant="outlined">
-            {t('launch')}
-          </Button>
-          {showEdit && (
-            <Button onClick={handleEditClick} size="small" variant="outlined">
-              {t('edit')}
+      {(showLaunch || showEdit) && (
+        <Collapse in={hover}>
+          <Box display="flex" flexDirection="row" justifyContent="space-around" p={1}>
+            <Button onClick={handlePlayClick} size="small" variant="outlined">
+              {t('launch')}
             </Button>
-          )}
-        </Box>
-      </Collapse>
+            {showEdit && (
+              <Button onClick={handleEditClick} size="small" variant="outlined">
+                {t('edit')}
+              </Button>
+            )}
+          </Box>
+        </Collapse>
+      )}
+
       {hasImage && (
         <CardMedia
           image={

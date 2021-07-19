@@ -34,14 +34,13 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
               },
             },
           }}
+          color={path.includes('/story/') ? 'primary' : 'inherit'}
           component={RouterLink}
           fullWidth
           sx={{
             width: '100%',
-            // py: 1.25,
-            // px: 1.25,
             padding: '10px 8px',
-            color: 'text.secondary',
+            color: path.includes('/story/') ? 'primary' : 'text.secondary',
             fontWeight: theme.typography.fontWeightMedium,
             fontSize: '10px',
             letterSpacing: 0,
@@ -53,14 +52,7 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
         >
           <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
             {Icon && <Icon size="20" />}
-            <Box
-              component="span"
-              sx={{
-                // mr: 'auto',
-                mt: 0.5,
-                textTransform: 'capitalize',
-              }}
-            >
+            <Box component="span" sx={{ mt: 0.5, textTransform: 'capitalize' }}>
               {title}
             </Box>
           </Box>
@@ -78,12 +70,13 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
               },
             },
           }}
+          color={path.includes('/story/') ? 'primary' : 'inherit'}
           component={RouterLink}
           sx={{
             width: '100%',
             py: 1.25,
             px: 1,
-            color: 'text.secondary',
+            color: path.includes('/story/') ? 'primary' : 'text.secondary',
             fontWeight: theme.typography.fontWeightMedium,
             letterSpacing: 0,
             textTransform: 'none',

@@ -33,10 +33,6 @@ const Stories: FC = () => {
       .map((sk, i) => <Skeleton key={i} height={200} sx={{ m: 2.5 }} variant="rectangular" />);
   };
 
-  const handleTriggerPlayStory = (value: number) => {
-    console.log(value);
-  };
-
   return (
     <Box id="stories">
       <Box mb={isMobile ? -2.5 : -4} sx={{ position: 'relative', zIndex: 0 }} width="100%">
@@ -75,11 +71,7 @@ const Stories: FC = () => {
                           animate={{ scale: 1 }}
                           exit={{ scale: 0 }}
                         >
-                          <StoryCard
-                            showEdit={false}
-                            story={story}
-                            triggerPlayStory={handleTriggerPlayStory}
-                          />
+                          <StoryCard showEdit={false} story={story} />
                         </Box>
                       ))}
                 </Masonry>

@@ -1,7 +1,7 @@
 import AdbIcon from '@material-ui/icons/Adb';
 import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
-// import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { MenuType } from '../Menu';
@@ -36,5 +36,11 @@ export const storyMenu: MenuType[] = [
     tKey: 'entities',
     path: '/app/stories/:storyId/entities',
     icon: DeviceHubIcon,
+  },
+  {
+    title: 'Launch',
+    tKey: 'launch',
+    path: '/story/:storyId',
+    icon: PlayCircleOutlineIcon,
   },
 ];
