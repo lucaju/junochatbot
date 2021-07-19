@@ -25,6 +25,7 @@ export default {
     tag: 'tag',
     tags: 'Mots Clés',
     title: 'title',
+    typeHere: 'écrivez ici',
     update: 'update',
     user: 'user',
     users: 'Utilisateurs',

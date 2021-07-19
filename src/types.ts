@@ -240,3 +240,42 @@ export type Intent = {
   parentFollowupIntentName?: string;
   followupIntentInfo?: FollowupIntentInfo[];
 };
+
+// CHAT
+
+//https://cloud.google.com/dialogflow/es/docs/reference/rest/v2/DetectIntentResponse#QueryResult
+export interface DetectIntentResponse {
+  queryResult: QueryResult;
+  responseId: string;
+  sessionid: string
+}
+
+export interface QueryResult {
+  action: string;
+  allRequiredParamsPresent: boolean;
+  cancelsSlotFilling?: boolean;
+  diagnosticInfo?: Struct;
+  fulfillmentText: string;
+  fulfillmentMessages?: Message[];
+  intent: Intent;
+  intentDetectionConfidence: number;
+  languageCode: string;
+  outputContexts: Context[];
+  parameters: Struct;
+  queryText: string;
+  // sentimentAnalysisResult?: SentimentAnalysisResult;
+  speechRecognitionConfidence?: number;
+  webhookSource?: string;
+  webhookPayload: Struct;
+}
+
+export interface SpeechMessage {
+  id: string;
+  type: 'text' | 'payload';
+  source: 'bot' | 'user';
+  message?: string;
+  payload?: VideoMessage;
+  typingTime?: number;
+  waitingTime?: number;
+  metadata?: QueryResult;
+}

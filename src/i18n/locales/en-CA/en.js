@@ -25,6 +25,7 @@ export default {
 	tag: 'tag',
 	tags: 'tags',
 	title: 'title',
+	typeHere: 'type here',
 	update: 'update',
 	user: 'user',
 	users: 'users',

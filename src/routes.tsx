@@ -6,6 +6,7 @@ import UsersView from './views/admin/UsersView';
 import { ForgotView, LoginView, ResetPasswordView } from './views/auth';
 import NotFoundView from './views/errors/NotFoundView';
 import HomeView from './views/homepage';
+import StoryPlay from './views/chat';
 import StoriesView from './views/StoriesView';
 import {
   ContextsView,
@@ -40,6 +41,11 @@ const routes = [
       { path: '/', element: <StoriesView /> },
       { path: '/users', element: <UsersView /> },
     ],
+  },
+  {
+    path: '/story',
+    element: <BlankLayout />,
+    children: [{ path: ':storyId', element: <StoryPlay /> }],
   },
   {
     path: '/',
