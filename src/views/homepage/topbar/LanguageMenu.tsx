@@ -1,7 +1,7 @@
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import LanguageIcon from '@material-ui/icons/Language';
 import { useActions, useAppState } from '@src/overmind';
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LanguageMenu: FC = () => {
@@ -9,7 +9,7 @@ const LanguageMenu: FC = () => {
   const { ui } = useAppState();
   const actions = useActions();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (value: string) => {
