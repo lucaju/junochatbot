@@ -62,7 +62,7 @@ const Collection: FC<CollectionProps> = ({
             }
             case 'published': {
               const valueAPublished: boolean = value === 1 ? true : false;
-              match = !!item.publishedDate === valueAPublished;
+              match = !!item.published === valueAPublished;
               break;
             }
             default: {

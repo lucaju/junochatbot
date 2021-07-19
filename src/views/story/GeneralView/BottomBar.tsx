@@ -8,22 +8,35 @@ import { useTranslation } from 'react-i18next';
 interface BottomBarProps {
   dirty: boolean;
   isSubmitting: boolean;
-  name: string;
+  publishedField: string;
+  publishedDateField: string;
 }
 
-const BottomBar: FC<BottomBarProps> = ({ name, dirty, isSubmitting }) => {
+const BottomBar: FC<BottomBarProps> = ({
+  dirty,
+  isSubmitting,
+  publishedField,
+  publishedDateField,
+}) => {
   const { t } = useTranslation(['common', 'storyGeneral']);
   const { submitForm } = useFormikContext();
-  const [, meta, helpers] = useField(name);
-  const { value } = meta;
-  const { setValue } = helpers;
 
-  const [publishedState, setPublishedState] = useState(value ? true : false);
+  const [, metaPub, helpersPub] = useField(publishedField);
+  const { value: published } = metaPub;
+  const { setValue: setPublished } = helpersPub;
+
+  const [, metaPubDate, helpersPubDate] = useField(publishedDateField);
+  const { value: publishedDate } = metaPubDate;
+  const { setValue: setPublishedDate } = helpersPubDate;
+
+  const [publishedState, setPublishedState] = useState(published === 1 ? true : false);
 
   const handleChangePublisehdState = () => {
     const newValue = !publishedState;
     const pDate = newValue === true ? DateTime.now().toISO() : null;
-    setValue(pDate);
+
+    setPublished(newValue ? 1 : 0);
+    setPublishedDate(pDate);
     setPublishedState(newValue);
   };
 

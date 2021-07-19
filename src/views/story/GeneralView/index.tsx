@@ -19,8 +19,6 @@ import BottomBar from './BottomBar';
 import Main from './main';
 import SideBar from './sidebar';
 
-const title = 'Juno Chatbot';
-
 const GeneralView: FC = () => {
   const navigate = useNavigate();
   const { storyId } = useParams();
@@ -60,7 +58,8 @@ const GeneralView: FC = () => {
     languageCode: Yup.string(),
     synopsis: Yup.string(),
     imageUrl: Yup.mixed(),
-    uploadFile: Yup.mixed(), 
+    uploadFile: Yup.mixed(),
+    published: Yup.number(),
     publishedDate: Yup.mixed(),
     botAvatar: Yup.string(),
     botName: Yup.string(),
@@ -121,7 +120,12 @@ const GeneralView: FC = () => {
                     <SideBar values={values} />
                   </Stack>
                   <Box ml={3} mr={3}>
-                    <BottomBar dirty={dirty} name={'publishedDate'} isSubmitting={isSubmitting} />
+                    <BottomBar
+                      dirty={dirty}
+                      isSubmitting={isSubmitting}
+                      publishedField={'published'}
+                      publishedDateField="publishedDate"
+                    />
                   </Box>
                 </Container>
               </form>

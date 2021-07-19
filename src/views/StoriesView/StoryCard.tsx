@@ -106,7 +106,7 @@ const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditSto
 
           <Box sx={{ mr: -1, px: 1, color: 'text.secondary' }}>
             <Typography variant="overline">
-              {story.publishedDate === null ? (
+              {story.published === 0 ? (
                 <Box
                   component="span"
                   sx={{
@@ -117,7 +117,8 @@ const StoryCard: FC<UserCarddProps> = ({ showEdit = false, story, triggerEditSto
                   {t('draft')}
                 </Box>
               ) : (
-                story.publishedDate !== null &&
+                story.published === 1 &&
+                story.publishedDate &&
                 DateTime.fromISO(story.publishedDate).toFormat('yyyy')
               )}
             </Typography>

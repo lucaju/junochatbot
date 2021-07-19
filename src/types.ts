@@ -69,6 +69,7 @@ export interface Story {
   uploadFile?: File;
   user: User; //not present
   languageCode: string;
+  published: 0 | 1;
   publishedDate: string | null;
   synopsis: string;
   botAvatar: string;

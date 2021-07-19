@@ -49,7 +49,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
             />
             <Box flexGrow={1} />
             <Typography variant="overline">
-              {values.publishedDate === null ? (
+              {values.published === 0 ? (
                 <Box
                   component="span"
                   sx={{
@@ -60,7 +60,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
                   {t('draft')}
                 </Box>
               ) : (
-                values.publishedDate !== null &&
+                values.published == 1 && values.publishedDate &&
                 DateTime.fromISO(values.publishedDate).toFormat('yyyy')
               )}
             </Typography>
