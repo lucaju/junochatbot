@@ -2,6 +2,8 @@ export default {
   common: {
     all: 'all',
     cancel: 'cancel',
+    close: 'close',
+    choose: 'choose',
     delete: 'delete',
     description: 'description',
     draft: 'draft',
@@ -39,8 +41,7 @@ export default {
     forgotPassword: 'Forgot Password',
     getNewPassowrd: 'Get New Password',
     mustBeValidEmail: 'Must be a valid email',
-    mustSetPassowrd:
-      'You must set up your password before starting with Juno Chatbot.',
+    mustSetPassowrd: 'You must set up your password before starting with Juno Chatbot.',
 
     passwordSet: 'Password set.',
     passwordRequirement:
@@ -48,14 +49,13 @@ export default {
     setupPasswordFor: 'Set up new password for',
     signin: 'sign in',
   },
-  deleteDialog: {
-    title: 'Delete {{object}}',
-    message: 'Are you sure you want to delete this {{object}}?',
+  confirmationDialog: {
+    cancelMessage: 'Not saved changes will be lost. Are you sure you want to close this {{object}}',
+    deleteMessage: 'Are you sure you want to delete this {{object}}?',
   },
   errorMessages: {
     accontNotRecognized: 'Sorry, we do not recognize this account.',
-    notPossibleSetPassword:
-      'Sorry, it is not possible to set your password at this time.',
+    notPossibleSetPassword: 'Sorry, it is not possible to set your password at this time.',
     somethingWentWrong: 'Something went wrong!',
   },
   groups: {
@@ -76,29 +76,40 @@ export default {
     signin: 'se connecter',
     sponsors: 'commanditaires',
     stories: 'recit',
-    subtitle: 'Recherche-développement sur l’utilisation des agents conversationnels (chatbots) pour le récit audiovisuel',
+    subtitle:
+      'Recherche-développement sur l’utilisation des agents conversationnels (chatbots) pour le récit audiovisuel',
     team: 'équipe',
     title: 'Chatbot et Récit',
     watch: 'regardez',
-    
-    },
+  },
   intents: {
-    createIntent: 'Crate intent',
+    add: 'add',
+    addInputContext: 'Add Input Context',
+    addOutputContext: 'Add Output Context',
+    addParameter: 'Add Parameter',
+    addPhrase: 'Add Phrase',
+    addText: 'text',
+    addVideo: 'video',
+    addVideoTag: 'video tag',
+    createIntent: 'Create intent',
     editIntent: 'Edit intent',
     intentCreated: 'Intent Created',
     intentDeleted: 'Intent Deleted',
     intentUpdated: 'Intent Updated',
     newIntent: 'New intent',
     noIntentsYet: 'No Intents yet',
+    parameters: 'Parameters',
   },
   navMenu: {
-    usersGroups: "Groupes d'Utilisateurs",
-    general: 'Général',
-    videoCollection: 'Collection de vidéos',
     conversationDesign: 'Conception de conversation',
+    entityLibrary: "Bibliothèque d'entités",
+    general: 'Général',
+    intentContexts: "Contextes d'intention",
+    launch: 'Lancer',
+    videoCollection: 'Collection de vidéos',
   },
   noContent: {
-    noMatch: 'No match',
+    noMatch: 'Aucun résultat',
   },
   notFound: {
     message404:
@@ -124,6 +135,7 @@ export default {
   },
   storyGeneral: {
     addImage: 'Add Image',
+    author: 'author',
     avatar: 'avatar',
     characterBot: 'Character Bot',
     messageDelay: 'Message Delay (characters per millissecond)',
