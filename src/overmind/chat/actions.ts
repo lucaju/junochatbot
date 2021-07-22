@@ -1,7 +1,17 @@
-import type { ErrorMessage, SpeechMessage, Story, Video } from '@src/types';
+import type {
+  ErrorMessage,
+  Message,
+  QueryResult,
+  SpeechMessage,
+  Story,
+  Video,
+  VideoMessage,
+} from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Context } from '../';
 import { v4 as uuidv4 } from 'uuid';
+import { Duration } from 'luxon';
+
 export const resetState = ({ state }: Context) => {
   state.chat.stories = [];
   state.chat.currentStory = undefined;
@@ -50,12 +60,15 @@ export const submitUserInput = async ({ state, actions }: Context, userInput: st
     message: userInput,
   };
 
+  const lastLog = state.chat.chatLog[state.chat.chatLog.length - 1];
+  userSpeech.threadId = lastLog && lastLog.source === 'user' ? lastLog.threadId : uuidv4();
+
   state.chat.chatLog = [...state.chat.chatLog, userSpeech];
 
   actions.chat.detectedIntent(userInput);
 };
 
-export const detectedIntent = async ({ state, effects }: Context, userInput: string) => {
+export const detectedIntent = async ({ state, actions, effects }: Context, userInput: string) => {
   const storyId = state.chat.currentStory?.id;
   if (!storyId) return;
 
@@ -66,97 +79,92 @@ export const detectedIntent = async ({ state, effects }: Context, userInput: str
   if (!state.chat.sessionid) state.chat.sessionid = response.sessionid;
 
   const { queryResult } = response;
-  const { fulfillmentMessages } = queryResult;
-
+  if (!queryResult) return;
   // console.log(queryResult);
 
-  if (!fulfillmentMessages) return;
-
-  const messages: SpeechMessage[] = [];
-
-  fulfillmentMessages.forEach((message, i, array) => {
-    let botSpeech: SpeechMessage;
-
-    const waitingTime = () => {
-      if (i === 0) return 0;
-      const prevWaitingtime = messages[i - 1].waitingTime ?? 0;
-      const prevTypingtime = messages[i - 1].typingTime ?? 0;
-      return prevWaitingtime + prevTypingtime;
-    };
-
-    if ('text' in message) {
-      const msg = message.text?.text?.[0] ?? '';
-      const typingTime = processMessageTypingTime(msg, state.chat.currentStory?.botDelay);
-
-      botSpeech = {
-        id: uuidv4(),
-        type: 'text',
-        source: 'bot',
-        message: msg,
-        metadata: queryResult,
-        typingTime,
-        waitingTime: waitingTime(),
-      };
-    } else {
-      botSpeech = {
-        id: uuidv4(),
-        type: 'payload',
-        source: 'bot',
-        payload: message.payload,
-        metadata: queryResult,
-        typingTime: 0,
-        waitingTime: waitingTime(),
-      };
-    }
-
-    messages.push(botSpeech);
-  });
+  const messages: SpeechMessage[] = await actions.chat._processMessages(queryResult);
 
   // console.log(messages);
 
   state.chat.chatLog = [...state.chat.chatLog, ...messages];
 };
 
-const processMessageTypingTime = (text: string, botDelay: number = 100) => {
-  // Average human typying speed: 1 word/600ms;
-  // Average characters per word: 5;
-  // Average typing speed 1 character/120ms
-  const initialDelay = [200, 700]; // default: 200 - 700ms before start
-  const typingDelay = [botDelay - 10, botDelay + 10]; // fuzziness: +/- the user setting for the bot
+export const _processMessages = async ({ actions }: Context, queryResult: QueryResult) => {
+  const { fulfillmentMessages } = queryResult;
+  if (!fulfillmentMessages) return [] as SpeechMessage[];
 
-  const INITIAL_DELAY = getRandomIntInclusive(initialDelay);
-  const TIME_PER_CHARACRTER = getRandomIntInclusive(typingDelay);
+  const messages: SpeechMessage[] = [];
 
-  return text.length * TIME_PER_CHARACRTER;
+  const threadId = uuidv4();
+
+  const waitingTime = (i: number) => {
+    if (i === 0) return 0;
+    const prevWaitingtime = messages[i - 1].waitingTime ?? 0;
+    const prevTypingtime = messages[i - 1].speechTime ?? 0;
+    return prevWaitingtime + prevTypingtime;
+  };
+
+  for (let i: number = 0; i < fulfillmentMessages.length; i++) {
+    const message: Message = fulfillmentMessages[i];
+
+    const botSpeech: SpeechMessage = {
+      id: uuidv4(),
+      threadId,
+      source: 'bot',
+      metadata: queryResult,
+      waitingTime: waitingTime(i),
+    };
+
+    botSpeech.type = 'text' in message ? 'text' : 'video';
+
+    if ('text' in message) botSpeech.message = message.text?.text?.[0] ?? '';
+    if ('payload' in message) botSpeech.video = await actions.chat.getVideo(message.payload);
+
+    botSpeech.speechTime =
+      botSpeech.type === 'text'
+        ? actions.chat._getMessageTypingTime(botSpeech.message)
+        : _getVideoDuration(botSpeech.video);
+
+    messages.push(botSpeech);
+  }
+
+  console.log(messages);
+
+  return messages;
 };
 
-const processVideoTypingTime = (video: any, botDelay: number = 100) => {
-  const durationParts = video.duration.split(':').reverse();
-  const seconds = durationParts[0] * 1000; // in ms
-  const minutes = durationParts[1] * 60 * 1000; // in ms
+export const getVideo = async ({ actions }: Context, videoMessage: VideoMessage) => {
+  const video =
+    videoMessage.type == 'tag'
+      ? actions.chat.getVideosByTag(videoMessage.source)
+      : actions.chat.getVideoByID(videoMessage.source);
 
-  return minutes + seconds;
-};
-
-const getRandomIntInclusive = ([min, max]: number[]) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; // The maximum is inclusive and the minimum is inclusive
+  return video;
 };
 
 export const getVideosByTag = async ({ state, effects }: Context, tagId: string) => {
   const storyId = state.chat.currentStory?.id;
   if (!storyId) return;
 
-  //DETECT INTENT
   const response = await effects.chat.api.getVideosBytag(storyId, Number(tagId));
   if (isError(response)) return;
-  console.log(response);
 
-  return response[0];
+  let unwatchedVideos = response.filter((video) => !state.chat.watchedVideos.includes(video));
+  if (unwatchedVideos.length === 0) unwatchedVideos = response; // if all videos were watched, send all available videos back
+
+  const randomPick = getRandomIntInclusive([0, unwatchedVideos.length - 1]);
+
+  console.log(unwatchedVideos, randomPick, unwatchedVideos[randomPick]);
+
+  const video = unwatchedVideos[randomPick];
+
+  state.chat.videoLog = [...state.chat.videoLog, video];
+  state.chat.watchedVideos = [...state.chat.watchedVideos, video];
+
+  return video;
 };
 
-export const getVideo = async ({ state, effects }: Context, videoId: string) => {
+export const getVideoByID = async ({ state, effects }: Context, videoId: string) => {
   const storyId = state.chat.currentStory?.id;
   if (!storyId) return;
 
@@ -166,7 +174,35 @@ export const getVideo = async ({ state, effects }: Context, videoId: string) => 
   return response;
 };
 
-export const playVideo = async ({ state }: Context, video: Video) => {
-  state.chat.currentVideo = video;
+export const _getMessageTypingTime = ({ state }: Context, text: string = '') => {
+  // Average human typying speed: 1 word/600ms;
+  // Average characters per word: 5;
+  // Average typing speed 1 character/120ms
+  const botDelay = state.chat.currentStory?.botDelay ?? 100;
+
+  const INITIAL_DELAY_RANGE = [200, 700]; // default: 200 - 700ms before start
+  const typingDelay = [botDelay - 10, botDelay + 10]; // fuzziness: +/- the user setting for the bot
+
+  const initialDelay = getRandomIntInclusive(INITIAL_DELAY_RANGE);
+  const timePercaharacter = getRandomIntInclusive(typingDelay);
+
+  const tpingTime = initialDelay + text.length * timePercaharacter;
+
+  return tpingTime;
 };
 
+const getRandomIntInclusive = ([min, max]: number[]) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; // The maximum is inclusive and the minimum is inclusive
+};
+
+const _getVideoDuration = (video?: Video) => {
+  if (!video) return 0;
+  const duration = Duration.fromISO(video.duration);
+  return duration.as('milliseconds');
+};
+
+export const playVideo = async ({ state }: Context, video: Video) => {
+  state.chat.currentVideo = { ...video } as Video;
+};

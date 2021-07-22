@@ -1,4 +1,4 @@
-import { Box, ThemeProvider } from '@material-ui/core';
+import { Box, ThemeProvider, useMediaQuery, useTheme } from '@material-ui/core';
 import Page from '@src/components/Page';
 import { useActions, useAppState } from '@src/overmind';
 import { Story } from '@src/types';
@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import SideBar from './sidebar';
 import Stage from './stage';
 import TopBar from './topbar';
-import theme from '@src/theme';
+import _theme from '@src/theme';
 
 const sidebarWidth = 450;
 
@@ -20,6 +20,9 @@ const StoryPlay: FC = () => {
 
   const { chat } = useAppState();
   const actions = useActions();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,8 +50,13 @@ const StoryPlay: FC = () => {
 
   return (
     <Page title={t('Home')}>
-      <ThemeProvider theme={theme(true)}>
-        <Box sx={{ display: 'flex' }}>
+      <ThemeProvider theme={_theme(true)}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+          }}
+        >
           <TopBar sidebarWidth={sidebarWidth} />
           <Stage sidebarWidth={sidebarWidth} />
           <SideBar width={sidebarWidth} />

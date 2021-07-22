@@ -1,7 +1,7 @@
-import { Drawer, Paper, Stack, TextField, useTheme } from '@material-ui/core';
-import React, { FC, ChangeEvent, KeyboardEvent, useState } from 'react';
+import { Drawer, Paper, Stack, TextField, useMediaQuery, useTheme } from '@material-ui/core';
+import { useActions } from '@src/overmind';
+import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppState, useActions } from '@src/overmind';
 import Conversation from './Conversation';
 
 interface SideBarProps {
@@ -10,39 +10,48 @@ interface SideBarProps {
 
 const SideBar: FC<SideBarProps> = ({ width }) => {
   const { t } = useTranslation(['common']);
-  const { chat } = useAppState();
   const actions = useActions();
   const theme = useTheme();
 
   const [userInputState, setUserInputState] = useState('');
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleUserInput = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setUserInputState(event.target.value);
   };
 
   const handleUserTriggerInput = (event: KeyboardEvent<HTMLDivElement>) => {
-    // event.preventDefault();
     if (event.key === 'Enter') {
+      const userInput = userInputState.trim();
+      if (userInput === '') return;
       actions.chat.submitUserInput(userInputState);
-      // actions.conversation.addBotInput(userInputState);
       setUserInputState('');
     }
   };
 
   return (
     <Drawer
-      anchor="right"
+      anchor={isMobile ? 'bottom' : 'right'}
       sx={{
-        width: width,
+        width: isMobile ? '100%' : width,
+        height: isMobile ? '25vh' : 'auto',
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: width,
+          width: isMobile ? '100%' : width,
           boxSizing: 'border-box',
         },
       }}
       variant="permanent"
     >
-      <Paper elevation={3} square sx={{ height: '100vh' }}>
+      <Paper
+        elevation={3}
+        square
+        sx={{
+          width: isMobile ? '100%' : width,
+          height: isMobile ? '25vh' : '100vh',
+        }}
+      >
         <Stack height="100%" justifyContent="space-between">
           <Conversation />
           <TextField

@@ -1,30 +1,20 @@
 import { Box, Stack, Typography, useTheme } from '@material-ui/core';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
+import type { SpeechMessage } from '@src/types';
 import { getIcon } from '@src/util/icons';
-import React, { FC, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC, useEffect, useState } from 'react';
 import TypingLoop from './TypingLoop';
-import type { VideoMessage } from '@src/types';
 
 interface SpeechBubbleProps {
-  message?: string;
-  payload?: VideoMessage;
-  sourceSameAsNext: boolean;
-  sourceSameAsPrevious: boolean;
-  type: 'text' | 'payload';
-  typingTime?: number;
-  waitingTime?: number;
+  lastInThread: boolean;
+  scrollConversation: () => void;
+  speech: SpeechMessage;
 }
 
-const SpeechBubble: FC<SpeechBubbleProps> = ({
-  message = '',
-  payload,
-  sourceSameAsNext,
-  sourceSameAsPrevious,
-  type,
-  typingTime = 0,
-  waitingTime = 0,
-}) => {
+const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation, speech }) => {
+  const { message, speechTime = 0, type = 'text', video, waitingTime = 0 } = speech;
+
   const { chat } = useAppState();
   const actions = useActions();
   const theme = useTheme();
@@ -38,24 +28,19 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({
   }, []);
 
   const timerWaiting = () => setTimeout(() => onWaitingTime(), waitingTime);
-  const timerTyping = () => setTimeout(() => onTypingTime(), typingTime);
+  const timerSpeech = () => setTimeout(() => onSpeechTime(), speechTime);
 
   const onWaitingTime = () => {
-    if (type === 'payload') return displayVideo();
+    if (type === 'video') return displayVideo();
     setShowTyping(true);
     setShowContent(true);
-    timerTyping();
+    timerSpeech();
+    scrollConversation();
   };
 
-  const onTypingTime = () => setShowTyping(false);
+  const onSpeechTime = () => setShowTyping(false);
 
   const displayVideo = async () => {
-    if (!payload) return;
-    const video = payload.type === 'tag'
-      ? await actions.chat.getVideosByTag(payload.source)
-      : await actions.chat.getVideo(payload.source);
-
-    console.log(video);
     if (!video) return;
     actions.chat.playVideo(video);
   };
@@ -81,11 +66,11 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({
               maxWidth="75%"
               alignSelf="flex-start"
               alignItems="flex-end"
-              mt={!sourceSameAsPrevious ? 4 : 0.5}
+              mb={lastInThread ? 4 : 0.5}
               mx={1}
-              px={showTyping ? 0 : sourceSameAsNext ? 3.5 : 0}
+              px={lastInThread || showTyping ? 0 : 3.5}
             >
-              {(!sourceSameAsNext || showTyping) && (
+              {(lastInThread || showTyping) && (
                 <BotAvatar
                   component={motion.svg}
                   variants={avatarAnimation}
@@ -110,7 +95,7 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({
                   borderTopLeftRadius: 8,
                   borderTopRightRadius: 8,
                   borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: !sourceSameAsNext ? 0 : 8,
+                  borderBottomLeftRadius: !lastInThread ? 0 : 8,
                 }}
               >
                 {showTyping ? (

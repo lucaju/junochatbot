@@ -1,21 +1,26 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
-import { useAppState } from '@src/overmind';
-import React, { FC } from 'react';
+import type { SpeechMessage } from '@src/types';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC, useEffect } from 'react';
 
 interface SpeechBubbleUserProps {
-  message?: string;
-  sourceSameAsNext: boolean;
-  sourceSameAsPrevious: boolean;
+  lastInThread: boolean;
+  scrollConversation: () => void;
+  speech: SpeechMessage;
 }
 
 const SpeechBubbleUser: FC<SpeechBubbleUserProps> = ({
-  message = '',
-  sourceSameAsNext,
-  sourceSameAsPrevious,
+  lastInThread,
+  scrollConversation,
+  speech,
 }) => {
-  const { chat } = useAppState();
   const theme = useTheme();
+  const { message } = speech;
+
+  useEffect(() => {
+    scrollConversation();
+    return () => {};
+  }, []);
 
   const bubbleAnimation = {
     initial: { x: 500 },
@@ -31,7 +36,7 @@ const SpeechBubbleUser: FC<SpeechBubbleUserProps> = ({
         animate="visible"
         alignSelf="flex-end"
         maxWidth="75%"
-        mt={!sourceSameAsPrevious ? 4 : 0.5}
+        mb={lastInThread ? 4 : 0.5}
         mx={1}
         py={1}
         px={1.5}
@@ -40,7 +45,7 @@ const SpeechBubbleUser: FC<SpeechBubbleUserProps> = ({
           color: theme.palette.common.white,
           borderTopLeftRadius: 8,
           borderTopRightRadius: 8,
-          borderBottomRightRadius: !sourceSameAsNext ? 0 : 8,
+          borderBottomRightRadius: !lastInThread ? 0 : 8,
           borderBottomLeftRadius: 8,
         }}
       >
