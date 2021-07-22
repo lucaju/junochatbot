@@ -67,7 +67,8 @@ export interface Story {
   title: string;
   imageUrl?: string | any;
   uploadFile?: File;
-  user: User; //not present
+  user: User;
+  author?: string;
   languageCode: string;
   published: 0 | 1;
   publishedDate: string | null;
