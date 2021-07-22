@@ -83,6 +83,24 @@ export const updateTextMessageAlternative = (
   }
 };
 
+export const updateParameterInTextMessage = (
+  { state }: Context,
+  { prevParamValue, newParamValue }: { prevParamValue: string; newParamValue: string }
+) => {
+  if (!state.intents.currentIntent?.messages) return;
+  const messages = state.intents.currentIntent.messages;
+  
+  state.intents.currentIntent.messages = messages.map((msg) => {
+    if ('text' in msg && msg.text.text) {
+      msg.text.text = msg.text.text.map((txt) => {
+        if (txt.includes(prevParamValue)) txt = txt.replace(prevParamValue, newParamValue);
+        return txt;
+      });
+    }
+    return msg;
+  });
+};
+
 export const removeTextMessageAlternative = (
   { state }: Context,
   { messageId, alternativeIndex }: { messageId?: string; alternativeIndex: number }

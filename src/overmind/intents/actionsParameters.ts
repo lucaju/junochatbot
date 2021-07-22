@@ -35,13 +35,26 @@ export const addParameter = ({ state }: Context, entityTypeDisplayName: string) 
   currentIntent.parameters = [...parameters, newParam];
 };
 
-export const updateParameter = ({ state }: Context, updatedParam: Parameter) => {
+export const updateParameter = ({ state, actions }: Context, updatedParam: Parameter) => {
   if (!state.intents.currentIntent?.parameters) return;
   const { parameters } = state.intents.currentIntent;
 
   state.intents.currentIntent.parameters = parameters.map((param) =>
     param.name === updatedParam.name ? updatedParam : param
   );
+
+  state.intents.currentIntent.parameters = parameters.map((param) => {
+    if (param.name === updatedParam.name) {
+      if (updatedParam.value && param.value && updatedParam.value !== param.value) {
+        actions.intents.updateParameterInTextMessage({
+          prevParamValue: param.value,
+          newParamValue: updatedParam.value,
+        });
+      }
+      return updatedParam;
+    }
+    return param;
+  });
 };
 
 export const updateParameterByAlias = (
