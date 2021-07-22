@@ -30,8 +30,6 @@ const GeneralView: FC = () => {
 
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMD = useMediaQuery(theme.breakpoints.down('md'));
-  const isLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   useEffect(() => {
     if (!storyId) return navigate('/app', { replace: true });
