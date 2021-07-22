@@ -2,6 +2,15 @@ import type { ErrorMessage, SpeechMessage, Story, Video } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Context } from '../';
 import { v4 as uuidv4 } from 'uuid';
+export const resetState = ({ state }: Context) => {
+  state.chat.stories = [];
+  state.chat.currentStory = undefined;
+  state.chat.currentVideo = undefined;
+  state.chat.chatLog = [];
+  state.chat.sessionid = undefined;
+  state.chat.videoLog = [];
+  state.chat.watchedVideos = [];
+};
 
 export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {
   const response = await effects.chat.api.getStories();

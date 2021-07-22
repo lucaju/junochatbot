@@ -2,6 +2,11 @@ import type { ErrorMessage, Story } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Context } from '../';
 
+export const resetState = ({ state }: Context) => {
+  state.story.stories = [];
+  state.story.currentStory = undefined;
+};
+
 export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };

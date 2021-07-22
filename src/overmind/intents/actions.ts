@@ -121,7 +121,7 @@ export const updateIntent = async ({
     : response;
   const updatedIntent = 'name' in fetchCurrentIntent ? fetchCurrentIntent : response;
 
-  state.intents.currentIntent = undefined;
+  // actions.intents.closeCurrentIntent();
 
   state.intents.collection = state.intents.collection.map((intent) =>
     response.name === intent.name ? updatedIntent : intent
