@@ -58,7 +58,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
 
   const [entityTypeDisplayName, setEntityTypeDisplayName] = useState('');
   const [value, set_value] = useState('');
-  const [isList, setIsList] = useState(!!param.isList);
+  // const [isList, setIsList] = useState(!!param.isList);
   const [mandatory, setMandatory] = useState(!!param.mandatory);
 
   const [hover, setHover] = useState(false);
@@ -71,7 +71,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
 
     if (param.value) set_value(param.value);
     if (param.entityTypeDisplayName) setEntityTypeDisplayName(param.entityTypeDisplayName);
-    if (param.isList) setIsList(param.isList);
+    // if (param.isList) setIsList(param.isList);
     if (param.mandatory) setMandatory(param.mandatory);
 
     return () => {};
@@ -95,11 +95,11 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
         set_value(target.value);
         set_param({ ..._param, value: target.value });
         return;
-      case 'isList':
-        set_param({ ..._param, isList: target.checked });
-        setIsList(target.checked);
-        setDoUpdate(true);
-        return;
+      // case 'isList':
+      //   set_param({ ..._param, isList: target.checked });
+      //   setIsList(target.checked);
+      //   setDoUpdate(true);
+      //   return;
       case 'mandatory':
         set_param({ ..._param, mandatory: event.currentTarget.checked });
         setMandatory(target.checked);
