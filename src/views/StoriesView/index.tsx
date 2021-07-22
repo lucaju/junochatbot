@@ -22,6 +22,7 @@ const Stories: FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
+    actions.story.resetState();
     actions.ui.setPageTitle(t('stories'));
 
     const getCollection = async () => {

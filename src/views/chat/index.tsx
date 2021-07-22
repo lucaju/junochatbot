@@ -26,6 +26,7 @@ const StoryPlay: FC = () => {
   const [story, setStory] = useState<Story | undefined>(chat.currentStory);
 
   useEffect(() => {
+    actions.chat.resetState();
     if (!storyId) return navigate('/', { replace: true });
 
     const getStory = async () => {
