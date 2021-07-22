@@ -72,6 +72,7 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
           }}
           color={path.includes('/story/') ? 'primary' : 'inherit'}
           component={RouterLink}
+          fullWidth
           sx={{
             width: '100%',
             py: 1.25,
@@ -82,8 +83,8 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             textTransform: 'none',
             justifyContent: 'flex-start',
           }}
+          target={path.includes('/story/') ? '_blank' : ''}
           to={path}
-          fullWidth
         >
           {Icon && <Icon sx={{ mr: 1 }} size="20" />}
           <Box

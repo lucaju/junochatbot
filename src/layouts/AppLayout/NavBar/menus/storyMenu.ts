@@ -27,13 +27,13 @@ export const storyMenu: MenuType[] = [
   },
   {
     title: 'Contexts',
-    tKey: 'contexts',
+    tKey: 'intentContexts',
     path: '/app/stories/:storyId/contexts',
     icon: CenterFocusWeakIcon,
   },
   {
     title: 'Entities',
-    tKey: 'entities',
+    tKey: 'entityLibrary',
     path: '/app/stories/:storyId/entities',
     icon: DeviceHubIcon,
   },
