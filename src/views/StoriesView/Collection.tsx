@@ -1,4 +1,5 @@
 import { Box, Skeleton } from '@material-ui/core';
+import NoContent from '@src/components/NoContent';
 import { useActions, useAppState } from '@src/overmind';
 import { Story } from '@src/types';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -7,7 +8,7 @@ import React, { FC, useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import NoStories from './NoStories';
 import StoryCard from './StoryCard';
-
+import { useTranslation } from 'react-i18next';
 interface CollectionProps {
   filters: Map<string, number>;
   isLoading: boolean;
@@ -25,12 +26,18 @@ const Collection: FC<CollectionProps> = ({
   searchQuery,
   triggerEditStory,
 }) => {
+  const { t } = useTranslation(['noContent']);
   const { story } = useAppState();
   const actions = useActions();
   const [filteredItems, setFilteredItems] = useState<Story[]>([]);
+  const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    setFilteredItems(items());
+    const _items = items();
+    setFilteredItems(_items);
+    setNoContentMsg(
+      story.stories.length === 0 ? 'noStoriesYet' : _items.length === 0 ? 'noMatch' : null
+    );
     return () => {};
   }, [filters, searchQuery, groupId, story.stories]);
 
@@ -88,14 +95,19 @@ const Collection: FC<CollectionProps> = ({
   const showSkeleton = (qty = 5) => {
     return new Array(qty)
       .fill(0)
-      .map((sk, i) => (
-        <Skeleton key={i} height={200} sx={{ m: 2.5 }} variant="rectangular" />
-      ));
+      .map((sk, i) => <Skeleton key={i} height={200} sx={{ m: 2.5 }} variant="rectangular" />);
   };
 
   return (
     <Box>
-      {!isLoading && filteredItems.length == 0 && <NoStories openDialog={handleAddDialogOpen} />}
+      {!isLoading &&
+        (noContentMsg === 'noStoriesYet' ? (
+          <NoStories openDialog={handleAddDialogOpen} />
+        ) : (
+          noContentMsg === 'noMatch' && (
+            <NoContent align="left" heading={t(noContentMsg)} size="large" />
+          )
+        ))}
       <AnimatePresence initial={false}>
         <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1400: 3, 1800: 4 }}>
           <Masonry>

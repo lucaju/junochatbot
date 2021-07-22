@@ -18,7 +18,7 @@ interface CollectionProps {
 
 const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQuery }) => {
   const { intents } = useAppState();
-  const { t } = useTranslation(['contexts', 'common']);
+  const { t } = useTranslation(['noContent']);
 
   const [filteredItems, setFilteredItems] = useState<Entity[]>([]);
 
@@ -59,7 +59,7 @@ const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQue
   return (
     <Box>
       {!isLoading && filteredItems.length === 0 && (
-        <NoContent align="left" heading={t('noEntities')} size="large" />
+        <NoContent align="left" heading={t('noMatch')} size="large" />
       )}
       <AnimatePresence initial={false}>
         <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 700: 2, 1150: 3, 1300: 4 }}>

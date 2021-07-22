@@ -21,12 +21,21 @@ const Collection: FC<CollectionProps> = ({
   isLoading = false,
 }) => {
   const { intents } = useAppState();
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation(['intents', 'noContent']);
 
   const [filteredItems, setFilteredItems] = useState<Intent[]>([]);
+  const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    setFilteredItems(items());
+    const _items = items();
+    setFilteredItems(_items);
+    setNoContentMsg(
+      intents.collection.length === 0
+        ? 'noIntentsYet'
+        : _items.length === 0
+        ? 'noContent:noMatch'
+        : null
+    );
     return () => {};
   }, [filters, searchQuery, intents.collection]);
 
@@ -62,8 +71,8 @@ const Collection: FC<CollectionProps> = ({
 
   return (
     <Box>
-      {!isLoading && filteredItems.length == 0 && (
-        <NoContent align="left" heading={t('noIntentsYet')} size="large" />
+      {!isLoading && noContentMsg !== null && (
+        <NoContent align="left" heading={t(noContentMsg)} size="large" />
       )}
       <AnimatePresence initial={false}>
         {isLoading

@@ -16,12 +16,21 @@ interface CollectionProps {
 }
 
 const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false, searchQuery }) => {
-  const { t } = useTranslation(['videos', 'common']);
+  const { t } = useTranslation(['videos', 'common, noContent']);
   const { ui, videos } = useAppState();
   const [filteredItems, setFilteredItems] = useState<Video[]>([]);
+  const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    setFilteredItems(items());
+    const _items = items();
+    setFilteredItems(_items);
+    setNoContentMsg(
+      videos.collection.length === 0
+        ? 'noVideosYet'
+        : _items.length === 0
+        ? 'noContent:noMatch'
+        : null
+    );
     return () => {};
   }, [searchQuery, videos.collection, ui.videoView.tagFilter]);
 
@@ -50,8 +59,8 @@ const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false, 
 
   return (
     <Box>
-      {!isLoading && filteredItems.length == 0 && (
-        <NoContent align="left" heading={t('noVideosYet')} size="large" />
+      {!isLoading && noContentMsg !== null && (
+        <NoContent align="left" heading={t(noContentMsg)} size="large" />
       )}
       <AnimatePresence initial={false}>
         <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 1000: 2, 1400: 3, 1650: 4 }}>

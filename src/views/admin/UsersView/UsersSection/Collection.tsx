@@ -17,10 +17,11 @@ interface CollectionProps {
 const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, searchQuery }) => {
   const { session, users } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation(['users', 'noContent']);
 
   const [filteredItems, setFilteredItems] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,7 +39,11 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
   }, [groupId]);
 
   useEffect(() => {
-    setFilteredItems(items());
+    const _items = items();
+    setFilteredItems(_items);
+    setNoContentMsg(
+      users.list.length === 0 ? 'noUsersYet' : _items.length === 0 ? 'noContent:noMatch' : null
+    );
     return () => {};
   }, [filters, searchQuery, users.list]);
 
@@ -80,8 +85,8 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
 
   return (
     <Box>
-      {!isLoading && filteredItems.length == 0 && (
-        <NoContent align="left" heading={t('noUsersYet')} size="large" />
+      {!isLoading && noContentMsg !== null && (
+        <NoContent align="left" heading={t(noContentMsg)} size="large" />
       )}
       <AnimatePresence initial={false}>
         {isLoading
