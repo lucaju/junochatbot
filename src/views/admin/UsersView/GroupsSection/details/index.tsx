@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import DeleteDialog from '@src/components/DeleteDialog';
+import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useAppState, useActions } from '@src/overmind';
 import { NotificationType, UserGroup } from '@src/types';
 import { isError } from '@src/util/utilities';
@@ -25,7 +25,7 @@ const initialValues: Partial<UserGroup> = {
 
 const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
   const { ui, users } = useActions();
-  const { t } = useTranslation(['groups', 'common', 'errorMessages', 'deleteDialog']);
+  const { t } = useTranslation(['groups', 'common', 'errorMessages', 'confirmationDialog']);
   const [groupData, setGroupData] = useState<UserGroup | Partial<UserGroup>>(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -131,16 +131,16 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
                   values={values}
                 />
               </DialogActions>
-              <DeleteDialog
+              <ConfirmationDialog
                 handleNo={() => setDeleteDialogOpen(false)}
                 handleYes={() => {
                   setDeleteDialogOpen(false);
                   submitDelete();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('deleteDialog:message', { object: t('group') })}
+                message={t('confirmationDialog:deleteMessage', { object: t('group') })}
                 open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('group') })}
+                title={t('group')}
               />
             </form>
           )}

@@ -1,5 +1,5 @@
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import DeleteDialog from '@src/components/DeleteDialog';
+import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useActions } from '@src/overmind';
 import { NotificationType, Video } from '@src/types';
 import { isError } from '@src/util/utilities';
@@ -32,7 +32,7 @@ const initialValues: Partial<Video> = {
 
 const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
   const actions = useActions();
-  const { t } = useTranslation(['videos', 'common', 'errorMessages', 'deleteDialog']);
+  const { t } = useTranslation(['videos', 'common', 'errorMessages', 'confirmationDialog']);
   const [videoData, setVideoData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | undefined>();
@@ -215,16 +215,16 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
                   values={values}
                 />
               </DialogActions>
-              <DeleteDialog
+              <ConfirmationDialog
                 handleNo={() => setDeleteDialogOpen(false)}
                 handleYes={() => {
                   setDeleteDialogOpen(false);
                   submitDelete();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('deleteDialog:message', { object: t('video') })}
+                message={t('confirmationDialog:deleteMessage', { object: t('video') })}
                 open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('video') })}
+                title={t('video')}
               />
             </form>
           )}

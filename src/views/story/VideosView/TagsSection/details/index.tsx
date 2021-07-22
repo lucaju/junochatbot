@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
-import DeleteDialog from '@src/components/DeleteDialog';
+import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useActions } from '@src/overmind';
 import { NotificationType, Tag } from '@src/types';
 import { isError } from '@src/util/utilities';
@@ -21,7 +21,7 @@ const initialValues: Partial<Tag> = {
 
 const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
   const actions = useActions();
-  const { t } = useTranslation(['tags', 'common', 'errorMessages', 'deleteDialog']);
+  const { t } = useTranslation(['tags', 'common', 'errorMessages', 'confirmationDialog']);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [tagData, setTagData] = useState(initialValues);
 
@@ -132,16 +132,16 @@ const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
                   values={values}
                 />
               </DialogActions>
-              <DeleteDialog
+              <ConfirmationDialog
                 handleNo={() => setDeleteDialogOpen(false)}
                 handleYes={() => {
                   setDeleteDialogOpen(false);
                   submitDelete();
                 }}
-                message={t('deleteDialog:message', { object: t('tag') })}
+                message={t('confirmationDialog:deleteMessage', { object: t('tag') })}
                 isSubmitting={isSubmitting}
                 open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('tag') })}
+                title={t('tag')}
               />
             </form>
           )}

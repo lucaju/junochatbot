@@ -7,7 +7,7 @@ import {
   Slide,
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
-import DeleteDialog from '@src/components/DeleteDialog';
+import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useActions, useAppState } from '@src/overmind';
 import { NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
@@ -36,11 +36,12 @@ interface DetailsProps {
 const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const { intents } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['intents', 'common', 'errorMessages', 'deleteDialog']);
+  const { t } = useTranslation(['intents', 'common', 'errorMessages', 'confirmationDialog']);
 
   const [action, setAction] = useState<string>();
   const [activeTab, setActiveTab] = useState('context');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -61,7 +62,10 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     };
   }, [open]);
 
-  const changeTab = (value: string) => setActiveTab(value);
+  const changeTab = async (value: string) => {
+    await submit(); //autosave
+    setActiveTab(value);
+  };
 
   const submit = async () => {
     setIsSubmitting(true);
@@ -88,7 +92,6 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     setIsSubmitting(false);
 
     if (action === 'create') return setAction('edit');
-    handleClose();
   };
 
   const submitDelete = async () => {
@@ -132,22 +135,32 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           <Divider />
           <DialogActions>
             <Actions
-              handleCancel={handleClose}
+              // handleCancel={handleClose}
+              handleCancel={() => setCancelDialogOpen(true)}
               handleDelete={() => setDeleteDialogOpen(true)}
               isSubmitting={isSubmitting}
               handleSubmit={submit}
             />
           </DialogActions>
-          <DeleteDialog
+          <ConfirmationDialog
             handleNo={() => setDeleteDialogOpen(false)}
             handleYes={() => {
               setDeleteDialogOpen(false);
               submitDelete();
             }}
             isSubmitting={isSubmitting}
-            message={t('deleteDialog:message', { object: t('intent') })}
+            message={t('confirmationDialog:deleteMessage', { object: t('intent') })}
             open={deleteDialogOpen}
-            title={t('deleteDialog:title', { object: t('intent') })}
+            title={t('intent')}
+          />
+          <ConfirmationDialog
+            handleNo={() => setCancelDialogOpen(false)}
+            handleYes={() => {
+              setCancelDialogOpen(false);
+              handleClose();
+            }}
+            message={t('confirmationDialog:cancelMessage', { object: t('intent') })}
+            open={cancelDialogOpen}
           />
         </Dialog>
       )}

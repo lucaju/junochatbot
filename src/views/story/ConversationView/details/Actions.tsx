@@ -18,7 +18,7 @@ const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, i
 
   return (
     <>
-      <Button onClick={handleCancel}>{t('cancel')}</Button>
+      <Button onClick={handleCancel}>{t('close')}</Button>
 
       {intents.currentIntent?.name && (
         <>

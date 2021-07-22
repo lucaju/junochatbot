@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, Grid } from '@material-ui/core';
-import DeleteDialog from '@src/components/DeleteDialog';
+import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useAppState, useActions } from '@src/overmind';
 import { NotificationType, RoleType, User } from '@src/types';
 import { isError } from '@src/util/utilities';
@@ -30,7 +30,7 @@ const initialValues: Partial<User> = {
 const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['users', 'common', 'errorMessages', 'deleteDialog']);
+  const { t } = useTranslation(['users', 'common', 'errorMessages', 'confirmationDialog']);
   const [userData, setUserData] = useState<User | Partial<User>>(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -186,16 +186,16 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
                   values={values}
                 />
               </DialogActions>
-              <DeleteDialog
+              <ConfirmationDialog
                 handleNo={() => setDeleteDialogOpen(false)}
                 handleYes={() => {
                   setDeleteDialogOpen(false);
                   submitDelete();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('deleteDialog:message', { object: t('user') })}
+                message={t('confirmationDialog:deleteMessage', { object: t('user') })}
                 open={deleteDialogOpen}
-                title={t('deleteDialog:title', { object: t('user') })}
+                title={t('user')}
               />
             </form>
           )}

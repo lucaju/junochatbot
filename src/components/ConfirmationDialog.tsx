@@ -3,16 +3,16 @@ import LoadingButton from '@material-ui/lab/LoadingButton';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface DeleteDialogProps {
+interface ConfirmationDialogProps {
   open: boolean;
-  title: string;
+  title?: string;
   message: string;
   handleNo: () => void;
   handleYes: () => void;
   isSubmitting?: boolean;
 }
 
-const DeleteDialog: FC<DeleteDialogProps> = ({
+const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   open,
   title,
   message,
@@ -30,9 +30,11 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
       maxWidth="xs"
       open={open}
     >
-      <DialogTitle id={title} sx={{ textTransform: 'capitalize' }}>
-        {title}
-      </DialogTitle>
+      {title && (
+        <DialogTitle id={title} sx={{ textTransform: 'capitalize' }}>
+          {title}
+        </DialogTitle>
+      )}
       <DialogContent dividers>{message}</DialogContent>
       <DialogActions>
         <Button
@@ -44,11 +46,7 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
         >
           {t('no')}
         </Button>
-        <LoadingButton
-          color="secondary"
-          loading={isSubmitting}
-          onClick={handleYes}
-        >
+        <LoadingButton color="secondary" loading={isSubmitting} onClick={handleYes}>
           {t('yes')}
         </LoadingButton>
       </DialogActions>
@@ -56,4 +54,4 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
   );
 };
 
-export default DeleteDialog;
+export default ConfirmationDialog;
