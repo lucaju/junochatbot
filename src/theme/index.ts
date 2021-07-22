@@ -1,7 +1,7 @@
 import { createTheme, colors } from '@material-ui/core';
 
-const theme = (darkMode:boolean) =>
-createTheme({
+const theme = (darkMode?: boolean) =>
+  createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
