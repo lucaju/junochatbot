@@ -26,7 +26,26 @@ export const addVideoMessage = ({ state }: Context) => {
   const messages = currentIntent.messages ?? [];
 
   const last = messages[messages.length - 1];
-  if (last && 'payload' in last && last.payload.source[0] === '') return;
+  if (last && 'payload' in last && last.payload.source === '-1') return;
+
+  const newVideoMessage: Payload = {
+    id: `new-${uuidv4()}`,
+    payload: {
+      type: 'video',
+      source: '-1',
+    },
+  };
+
+  currentIntent.messages = [...messages, newVideoMessage];
+};
+
+export const addVideoTagMessage = ({ state }: Context) => {
+  if (!state.intents.currentIntent) return;
+  const { currentIntent } = state.intents;
+  const messages = currentIntent.messages ?? [];
+
+  const last = messages[messages.length - 1];
+  if (last && 'payload' in last && last.payload.source === '-1') return;
 
   const newVideoMessage: Payload = {
     id: `new-${uuidv4()}`,

@@ -7,7 +7,7 @@ import {
   Stack,
   useMediaQuery,
   useTheme,
-  Zoom
+  Zoom,
 } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
@@ -27,13 +27,13 @@ type sourceOptionType = {
   label: string;
 };
 
-const defaultSourceOption: sourceOptionType = { id: '-1', label: 'Choose' };
-
 const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) => {
   const theme = useTheme();
   const { videos } = useAppState();
   const actions = useActions();
   const { t } = useTranslation(['intents', 'common']);
+
+  const defaultSourceOption: sourceOptionType = { id: '-1', label: t('common:Choose') };
 
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -50,9 +50,9 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
     }));
 
     setSourceOptions([defaultSourceOption, ...mappedOptions]);
-    setSource('-1')
+    setSource('-1');
     return () => {};
-  }, [message.payload.type]);
+  }, []);
 
   useEffect(() => {
     const sourceValue = message.payload.source;
@@ -60,20 +60,6 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
 
     return () => {};
   }, [message.payload.source]);
-
-  const handleChangeType = (
-    event: ChangeEvent<{
-      name?: string | undefined;
-      value: 'tag' | 'video';
-      event: Event | React.SyntheticEvent<Element, Event>;
-    }>
-  ) => {
-    const value = event.target.value;
-    actions.intents.updateVideoSourceType({
-      messageId: message.id,
-      SourceType: value,
-    });
-  };
 
   const handleChangeSource = (
     event: ChangeEvent<{
@@ -131,26 +117,6 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
               <YouTubeIcon />
               {message.payload.type === 'tag' && <ShuffleIcon sx={{ mt: 1 }} />}
             </Box>
-          </Grid>
-          <Grid item>
-            <Select
-              label={t('common:type')}
-              name="type"
-              onChange={handleChangeType}
-              sx={{
-                width: '12ch',
-                textTransform: 'capitalize',
-              }}
-              value={message.payload.type}
-              variant="standard"
-            >
-              <MenuItem sx={{ textTransform: 'capitalize' }} value="tag">
-                {t('tag')}
-              </MenuItem>
-              <MenuItem sx={{ textTransform: 'capitalize' }} value="video">
-                {t('video')}
-              </MenuItem>
-            </Select>
           </Grid>
           <Grid item xs>
             <Select

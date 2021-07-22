@@ -11,6 +11,7 @@ const Responses: FC = () => {
 
   const addTextMessage = () => actions.intents.addTextMessage();
   const addVideoMessage = () => actions.intents.addVideoMessage();
+  const addVideoTagMessage = () => actions.intents.addVideoTagMessage();
 
   return (
     <Box>
@@ -21,6 +22,9 @@ const Responses: FC = () => {
           </Button>
           <Button color="primary" onClick={addVideoMessage} startIcon={<AddCircleOutlineIcon />}>
             {t('addVideo')}
+          </Button>
+          <Button color="primary" onClick={addVideoTagMessage} startIcon={<AddCircleOutlineIcon />}>
+            {t('addVideoTag')}
           </Button>
         </Box>
       </Box>
