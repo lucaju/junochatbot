@@ -271,11 +271,12 @@ export interface QueryResult {
 
 export interface SpeechMessage {
   id: string;
-  type: 'text' | 'payload';
-  source: 'bot' | 'user';
+  threadId?: string;
   message?: string;
-  payload?: VideoMessage;
-  typingTime?: number;
-  waitingTime?: number;
   metadata?: QueryResult;
+  speechTime?: number;
+  source?: 'bot' | 'user';
+  type?: 'text' | 'video';
+  video?: Video;
+  waitingTime?: number;
 }
