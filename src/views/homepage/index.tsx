@@ -1,5 +1,6 @@
-import { Stack } from '@material-ui/core';
+import { Stack, ThemeProvider } from '@material-ui/core';
 import Page from '@src/components/Page';
+import theme from '@src/theme';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import ResearchActivities from './activities/Activities';
@@ -16,16 +17,18 @@ const HomeView: FC = () => {
 
   return (
     <Page title={t('Home')}>
-      <Stack>
-        <Topbar />
-        <Hero />
-        <Intro />
-        <Stories />
-        <Pedagogical />
-        <ResearchActivities />
-        <Team />
-        <Sponsors />
-      </Stack>
+      {/* <ThemeProvider theme={theme(false)}> */}
+        <Stack>
+          <Topbar />
+          <Hero />
+          <Intro />
+          <Stories />
+          <Pedagogical />
+          <ResearchActivities />
+          <Team />
+          <Sponsors />
+        </Stack>
+      {/* </ThemeProvider> */}
     </Page>
   );
 };

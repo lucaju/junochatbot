@@ -33,9 +33,11 @@ const Sponsors: FC = () => {
   }, []);
 
   const imageLogo = (name: string, file: string) => {
+    const fiilename = theme.palette.mode === 'light' ? file : `white_${file}`;
+    console.log(theme.palette.mode)
     return (
       <Box key={name} display="flex" alignItems="center" justifyContent="center" m={2}>
-        <img alt={name} src={`/assets/sponsors/${file}`} width="75%" />
+        <img alt={name} src={`/assets/sponsors/${fiilename}`} width="75%" />
       </Box>
     );
   };

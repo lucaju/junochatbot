@@ -64,7 +64,12 @@ const Topbar: FC = () => {
         color="secondary"
         elevation={0}
         position="fixed"
-        sx={{ backgroundColor: alpha(colors.lightBlue[100], 0.8) }}
+        sx={{
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? alpha(colors.deepPurple[900], 0.8)
+              : alpha(colors.lightBlue[100], 0.8),
+        }}
       >
         <Drawer anchor="left" open={sideBarOpen} onClose={closeSideBar}>
           <Stack
