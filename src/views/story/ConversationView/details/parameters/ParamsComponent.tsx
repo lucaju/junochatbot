@@ -64,7 +64,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   const [hover, setHover] = useState(false);
   const [bottomPanelActive, setBottomPanelActive] = useState(0);
 
-  const entitiesList = sortBy([...intents.customEntities, ...intents.entities], 'name');
+  const entitiesList = sortBy([...intents.entities], 'name');
 
   useEffect(() => {
     set_param(param);
@@ -212,8 +212,8 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
                 value={entityTypeDisplayName}
                 variant="standard"
               >
-                {entitiesList.map(({ name }) => (
-                  <MenuItem key={name} value={name}>
+                {entitiesList.map(({ id, name }) => (
+                  <MenuItem key={id} value={name}>
                     {name}
                   </MenuItem>
                 ))}

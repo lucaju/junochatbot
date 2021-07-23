@@ -25,11 +25,10 @@ const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQue
   useEffect(() => {
     setFilteredItems(items());
     return () => {};
-  }, [filters, searchQuery, intents.entities, intents.customEntities]);
+  }, [filters, searchQuery, intents.entities]);
 
   const items = () => {
-    let list = [...intents.customEntities, ...intents.entities];
-    list = list
+    let list = intents.entities
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;

@@ -18,7 +18,6 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
   useEffect(() => {
     const catSet: Set<string> = new Set();
     intents.entities.forEach(({ category }) => catSet.add(category));
-    if (intents.customEntities.length > 0) catSet.add('Custom');
     setcategories(['All', ...Array.from(catSet).sort()]);
     return () => {};
   }, [intents.entities]);

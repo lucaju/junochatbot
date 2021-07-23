@@ -39,11 +39,7 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
 }) => {
   const { intents } = useAppState();
   const actions = useActions();
-  const entitiesList: Entity[] = sortBy([...intents.customEntities, ...intents.entities], 'name');
-
-  const currentEntity = intents.currentIntent?.parameters?.find(
-    ({ displayName }) => value === displayName
-  );
+  const entitiesList: Entity[] = sortBy([...intents.entities], 'name');
 
   useEffect(() => {
     const fetchEntities = async () => {
@@ -99,8 +95,8 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
         </MenuItem>
       ))}
       {intents.currentIntent?.parameters && <Divider sx={{ my: 0.5 }} />}
-      {entitiesList.map(({ name }) => (
-        <MenuItem key={name} dense onClick={() => handleClick(name)}>
+      {entitiesList.map(({ id, name }) => (
+        <MenuItem key={id} dense onClick={() => handleClick(name)}>
           {name}
         </MenuItem>
       ))}

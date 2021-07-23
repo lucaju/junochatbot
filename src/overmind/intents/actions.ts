@@ -111,7 +111,7 @@ export const updateIntent = async ({
   if (!state.intents.currentIntent) return { errorMessage: 'Not Intent' };
 
   //revert transformation and remove additonal values
-  const intentToSubmit = parIntentToSubmit({ ...state.intents.currentIntent });
+  const intentToSubmit = partIntentToSubmit({ ...state.intents.currentIntent });
 
   const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
   if (isError(response)) return response;
@@ -130,7 +130,7 @@ export const updateIntent = async ({
   return response;
 };
 
-const parIntentToSubmit = (intent: Intent): Intent => {
+const partIntentToSubmit = (intent: Intent): Intent => {
   //* remove UUID from message array
   if (intent.messages) {
     intent.messages = intent.messages.map((message) => {
@@ -224,14 +224,28 @@ export const getEntities = async ({
 }: Context): Promise<Entity[] | ErrorMessage> => {
   if (state.intents.entities.length > 0) return state.intents.entities;
 
+  const storyId = state.story.currentStory?.id;
+  if (!storyId) return { errorMessage: 'No Story' };
+
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const response = await effects.intents.api.getEntities(authUser.token);
-  if (isError(response)) return response;
+  const sysEntities = await effects.intents.api.getSysEntities(authUser.token);
+  if (isError(sysEntities)) return sysEntities;
 
-  state.intents.entities = response;
-  return response;
+  const customEntities = await effects.intents.api.getCustomEntities(storyId, authUser.token);
+  if (isError(customEntities)) return customEntities;
+
+  console.log(sysEntities, customEntities);
+
+  let entities = [...sysEntities, ...customEntities];
+  entities = entities.map((entity, i) => {
+    entity.id = i;
+    return entity;
+  });
+
+  state.intents.entities = entities;
+  return entities;
 };
 
 //** VIDEOS AND TAGS */

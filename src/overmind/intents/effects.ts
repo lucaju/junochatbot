@@ -95,10 +95,16 @@ export const api = {
           mock.dataIntents = mock.dataIntents.map((itt) => {
             if (itt.name !== intent.name) return itt;
             if (intent.trainingPhrases) {
-              intent.trainingPhrases = intent.trainingPhrases.map((phrase) => ({...phrase, name: uuidv4()}));
+              intent.trainingPhrases = intent.trainingPhrases.map((phrase) => ({
+                ...phrase,
+                name: uuidv4(),
+              }));
             }
             if (intent.parameters) {
-              intent.parameters = intent.parameters.map((parameter) => ({...parameter, name: uuidv4()}));
+              intent.parameters = intent.parameters.map((parameter) => ({
+                ...parameter,
+                name: uuidv4(),
+              }));
             }
             return intent;
           });
@@ -147,8 +153,21 @@ export const api = {
     return true;
   },
 
-  getEntities: async (token: string): Promise<Entity[] | ErrorMessage> => {
+  getSysEntities: async (token: string): Promise<Entity[] | ErrorMessage> => {
     const response = await fetch(`${API_URL}/intents/entities/all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) return { errorMessage: response.statusText };
+
+    if (response.status === 204) return [] as Entity[];
+
+    const result = await response.json();
+    return result as Entity[];
+  },
+
+  getCustomEntities: async (storyId: number, token: string): Promise<Entity[] | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/${storyId}/entities`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

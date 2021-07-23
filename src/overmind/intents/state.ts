@@ -7,7 +7,6 @@ type State = {
   currentProjectName?: string;
   contexts: ContextRelation[];
   entities: Entity[];
-  customEntities: Entity[];
 };
 
 export const state: State = {
@@ -59,28 +58,5 @@ export const state: State = {
     });
 
     return contextCollection;
-  }),
-  customEntities: derived((state: State) => {
-    const list: Entity[] = [];
-
-    state.collection.forEach(({ parameters }) => {
-      if (!parameters) return;
-
-      parameters.forEach(({ entityTypeDisplayName }) => {
-        if (!entityTypeDisplayName) return;
-        if (entityTypeDisplayName.includes('@sys')) return;
-
-        const entity = {
-          id: list.length + 1000,
-          category: 'Custom',
-          name: entityTypeDisplayName,
-          description: '',
-        };
-
-        list.push(entity);
-      });
-    });
-
-    return list;
   }),
 };
