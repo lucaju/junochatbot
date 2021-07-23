@@ -57,6 +57,7 @@ const SideBar: FC<SideBarProps> = ({ width }) => {
           <TextField
             autoComplete="off"
             id="user-input"
+            InputProps={{ sx: { pb: 2 } }}
             onChange={handleUserInput}
             onKeyPress={handleUserTriggerInput}
             placeholder={t('typeHere')}
