@@ -1,34 +1,16 @@
-import { Drawer, Paper, Stack, TextField, useMediaQuery, useTheme } from '@material-ui/core';
-import { useActions } from '@src/overmind';
-import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
+import { Drawer, Paper, Stack, useMediaQuery, useTheme } from '@material-ui/core';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import Conversation from './Conversation';
-
+import UserInput from './UserInput';
 interface SideBarProps {
   width: number;
 }
 
 const SideBar: FC<SideBarProps> = ({ width }) => {
   const { t } = useTranslation(['common']);
-  const actions = useActions();
   const theme = useTheme();
-
-  const [userInputState, setUserInputState] = useState('');
-
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const handleUserInput = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setUserInputState(event.target.value);
-  };
-
-  const handleUserTriggerInput = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter') {
-      const userInput = userInputState.trim();
-      if (userInput === '') return;
-      actions.chat.submitUserInput(userInputState);
-      setUserInputState('');
-    }
-  };
 
   return (
     <Drawer
@@ -54,16 +36,7 @@ const SideBar: FC<SideBarProps> = ({ width }) => {
       >
         <Stack height="100%" justifyContent="space-between">
           <Conversation />
-          <TextField
-            autoComplete="off"
-            id="user-input"
-            InputProps={{ sx: { pb: 2 } }}
-            onChange={handleUserInput}
-            onKeyPress={handleUserTriggerInput}
-            placeholder={t('typeHere')}
-            value={userInputState}
-            variant="filled"
-          />
+          <UserInput />
         </Stack>
       </Paper>
     </Drawer>
