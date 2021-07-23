@@ -45,6 +45,10 @@ interface ParamsComponentProps {
   param: ParameterType;
 }
 
+//LIMITS
+//Dialogflow Limit: https://cloud.google.com/dialogflow/quotas#es-agent_1
+const PARAM_NAME_CHAR_LIMIT = 29;
+
 const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) => {
   const theme = useTheme();
   const { intents } = useAppState();
@@ -89,7 +93,13 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
     const target = event.currentTarget;
     switch (target.name) {
       case 'displayName':
-        set_param({ ..._param, displayName: target.value });
+        if (
+          target.value.trim().length > PARAM_NAME_CHAR_LIMIT &&
+          entityTypeDisplayName < target.value.trim()
+        ) {
+          return;
+        }
+        set_param({ ..._param, displayName: target.value.trim() });
         return;
       case 'value':
         set_value(target.value);

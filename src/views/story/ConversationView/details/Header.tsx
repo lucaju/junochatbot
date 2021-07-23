@@ -17,6 +17,10 @@ import { useAppState, useActions } from '@src/overmind';
 import React, { ChangeEvent, FC, FocusEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+//LIMITS
+//Dialogflow Limit: https://cloud.google.com/dialogflow/quotas#es-agent_1
+const INTENT_NAME_CHAR_LIMIT = 480;
+
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {
     margin: theme.spacing(0.5),
@@ -40,12 +44,13 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
   const { t } = useTranslation(['intents']);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
+    const value = event.currentTarget.value.trim();
+    if (value.length > INTENT_NAME_CHAR_LIMIT) return;
     setDisplayName(value);
   };
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
+    const value = event.currentTarget.value.trim();
     actions.intents.updateCurrentDisplayName(value);
   };
 

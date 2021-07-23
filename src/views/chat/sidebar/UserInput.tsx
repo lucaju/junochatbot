@@ -4,6 +4,10 @@ import { useActions } from '@src/overmind';
 import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+//LIMITS
+//Dialogflow Limit: https://cloud.google.com/dialogflow/quotas#es-agent_1
+const DETECT_INTENT_CHAR_LIMIT = 250;
+
 const UserInput: FC = () => {
   const { t } = useTranslation(['common']);
   const actions = useActions();
@@ -11,9 +15,8 @@ const UserInput: FC = () => {
   const [userInputState, setUserInputState] = useState('');
 
   const handleUserInput = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    //Dialogflow Limit: https://cloud.google.com/dialogflow/quotas#es-agent_1
-    if (userInputState.trim().length > 250 && userInputState < event.target.value) return;
-
+    const value = event.target.value.trim();
+    if (value.length > DETECT_INTENT_CHAR_LIMIT && userInputState < value) return;
     setUserInputState(event.target.value);
   };
 
@@ -27,8 +30,9 @@ const UserInput: FC = () => {
   const handleSubmit = () => {
     let userInput = userInputState.trim();
     if (userInput === '') return;
-    if (userInput.length > 250) userInput.substring(0, 250);
-
+    if (userInput.length > DETECT_INTENT_CHAR_LIMIT) {
+      userInput.substring(0, DETECT_INTENT_CHAR_LIMIT);
+    }
     actions.chat.submitUserInput(userInputState);
     setUserInputState('');
   };
