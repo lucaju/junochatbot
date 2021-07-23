@@ -236,8 +236,6 @@ export const getEntities = async ({
   const customEntities = await effects.intents.api.getCustomEntities(storyId, authUser.token);
   if (isError(customEntities)) return customEntities;
 
-  console.log(sysEntities, customEntities);
-
   let entities = [...sysEntities, ...customEntities];
   entities = entities.map((entity, i) => {
     entity.id = i;
