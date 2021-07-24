@@ -2,10 +2,11 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
+  CardActionArea,
   CardContent,
   CardMedia,
   Chip,
-  Collapse,
   Divider,
   Typography,
 } from '@material-ui/core';
@@ -59,21 +60,6 @@ const StoryCard: FC<UserCarddProps> = ({
 
   return (
     <Card elevation={elevation} onMouseEnter={mouseOver} onMouseLeave={mouseOut} sx={{ m: 2 }}>
-      {(showLaunch || showEdit) && (
-        <Collapse in={hover}>
-          <Box display="flex" flexDirection="row" justifyContent="space-around" p={1}>
-            <Button onClick={handlePlayClick} size="small" variant="outlined">
-              {t('launch')}
-            </Button>
-            {showEdit && (
-              <Button onClick={handleEditClick} size="small" variant="outlined">
-                {t('edit')}
-              </Button>
-            )}
-          </Box>
-        </Collapse>
-      )}
-
       {hasImage && (
         <CardMedia
           image={
@@ -170,6 +156,16 @@ const StoryCard: FC<UserCarddProps> = ({
           </>
         )}
       </CardContent>
+      <CardActions sx={{ justifyContent: 'space-around' }}>
+        <Button onClick={handlePlayClick} size="small" variant="outlined">
+          {t('launch')}
+        </Button>
+        {showEdit && (
+          <Button onClick={handleEditClick} size="small" variant="outlined">
+            {t('edit')}
+          </Button>
+        )}
+      </CardActions>
     </Card>
   );
 };

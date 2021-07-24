@@ -1,11 +1,11 @@
 import { Box, Container, Skeleton, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import StoryCard from '@src/components/StoryCardFront';
 import { useActions, useAppState } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
-import StoryCard from '../../StoriesView/StoryCard';
 
 const Stories: FC = () => {
   const { t } = useTranslation(['home']);
@@ -71,7 +71,7 @@ const Stories: FC = () => {
                           animate={{ scale: 1 }}
                           exit={{ scale: 0 }}
                         >
-                          <StoryCard showEdit={false} story={story} />
+                          <StoryCard story={story} />
                         </Box>
                       ))}
                 </Masonry>

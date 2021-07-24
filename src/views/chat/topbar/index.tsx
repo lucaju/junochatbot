@@ -12,7 +12,7 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import Logo from '@src/components/Logo';
 import { useAppState } from '@src/overmind';
-import StoryCard from '@src/views/StoriesView/StoryCard';
+import StoryCard from '@src/components/StoryCardFront';
 import React, { FC, MouseEvent, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
@@ -76,9 +76,7 @@ const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
         }}
       >
         <Box sx={{ width: 400, m: -2 }}>
-          {chat.currentStory && (
-            <StoryCard showLaunch={false} showEdit={false} story={chat.currentStory} />
-          )}
+          {chat.currentStory && <StoryCard disabled story={chat.currentStory} />}
         </Box>
       </Popover>
     </AppBar>
