@@ -5,6 +5,7 @@ import { getIcon } from '@src/util/icons';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import TypingLoop from './TypingLoop';
+import BotResponseDetails from './BotResponseDetails';
 
 interface SpeechBubbleProps {
   lastInThread: boolean;
@@ -21,6 +22,8 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation,
   const BotAvatar = getIcon(chat.currentStory?.botAvatar ?? 'abd');
   const [showContent, setShowContent] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
+
+  const [debug, setDebug] = useState(true);
 
   useEffect(() => {
     waitingTime === 0 ? onWaitingTime() : timerWaiting();
@@ -71,15 +74,17 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation,
               px={lastInThread || showTyping ? 0 : 3.5}
             >
               {(lastInThread || showTyping) && (
-                <BotAvatar
-                  component={motion.svg}
-                  variants={avatarAnimation}
-                  initial="initial"
-                  animate="visible"
-                  exit="exit"
-                  fontSize="small"
-                  sx={{ mr: 1 }}
-                />
+                <Stack alignItems="center" mr={1}>
+                  {lastInThread && debug && <BotResponseDetails debug={debug} speech={speech} />}
+                  <BotAvatar
+                    component={motion.svg}
+                    variants={avatarAnimation}
+                    initial="initial"
+                    animate="visible"
+                    exit="exit"
+                    fontSize="small"
+                  />
+                </Stack>
               )}
               <Box
                 component={motion.div}
