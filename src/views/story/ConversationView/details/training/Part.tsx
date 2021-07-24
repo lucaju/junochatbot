@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, useTheme } from '@material-ui/core';
 import { useAppState } from '@src/overmind';
 import { Part as PartType } from '@src/types';
 import { intentParamColorPalette } from '@src/util/utilities';
@@ -12,6 +12,7 @@ interface PartProps {
 }
 
 const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) => {
+  const theme = useTheme();
   const { intents } = useAppState();
   const { alias, entityType, text, userDefined } = part;
 
@@ -26,6 +27,12 @@ const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) 
     event.preventDefault();
   };
 
+  let backgroundColor = entityType ? intentParamColorPalette[paramIndex] : 'inherent';
+  backgroundColor = backgroundColor ?? 'inherent';
+  console.log(backgroundColor);
+  const color =
+    backgroundColor === 'inherent' ? 'inherent' : theme.palette.getContrastText(backgroundColor);
+
   return (
     <Box
       component="span"
@@ -37,7 +44,8 @@ const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) 
       onContextMenu={onContextMenu}
       onClick={entityType ? handleClick : undefined}
       sx={{
-        backgroundColor: entityType ? intentParamColorPalette[paramIndex] : 'inherent',
+        color,
+        backgroundColor,
         cursor: entityType ? 'pointer' : 'default',
       }}
     >
