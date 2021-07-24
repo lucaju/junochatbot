@@ -128,8 +128,6 @@ export const _processMessages = async ({ actions }: Context, queryResult: QueryR
     messages.push(botSpeech);
   }
 
-  console.log(messages);
-
   return messages;
 };
 
