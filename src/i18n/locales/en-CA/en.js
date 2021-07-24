@@ -10,10 +10,12 @@ export default {
 	edit: 'edit',
 	email: 'email',
     english: 'english',
+	fallback: 'fallback',
     french: 'french',
     group: 'group',
 	launch: 'launch',
 	name: 'name',
+	no: 'no',
     password: 'password',
 	publish: 'publish',
 	published: 'published',
@@ -33,6 +35,7 @@ export default {
 	users: 'users',
 	videos: 'videos',
 	welcome: 'wecome',
+	yes: 'yes',
   },
   auth: {
 	checkEmaiConfirmation: 'Check your email for the confirmation link.',
@@ -82,6 +85,7 @@ export default {
   },
   intents: {
 	add: 'add',
+	addFollowUpIntent: 'Add Follow-up Intent',
     addInputContext: 'Add Input Context',
     addOutputContext: 'Add Output Context',
     addParameter: 'Add Parameter',
@@ -97,6 +101,8 @@ export default {
     newIntent: 'New intent',
     noIntentsYet: 'No Intents yet',
     parameters: 'Parameters',
+	trainingExplainer: 'Phrases you can expect from user, that will trigger the intent',
+	trainingFallbackExplainer: 'Fallback Intent training phrases are "negative" examples the agent will not match to any other intent.',
   },
   navMenu: {
 	conversationDesign: 'Conversation Design',
