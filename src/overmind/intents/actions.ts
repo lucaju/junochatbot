@@ -1,8 +1,9 @@
-import type { Entity, ErrorMessage, Intent } from '@src/types';
-import { isError } from '@src/util/utilities';
+import type { Entity, ErrorMessage, Intent, TrainingPhrase } from '@src/types';
+import { isError, sortBy } from '@src/util/utilities';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../';
 import { extractContextName } from './actionsContext';
+import { trainingPhrasesCollection } from '@src/util/trainingPhrases';
 
 export * from './actionsContext';
 export * from './actionsParameters';
@@ -29,7 +30,9 @@ export const getIntents = async ({
   if (state.videos.tagCollection.length === 0) await actions.videos.getTags();
   if (state.intents.entities.length === 0) await actions.intents.getEntities();
 
-  state.intents.collection = response;
+  const intents = sortBy(response, 'displayName'); 
+
+  state.intents.collection = intents;
   return state.intents.collection;
 };
 
@@ -97,21 +100,120 @@ export const createIntent = async ({ state, effects }: Context): Promise<Intent 
   return response;
 };
 
-export const updateIntent = async ({
-  state,
-  actions,
-  effects,
-}: Context): Promise<Intent | ErrorMessage> => {
+export const createFollowUpIntent = async (
+  { state, actions }: Context,
+  { originIntent, followUpType }: { originIntent: Intent; followUpType: string }
+): Promise<Intent | ErrorMessage> => {
+  if (!originIntent.name) return { errorMessage: 'Not Intent' };
+
+  // shared context
+  const sharedContext = _createFollowUpSharedContext(originIntent.name, originIntent.displayName);
+
+  //create follow Up Intent
+  const responseFollowUpIntentCreation = await actions.intents._createFollowUpIntent({
+    originIntent,
+    followUpType,
+    sharedContext,
+  });
+  if (isError(responseFollowUpIntentCreation)) return responseFollowUpIntentCreation;
+
+  //update origin intent
+  const updatedOriginIntent: Intent = { ...originIntent };
+  const originOutputContexts = updatedOriginIntent.outputContexts ?? [];
+  updatedOriginIntent.outputContexts = [
+    ...originOutputContexts,
+    { name: sharedContext, lifespanCount: 2 },
+  ];
+
+  const responseOriginIntentUpdate = await actions.intents.updateIntent(updatedOriginIntent);
+  if (isError(responseOriginIntentUpdate)) return responseOriginIntentUpdate;
+
+  //return
+  state.intents.currentIntent = responseFollowUpIntentCreation;
+  return responseFollowUpIntentCreation;
+};
+
+export const _createFollowUpSharedContext = (
+  originIntentName: string,
+  originIntentDisplayName: string
+) => {
+  const splitName = originIntentName.split('/');
+  const [, projectName] = splitName;
+
+  const sanitizeContextName = originIntentDisplayName.replace(/\s+/g, ''); //remove spaces.
+  const sharedContext = `projects/${projectName}/agent/sessions/-/contexts/${sanitizeContextName}-followUp`;
+
+  return sharedContext;
+};
+
+export const _createFollowUpIntent = async (
+  { state, effects }: Context,
+  {
+    originIntent,
+    followUpType,
+    sharedContext,
+  }: { originIntent: Intent; followUpType: string; sharedContext: string }
+): Promise<Intent | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  if (!state.intents.currentIntent) return { errorMessage: 'Not Intent' };
+  //create follow up intent
+  const followUpIntent: Intent = {
+    displayName: `${originIntent.displayName}-${followUpType}`,
+    parentFollowupIntentName: originIntent.name,
+    inputContextNames: [sharedContext],
+  };
+
+  if (followUpType === 'fallback') followUpIntent.isFallback = true;
+
+  //preset training phrases
+  if (followUpType !== 'fallback') {
+    const languageCode = state.story.currentStory?.languageCode;
+    const phraseCollection = `${followUpType}-${languageCode}`;
+    const trainingSet = trainingPhrasesCollection.get(phraseCollection) ?? [];
+    const trainingPhrases: TrainingPhrase[] = trainingSet.map((phrase) => ({
+      parts: [{ text: phrase }],
+      timesAddedCount: 1,
+      type: 'EXAMPLE',
+    }));
+
+    followUpIntent.trainingPhrases = trainingPhrases;
+  }
+
+  const response = await effects.intents.api.createIntent(storyId, followUpIntent, authUser.token);
+  if (isError(response)) return response;
+
+  state.intents.collection = [response, ...state.intents.collection];
+
+  return response;
+};
+
+export const updateIntent = async (
+  { state, actions, effects }: Context,
+  intent?: Intent
+): Promise<Intent | ErrorMessage> => {
+  const storyId = state.story.currentStory?.id;
+  if (!storyId) return { errorMessage: 'No Story' };
+
+  const authUser = state.session.user;
+  if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
+
+  if (!intent) return { errorMessage: 'Not Intent' };
+
+  // console.log({ ...intent });
 
   //revert transformation and remove additonal values
-  const intentToSubmit = partIntentToSubmit({ ...state.intents.currentIntent });
+  const intentToSubmit = partIntentToSubmit({ ...intent });
+
+  //remove readonly attributes
+  delete intentToSubmit.rootFollowupIntentName;
+  delete intentToSubmit.parentFollowupIntentName;
+  delete intentToSubmit.followupIntentInfo;
+
+  // console.log(intentToSubmit);
 
   const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
   if (isError(response)) return response;
@@ -214,6 +316,12 @@ export const deleteIntent = async (
   state.intents.collection = state.intents.collection.filter((itt) => itt.name !== intentName);
 
   return true;
+};
+
+export const getIntentDisplayNameByName = ({ state }: Context, name?: string) => {
+  if (!name) return;
+  const intent = state.intents.collection.find((intent) => intent.name === name);
+  return intent?.displayName;
 };
 
 //** Entity */

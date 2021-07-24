@@ -1,12 +1,26 @@
-import { Box, Card, CardContent, Grid, Stack, useMediaQuery, useTheme  } from '@material-ui/core';
+import {
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import { alpha } from '@material-ui/core/styles';
-import { Intent } from '@src/types';
+import ForumIcon from '@material-ui/icons/Forum';
+import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
+import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore';
+import type { Intent } from '@src/types';
+import { motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
+import AddFollowUp from './AddFollowUp';
 import Contexts from './Contexts';
-import General from './General';
 import Message from './Message';
 import Paramenter from './Parameter';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useActions } from '@src/overmind';
 
 interface ContextCardProps {
   intent: Intent;
@@ -14,8 +28,6 @@ interface ContextCardProps {
 }
 
 const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
-  const [elevation, setElevation] = useState(1);
-
   const {
     name,
     displayName,
@@ -24,26 +36,34 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
     outputContexts,
     parameters,
     messages,
+    isFallback,
+    parentFollowupIntentName,
   } = intent;
-
+  const actions = useActions();
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
   const isLG = useMediaQuery(theme.breakpoints.down('lg'));
 
-  const mouseOver = () => setElevation(6);
-  const mouseOut = () => setElevation(1);
+  const [hover, setHover] = useState(false);
+  const trainingSize = trainingPhrases ? trainingPhrases.length : 0;
+
+  const followUpParentDisplayname =
+    actions.intents.getIntentDisplayNameByName(parentFollowupIntentName);
+
+  const mouseOver = () => setHover(true);
+  const mouseOut = () => setHover(false);
 
   return (
     <Card
-      elevation={elevation}
+      elevation={hover ? 6 : 1}
       onClick={() => handleEditClick(name)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
       sx={{
         my: 1,
-        mx: 1.5,
+        ml: parentFollowupIntentName ? 6 : 1.5,
+        mr: 1.5,
         cursor: 'pointer',
-
       }}
       component={motion.div}
       initial={{ height: 0 }}
@@ -51,9 +71,19 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
       exit={{ height: 0 }}
     >
       <CardContent sx={{ '&:last-child': { pb: 2 } }}>
-        <Grid container  direction={isLG ? 'column' : 'row'} spacing={1}>
+        <Grid container direction={isLG ? 'column' : 'row'} spacing={1}>
           <Grid item xs={4}>
-            <General displayName={displayName} trainingPhrases={trainingPhrases} />
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              {isFallback && <SettingsBackupRestoreIcon fontSize="small" />}
+              <Typography variant="h6">{displayName}</Typography>
+            </Stack>
+
+            {parentFollowupIntentName && (
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <KeyboardReturnIcon sx={{ width: 16, height: 16 }} />
+                <Typography variant="overline">{followUpParentDisplayname}</Typography>
+              </Stack>
+            )}
           </Grid>
 
           <Grid item xs={2}>
@@ -72,31 +102,47 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
           </Grid>
         </Grid>
 
-        {(inputContextNames || inputContextNames) && (
+        <Stack
+          direction={isSM ? 'column' : 'row'}
+          alignItems={isSM ? 'flex-start' : 'center'}
+          spacing={2}
+          mx={-2}
+          mt={1}
+          mb={-2}
+          px={2}
+          py={1}
+          sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02) }}
+        >
           <Stack
             direction={isSM ? 'column' : 'row'}
             alignItems={isSM ? 'flex-start' : 'center'}
-            spacing={1}
-            mx={-2}
-            mt={1}
-            mb={-2}
-            px={2}
-            py={1}
-            sx={{
-              backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02),
-              overflowX: 'auto',
-            }}
+            spacing={2}
+            sx={{ overflowX: 'auto' }}
           >
-            <>
-              {inputContextNames && inputContextNames.length > 0 && (
+            <Stack direction="row" spacing={1}>
+              <ForumIcon fontSize="small" />
+              <Typography variant="body2">{trainingSize}</Typography>
+            </Stack>
+
+            {inputContextNames && inputContextNames.length > 0 && (
+              <>
+                <Divider orientation="vertical" flexItem />
                 <Contexts contexts={inputContextNames} type="input" />
-              )}
-              {outputContexts && outputContexts.length > 0 && (
+              </>
+            )}
+
+            {outputContexts && outputContexts.length > 0 && (
+              <>
+                <Divider orientation="vertical" flexItem />
                 <Contexts contexts={outputContexts} type="output" />
-              )}
-            </>
+              </>
+            )}
           </Stack>
-        )}
+
+          <Box flexGrow={1} />
+
+          {hover && <AddFollowUp intent={intent} />}
+        </Stack>
       </CardContent>
     </Card>
   );

@@ -73,7 +73,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     const response =
       action === 'create'
         ? await actions.intents.createIntent()
-        : await actions.intents.updateIntent();
+        : await actions.intents.updateIntent(intents.currentIntent);
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
