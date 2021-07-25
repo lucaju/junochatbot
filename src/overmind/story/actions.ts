@@ -43,6 +43,16 @@ export const getStoriesByGroup = async (
   return state.story.stories;
 };
 
+export const getStoriesForAuthUser = async (
+  { state, effects }: Context,
+): Promise<Story[] | ErrorMessage> => {
+  const authUser = state.session.user;
+  if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
+
+  const response = await effects.story.api.getStoriesByUser(authUser.id, authUser.token);
+  return response;
+};
+
 export const getStory = async (
   { state, effects }: Context,
   storyId: number

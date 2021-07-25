@@ -57,7 +57,7 @@ export const checkOwnership = async (
   { state, actions }: Context,
   storyId: number
 ): Promise<boolean> => {
-  const userStories = await actions.story.getStoriesForAuthUSer();
+  const userStories = await actions.story.getStoriesForAuthUser();
   if (isError(userStories)) return false;
   const userOwns = userStories.some((story) => story.id === storyId);
   return userOwns;
