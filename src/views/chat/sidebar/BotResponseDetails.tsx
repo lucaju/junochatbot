@@ -1,15 +1,16 @@
 import { IconButton, Popover, Typography } from '@material-ui/core';
 import BubbleChartIcon from '@material-ui/icons/BubbleChart';
+import { useAppState } from '@src/overmind';
 import type { SpeechMessage } from '@src/types';
 import { json } from 'overmind';
 import React, { FC, MouseEvent, useState } from 'react';
 
 interface BotResponseDetailsProps {
-  debug: boolean;
   speech: SpeechMessage;
 }
 
-const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speech, debug }) => {
+const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speech }) => {
+  const { chat } = useAppState();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
 
@@ -17,7 +18,7 @@ const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speech, debug }) => {
   const { intent, intentDetectionConfidence, languageCode, queryText } = metadata ?? {};
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    if (debug) console.log({ dialogFlowResponseDetail: json(metadata) });
+    if (chat.debug) console.log({ dialogFlowResponseDetail: json(metadata) });
     setAnchorEl(event.currentTarget);
   };
 
@@ -98,7 +99,7 @@ const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speech, debug }) => {
             </Typography>
           </Typography>
         )}
-        <Typography
+        {/* <Typography
           fontSize="0.65rem"
           my={0.25}
           paragraph
@@ -106,7 +107,7 @@ const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speech, debug }) => {
           sx={{ fontWeight: 700 }}
         >
           {`> See more on the browser console`}
-        </Typography>
+        </Typography> */}
       </Popover>
     </>
   );

@@ -4,8 +4,8 @@ import type { SpeechMessage } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
-import TypingLoop from './TypingLoop';
 import BotResponseDetails from './BotResponseDetails';
+import TypingLoop from './TypingLoop';
 
 interface SpeechBubbleProps {
   lastInThread: boolean;
@@ -22,8 +22,6 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation,
   const BotAvatar = getIcon(chat.currentStory?.botAvatar ?? 'abd');
   const [showContent, setShowContent] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
-
-  const [debug, setDebug] = useState(true);
 
   useEffect(() => {
     waitingTime === 0 ? onWaitingTime() : timerWaiting();
@@ -75,7 +73,7 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation,
             >
               {(lastInThread || showTyping) && (
                 <Stack alignItems="center" mr={1}>
-                  {lastInThread && debug && <BotResponseDetails debug={debug} speech={speech} />}
+                  {lastInThread && chat.debug && <BotResponseDetails speech={speech} />}
                   <BotAvatar
                     component={motion.svg}
                     variants={avatarAnimation}

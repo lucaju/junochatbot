@@ -9,19 +9,17 @@ import {
   useTheme,
 } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import Logo from '@src/components/Logo';
-import { useAppState } from '@src/overmind';
 import StoryCard from '@src/components/StoryCardFront';
+import { useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface TopBarProps {
   sidebarWidth: number;
 }
 
 const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
-  const navigate = useNavigate();
   const { chat } = useAppState();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -29,8 +27,6 @@ const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const goBack = () => navigate(-1);
 
   const showStoryInfo = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -47,11 +43,6 @@ const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
       }}
     >
       <Toolbar variant="dense">
-        {!isMobile && (
-          <IconButton onClick={goBack}>
-            <KeyboardArrowLeftIcon />
-          </IconButton>
-        )}
         <RouterLink to="/">
           <Logo height={24} sx={{ ml: 0.5, mt: 0.5 }} type="simplified" />
         </RouterLink>

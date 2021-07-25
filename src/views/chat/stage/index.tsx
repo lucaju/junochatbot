@@ -91,7 +91,6 @@ const Stage: FC<StageProps> = ({ sidebarWidth }) => {
               width="100%"
               height="100%"
               style={{ position: 'absolute', top: 0, left: 0 }}
-              onClick={() => console.log('oi')}
               muted={muted}
               onEnded={handleEnd}
               onError={(e) => console.log('onError', e)}
