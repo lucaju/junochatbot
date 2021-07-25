@@ -4,73 +4,57 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Grid,
   MenuItem,
+  Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { NotificationType, Story } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 interface AddStoryDialogProps {
   handleClose: () => void;
   open: boolean;
-  triggerEditStory: (value?: number | undefined) => void;
+  triggerEditStory: (value: number) => void;
 }
 
 const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEditStory }) => {
   const { story, ui } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['common', 'story', 'errorMessages']);
-  const [error, setError] = useState();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { t } = useTranslation(['common', 'stories', 'errorMessages']);
 
-  const handleCancelButton = () => handleClose();
+  const handleCancel = () => handleClose();
 
   const submit = async (values: Partial<Story>) => {
     const response = await actions.story.createStory(values as Omit<Story, 'id'>);
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
-
-    //error
-    if (isError(response)) {
-      const message = t('errorMessages:somethingWentWrong');
-      actions.ui.showNotification({ message, type });
-      return;
-    }
-
-    //success
-    const message = t('createStory');
+    const message = isError(response)
+      ? t('errorMessages:somethingWentWrong')
+      : t('stories:storyCreated');
     actions.ui.showNotification({ message, type });
 
+    if (isError(response)) return;
     triggerEditStory(response.id);
   };
 
   const formValidation = Yup.object().shape({
-    title: Yup.string().min(2).max(100).trim().required('Title is required'),
+    title: Yup.string().min(3).max(100).trim().required(t('errorMessages:titleRequired')),
     languageCode: Yup.string().required(),
   });
 
   return (
-    <Dialog aria-labelledby="user-details-dialog" maxWidth="sm" onClose={handleClose} open={open}>
-      {error && (
-        <Typography
-          component="h2"
-          sx={{
-            mt: 1,
-            color: 'secondary.light',
-            textAlign: 'center',
-          }}
-          variant="subtitle1"
-        >
-          Oh oh. Server Error.
-        </Typography>
-      )}
+    <Dialog aria-labelledby="new-story-dialog" fullWidth onClose={handleClose} open={open}>
       <Formik
         initialValues={{
           title: '',
@@ -82,68 +66,64 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form onSubmit={handleSubmit}>
             <DialogContent dividers>
-              <Grid container spacing={3} sx={{ py: 2 }}>
-                <Grid item md={12}>
-                  <Typography
-                    sx={{
-                      mb: 1.5,
-                      textAlign: 'center',
-                    }}
-                    variant="h6"
-                  >
-                    New Story
-                  </Typography>
-                  <TextField
-                    error={Boolean(touched.title && errors.title)}
-                    fullWidth
-                    helperText={touched.title && errors.title}
-                    label={t('title')}
-                    margin="normal"
-                    name="title"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    sx={{
-                      mb: 1.5,
-                      textTransform: 'capitalize',
-                    }}
-                    value={values.title}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item md={8}>
-                  <TextField
-                    error={Boolean(touched.languageCode && errors.languageCode)}
-                    fullWidth
-                    label="language"
-                    margin="normal"
-                    name="languageCode"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    select
-                    value={values.languageCode}
-                    variant="outlined"
-                  >
-                    {story.languages.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid>
+              <Typography
+                sx={{
+                  my: 1.5,
+                  textAlign: 'center',
+                  textTransform: 'uppercase',
+                  fontWeight: 700,
+                }}
+                variant="h6"
+              >
+                {t('stories:newStory')}
+              </Typography>
+              <Stack
+                direction={isMobile ? 'column' : 'row'}
+                alignItems="baseline"
+                spacing={2}
+                pb={1}
+              >
+                <TextField
+                  error={Boolean(touched.title && errors.title)}
+                  fullWidth
+                  helperText={touched.title && errors.title}
+                  label={t('title')}
+                  margin="normal"
+                  name="title"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  sx={{ textTransform: 'capitalize' }}
+                  value={values.title}
+                  variant="standard"
+                />
+
+                <TextField
+                  error={Boolean(touched.languageCode && errors.languageCode)}
+                  label={t('language')}
+                  margin="normal"
+                  name="languageCode"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  select
+                  sx={{ minWidth: 80, textTransform: 'capitalize' }}
+                  value={values.languageCode}
+                  variant="standard"
+                >
+                  {story.languages.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Stack>
             </DialogContent>
-            <DialogActions sx={{ px: 3 }}>
-              <Button color="primary" onClick={handleCancelButton}>
-                Cancel
+            <DialogActions>
+              <Button color="inherit" onClick={handleCancel}>
+                {t('cancel')}
               </Button>
               <Box flexGrow={1} />
-              <LoadingButton
-                color="primary"
-                loading={isSubmitting}
-                type="submit"
-                variant="outlined"
-              >
-                Create
+              <LoadingButton loading={isSubmitting} type="submit" variant="outlined">
+                {t('create')}
               </LoadingButton>
             </DialogActions>
           </form>

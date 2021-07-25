@@ -5,7 +5,7 @@ import { HandleFilterType } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-// import AddStoryDialog from './AddStoryDialog';
+import AddStoryDialog from './AddStoryDialog';
 import Collection from './Collection';
 import MenuBar from './menubar';
 
@@ -61,11 +61,11 @@ const Stories: FC = () => {
   return (
     <Page title={ui.pageTitle}>
       <Container maxWidth={false}>
-        {/* <AddStoryDialog
+        <AddStoryDialog
           open={addStoryOpen}
           handleClose={handleAddDiaglogClose}
           triggerEditStory={triggerEditStory}
-        /> */}
+        />
         {!isLoading && hasStories && (
           <MenuBar
             handleDetailOpen={handleAddDialogOpen}

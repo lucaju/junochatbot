@@ -80,15 +80,22 @@ export const createStory = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  const story = values;
-  story.user = authUser;
+  const userId = authUser.id;
 
-  const response = await effects.story.api.createStory(story, authUser.token);
+  //new story default
+  const story = {
+    ...values,   
+    synopsis: '',
+    botAvatar: 'adb',
+    botName: '',
+    botPersona: '',
+    botDelay: 100,
+  };
+
+  const response = await effects.story.api.createStory(story, userId, authUser.token);
   if (isError(response)) return response;
 
-  state.story.currentStory = response;
-
-  return state.story.currentStory;
+  return response;
 };
 
 export const updateStory = async (

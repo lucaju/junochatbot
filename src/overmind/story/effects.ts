@@ -67,9 +67,13 @@ export const api = {
     return result as Story;
   },
 
-  createStory: async (story: Omit<Story, 'id'>, token: string): Promise<Story | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/stories`, {
-      method: 'POST',
+  createStory: async (
+    story: Omit<Story, 'id'>,
+    userId: number,
+    token: string
+  ): Promise<Story | ErrorMessage> => {
+    const response = await fetch(`${API_URL}/stories/user/${userId}`, {
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
