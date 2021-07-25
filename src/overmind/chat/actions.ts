@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Duration } from 'luxon';
 
 export const resetState = ({ state }: Context) => {
-  state.chat.stories = [];
   state.chat.currentStory = undefined;
   state.chat.currentVideo = undefined;
   state.chat.chatLog = [];
@@ -22,17 +21,15 @@ export const resetState = ({ state }: Context) => {
   state.chat.watchedVideos = [];
 };
 
-export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {
+export const getStories = async ({ state, effects }: Context): Promise<Story[]> => {
   const response = await effects.chat.api.getStories();
+  if (isError(response)) return [];
 
-  if (isError(response)) return response;
-
-  state.chat.stories = response.reverse();
-  return state.story.stories;
+  return response.reverse();
 };
 
 export const getStory = async (
-  { state, effects }: Context,
+  { actions, effects }: Context,
   storyId: number
 ): Promise<Story | ErrorMessage> => {
   const response = await effects.chat.api.getStory(storyId);
@@ -43,9 +40,27 @@ export const getStory = async (
   if (response.botPersona === null) response.botPersona = 'Persona description';
   if (response.botAvatar === null) response.botAvatar = 'adb';
 
-  state.chat.currentStory = response;
+  actions.chat.setCurrentStory(response);
 
   return response;
+};
+
+export const setCurrentStory = ({ state }: Context, story: Story) => {
+  state.chat.currentStory = { ...story };
+};
+
+export const setDebug = ({ state }: Context, value: boolean) => {
+  state.chat.debug = value;
+};
+
+export const checkOwnership = async (
+  { state, actions }: Context,
+  storyId: number
+): Promise<boolean> => {
+  const userStories = await actions.story.getStoriesForAuthUSer();
+  if (isError(userStories)) return false;
+  const userOwns = userStories.some((story) => story.id === storyId);
+  return userOwns;
 };
 
 export const submitUserInput = async ({ state, actions }: Context, userInput: string) => {
