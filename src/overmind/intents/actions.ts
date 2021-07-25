@@ -10,6 +10,12 @@ export * from './actionsParameters';
 export * from './actionsResponses';
 export * from './actionsTraning';
 
+export const resetState = ({ state }: Context) => {
+  state.intents.collection = [];
+  state.intents.currentIntent = undefined;
+  state.intents.entities = [];
+};
+
 export const getIntents = async ({
   state,
   actions,

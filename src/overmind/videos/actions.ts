@@ -2,6 +2,11 @@ import type { ErrorMessage, Tag, Video } from '@src/types';
 import { isError, sortBy } from '@src/util/utilities';
 import { Context } from '../';
 
+export const resetState = ({ state }: Context) => {
+  state.videos.collection = [];
+  state.videos.tagCollection = [];
+};
+
 export const getVideos = async ({ state, effects }: Context): Promise<Video[] | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };

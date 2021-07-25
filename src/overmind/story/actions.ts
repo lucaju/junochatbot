@@ -2,9 +2,12 @@ import type { ErrorMessage, Story } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Context } from '../';
 
-export const resetState = ({ state }: Context) => {
+export const resetState = ({ state, actions }: Context) => {
   state.story.stories = [];
   state.story.currentStory = undefined;
+
+  actions.intents.resetState();
+  actions.videos.resetState();
 };
 
 export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {

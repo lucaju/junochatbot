@@ -18,6 +18,9 @@ const UsersView: FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
+    actions.story.resetState();
+    actions.users.resetState();
+
     const userTypeAllowed = [RoleType.ADMIN, RoleType.INSTRUCTOR];
     if (!session.user || !userTypeAllowed.includes(session.user.roleTypeId)) {
       navigate('/app', { replace: true });

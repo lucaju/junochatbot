@@ -2,6 +2,11 @@ import type { ErrorMessage, User, UserGroup } from '@src/types';
 import { isError, sortBy } from '@src/util/utilities';
 import { Context } from '../';
 
+export const resetState = ({ state }: Context) => {
+  state.users.list = [];
+  state.users.groups = [];
+};
+
 export const getUsers = async (
   { state, effects }: Context,
   groupId?: number

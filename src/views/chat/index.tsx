@@ -26,7 +26,9 @@ const StoryPlay: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    actions.story.resetState();
     actions.chat.resetState();
+    
     if (!storyId) return navigate('/', { replace: true });
     !chat.currentStory ? getStory() : actions.ui.setPageTitle(chat.currentStory.title);
 

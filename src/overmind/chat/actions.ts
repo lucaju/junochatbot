@@ -12,10 +12,11 @@ import { Context } from '../';
 import { v4 as uuidv4 } from 'uuid';
 import { Duration } from 'luxon';
 
-export const resetState = ({ state }: Context) => {
+export const resetState = ({ state, actions  }: Context) => {
+  state.chat.chatLog = [];
   state.chat.currentStory = undefined;
   state.chat.currentVideo = undefined;
-  state.chat.chatLog = [];
+  state.chat.debug = false;
   state.chat.sessionid = undefined;
   state.chat.videoLog = [];
   state.chat.watchedVideos = [];
