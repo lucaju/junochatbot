@@ -19,6 +19,9 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
     path = storyID ? path.replace(':storyId', storyID.toString()) : '/app';
   }
 
+  const isStoryPublished = story.currentStory?.published ?? false;
+  const navToIntact = path.includes('/story/');
+
   return (
     <>
       {isCompact ? (
@@ -34,13 +37,13 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
               },
             },
           }}
-          color={path.includes('/story/') ? 'primary' : 'inherit'}
+          color={navToIntact ? 'primary' : 'inherit'}
           component={RouterLink}
           fullWidth
           sx={{
             width: '100%',
             padding: '10px 8px',
-            color: path.includes('/story/') ? 'primary' : 'text.secondary',
+            color: navToIntact ? 'primary' : 'text.secondary',
             fontWeight: theme.typography.fontWeightMedium,
             fontSize: '10px',
             letterSpacing: 0,
@@ -48,7 +51,8 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             textAlign: 'center',
             lineHeight: '12px',
           }}
-          to={path}
+          target={navToIntact ? '_blank' : ''}
+          to={isStoryPublished ? path : `${path}?draft=true`}
         >
           <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
             {Icon && <Icon size="20" />}
@@ -70,21 +74,21 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
               },
             },
           }}
-          color={path.includes('/story/') ? 'primary' : 'inherit'}
+          color={navToIntact ? 'primary' : 'inherit'}
           component={RouterLink}
           fullWidth
           sx={{
             width: '100%',
             py: 1.25,
             px: 1,
-            color: path.includes('/story/') ? 'primary' : 'text.secondary',
+            color: navToIntact ? 'primary' : 'text.secondary',
             fontWeight: theme.typography.fontWeightMedium,
             letterSpacing: 0,
             textTransform: 'none',
             justifyContent: 'flex-start',
           }}
-          target={path.includes('/story/') ? '_blank' : ''}
-          to={path}
+          target={navToIntact ? '_blank' : ''}
+          to={isStoryPublished ? path : `${path}?draft=true`}
         >
           {Icon && <Icon sx={{ mr: 1 }} size="20" />}
           <Box
