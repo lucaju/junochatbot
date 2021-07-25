@@ -2,21 +2,23 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
-  CardActionArea,
   CardContent,
   CardMedia,
   Chip,
   Divider,
+  Paper,
+  Stack,
   Typography,
 } from '@material-ui/core';
+import { alpha } from '@material-ui/core/styles';
 import { APP_URL } from '@src/config/config.js';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
+import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import { DateTime } from 'luxon';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { NavLink as RouterLink, useNavigate } from 'react-router-dom';
 
 interface UserCarddProps {
   showLaunch?: boolean;
@@ -34,23 +36,25 @@ const StoryCard: FC<UserCarddProps> = ({
   const { t } = useTranslation(['common']);
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
-  const [elevation, setElevation] = useState(story.imageUrl ? 2 : 0);
   const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
   const BotAvatar = getIcon(story.botAvatar);
+  const animateBot = useAnimation();
+
+  const author = story.author
+    ? story.author
+    : story.user
+    ? `${story.user.firstName} ${story.user.lastName}`
+    : 'Anonymous';
 
   const mouseOver = () => {
     if (!showLaunch && !showEdit) return;
     setHover(true);
-    setElevation(6);
+    animateBot.start({ rotate: 20 });
   };
 
   const mouseOut = () => {
     setHover(false);
-    setElevation(story.imageUrl ? 2 : 0);
-  };
-
-  const handlePlayClick = () => {
-    navigate(`/story/${story.id}`, { replace: true });
+    animateBot.start({ rotate: 0 });
   };
 
   const handleEditClick = () => {
@@ -59,7 +63,7 @@ const StoryCard: FC<UserCarddProps> = ({
   };
 
   return (
-    <Card elevation={elevation} onMouseEnter={mouseOver} onMouseLeave={mouseOut} sx={{ m: 2 }}>
+    <Card elevation={hover ? 6 : 1} onMouseEnter={mouseOver} onMouseLeave={mouseOut} sx={{ m: 2 }}>
       {hasImage && (
         <CardMedia
           image={
@@ -121,7 +125,7 @@ const StoryCard: FC<UserCarddProps> = ({
 
         <Box display="flex" alignItems="flex-start" mt={1}>
           <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-            {story.user ? `By ${story.user.firstName} ${story.user.lastName}` : 'By Anonymous'}
+            {`${t('by')} ${author}`}
           </Typography>
         </Box>
         {story.synopsis && (
@@ -145,7 +149,12 @@ const StoryCard: FC<UserCarddProps> = ({
               <Divider sx={{ width: '30%' }} />
             </Box>
             <Box display="flex" flexDirection="row" alignItems="center" pl={2}>
-              <BotAvatar fontSize="small" sx={{ mr: 1 }} />
+              <BotAvatar
+                component={motion.svg}
+                animate={animateBot}
+                fontSize="small"
+                sx={{ mr: 1 }}
+              />
               <Typography variant="h6">{story.botName}</Typography>
             </Box>
             {story.botPersona && (
@@ -155,17 +164,44 @@ const StoryCard: FC<UserCarddProps> = ({
             )}
           </>
         )}
+        <AnimatePresence>
+          {hover && (
+            <Paper
+              component={motion.div}
+              initial={{ height: 0, y: 36 }}
+              animate={{ height: 'auto', y: 0 }}
+              exit={{ height: 0, y: 36 }}
+              sx={{
+                position: 'relative',
+                float: 'left',
+                width: 'calc(100% + 32px)',
+                height: 36,
+                ml: -2,
+                mt: -1.5,
+                overflowY: 'hidden',
+                backgroundColor: ({ palette }) => palette.background.paper,
+              }}
+            >
+              <Stack direction="row" sx={{ backgroundColor: alpha('#000', 0.01) }}>
+                <Button
+                  component={RouterLink}
+                  color={hover ? 'primary' : 'inherit'}
+                  fullWidth
+                  target={'_blank'}
+                  to={story.published ? `/story/${story.id}` : `/story/${story.id}?draft=true`}
+                >
+                  {t('interact')}
+                </Button>
+                {showEdit && (
+                  <Button color={hover ? 'primary' : 'inherit'} fullWidth onClick={handleEditClick}>
+                    {t('edit')}
+                  </Button>
+                )}
+              </Stack>
+            </Paper>
+          )}
+        </AnimatePresence>
       </CardContent>
-      <CardActions sx={{ justifyContent: 'space-around' }}>
-        <Button onClick={handlePlayClick} size="small" variant="outlined">
-          {t('launch')}
-        </Button>
-        {showEdit && (
-          <Button onClick={handleEditClick} size="small" variant="outlined">
-            {t('edit')}
-          </Button>
-        )}
-      </CardActions>
     </Card>
   );
 };

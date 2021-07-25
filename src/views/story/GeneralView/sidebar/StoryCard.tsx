@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
+import { motion, useAnimation } from 'framer-motion';
 import { DateTime } from 'luxon';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +26,21 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [BotAvatar, setBotAvatar] = useState(getIcon(values.botAvatar));
+  const animateBot = useAnimation();
+
+  const author = values.author
+    ? values.author
+    : values.user
+    ? `${values.user.firstName} ${values.user.lastName}`
+    : 'Anonymous';
+
+  const mouseOver = () => {
+    animateBot.start({ rotate: 20 });
+  };
+
+  const mouseOut = () => {
+    animateBot.start({ rotate: 0 });
+  };
 
   useEffect(() => {
     setBotAvatar(getIcon(values.botAvatar));
@@ -36,7 +52,12 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
       <Typography gutterBottom variant="h6">
         Poster
       </Typography>
-      <Card elevation={theme.palette.mode === 'light' ? 1 : 3} sx={{ width: isSM ? 'auto' : 300 }}>
+      <Card
+        elevation={theme.palette.mode === 'light' ? 1 : 3}
+        onMouseEnter={mouseOver}
+        onMouseLeave={mouseOut}
+        sx={{ width: isSM ? 'auto' : 300 }}
+      >
         <FeaturedImage title={values.title} />
         <CardContent>
           <Box display="flex" alignItems="center">
@@ -60,14 +81,15 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
                   {t('draft')}
                 </Box>
               ) : (
-                values.published == 1 && values.publishedDate &&
+                values.published == 1 &&
+                values.publishedDate &&
                 DateTime.fromISO(values.publishedDate).toFormat('yyyy')
               )}
             </Typography>
           </Box>
           <Box display="flex" alignItems="flex-start" mt={1}>
             <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-              {values.user ? `By ${values.user.firstName} ${values.user.lastName}` : 'By Anonymous'}
+              {`${t('by')} ${author}`}
             </Typography>
           </Box>
           {values.synopsis && (
@@ -91,7 +113,12 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
                 <Divider sx={{ width: '30%' }} />
               </Box>
               <Box display="flex" alignItems="center" flexDirection="row" pl={2}>
-                <BotAvatar fontSize="small" sx={{ mr: 1 }} />
+                <BotAvatar
+                  component={motion.svg}
+                  animate={animateBot}
+                  fontSize="small"
+                  sx={{ mr: 1 }}
+                />
                 <Typography variant="h6">{values.botName}</Typography>
               </Box>
               {values.botPersona && (

@@ -11,6 +11,7 @@ import {
 import { APP_URL } from '@src/config/config.js';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
+import { motion, useAnimation } from 'framer-motion';
 import { DateTime } from 'luxon';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,13 +28,26 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
   const [hover, setHover] = useState(false);
   const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
   const BotAvatar = getIcon(story.botAvatar);
+  const animateBot = useAnimation();
 
-  const mouseOver = () => setHover(true);
-  const mouseOut = () => setHover(false);
-  
+  const author = story.author
+    ? story.author
+    : story.user
+    ? `${story.user.firstName} ${story.user.lastName}`
+    : 'Anonymous';
+
+  const mouseOver = () => {
+    setHover(true);
+    animateBot.start({ rotate: 20 });
+  };
+  const mouseOut = () => {
+    setHover(false);
+    animateBot.start({ rotate: 0 });
+  };
+
   const handleClick = () => {
     if (!disabled) navigate(`/story/${story.id}`, { replace: true });
-  }
+  };
 
   return (
     <Card
@@ -104,7 +118,7 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
 
           <Box display="flex" alignItems="flex-start" mt={1}>
             <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-              {story.user ? `By ${story.user.firstName} ${story.user.lastName}` : 'By Anonymous'}
+              {`${t('by')} ${author}`}
             </Typography>
           </Box>
           {story.synopsis && (
@@ -128,7 +142,12 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
                 <Divider sx={{ width: '30%' }} />
               </Box>
               <Box display="flex" flexDirection="row" alignItems="center" pl={2}>
-                <BotAvatar fontSize="small" sx={{ mr: 1 }} />
+                <BotAvatar
+                  component={motion.svg}
+                  animate={animateBot}
+                  fontSize="small"
+                  sx={{ mr: 1 }}
+                />
                 <Typography variant="h6">{story.botName}</Typography>
               </Box>
               {story.botPersona && (
