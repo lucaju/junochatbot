@@ -37,7 +37,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = ({ resetPassword }) => {
     >
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
         <form onSubmit={handleSubmit}>
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ mt: 2 }}>
             <InputLabel sx={{ textTransform: 'capitalize' }} htmlFor="password">
               {t('common:password')}
             </InputLabel>
