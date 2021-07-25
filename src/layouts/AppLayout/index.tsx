@@ -12,14 +12,12 @@ interface AppLayoutProps {
 const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const { session } = useAppState();
+  const { session, story } = useAppState();
   const actions = useActions();
 
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const isSignedIn = session.isSignedIn;
 
   useEffect(() => {
     const checkUser = async () => {
@@ -47,7 +45,7 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
         width: '100%',
       }}
     >
-      {isSignedIn && (
+      {session.isSignedIn && (
         <>
           <TopBar appMode={true} handleMenuClick={handleMenuClick} />
           <NavBar
@@ -63,7 +61,14 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
               flex: '1 1 auto',
               overflow: 'hidden',
               pt: '64px',
-              pl: isMobile ? 0 : isCompactNav ? '72px' : '256px',
+              pl:
+                session.isStudent && story.stories.length === 0
+                  ? 0
+                  : isMobile
+                  ? 0
+                  : isCompactNav
+                  ? '72px'
+                  : '256px',
             }}
           >
             <Box
@@ -77,7 +82,6 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
                 sx={{
                   flex: '1 1 auto',
                   overflow: 'auto',
-                  // height: '100%',
                   height: 'calc(100vh - 64px)',
                 }}
               >

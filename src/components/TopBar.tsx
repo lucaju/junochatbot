@@ -23,7 +23,7 @@ interface TopBarProps {
 }
 
 const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
-  const { session, ui } = useAppState();
+  const { session, story, ui } = useAppState();
   const [anchorProfileEl, setAnchorProfileEl] = useState<HTMLDivElement | undefined>();
 
   const theme = useTheme();
@@ -42,22 +42,28 @@ const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
       <AppBar color="inherit" elevation={0}>
         <Toolbar sx={{ px: '12px !important', pr: '8px !important' }}>
           <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-            {appMode && (
-              <IconButton color="inherit" onClick={handleMenuClick}>
-                <MenuIcon />
-              </IconButton>
-            )}
-            {
-              !isMobile && (
+            <>
+              {session.isStudent && story.stories.length === 0 ? (
+                ''
+              ) : (
+                <IconButton color="inherit" onClick={handleMenuClick}>
+                  <MenuIcon />
+                </IconButton>
+              )}
+              {!isMobile && (
                 <RouterLink to="/">
                   <Logo height={32} sx={{ ml: 1, mt: 1 }} type="simplified" />
                 </RouterLink>
-              )
-            }
+              )}
+            </>
           </Box>
           <Box flexGrow={1} />
           <Typography component="h1" noWrap sx={{ textTransform: 'capitalize' }} variant="h5">
-            {ui.pageTitle}
+            {ui.pageTitle !== 'stories'
+              ? ui.pageTitle
+              : story.stories.length > 0
+              ? ui.pageTitle
+              : ''}
           </Typography>
           <Box flexGrow={1} />
           <Box
