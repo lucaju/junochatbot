@@ -17,6 +17,10 @@ const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, valu
   const { story } = useAppState();
   const { t } = useTranslation(['common', 'storyGeneral']);
 
+  const author = story.currentStory?.user
+    ? `${story.currentStory?.user.firstName} ${story.currentStory?.user.lastName}`
+    : 'Anonymous';
+
   return (
     <>
       <Box p={1} display="flex" flexDirection="row" width="100%">
@@ -54,7 +58,7 @@ const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, valu
             name="author"
             onBlur={handleBlur}
             onChange={handleChange}
-            placeholder={`${story.currentStory?.user.firstName} ${story.currentStory?.user.lastName}`}
+            placeholder={author}
             sx={{ textTransform: 'capitalize' }}
             value={values.author}
             variant="standard"
