@@ -1,35 +1,28 @@
-// import { makeStyles } from '@material-ui/styles';
+import { Box } from '@material-ui/core';
 import React, { FC } from 'react';
-import YouTube from 'react-youtube';
+import ReactPlayer from 'react-player/youtube';
 
 interface PlayerProps {
-  youtubeVideoId: string;
+  url?: string;
 }
 
-// const useStyles = makeStyles(() => ({
-//   player: { width: '100%' },
-// }));
-
-const Player: FC<PlayerProps> = ({ youtubeVideoId }) => {
-
-  return (
-    <YouTube
-      videoId={youtubeVideoId} // defaults -> null
-      // id={string} // defaults -> null
-      // className={classes.player} // defaults -> null
-      // style={{ width: '100%'}}
-      // containerClassName={string} // defaults -> ''
-      // opts={opts} // defaults -> {}
-      // onReady={func} // defaults -> noop
-      // onPlay={func} // defaults -> noop
-      // onPause={func} // defaults -> noop
-      // onEnd={func} // defaults -> noop
-      // onError={func} // defaults -> noop
-      // onStateChange={func} // defaults -> noop
-      // onPlaybackRateChange={func} // defaults -> noop
-      // onPlaybackQualityChange={func} // defaults -> noop
+const Player: FC<PlayerProps> = ({ url = '' }) => (
+  <Box
+    display="flex"
+    sx={{
+      position: 'relative',
+      aspectRatio: '16 / 9',
+    }}
+  >
+    <ReactPlayer
+      url={url}
+      width="100%"
+      height="100%"
+      controls={true}
+      style={{ position: 'absolute', top: 0, left: 0 }}
+      onError={(e) => console.log('onError', e)}
     />
-  );
-};
+  </Box>
+);
 
 export default Player;

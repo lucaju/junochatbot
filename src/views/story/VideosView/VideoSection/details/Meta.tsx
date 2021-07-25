@@ -20,7 +20,6 @@ const Meta: FC<MetaProps> = ({ handleRefresh, values, youtubeVideoId }) => {
 
   useEffect(() => {
     if (youtubeVideoId && values.title === '') fetchData();
-    // if (youtubeVideoId) setLoading(false);
   }, [values.title]);
 
   const fetchData = async () => {

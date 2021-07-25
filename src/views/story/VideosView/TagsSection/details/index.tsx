@@ -138,7 +138,10 @@ const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
                   setDeleteDialogOpen(false);
                   submitDelete();
                 }}
-                message={t('confirmationDialog:deleteMessage', { object: t('tag') })}
+                message={`${t('confirmationDialog:assetDeleteWarning')} ${t(
+                  'confirmationDialog:deleteMessage',
+                  { object: t('tag') }
+                )}`}
                 isSubmitting={isSubmitting}
                 open={deleteDialogOpen}
                 title={t('tag')}

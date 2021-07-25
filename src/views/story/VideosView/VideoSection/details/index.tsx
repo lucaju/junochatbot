@@ -181,10 +181,10 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
             values,
           }) => (
             <form onSubmit={handleSubmit}>
-              {youtubeVideoId && (
-                <DialogTitle sx={{ mt: -2, mb: -3, mx: -3 }}>
-                  <Player youtubeVideoId={youtubeVideoId} />
-                </DialogTitle>
+              {videoData.url && (
+                <Box>
+                  <Player url={videoData.url} />
+                </Box>
               )}
 
               <DialogContent dividers>
@@ -222,7 +222,10 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
                   submitDelete();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('confirmationDialog:deleteMessage', { object: t('video') })}
+                message={`${t('confirmationDialog:assetDeleteWarning')} ${t(
+                  'confirmationDialog:deleteMessage',
+                  { object: t('video') }
+                )}`}
                 open={deleteDialogOpen}
                 title={t('video')}
               />
