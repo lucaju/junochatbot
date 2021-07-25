@@ -1,9 +1,11 @@
 export default {
   common: {
     all: 'all',
+    by: 'by',
     cancel: 'cancel',
     close: 'close',
     choose: 'choose',
+    create: 'create',
     delete: 'delete',
     description: 'description',
     draft: 'draft',
@@ -13,7 +15,8 @@ export default {
     fallback: 'fallback',
     french: 'french',
     group: 'group',
-    launch: 'launch',
+    interact: 'interact',
+    language: 'language',
     name: 'name',
     no: 'no',
     password: 'password',
@@ -53,6 +56,7 @@ export default {
     signin: 'sign in',
   },
   confirmationDialog: {
+    assetDeleteWarning: 'This action may affect intents that make use of this asset.',
     cancelMessage: 'Not saved changes will be lost. Are you sure you want to close this {{object}}',
     deleteMessage: 'Are you sure you want to delete this {{object}}?',
   },
@@ -60,6 +64,7 @@ export default {
     accontNotRecognized: 'Sorry, we do not recognize this account.',
     notPossibleSetPassword: 'Sorry, it is not possible to set your password at this time.',
     somethingWentWrong: 'Something went wrong!',
+    titleRequired: 'Title required',
   },
   groups: {
     createGroup: 'Crate group',
@@ -111,7 +116,6 @@ export default {
     entityLibrary: "Bibliothèque d'entités",
     general: 'Général',
     intentContexts: "Contextes d'intention",
-    launch: 'Lancer',
     videoCollection: 'Collection de vidéos',
   },
   noContent: {
@@ -137,7 +141,9 @@ export default {
   stories: {
     createStory: 'Create Story',
     myStory: 'my story',
+    newStory: 'new story',
     noStoriesYet: 'No stories yet',
+    storyCreated: 'Story Created',
   },
   storyGeneral: {
     addImage: 'Add Image',
