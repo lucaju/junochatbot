@@ -6,12 +6,14 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import type { Story } from '@src/types';
 
 const Stories: FC = () => {
   const { t } = useTranslation(['home']);
   const { chat } = useAppState();
   const actions = useActions();
   const [isLoading, setIsloading] = useState(true);
+  const [stories, setStories] = useState<Story[]>([]);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -23,7 +25,8 @@ const Stories: FC = () => {
 
   const fetchData = async () => {
     setIsloading(true);
-    await actions.chat.getStories();
+    const _stories = await actions.chat.getStories();
+    setStories(_stories);
     setIsloading(false);
   };
 
@@ -63,7 +66,7 @@ const Stories: FC = () => {
                 <Masonry>
                   {isLoading
                     ? showSkeleton(4)
-                    : chat.stories.map((story) => (
+                    : stories.map((story) => (
                         <Box
                           key={story.id}
                           component={motion.div}

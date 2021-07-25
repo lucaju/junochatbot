@@ -32,7 +32,6 @@ const Hero: FC = () => {
         backgroundImage: 'url(/assets/images/home-hero.png)',
         backgroundPosition: isMobile ? 'bottom center' : 'top center',
         backgroundRepeat: 'no-repeat',
-        // backgroundAttachment: 'fixed',
         backgroundSize: 'contain',
         backgroundOrigin: 'content-box',
       }}
@@ -154,7 +153,7 @@ const Hero: FC = () => {
           />
         </svg>
 
-        <Typography variant={isMobile ? 'h4' : 'h2'}>{t('title')}</Typography>
+        <Typography variant={isMobile ? 'h4' : 'h3'}>{t('title')}</Typography>
         <Box sx={{ maxWidth: isMobile ? 350 : 400 }}>
           <Typography textAlign="center" variant={isMobile ? 'subtitle1' : 'h5'}>
             {t('subtitle')}
