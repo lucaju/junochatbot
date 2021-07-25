@@ -29,7 +29,6 @@ const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) 
 
   let backgroundColor = entityType ? intentParamColorPalette[paramIndex] : 'inherent';
   backgroundColor = backgroundColor ?? 'inherent';
-  console.log(backgroundColor);
   const color =
     backgroundColor === 'inherent' ? 'inherent' : theme.palette.getContrastText(backgroundColor);
 
