@@ -3,6 +3,7 @@ import { Story as StoryType } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAppState } from '@src/overmind';
 
 interface StoryProps {
   errors: FormikErrors<StoryType>;
@@ -13,6 +14,7 @@ interface StoryProps {
 }
 
 const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
+  const { story } = useAppState();
   const { t } = useTranslation(['common', 'storyGeneral']);
 
   return (
@@ -28,7 +30,7 @@ const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, valu
         />
       </Box>
       <Box display="flex" flexDirection="row" width="100%" p={1}>
-        <Box flexGrow={1} mr={2} mt={1}>
+        <Box flexGrow={2} mr={2} mt={1}>
           <TextField
             error={Boolean(touched.title && errors.title)}
             fullWidth
@@ -39,6 +41,22 @@ const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, valu
             onChange={handleChange}
             sx={{ textTransform: 'capitalize' }}
             value={values.title}
+            variant="standard"
+          />
+        </Box>
+        <Box flexGrow={1} mr={2} mt={1}>
+          <TextField
+            error={Boolean(touched.author && errors.author)}
+            fullWidth
+            helperText={touched.author && errors.author}
+            InputLabelProps={{ shrink: true }}
+            label={t('author')}
+            name="author"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            placeholder={`${story.currentStory?.user.firstName} ${story.currentStory?.user.lastName}`}
+            sx={{ textTransform: 'capitalize' }}
+            value={values.author}
             variant="standard"
           />
         </Box>

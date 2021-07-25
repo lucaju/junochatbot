@@ -39,7 +39,10 @@ const GeneralView: FC = () => {
       const story = await actions.story.getStory(Number(storyId));
       if (isError(story)) return navigate('/app', { replace: true });
 
-      setStoryData(story);
+      const _story = {... story};
+      if (!_story.author) _story.author = '';
+      setStoryData(_story);
+      
       actions.ui.setPageTitle(story.title);
 
       setIsLoading(false);
@@ -53,6 +56,7 @@ const GeneralView: FC = () => {
   const formValidation = Yup.object().shape({
     id: Yup.number(),
     title: Yup.string().trim().max(125).required(t('common:required')),
+    author: Yup.string(),
     languageCode: Yup.string(),
     synopsis: Yup.string(),
     imageUrl: Yup.mixed(),
