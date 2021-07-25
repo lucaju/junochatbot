@@ -52,7 +52,7 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             lineHeight: '12px',
           }}
           target={navToIntact ? '_blank' : ''}
-          to={isStoryPublished ? path : `${path}?draft=true`}
+          to={!navToIntact ? path : isStoryPublished ? path : `${path}?draft=true`}
         >
           <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
             {Icon && <Icon size="20" />}
@@ -88,7 +88,7 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             justifyContent: 'flex-start',
           }}
           target={navToIntact ? '_blank' : ''}
-          to={isStoryPublished ? path : `${path}?draft=true`}
+          to={!navToIntact ? path : isStoryPublished ? path : `${path}?draft=true`}
         >
           {Icon && <Icon sx={{ mr: 1 }} size="20" />}
           <Box
