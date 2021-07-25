@@ -96,7 +96,7 @@ export const createUser = async (
   if (isError(user)) return user;
 
   //3. Assign group
-  if (groupId && groupId === '') {
+  if (groupId && groupId !== '') {
     const assignedGroup = await effects.users.api.addUserToGroup(
       Number(groupId),
       user.id,
