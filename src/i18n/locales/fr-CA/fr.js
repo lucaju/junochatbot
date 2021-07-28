@@ -43,7 +43,7 @@ export default {
   auth: {
     checkEmaiConfirmation: 'Vérifier votre courriel pour obtenir le lien de confirmation.',
     forgotMessage:
-      'Indiquez votre courriel. Vous allez recevoir un message avec les instructions pour mettre à jour votre mot de passe.',
+      'Indiquez votre courriel. Vous allez recevoir un message avec les instructions pour changer votre mot de passe.',
     forgotPassword: 'Mot de passe oublié',
     getNewPassowrd: 'Obenir nouveau mot de passe',
     mustBeValidEmail: 'Courriel invalide',
