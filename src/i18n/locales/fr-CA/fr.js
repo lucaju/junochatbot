@@ -9,7 +9,7 @@ export default {
     delete: 'effacer',
     description: 'description',
     draft: 'brouillon',
-    edit: 'éditer',
+    edit: 'modifier',
     email: 'email',
     english: 'anglais',
     fallback: 'fallback',
