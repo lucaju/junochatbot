@@ -82,7 +82,7 @@ export default {
     researchActivities: 'activités de recherche',
     signin: 'se connecter',
     sponsors: 'soutien financier',
-    stories: 'récit',
+    stories: 'récits',
     subtitle:
       "Recherche-développement sur l'utilisation des agents conversationnels (chatbots) pour le récit audiovisuel",
     team: 'équipe',
