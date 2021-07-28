@@ -80,7 +80,7 @@ export default {
     pedagogicalMaterial: 'matériel pédagogique',
     read: 'lire',
     researchActivities: 'activités de recherche',
-    signin: 'se connecter',
+    signin: 'connexion,
     sponsors: 'soutien financier',
     stories: 'récits',
     subtitle:
