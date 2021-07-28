@@ -6,7 +6,7 @@ export default {
     close: 'fermer',
     choose: 'choisir',
     create: 'créer',
-    delete: 'effacer',
+    delete: 'supprimer',
     description: 'description',
     draft: 'brouillon',
     edit: 'modifier',
@@ -102,7 +102,7 @@ export default {
     createIntent: 'créer intent',
     editIntent: 'modifier intent',
     intentCreated: 'Intent créé',
-    intentDeleted: 'Intent effacé',
+    intentDeleted: 'Intent supprimé',
     intentUpdated: 'Intent mis à jour',
     newIntent: 'Nouvel intent',
     noIntentsYet: "Pas d'Intent encore",
@@ -128,7 +128,7 @@ export default {
   },
   profile: {
     avatarChanged: 'Avatar modifié',
-    avatarRemoved: 'Avatar effacé',
+    avatarRemoved: 'Avatar supprimé',
     changeAvatar: "Changer d'avatar",
     changePassword: 'Changer le mot de passe',
     darkMode: 'Mode sombre',
@@ -162,7 +162,7 @@ export default {
     newTag: 'Nouveau tag',
     noTagsYet: 'Pas de tags encore',
     tagCreated: 'Tag créé',
-    tagDeleted: 'Tag effacé',
+    tagDeleted: 'Tag supprimé',
     tagUpdated: 'Tag mis à jour',
   },
   users: {
@@ -172,7 +172,7 @@ export default {
     lasttName: 'Nom',
     role: 'rôle',
     userCreated: 'utilisateur créé',
-    userDeleted: 'utilisateur effacé',
+    userDeleted: 'utilisateur supprimé',
     userUpdated: 'utilisateur mis à jour',
     users: 'utilisateur',
   },
@@ -183,7 +183,7 @@ export default {
     pasteVideo: "coller l'URL YouTube",
     source: 'source', //video source
     videoAdded: 'Video ajouté',
-    videoDeleted: 'Video effacé',
+    videoDeleted: 'Video supprimé',
     videoUpdated: 'Video mis à jour',
   },
 };
