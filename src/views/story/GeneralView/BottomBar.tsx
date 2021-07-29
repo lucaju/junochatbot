@@ -10,10 +10,12 @@ interface BottomBarProps {
   isSubmitting: boolean;
   publishedField: string;
   publishedDateField: string;
+  handleSubmit: () => void;
 }
 
 const BottomBar: FC<BottomBarProps> = ({
   dirty,
+  handleSubmit,
   isSubmitting,
   publishedField,
   publishedDateField,
@@ -26,7 +28,7 @@ const BottomBar: FC<BottomBarProps> = ({
   const { setValue: setPublished } = helpersPub;
 
   const [, metaPubDate, helpersPubDate] = useField(publishedDateField);
-  const { value: publishedDate } = metaPubDate;
+  // const { value: publishedDate } = metaPubDate;
   const { setValue: setPublishedDate } = helpersPubDate;
 
   const [publishedState, setPublishedState] = useState(published === 1 ? true : false);
@@ -38,6 +40,11 @@ const BottomBar: FC<BottomBarProps> = ({
     setPublished(newValue ? 1 : 0);
     setPublishedDate(pDate);
     setPublishedState(newValue);
+  };
+
+  const handleClick = () => {
+    // submitForm();
+    handleSubmit();
   };
 
   return (
@@ -61,9 +68,10 @@ const BottomBar: FC<BottomBarProps> = ({
           color="primary"
           disabled={!dirty}
           loading={isSubmitting}
-          onClick={submitForm}
+          onClick={handleClick}
           sx={{ ml: 2 }}
           variant="contained"
+          type="submit"
         >
           {t('save')}
         </LoadingButton>

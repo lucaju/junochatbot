@@ -124,6 +124,7 @@ const GeneralView: FC = () => {
                   <Box ml={3} mr={3}>
                     <BottomBar
                       dirty={dirty}
+                      handleSubmit={() => submit(values)}
                       isSubmitting={isSubmitting}
                       publishedField={'published'}
                       publishedDateField="publishedDate"
