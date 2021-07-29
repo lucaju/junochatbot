@@ -9,7 +9,7 @@ interface SourceProps {
 const Source: FC<SourceProps> = ({ parseVideoUrl }) => {
   const { t } = useTranslation(['videos']);
 
-  const helperText = `Paste YouTube Video URL. E.g., "https://www.youtube.com/watch?v=XyNlqQId-nk"`;
+  const helperText = `${t('pasteVideo')}, "https://www.youtube.com/watch?v=XyNlqQId-nk"`;
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

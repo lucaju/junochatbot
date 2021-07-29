@@ -24,7 +24,7 @@ const LoginView: FC = () => {
   const navigate = useNavigate();
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['auth', 'errorMessages']);
+  const { t } = useTranslation(['auth', 'common', 'errorMessages']);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
   const [hasToken, setHasToken] = useState(!!actions.session.getUserToken());
@@ -106,7 +106,7 @@ const LoginView: FC = () => {
                 variant="body2"
               >
                 <ArrowBackIcon fontSize="small" sx={{ mb: -0.5, mt: 0.5, mr: 2 }} />
-                Homepage
+                {t('common:homepage')}
               </Link>
             </Stack>
           </>

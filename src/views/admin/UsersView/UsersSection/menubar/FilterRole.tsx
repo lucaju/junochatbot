@@ -1,25 +1,25 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import { useAppState, useActions } from '@src/overmind';
+import { useAppState } from '@src/overmind';
 import { HandleFilterType, RoleType } from '@src/types';
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface FilterStatusProps {
   handleFilter: ({ type, value, reset }: HandleFilterType) => void;
-  value?: number;
+  value?: number | string;
 }
 
-const FilterRole: FC<FilterStatusProps> = ({ handleFilter, value = 'All' }) => {
+const FilterRole: FC<FilterStatusProps> = ({ handleFilter, value = 'all' }) => {
   const { session, users } = useAppState();
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation(['users', 'common']);
   const [filterValue, setFilterValue] = useState(value);
 
-  const filterRoleOptions = ['All', ...users.roleTypes];
+  const filterRoleOptions = [t('common:all'), ...users.roleTypes];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setFilterValue(value);
-    const reset = value === 'All' ? true : false;
+    const reset = value === t('common:all') ? true : false;
     handleFilter({ type: 'roleTypeId', value, reset });
   };
 

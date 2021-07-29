@@ -190,7 +190,7 @@ const StoryCard: FC<UserCarddProps> = ({
                   target={'_blank'}
                   to={story.published ? `/story/${story.id}` : `/story/${story.id}?draft=true`}
                 >
-                  {t('interact')}
+                  {t('play')}
                 </Button>
                 {showEdit && (
                   <Button color={hover ? 'primary' : 'inherit'} fullWidth onClick={handleEditClick}>

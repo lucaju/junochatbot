@@ -38,8 +38,8 @@ export const storyMenu: MenuType[] = [
     icon: DeviceHubIcon,
   },
   {
-    title: 'Interact',
-    tKey: 'interact',
+    title: 'Play',
+    tKey: 'play',
     path: '/story/:storyId',
     icon: PlayCircleOutlineIcon,
   },

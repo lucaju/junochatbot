@@ -49,8 +49,8 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
 
   return (
     <>
-      <Typography gutterBottom variant="h6">
-        Poster
+      <Typography gutterBottom sx={{ textTransform: 'capitalize' }} variant="h6">
+        {t('poster')}
       </Typography>
       <Card
         elevation={theme.palette.mode === 'light' ? 1 : 3}

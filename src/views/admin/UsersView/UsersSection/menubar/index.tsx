@@ -24,11 +24,13 @@ const MenuBar: FC<MenuBarProps> = ({
   updateFilter,
 }) => {
   const { session, users } = useAppState();
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation(['users', 'common']);
 
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
   const isLG = useMediaQuery(theme.breakpoints.down('lg'));
+
+  const initialValueFilterRole = t('common:all');
 
   return (
     <Stack
@@ -51,7 +53,7 @@ const MenuBar: FC<MenuBarProps> = ({
 
         <Stack direction={'row'} spacing={2} justifyContent="flex-end">
           {session.isAdmin && <FilterGroup handleFilter={handleFilterByGroup} />}
-          <FilterRole handleFilter={updateFilter} />
+          <FilterRole handleFilter={updateFilter} value={initialValueFilterRole} />
         </Stack>
       </Stack>
     </Stack>

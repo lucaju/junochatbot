@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@material-ui/core';
+import { Box, IconButton, Stack, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ interface promptComp {
 }
 
 const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation(['common']);
   const [_prompts, set_prompts] = useState<promptComp[]>([]);
 
   useEffect(() => {
@@ -57,12 +57,12 @@ const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
 
   return (
     <Box p={2}>
-      <Box display="flex" flexDirection="row">
-        <Typography>{t('Prompts')}</Typography>
+      <Stack direction="row" alignItems="center">
+        <Typography sx={{ textTransform: 'capitalize' }}>{t('prompts')}</Typography>
         <IconButton aria-label="add prompt" onClick={addEmpty} size="small">
           <AddCircleOutlineIcon fontSize="small" />
         </IconButton>
-      </Box>
+      </Stack>
       <Box>
         {_prompts.map(({ id, prompt }) => (
           <Prompt

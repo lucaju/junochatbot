@@ -53,7 +53,8 @@ const BottomBar: FC<BottomBarProps> = ({
               onChange={handleChangePublisehdState}
             />
           }
-          label="Published"
+          label={t('published')}
+          sx={{ textTransform: 'capitalize' }}
         />
         <Box flexGrow={1} />
         <LoadingButton

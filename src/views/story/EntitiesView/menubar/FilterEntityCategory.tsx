@@ -6,30 +6,30 @@ import { useTranslation } from 'react-i18next';
 
 interface FilterEntityCategoryProps {
   handleFilter: ({ type, value, reset }: HandleFilterType) => void;
-  value?: string;
+  value?: number | string;
 }
 
-const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, value = 'All' }) => {
+const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, value = 'all' }) => {
   const { intents } = useAppState();
   const { t } = useTranslation(['common']);
-  const [categories, setcategories] = useState(['All']);
+  const [categories, setcategories] = useState([t('all')]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
     const catSet: Set<string> = new Set();
     intents.entities.forEach(({ category }) => catSet.add(category));
-    setcategories(['All', ...Array.from(catSet).sort()]);
+    setcategories([t('all'), ...Array.from(catSet).sort()]);
     return () => {};
   }, [intents.entities]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setFilterValue(value);
-    const reset = value === 'All' ? true : false;
+    const reset = value === t('all') ? true : false;
     handleFilter({ type: 'category', value, reset });
   };
 
-  const isOn = filterValue !== 'All';
+  const isOn = filterValue !== t('all');
 
   return (
     <TextField

@@ -53,7 +53,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   const theme = useTheme();
   const { intents } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation(['intents', 'common']);
 
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -199,10 +199,11 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
             <Grid item xs>
               <TextField
                 fullWidth
-                label={t('name')}
+                label={t('common:name')}
                 name="displayName"
                 onBlur={handleBlur}
                 onChange={handleChange}
+                sx={{ textTransform: 'capitalize' }}
                 value={_param.displayName}
                 variant="standard"
               />
@@ -210,7 +211,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
             <Grid item xs>
               <TextField
                 fullWidth
-                label={t('entity')}
+                label={t('common:entity')}
                 name="entityTypeDisplayName"
                 onChange={handleChangeEntity}
                 select
@@ -219,6 +220,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
                     sx: { maxHeight: 300 },
                   },
                 }}
+                sx={{ textTransform: 'capitalize' }}
                 value={entityTypeDisplayName}
                 variant="standard"
               >
@@ -232,10 +234,11 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
             <Grid item xs>
               <TextField
                 fullWidth
-                label={t('value')}
+                label={t('common:value')}
                 name="value"
                 onBlur={handleBlur}
                 onChange={handleChange}
+                sx={{ textTransform: 'capitalize' }}
                 value={value}
                 variant="standard"
               />
@@ -273,7 +276,8 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
                   size="small"
                 />
               }
-              label={t('required')}
+              label={t('common:required')}
+              sx={{ textTransform: 'capitalize' }}
             />
           </Stack>
           <Stack direction="row" justifyContent="center">
@@ -290,7 +294,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
                 onClick={() => handleOpenBottomPanel(2)}
                 size="small"
               >
-                {t('prompts')}
+                {t('common:prompts')}
               </Button>
             )}
           </Stack>

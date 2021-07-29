@@ -33,7 +33,7 @@ const SearchBox: FC<SearchBoxProps> = ({ handleSearch, disabled = false, value =
           color: ({ palette }) => (isOn ? palette.primary.main : undefined),
         },
       }}
-      label={t('Search')}
+      label={t('search')}
       name="filterSearch"
       onChange={(event) => handleChange(event.target.value)}
       size="small"

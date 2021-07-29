@@ -11,11 +11,11 @@ interface FilterGroupProps {
 const FilterGroup: FC<FilterGroupProps> = ({ handleFilter, value = -1 }) => {
   const { users } = useAppState();
   const { t } = useTranslation(['common']);
-  const [groups, setGroups] = useState([{ id: -1, name: 'all' }]);
+  const [groups, setGroups] = useState([{ id: -1, name: t('all') }]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
-    setGroups([{ id: -1, name: 'all' }, ...users.groups]);
+    setGroups([{ id: -1, name: t('all') }, ...users.groups]);
     return () => {};
   }, [users.groups]);
 
@@ -44,7 +44,7 @@ const FilterGroup: FC<FilterGroupProps> = ({ handleFilter, value = -1 }) => {
       value={filterValue}
     >
       {groups.map(({ id, name }: { id: number; name: string }) => (
-        <MenuItem key={id} value={id}>
+        <MenuItem key={id} sx={{ textTransform: 'capitalize' }} value={id}>
           {name}
         </MenuItem>
       ))}

@@ -18,15 +18,16 @@ interface FilterPublishedProps {
   value?: number;
 }
 
-const options: Option[] = [
-  { value: 0, name: 'all' },
-  { value: 1, name: 'published' },
-  { value: -1, name: 'draft' },
-];
 
 const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = 0 }) => {
-  const { t } = useTranslation(['stories']);
+  const { t } = useTranslation(['common']);
   const [filterValue, setFilterValue] = useState(value);
+
+  const options: Option[] = [
+    { value: 0, name: t('all') },
+    { value: 1, name: t('published') },
+    { value: -1, name: t('draft') },
+  ];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);

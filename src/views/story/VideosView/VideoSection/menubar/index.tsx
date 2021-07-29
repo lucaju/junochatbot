@@ -45,7 +45,7 @@ const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch }) => {
         )}
         {!ui.videoView.tagsPanelVisible && (
           <Button onClick={handleSwitchTags} variant="outlined">
-            {t('show Tags')}
+            {t('showTags')}
           </Button>
         )}
       </Stack>

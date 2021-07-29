@@ -54,7 +54,7 @@ const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, valu
             fullWidth
             helperText={touched.author && errors.author}
             InputLabelProps={{ shrink: true }}
-            label={t('author')}
+            label={t('storyGeneral:author')}
             name="author"
             onBlur={handleBlur}
             onChange={handleChange}
