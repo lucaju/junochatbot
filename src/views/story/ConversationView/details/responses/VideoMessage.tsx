@@ -106,35 +106,32 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
             : 0,
         }}
       >
-        <Grid container direction="row" spacing={2}>
-          <Grid item>
-            <Box display="flex" flexDirection="column" alignItems="center" mt={0.5}>
-              <YouTubeIcon />
-              {message.payload.type === 'tag' && <ShuffleIcon sx={{ mt: 1 }} />}
-            </Box>
-          </Grid>
-          <Grid item xs>
-            <Select
-              displayEmpty
-              fullWidth
-              name="source"
-              onChange={handleChangeSource}
-              value={source}
-              variant="standard"
-            >
-              {sourceOptions.map(({ id, label }) => (
-                <MenuItem
-                  key={id}
-                  disabled={id === '-1'}
-                  sx={{ textTransform: 'capitalize' }}
-                  value={id}
-                >
-                  {label}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-        </Grid>
+        <Stack direction="row" alignItems="flex-start" spacing={2}>
+          <Stack alignItems="center" mt={0.5}>
+            <YouTubeIcon />
+            {message.payload.type === 'tag' && <ShuffleIcon sx={{ mt: 1 }} />}
+          </Stack>
+          <Select
+            displayEmpty
+            fullWidth
+            name="source"
+            onChange={handleChangeSource}
+            sx={{ maxWidth: 700}}
+            value={source}
+            variant="standard"
+          >
+            {sourceOptions.map(({ id, label }) => (
+              <MenuItem
+                key={id}
+                disabled={id === '-1'}
+                sx={{ textTransform: 'capitalize' }}
+                value={id}
+              >
+                {label}
+              </MenuItem>
+            ))}
+          </Select>
+        </Stack>
       </Box>
       <Zoom in={hover}>
         <IconButton
