@@ -128,7 +128,7 @@ export const createFollowUpIntent = async (
   const originOutputContexts = updatedOriginIntent.outputContexts ?? [];
   updatedOriginIntent.outputContexts = [
     ...originOutputContexts,
-    { name: sharedContext, lifespanCount: 2 },
+    { name: sharedContext, lifespanCount: 1 },
   ];
 
   const responseOriginIntentUpdate = await actions.intents.updateIntent(updatedOriginIntent);
