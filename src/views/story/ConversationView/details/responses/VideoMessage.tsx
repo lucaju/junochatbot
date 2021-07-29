@@ -33,7 +33,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
   const actions = useActions();
   const { t } = useTranslation(['intents', 'common']);
 
-  const defaultSourceOption: sourceOptionType = { id: '-1', label: t('common:Choose') };
+  const defaultSourceOption: sourceOptionType = { id: '-1', label: t('common:choose') };
 
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
