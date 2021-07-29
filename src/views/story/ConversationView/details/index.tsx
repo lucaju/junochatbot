@@ -104,6 +104,12 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     handleClose();
   };
 
+  const handleCancelButtonClick = () => {
+    action == 'edit' ? setCancelDialogOpen(true) : handleClose();
+  };
+
+  const handleDeleteButtonClick = () => setDeleteDialogOpen(true);
+
   return (
     <>
       {action && (
@@ -112,6 +118,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           fullWidth
           keepMounted
           maxWidth={action === 'create' ? 'sm' : 'md'}
+          onBackdropClick={action !== 'edit' ? handleCancelButtonClick : undefined}
           open={open}
           TransitionComponent={Transition}
         >
@@ -135,9 +142,8 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           <Divider />
           <DialogActions>
             <Actions
-              // handleCancel={handleClose}
-              handleCancel={() => setCancelDialogOpen(true)}
-              handleDelete={() => setDeleteDialogOpen(true)}
+              handleCancel={handleCancelButtonClick}
+              handleDelete={handleDeleteButtonClick}
               isSubmitting={isSubmitting}
               handleSubmit={submit}
             />
