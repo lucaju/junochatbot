@@ -85,29 +85,6 @@ const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speech }) => {
             </Typography>
           </Typography>
         )}
-        {languageCode && (
-          <Typography
-            fontSize="0.65rem"
-            my={0.25}
-            paragraph
-            variant="caption"
-            sx={{ fontWeight: 700 }}
-          >
-            Language:{' '}
-            <Typography my={0.25} fontSize="0.65rem" variant="caption">
-              {languageCode}
-            </Typography>
-          </Typography>
-        )}
-        {/* <Typography
-          fontSize="0.65rem"
-          my={0.25}
-          paragraph
-          variant="caption"
-          sx={{ fontWeight: 700 }}
-        >
-          {`> See more on the browser console`}
-        </Typography> */}
       </Popover>
     </>
   );

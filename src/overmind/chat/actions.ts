@@ -96,11 +96,8 @@ export const detectedIntent = async ({ state, actions, effects }: Context, userI
 
   const { queryResult } = response;
   if (!queryResult) return;
-  // console.log(queryResult);
 
   const messages: SpeechMessage[] = await actions.chat._processMessages(queryResult);
-
-  // console.log(messages);
 
   state.chat.chatLog = [...state.chat.chatLog, ...messages];
 };
@@ -167,8 +164,6 @@ export const getVideosByTag = async ({ state, effects }: Context, tagId: string)
   if (unwatchedVideos.length === 0) unwatchedVideos = response; // if all videos were watched, send all available videos back
 
   const randomPick = getRandomIntInclusive([0, unwatchedVideos.length - 1]);
-
-  console.log(unwatchedVideos, randomPick, unwatchedVideos[randomPick]);
 
   const video = unwatchedVideos[randomPick];
 

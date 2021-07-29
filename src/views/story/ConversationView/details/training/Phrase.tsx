@@ -153,9 +153,6 @@ const Phrase: FC<PhraseProps> = ({
     //schedule changes
     setChanged(true);
 
-    console.log(entityName);
-    console.log(actions.intents.isSinglePhraseParam(currentAlias));
-
     actions.intents.isSinglePhraseParam(currentAlias)
       ? actions.intents.updateParameterByAlias({ alias: currentAlias, entityName: entityName })
       : paramName && actions.intents.addParameter(entityName);
