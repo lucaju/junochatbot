@@ -1,4 +1,4 @@
-import { Grid, MenuItem, TextField } from '@material-ui/core';
+import { Grid, MenuItem, TextField, Typography } from '@material-ui/core';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,7 @@ const Attributions: FC<AttributionsProps> = ({
   return (
     <>
       <Grid item md={session.isAdmin ? 5 : 3} xs={12}>
-        {session.isAdmin && (
+        {session.isAdmin && !values.id ? (
           <TextField
             disabled={!session.isAdmin ? true : false}
             error={Boolean(touched.roleTypeId && errors.roleTypeId)}
@@ -52,6 +52,11 @@ const Attributions: FC<AttributionsProps> = ({
               </MenuItem>
             ))}
           </TextField>
+        ) : (
+          <>
+            <Typography sx={{ textTransform: 'capitalize' }} variant="caption">{t('role')}</Typography>
+            <Typography>{values.roleTypeId}</Typography>
+          </>
         )}
       </Grid>
       <Grid item md={session.isAdmin ? 7 : 9} xs={12}>
