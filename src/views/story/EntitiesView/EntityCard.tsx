@@ -1,5 +1,6 @@
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 import { alpha } from '@material-ui/core/styles';
+import { useAppState } from '@src/overmind';
 import { Entity } from '@src/types';
 import React, { FC, useState } from 'react';
 
@@ -8,9 +9,10 @@ interface EntityCardProps {
 }
 
 const EntityCard: FC<EntityCardProps> = ({ entity }) => {
+  const { ui } = useAppState();
   const [hover, setHover] = useState(false);
 
-  const { category, description, name, outputFormat } = entity;
+  const { category_en_CA, category_fr_CA, description_en_CA, description_fr_CA, name } = entity;
 
   const mouseOver = () => setHover(true);
   const mouseOut = () => setHover(false);
@@ -30,21 +32,15 @@ const EntityCard: FC<EntityCardProps> = ({ entity }) => {
       >
         <Box display="flex" flexDirection="row">
           <Typography gutterBottom variant="button">
-            {category}
+            {ui.languageCode === 'en-CA' ? category_en_CA : category_fr_CA}
           </Typography>
         </Box>
         <Typography gutterBottom variant="h6">
           {name}
         </Typography>
         <Typography gutterBottom variant="body2">
-          {description}
+          {ui.languageCode === 'en-CA' ? description_en_CA : description_fr_CA}
         </Typography>
-        {/* <Typography gutterBottom variant="body2">
-          <Box component="span" sx={{ textDecoration: 'underline' }}>
-            Output Format
-          </Box>
-          : {outputFormat}
-        </Typography> */}
       </CardContent>
     </Card>
   );

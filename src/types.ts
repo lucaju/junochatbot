@@ -111,10 +111,14 @@ export type HandleFilterType = {
 
 export type Entity = {
   id: number;
-  category: string;
+  category?: string;
+  category_en_CA: string;
+  category_fr_CA: string;
   name: string;
   extendable?: boolean;
-  description: string;
+  description?: string;
+  description_en_CA: string;
+  description_fr_CA: string;
   outputFormat?: string;
   createdDate?: string;
   updatedDate?: string;

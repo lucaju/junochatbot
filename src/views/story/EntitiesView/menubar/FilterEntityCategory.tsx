@@ -10,14 +10,16 @@ interface FilterEntityCategoryProps {
 }
 
 const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, value = 'all' }) => {
-  const { intents } = useAppState();
+  const { intents, ui } = useAppState();
   const { t } = useTranslation(['common']);
   const [categories, setcategories] = useState([t('all')]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
     const catSet: Set<string> = new Set();
-    intents.entities.forEach(({ category }) => catSet.add(category));
+    intents.entities.forEach(({ category_en_CA, category_fr_CA }) => {
+      catSet.add(ui.languageCode === 'en-CA' ? category_en_CA : category_fr_CA);
+    });
     setcategories([t('all'), ...Array.from(catSet).sort()]);
     return () => {};
   }, [intents.entities]);
