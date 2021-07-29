@@ -1,15 +1,18 @@
 export const responsePresetCollection: Map<string, string[]> = new Map();
 
 const fallbackGeneral_EN = [
-  "I'm sorry. I'm having trouble understanding the question.",
-  'I think I may have misunderstood your last statement.',
-  "I'm sorry. I didn't quite grasp what you just said.",
-  "I don't think I'm qualified to answer that yet.",
-  "I'm a bit confused by that last part.",
-  "I'm not totally sure about that.",
-  "I'm not sure I follow.",
-  "I'm afraid I don't understand.",
-  "I'm a bit confused.",
+  "I didn't get that. Can you say it again?",
+  'I missed what you said. What was that?',
+  'Sorry, could you say that again?',
+  'Sorry, can you say that again?',
+  'Can you say that again?',
+  "Sorry, I didn't get that. Can you rephrase?",
+  'Sorry, what was that?',
+  'One more time?',
+  'What was that?',
+  'Say that one more time?',
+  "I didn't get that. Can you repeat?",
+  'I missed that, say that again?',
 ];
 
 const fallbackGeneral_FR = [
