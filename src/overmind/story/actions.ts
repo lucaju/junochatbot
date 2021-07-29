@@ -87,7 +87,7 @@ export const createStory = async (
 
   //new story default
   const story = {
-    ...values,   
+    ...values,
     synopsis: '',
     botAvatar: 'adb',
     botName: '',

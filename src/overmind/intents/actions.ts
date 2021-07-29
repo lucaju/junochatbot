@@ -209,8 +209,6 @@ export const updateIntent = async (
 
   if (!intent) return { errorMessage: 'Not Intent' };
 
-  // console.log({ ...intent });
-
   //revert transformation and remove additonal values
   const intentToSubmit = partIntentToSubmit({ ...intent });
 
@@ -219,8 +217,6 @@ export const updateIntent = async (
   delete intentToSubmit.parentFollowupIntentName;
   delete intentToSubmit.followupIntentInfo;
 
-  // console.log(intentToSubmit);
-
   const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
   if (isError(response)) return response;
 
@@ -228,8 +224,6 @@ export const updateIntent = async (
     ? await actions.intents.getIntent(response.name)
     : response;
   const updatedIntent = 'name' in fetchCurrentIntent ? fetchCurrentIntent : response;
-
-  // actions.intents.closeCurrentIntent();
 
   state.intents.collection = state.intents.collection.map((intent) =>
     response.name === intent.name ? updatedIntent : intent

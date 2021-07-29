@@ -39,10 +39,10 @@ const GeneralView: FC = () => {
       const story = await actions.story.getStory(Number(storyId));
       if (isError(story)) return navigate('/app', { replace: true });
 
-      const _story = {... story};
+      const _story = { ...story };
       if (!_story.author) _story.author = '';
       setStoryData(_story);
-      
+
       actions.ui.setPageTitle(story.title);
 
       setIsLoading(false);
