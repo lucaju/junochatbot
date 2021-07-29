@@ -15,9 +15,7 @@ export const api = {
     }
 
     const response = await fetch(`${API_URL}/chats/stories/all`);
-
     if (!response.ok) return { errorMessage: response.statusText };
-
     if (response.status === 204) return [] as Story[];
 
     const result = await response.json();
@@ -34,7 +32,6 @@ export const api = {
     }
 
     const response = await fetch(`${API_URL}/chats/stories/${storyId}`);
-
     if (!response.ok) return { errorMessage: response.statusText };
 
     const result = await response.json();
@@ -44,65 +41,41 @@ export const api = {
   detectIntent: async (
     storyId: number,
     text: string,
-    sessionid?: string
+    sessionid?: string,
+    token?: string
   ): Promise<DetectIntentResponse | ErrorMessage> => {
-    // if (MOCK_UP) {
-    //   return await new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       resolve(mock.dataStories[0]);
-    //     }, 1000);
-    //   });
-    // }
-
     const body: { text: string; sessionid?: string } = { text };
     if (sessionid) body.sessionid = sessionid;
 
+    const headers: Headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    if (token) headers.set('Authorization', `Bearer ${token}`);
+
     const response = await fetch(`${API_URL}/chats/stories/${storyId}/intents/detect`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(body),
     });
 
     if (!response.ok) return { errorMessage: response.statusText };
 
     const result = await response.json();
-
     return result as DetectIntentResponse;
   },
 
   getVideo: async (storyId: number, viedoId: number): Promise<Video | ErrorMessage> => {
-    // if (MOCK_UP) {
-    //   return await new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       resolve(mock.dataStories[0]);
-    //     }, 1000);
-    //   });
-    // }
-
     const response = await fetch(`${API_URL}/chats/stories/${storyId}/videos/${viedoId}`);
-
     if (!response.ok) return { errorMessage: response.statusText };
 
     const result = await response.json();
-
     return result as Video;
   },
 
   getVideosBytag: async (storyId: number, tagId: number): Promise<Video[] | ErrorMessage> => {
-    // if (MOCK_UP) {
-    //   return await new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       resolve(mock.dataStories[0]);
-    //     }, 1000);
-    //   });
-    // }
-
     const response = await fetch(`${API_URL}/chats/stories/${storyId}/tags/${tagId}/videos/all`);
-
     if (!response.ok) return { errorMessage: response.statusText };
 
     const result = await response.json();
-
     return result as Video[];
   },
 };

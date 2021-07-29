@@ -12,7 +12,7 @@ import { Context } from '../';
 import { v4 as uuidv4 } from 'uuid';
 import { Duration } from 'luxon';
 
-export const resetState = ({ state, actions  }: Context) => {
+export const resetState = ({ state, actions }: Context) => {
   state.chat.chatLog = [];
   state.chat.currentStory = undefined;
   state.chat.currentVideo = undefined;
@@ -88,8 +88,16 @@ export const detectedIntent = async ({ state, actions, effects }: Context, userI
   const storyId = state.chat.currentStory?.id;
   if (!storyId) return;
 
+  //get user token, if logged in
+  const token = state.session.user?.token ?? undefined;
+
   //DETECT INTENT
-  const response = await effects.chat.api.detectIntent(storyId, userInput, state.chat.sessionid);
+  const response = await effects.chat.api.detectIntent(
+    storyId,
+    userInput,
+    state.chat.sessionid,
+    token
+  );
   if (isError(response)) return response;
 
   if (!state.chat.sessionid) state.chat.sessionid = response.sessionid;
