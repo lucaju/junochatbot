@@ -4,6 +4,7 @@ import {
   IconButton,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Stack,
   useMediaQuery,
   useTheme,
@@ -14,7 +15,7 @@ import ShuffleIcon from '@material-ui/icons/Shuffle';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import { useActions, useAppState } from '@src/overmind';
 import { Payload } from '@src/types';
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface VideoMessageProps {
@@ -61,13 +62,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
     return () => {};
   }, [message.payload.source]);
 
-  const handleChangeSource = (
-    event: ChangeEvent<{
-      name?: string | undefined;
-      value: string;
-      event: Event | React.SyntheticEvent<Element, Event>;
-    }>
-  ) => {
+  const handleChangeSource = (event: SelectChangeEvent<string>) => {
     const value = event.target.value;
     actions.intents.updateVideoSource({
       messageId: message.id,
