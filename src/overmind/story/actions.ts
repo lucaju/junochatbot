@@ -103,6 +103,12 @@ export const createStory = async (
   const response = await effects.story.api.createStory(story, userId, authUser.token);
   if (isError(response)) return response;
 
+  //load Story
+  await actions.story.getStory(response.id)
+
+  //make sure all intents are loaded
+  await actions.intents.getIntents();
+
   //add presets to default welcome and default fallback
   await actions.intents.updateDefaultWelcomeIntent();
   await actions.intents.updateDefaultFallbackIntent();

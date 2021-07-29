@@ -240,9 +240,6 @@ export const updateDefaultWelcomeIntent = async ({ state, actions, effects }: Co
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
-  //make sure all intents are loaded
-  await actions.intents.getIntents();
-
   const defaultWelcomeIntent = state.intents.collection.find(
     (intent) => intent.displayName === 'Default Welcome Intent'
   );
@@ -271,9 +268,6 @@ export const updateDefaultWelcomeIntent = async ({ state, actions, effects }: Co
 
   const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
   if (isError(response)) return response;
-
-  //refresh
-  await actions.intents.getIntents();
 };
 
 export const updateDefaultFallbackIntent = async ({ state, actions, effects }: Context) => {
@@ -282,9 +276,6 @@ export const updateDefaultFallbackIntent = async ({ state, actions, effects }: C
 
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
-
-  //make sure all intents are loaded
-  await actions.intents.getIntents();
 
   const defaultFallbackIntent = state.intents.collection.find(
     (intent) => intent.displayName === 'Default Fallback Intent'
@@ -310,9 +301,6 @@ export const updateDefaultFallbackIntent = async ({ state, actions, effects }: C
 
   const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
   if (isError(response)) return response;
-
-  //refresh
-  await actions.intents.getIntents();
 };
 
 const partIntentToSubmit = (intent: Intent): Intent => {
