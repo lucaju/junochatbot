@@ -118,7 +118,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
               </Stack>
             </DialogContent>
             <DialogActions>
-              <Button color="inherit" onClick={handleCancel}>
+              <Button color="inherit" disabled={isSubmitting} onClick={handleCancel}>
                 {t('cancel')}
               </Button>
               <Box flexGrow={1} />

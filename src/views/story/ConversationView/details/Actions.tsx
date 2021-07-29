@@ -23,7 +23,7 @@ const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, i
       {intents.currentIntent?.name && (
         <>
           <Box flexGrow={1} />
-          <Button onClick={handleDelete} variant="outlined">
+          <Button disabled={isSubmitting} onClick={handleDelete} variant="outlined">
             {t('delete')}
           </Button>
         </>

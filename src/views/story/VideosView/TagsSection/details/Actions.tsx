@@ -24,7 +24,7 @@ const Actions: FC<ActionsProps> = ({ dirty, handleCancel, handleDelete, isSubmit
       {values.id && (
         <>
           <Box flexGrow={1} />
-          <Button disabled={isSubmitting} onClick={() => handleDelete()} variant="outlined">
+          <Button disabled={isSubmitting} onClick={handleDelete} variant="outlined">
             {t('delete')}
           </Button>
         </>
