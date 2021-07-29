@@ -1,5 +1,40 @@
 export const trainingPhrasesCollection: Map<string, string[]> = new Map();
 
+const defaultWelcome_EN = [
+  'just going to say hi',
+  'heya',
+  'hello hi',
+  'howdy',
+  'hey there',
+  'hi there',
+  'greetings',
+  'hey',
+  'long time no see',
+  'hello',
+  "lovely day isn't it",
+  'I greet you',
+  'hello again',
+  'hi',
+  'hello there',
+  'a good day',
+];
+
+const defaultWelcome_FR = [
+  'Salutations',
+  'Rebonjour',
+  'bonjour à toi',
+  're bonjour',
+  'allo',
+  'coucou',
+  'hey',
+  'hé',
+  'resalut',
+  'salut',
+  're salut',
+  'salut à tous',
+  'bonjour',
+];
+
 const yes_EN = [
   'yes',
   'okay I will',
@@ -114,41 +149,6 @@ const no_FR = [
   'non merci',
   "je n'en veux pas",
   'je ne suis',
-];
-
-const defaultWelcome_EN = [
-  'just going to say hi',
-  'heya',
-  'hello hi',
-  'howdy',
-  'hey there',
-  'hi there',
-  'greetings',
-  'hey',
-  'long time no see',
-  'hello',
-  "lovely day isn't it",
-  'I greet you',
-  'hello again',
-  'hi',
-  'hello there',
-  'a good day',
-];
-
-const defaultWelcome_FR = [
-  'Salutations',
-  'Rebonjour',
-  'bonjour à toi',
-  're bonjour',
-  'allo',
-  'coucou',
-  'hey',
-  'hé',
-  'resalut',
-  'salut',
-  're salut',
-  'salut à tous',
-  'bonjour',
 ];
 
 trainingPhrasesCollection.set('yes-en_CA', yes_EN);

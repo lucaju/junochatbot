@@ -12,9 +12,11 @@ const Conversation: FC = () => {
   const ref = useRef<HTMLDivElement>();
 
   useEffect(() => {
-    const timer = setTimeout(() => actions.chat.detectedIntent('hello'), 1000);
+    if (!chat.currentStory) return;
+    const triggerBotMesssage = chat.currentStory?.languageCode === 'fr_CA' ? 'bonjour' : 'hello';
+    const timer = setTimeout(() => actions.chat.detectedIntent(triggerBotMesssage), 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [chat.currentStory]);
 
   // update conversation
   useLayoutEffect(() => {
