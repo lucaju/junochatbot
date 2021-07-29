@@ -81,6 +81,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
         name="displayName"
         onBlur={handleBlur}
         onChange={handleChange}
+        sx={{ textTransform: 'capitalize' }}
         value={displayName}
         variant="standard"
       />
