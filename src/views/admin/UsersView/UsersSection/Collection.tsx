@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import UserCard from './UserCard';
+//@ts-ignore
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 interface CollectionProps {
   groupId?: number | undefined;
@@ -89,20 +91,26 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
         <NoContent align="left" heading={t(noContentMsg)} size="large" />
       )}
       <AnimatePresence initial={false}>
-        {isLoading
-          ? showSkeleton(4)
-          : filteredItems.map((user) => (
-              <Box
-                key={user.id}
-                component={motion.div}
-                initial={{ height: 0 }}
-                animate={{ height: 'auto' }}
-                exit={{ height: 0 }}
-                sx={{ overflowY: 'hidden' }}
-              >
-                <UserCard handleEditClick={handleDetailOpen} user={user} />
-              </Box>
-            ))}
+        <ResponsiveMasonry
+          columnsCountBreakPoints={{ 350: 1, 1000: 2, 1300: 3, 1600: 4, 1900: 5, 2200: 6 }}
+        >
+          <Masonry>
+            {isLoading
+              ? showSkeleton(4)
+              : filteredItems.map((user) => (
+                  <Box
+                    key={user.id}
+                    component={motion.div}
+                    initial={{ height: 0 }}
+                    animate={{ height: 'auto' }}
+                    exit={{ height: 0 }}
+                    sx={{ overflowY: 'hidden' }}
+                  >
+                    <UserCard handleEditClick={handleDetailOpen} user={user} />
+                  </Box>
+                ))}
+          </Masonry>
+        </ResponsiveMasonry>
       </AnimatePresence>
     </Box>
   );

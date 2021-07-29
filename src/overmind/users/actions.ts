@@ -28,15 +28,14 @@ export const getUsers = async (
     response = await effects.users.api.getAllUsers(authuser.token);
   }
 
-  if (!groupId && !state.session.isAdmin) {
-    return { errorMessage: 'Not authorized' };
-  }
+  if (!groupId && !state.session.isAdmin) return { errorMessage: 'Not authorized' };
 
   if (!response) return { errorMessage: 'Not authorized' };
-
   if (isError(response)) return response;
 
-  state.users.list = response.reverse();
+  const users = sortBy(response, 'firstName');
+
+  state.users.list = users;
 };
 
 export const getUser = async (
