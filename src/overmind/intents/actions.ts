@@ -1,9 +1,10 @@
-import type { Entity, ErrorMessage, Intent, TrainingPhrase } from '@src/types';
+import type { Entity, ErrorMessage, Intent, Message, TrainingPhrase } from '@src/types';
 import { isError, sortBy } from '@src/util/utilities';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../';
 import { extractContextName } from './actionsContext';
 import { trainingPhrasesCollection } from '@src/util/trainingPhrases';
+import { responsePresetCollection } from '@src/util/responsePresets';
 
 export * from './actionsContext';
 export * from './actionsParameters';
@@ -36,14 +37,14 @@ export const getIntents = async ({
   if (state.videos.tagCollection.length === 0) await actions.videos.getTags();
   if (state.intents.entities.length === 0) await actions.intents.getEntities();
 
-  const intents = sortBy(response, 'displayName'); 
+  const intents = sortBy(response, 'displayName');
 
   state.intents.collection = intents;
   return state.intents.collection;
 };
 
 export const getIntent = async (
-  { state, effects }: Context,
+  { state, actions, effects }: Context,
   intentName: string
 ): Promise<Intent | ErrorMessage> => {
   const storyId = state.story.currentStory?.id;
@@ -230,6 +231,88 @@ export const updateIntent = async (
   );
 
   return response;
+};
+
+export const updateDefaultWelcomeIntent = async ({ state, actions, effects }: Context) => {
+  const storyId = state.story.currentStory?.id;
+  if (!storyId) return { errorMessage: 'No Story' };
+
+  const authUser = state.session.user;
+  if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
+
+  //make sure all intents are loaded
+  await actions.intents.getIntents();
+
+  const defaultWelcomeIntent = state.intents.collection.find(
+    (intent) => intent.displayName === 'Default Welcome Intent'
+  );
+  if (!defaultWelcomeIntent) return { errorMessage: 'No default welcome intent found' };
+
+  //Add preset training phrases
+  const languageCode = state.story.currentStory?.languageCode;
+  const phraseCollection = `defaultWelcome-${languageCode}`;
+  const trainingSet = trainingPhrasesCollection.get(phraseCollection) ?? [];
+
+  const trainingPhrases: TrainingPhrase[] = trainingSet.map((phrase) => ({
+    parts: [{ text: phrase }],
+    timesAddedCount: 1,
+    type: 'EXAMPLE',
+  }));
+
+  defaultWelcomeIntent.trainingPhrases = trainingPhrases;
+
+  //revert transformation and remove additonal values
+  const intentToSubmit = partIntentToSubmit({ ...defaultWelcomeIntent });
+
+  //remove readonly attributes
+  delete intentToSubmit.rootFollowupIntentName;
+  delete intentToSubmit.parentFollowupIntentName;
+  delete intentToSubmit.followupIntentInfo;
+
+  const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
+  if (isError(response)) return response;
+
+  //refresh
+  await actions.intents.getIntents();
+};
+
+export const updateDefaultFallbackIntent = async ({ state, actions, effects }: Context) => {
+  const storyId = state.story.currentStory?.id;
+  if (!storyId) return { errorMessage: 'No Story' };
+
+  const authUser = state.session.user;
+  if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
+
+  //make sure all intents are loaded
+  await actions.intents.getIntents();
+
+  const defaultFallbackIntent = state.intents.collection.find(
+    (intent) => intent.displayName === 'Default Fallback Intent'
+  );
+  if (!defaultFallbackIntent) return { errorMessage: 'No default fallback intent found' };
+
+  //Add preset response
+  const languageCode = state.story.currentStory?.languageCode;
+  const responseCollection = `fallbackGeneral-${languageCode}`;
+  const responses = responsePresetCollection.get(responseCollection) ?? [];
+
+  const message: Message = { text: { text: responses } };
+
+  defaultFallbackIntent.messages = [message];
+
+  //revert transformation and remove additonal values
+  const intentToSubmit = partIntentToSubmit({ ...defaultFallbackIntent });
+
+  //remove readonly attributes
+  delete intentToSubmit.rootFollowupIntentName;
+  delete intentToSubmit.parentFollowupIntentName;
+  delete intentToSubmit.followupIntentInfo;
+
+  const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
+  if (isError(response)) return response;
+
+  //refresh
+  await actions.intents.getIntents();
 };
 
 const partIntentToSubmit = (intent: Intent): Intent => {

@@ -46,9 +46,10 @@ export const getStoriesByGroup = async (
   return state.story.stories;
 };
 
-export const getStoriesForAuthUser = async (
-  { state, effects }: Context,
-): Promise<Story[] | ErrorMessage> => {
+export const getStoriesForAuthUser = async ({
+  state,
+  effects,
+}: Context): Promise<Story[] | ErrorMessage> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
@@ -77,13 +78,17 @@ export const getStory = async (
 };
 
 export const createStory = async (
-  { state, effects }: Context,
+  { state, actions, effects }: Context,
   values: Omit<Story, 'id'>
 ): Promise<Story | ErrorMessage> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
   const userId = authUser.id;
+
+  //API requires language code to be separated with '_' instrad of '-'
+  //eg. en-CA -> en_CA
+  values.languageCode = values.languageCode.replace('-', '_');
 
   //new story default
   const story = {
@@ -97,6 +102,10 @@ export const createStory = async (
 
   const response = await effects.story.api.createStory(story, userId, authUser.token);
   if (isError(response)) return response;
+
+  //add presets to default welcome and default fallback
+  await actions.intents.updateDefaultWelcomeIntent();
+  await actions.intents.updateDefaultFallbackIntent();
 
   return response;
 };
