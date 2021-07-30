@@ -14,7 +14,7 @@ const EntitiesView: FC = () => {
   const actions = useActions();
   const navigate = useNavigate();
   const { storyId } = useParams();
-  const { t } = useTranslation(['entities', 'common']);
+  const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState<Map<string, string>>(new Map());
@@ -26,7 +26,7 @@ const EntitiesView: FC = () => {
     const getCollection = async () => {
       await actions.intents.getEntities();
       if (intents.collection.length === 0) await actions.intents.getIntents();
-      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:entities')}`);
+      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('intents:entities')}`);
       setIsLoading(false);
     };
 

@@ -13,7 +13,7 @@ const ContextView: FC = () => {
   const actions = useActions();
   const navigate = useNavigate();
   const { storyId } = useParams();
-  const { t } = useTranslation(['contexts', 'common']);
+  const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [hasContexts, setHasContexts] = useState(true);
@@ -24,7 +24,7 @@ const ContextView: FC = () => {
 
     const getCollection = async () => {
       if (intents.collection.length === 0) await actions.intents.getIntents();
-      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:contexts')}`);
+      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('intents:contexts')}`);
       setIsLoading(false);
       setHasContexts(intents.contexts.length > 0);
     };

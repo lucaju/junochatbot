@@ -21,7 +21,7 @@ const initialValues: Partial<Tag> = {
 
 const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
   const actions = useActions();
-  const { t } = useTranslation(['tags', 'common', 'errorMessages', 'confirmationDialog']);
+  const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [tagData, setTagData] = useState(initialValues);
 
@@ -57,13 +57,13 @@ const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
 
     //error
     if (isError(response)) {
-      const message = t('errorMessages:somethingWentWrong');
+      const message = t('error:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return;
     }
 
     //success
-    const message = values.id ? t('tagUpdated') : t('tagCreated');
+    const message = values.id ? t('tags:tagUpdated') : t('tags:tagCreated');
     actions.ui.showNotification({ message, type });
 
     handleClose();
@@ -75,7 +75,7 @@ const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
-    const message = isError(response) ? t('errorMessages:somethingWentWrong') : t('tagDeleted');
+    const message = isError(response) ? t('error:somethingWentWrong') : t('tags:tagDeleted');
 
     actions.ui.showNotification({ message, type });
 
@@ -108,7 +108,7 @@ const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
             values,
           }) => (
             <form onSubmit={handleSubmit}>
-              {!tagData.id && <DialogTitle>{t('newTag')}</DialogTitle>}
+              {!tagData.id && <DialogTitle>{t('tags:newTag')}</DialogTitle>}
               <DialogContent dividers sx={{ width: 400 }}>
                 <TextField
                   error={Boolean(touched.name && errors.name)}
@@ -138,13 +138,13 @@ const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
                   setDeleteDialogOpen(false);
                   submitDelete();
                 }}
-                message={`${t('confirmationDialog:assetDeleteWarning')} ${t(
-                  'confirmationDialog:deleteMessage',
-                  { object: t('tag') }
+                message={`${t('confirmation:assetDeleteWarning')} ${t(
+                  'confirmation:deleteMessage',
+                  { object: t('common:tag') }
                 )}`}
                 isSubmitting={isSubmitting}
                 open={deleteDialogOpen}
-                title={t('tag')}
+                title={t('common:tag')}
               />
             </form>
           )}

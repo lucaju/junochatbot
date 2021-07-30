@@ -15,7 +15,7 @@ interface StoryProps {
 
 const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
   const { story } = useAppState();
-  const { t } = useTranslation(['common', 'storyGeneral']);
+  const { t } = useTranslation();
 
   const author = story.currentStory?.user
     ? `${story.currentStory?.user.firstName} ${story.currentStory?.user.lastName}`
@@ -39,7 +39,7 @@ const Story: FC<StoryProps> = ({ errors, handleBlur, handleChange, touched, valu
             error={Boolean(touched.title && errors.title)}
             fullWidth
             helperText={touched.title && errors.title}
-            label={t('title')}
+            label={t('common:title')}
             name="title"
             onBlur={handleBlur}
             onChange={handleChange}

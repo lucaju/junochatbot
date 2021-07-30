@@ -11,8 +11,8 @@ interface FilterEntityCategoryProps {
 
 const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, value = 'all' }) => {
   const { intents, ui } = useAppState();
-  const { t } = useTranslation(['common']);
-  const [categories, setcategories] = useState([t('all')]);
+  const { t } = useTranslation();
+  const [categories, setcategories] = useState([t('common:all')]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
@@ -20,18 +20,18 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
     intents.entities.forEach(({ category_en_CA, category_fr_CA }) => {
       catSet.add(ui.languageCode === 'en-CA' ? category_en_CA : category_fr_CA);
     });
-    setcategories([t('all'), ...Array.from(catSet).sort()]);
+    setcategories([t('common:all'), ...Array.from(catSet).sort()]);
     return () => {};
   }, [intents.entities]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setFilterValue(value);
-    const reset = value === t('all') ? true : false;
+    const reset = value === t('common:all') ? true : false;
     handleFilter({ type: 'category', value, reset });
   };
 
-  const isOn = filterValue !== t('all');
+  const isOn = filterValue !== t('common:all');
 
   return (
     <TextField
@@ -40,7 +40,7 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
           color: ({ palette }) => (isOn ? palette.primary.main : undefined),
         },
       }}
-      label={t('category')}
+      label={t('common:category')}
       name="filterEntityCategory"
       onChange={handleChange}
       select
@@ -53,7 +53,7 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
       value={filterValue}
     >
       {categories.map((name) => (
-        <MenuItem key={name} value={name}>
+        <MenuItem key={name} sx={{ textTransform: 'capitalize' }} value={name}>
           {name}
         </MenuItem>
       ))}

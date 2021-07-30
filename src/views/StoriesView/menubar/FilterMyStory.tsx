@@ -14,7 +14,7 @@ interface FilterMyStoryProps {
 }
 
 const FilterMyStory: FC<FilterMyStoryProps> = ({ handleFilter, value = 0 }) => {
-  const { t } = useTranslation(['stories']);
+  const { t } = useTranslation();
   const [filterValue, setFilterValue] = useState(false);
 
   const handleChange = () => {
@@ -34,7 +34,7 @@ const FilterMyStory: FC<FilterMyStoryProps> = ({ handleFilter, value = 0 }) => {
       sx={{ textTransform: 'uppercase' }}
       value="check"
     >
-      {t('myStory')}
+      {t('stories:myStory')}
     </ToggleButton>
   );
 };

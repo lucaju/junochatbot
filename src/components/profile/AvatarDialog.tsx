@@ -36,7 +36,7 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
   const theme = useTheme();
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['common', 'profile', 'errorMessages']);
+  const { t } = useTranslation();
   const [value, setValue] = useState(session.user?.avatarUrl);
   const dropZoneAnim = useAnimation();
   const dropInnerZoneAnim = useAnimation();
@@ -137,7 +137,7 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
     if (isError(response)) {
-      const message = t('errorMessages:somethingWentWrong');
+      const message = t('error:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return;
     }
@@ -248,7 +248,7 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
               </form>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClosePanel}>{t('cancel')}</Button>
+              <Button onClick={handleClosePanel}>{t('common:cancel')}</Button>
               <Box flexGrow={1} />
               <LoadingButton
                 disabled={value === session.user?.avatarUrl}
@@ -256,7 +256,7 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
                 onClick={() => handleSubmit()}
                 variant="contained"
               >
-                {t('submit')}
+                {t('common:submit')}
               </LoadingButton>
             </DialogActions>
           </>
@@ -267,41 +267,3 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
 };
 
 export default AvatarDialog;
-
-// {image && (
-//   <>
-//     <Avatar
-//       src={
-//         !uploadedImage && image && typeof value === 'string'
-//           ? `${APP_URL}/uploads/assets${image}`
-//           : ''
-//       }
-//       sx={{
-//         height: 80,
-//         width: 80,
-//       }}
-//     >
-//       {uploadedImage && (
-//         <img
-//           style={{
-//             height: 80,
-//             width: 80,
-//             minHeight: 80,
-//             borderWidth: 1,
-//             borderRadius: 5,
-//           }}
-//           src={image}
-//         />
-//       )}
-//     </Avatar>
-//     <IconButton
-//       aria-label="remove picture"
-//       component="span"
-//       onClick={handleDeleteAvatar}
-//       size="small"
-//       sx={{ top: -3 }}
-//     >
-//       <HighlightOffIcon />
-//     </IconButton>
-//   </>
-// )}

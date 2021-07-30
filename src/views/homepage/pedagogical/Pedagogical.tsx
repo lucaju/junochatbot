@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 
 const Pedagogical: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
   const { ui } = useAppState();
   const [content, setContent] = useState('');
 
@@ -31,12 +31,15 @@ const Pedagogical: FC = () => {
           <ReactMarkdown
             components={{
               h1: ({ node, ...props }) => (
+                //@ts-ignore
                 <Typography align="center" component="h2" mb={3} variant="h4" {...props} />
               ),
               p: ({ node, ...props }) => (
+                //@ts-ignore
                 <Typography align="center" variant="subtitle1" {...props} />
               ),
               a: ({ node, ...props }) => (
+                //@ts-ignore
                 <Link underline="hover" target="_blank" rel="noopener noreferrer" {...props} />
               ),
             }}
@@ -44,7 +47,7 @@ const Pedagogical: FC = () => {
             {content}
           </ReactMarkdown>
           <Box display="flex" justifyContent="center">
-            <Button sx={{ width: 200 }}>{t('pedagogicalMaterial')}</Button>
+            <Button sx={{ width: 200 }}>{t('home:pedagogicalMaterial')}</Button>
           </Box>
         </Stack>
       </Container>

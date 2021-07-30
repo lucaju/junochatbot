@@ -18,11 +18,10 @@ import Logo from './Logo';
 import Profile from './profile/Profile';
 
 interface TopBarProps {
-  appMode: boolean;
   handleMenuClick: () => void;
 }
 
-const TopBar: FC<TopBarProps> = ({ appMode, handleMenuClick }) => {
+const TopBar: FC<TopBarProps> = ({ handleMenuClick }) => {
   const { session, story, ui } = useAppState();
   const [anchorProfileEl, setAnchorProfileEl] = useState<HTMLDivElement | undefined>();
 

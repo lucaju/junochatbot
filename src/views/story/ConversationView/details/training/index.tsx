@@ -8,7 +8,7 @@ import Collection from './Collection';
 const Training: FC = () => {
   const { intents } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation();
 
   const addNewPhrase = () => actions.intents.createPhrase();
 
@@ -17,11 +17,11 @@ const Training: FC = () => {
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
         <Typography gutterBottom variant="caption">
           {intents.currentIntent?.isFallback
-            ? t('trainingFallbackExplainer')
-            : t('trainingExplainer')}
+            ? t('intents:trainingFallbackExplainer')
+            : t('intents:trainingExplainer')}
         </Typography>
         <Button color="primary" onClick={addNewPhrase} startIcon={<AddCircleOutlineIcon />}>
-          {t('addPhrase')}
+          {t('intents:addPhrase')}
         </Button>
       </Box>
       <Collection />

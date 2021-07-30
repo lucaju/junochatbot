@@ -21,7 +21,7 @@ interface StoryCardProps {
 }
 
 const StoryCard: FC<StoryCardProps> = ({ values }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -50,7 +50,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
   return (
     <>
       <Typography gutterBottom sx={{ textTransform: 'capitalize' }} variant="h6">
-        {t('poster')}
+        {t('common:poster')}
       </Typography>
       <Card
         elevation={theme.palette.mode === 'light' ? 1 : 3}
@@ -78,7 +78,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
                     fontStyle: 'italic',
                   }}
                 >
-                  {t('draft')}
+                  {t('common:draft')}
                 </Box>
               ) : (
                 values.published == 1 &&
@@ -89,7 +89,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
           </Box>
           <Box display="flex" alignItems="flex-start" mt={1}>
             <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-              {`${t('by')} ${author}`}
+              {`${t('common:by')} ${author}`}
             </Typography>
           </Box>
           {values.synopsis && (
@@ -108,7 +108,7 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
               >
                 <Divider sx={{ width: '30%' }} />
                 <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-                  {t('starring')}
+                  {t('common:starring')}
                 </Typography>
                 <Divider sx={{ width: '30%' }} />
               </Box>

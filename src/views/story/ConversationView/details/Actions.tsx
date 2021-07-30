@@ -13,18 +13,18 @@ interface ActionsProps {
 }
 
 const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, isSubmitting }) => {
-  const { t } = useTranslation(['common', 'videos']);
+  const { t } = useTranslation();
   const { intents } = useAppState();
 
   return (
     <>
-      <Button onClick={handleCancel}>{t('close')}</Button>
+      <Button onClick={handleCancel}>{t('common:close')}</Button>
 
       {intents.currentIntent?.name && (
         <>
           <Box flexGrow={1} />
           <Button disabled={isSubmitting} onClick={handleDelete} variant="outlined">
-            {t('delete')}
+            {t('common:delete')}
           </Button>
         </>
       )}
@@ -32,7 +32,7 @@ const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, i
       <Box flexGrow={1} />
 
       <LoadingButton onClick={handleSubmit} loading={isSubmitting} variant="contained">
-        {t('save')}
+        {t('common:save')}
       </LoadingButton>
     </>
   );

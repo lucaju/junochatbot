@@ -7,7 +7,7 @@ import Collection from './Collection';
 
 const Responses: FC = () => {
   const actions = useActions();
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation();
 
   const addTextMessage = () => actions.intents.addTextMessage();
   const addVideoMessage = () => actions.intents.addVideoMessage();
@@ -18,13 +18,13 @@ const Responses: FC = () => {
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
         <Box display="flex" flexDirection="row" my={1.5}>
           <Button color="primary" onClick={addTextMessage} startIcon={<AddCircleOutlineIcon />}>
-            {t('addText')}
+            {t('intents:addText')}
           </Button>
           <Button color="primary" onClick={addVideoMessage} startIcon={<AddCircleOutlineIcon />}>
-            {t('addVideo')}
+            {t('intents:addVideo')}
           </Button>
           <Button color="primary" onClick={addVideoTagMessage} startIcon={<AddCircleOutlineIcon />}>
-            {t('addVideoTag')}
+            {t('intents:addVideoTag')}
           </Button>
         </Box>
       </Box>

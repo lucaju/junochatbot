@@ -13,7 +13,7 @@ interface MenuBarProps {
 const THRESHOOLD_SHOW_SEARCH = 3; //items
 
 const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch }) => {
-  const { t } = useTranslation(['videos']);
+  const { t } = useTranslation();
   const { ui, videos } = useAppState();
   const actions = useActions();
 
@@ -36,7 +36,7 @@ const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch }) => {
         onClick={() => handleDetailOpen()}
         startIcon={<AddCircleOutlineIcon />}
       >
-        {t('addVideo')}
+        {t('videos:addVideo')}
       </Button>
       {!isSM && <Box flexGrow={1} />}
       <Stack direction="row" justifyContent="space-between" spacing={2}>
@@ -45,7 +45,7 @@ const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch }) => {
         )}
         {!ui.videoView.tagsPanelVisible && (
           <Button onClick={handleSwitchTags} variant="outlined">
-            {t('showTags')}
+            {t('videos:showTags')}
           </Button>
         )}
       </Stack>

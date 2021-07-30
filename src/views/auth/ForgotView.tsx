@@ -15,7 +15,7 @@ const ForgotView: FC = () => {
   const navigate = useNavigate();
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['auth', 'errorMessages']);
+  const { t } = useTranslation();
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
 
@@ -41,7 +41,7 @@ const ForgotView: FC = () => {
         py: 3,
         backgroundColor: 'background.default',
       }}
-      title={t('forgotPassword')}
+      title={t('auth:forgotPassword')}
     >
       <Container
         maxWidth="xs"
@@ -56,14 +56,14 @@ const ForgotView: FC = () => {
         <>
           {requestSent ? (
             <Typography color="textPrimary" component="h1" variant="body1">
-              {t('checkEmaiConfirmation')}
+              {t('auth:checkEmaiConfirmation')}
             </Typography>
           ) : (
             <>
               <Typography color="textPrimary" component="h1" variant="body1">
-                {t('forgotMessage')}
+                {t('auth:forgotMessage')}
               </Typography>
-              {error && <ErrorMessage message={t('errorMessages:accontNotRecognized')} />}
+              {error && <ErrorMessage message={t('error:accontNotRecognized')} />}
               <ForgotForm requestPassword={requestPassword} />
             </>
           )}
@@ -78,7 +78,7 @@ const ForgotView: FC = () => {
             variant="body2"
           >
             <ArrowBackIcon fontSize="small" sx={{ mb: -0.5, mt: 0.5, mr: 2 }} />
-            {t('signin')}
+            {t('auth:signin')}
           </Link>
         </>
       </Container>

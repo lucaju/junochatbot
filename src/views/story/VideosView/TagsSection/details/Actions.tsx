@@ -14,18 +14,18 @@ interface ActionsProps {
 }
 
 const Actions: FC<ActionsProps> = ({ dirty, handleCancel, handleDelete, isSubmitting, values }) => {
-  const { t } = useTranslation(['common', 'tags']);
+  const { t } = useTranslation();
   const { submitForm } = useFormikContext();
 
   return (
     <>
-      <Button onClick={handleCancel}>{t('cancel')}</Button>
+      <Button onClick={handleCancel}>{t('common:cancel')}</Button>
 
       {values.id && (
         <>
           <Box flexGrow={1} />
           <Button disabled={isSubmitting} onClick={handleDelete} variant="outlined">
-            {t('delete')}
+            {t('common:delete')}
           </Button>
         </>
       )}
@@ -38,7 +38,7 @@ const Actions: FC<ActionsProps> = ({ dirty, handleCancel, handleDelete, isSubmit
         onClick={submitForm}
         variant="contained"
       >
-        {t('save')}
+        {t('common:save')}
       </LoadingButton>
     </>
   );

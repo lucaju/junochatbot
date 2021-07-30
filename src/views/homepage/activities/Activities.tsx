@@ -8,7 +8,7 @@ import ActivityCard, { ActivityProps } from './ActivityCard';
 import VideoContent from './VideoContent';
 
 const ResearchActivities: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
   const [activities, setActivities] = useState<ActivityProps[]>();
   const [content, setContent] = useState<ActivityProps>();
 
@@ -38,7 +38,7 @@ const ResearchActivities: FC = () => {
         sx={{ textTransform: 'capitalize' }}
         variant="h4"
       >
-        {t('researchActivities')}
+        {t('home:researchActivities')}
       </Typography>
       {activities && (
         <Container maxWidth="xl">

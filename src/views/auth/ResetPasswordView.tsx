@@ -16,7 +16,7 @@ const ResetPasswordView: FC = () => {
   const location = useLocation();
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['auth', 'common', 'errorMessages']);
+  const { t } = useTranslation();
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
 
@@ -67,7 +67,7 @@ const ResetPasswordView: FC = () => {
         <>
           {requestSent ? (
             <Typography color="textPrimary" component="h1" variant="body1">
-              {t('passwordSet')}
+              {t('auth:passwordSet')}
             </Typography>
           ) : (
             <>
@@ -77,15 +77,15 @@ const ResetPasswordView: FC = () => {
                     {t('common:welcome')} {fullName}
                   </Typography>
                   <Typography component="h2" gutterBottom variant="subtitle2">
-                    {t('mustSetPassowrd')}
+                    {t('auth:mustSetPassowrd')}
                   </Typography>
                 </>
               ) : (
                 <Typography component="h1" variant="h6">
-                  {`${t('setupPasswordFor')} ${fullName}`}
+                  {`${t('auth:setupPasswordFor')} ${fullName}`}
                 </Typography>
               )}
-              {error && <ErrorMessage message={t('errorMessages:notPossibleSetPassword')} />}
+              {error && <ErrorMessage message={t('error:notPossibleSetPassword')} />}
               <ResetPasswordForm resetPassword={resetPassword} />
             </>
           )}

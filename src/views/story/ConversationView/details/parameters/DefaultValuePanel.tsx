@@ -8,7 +8,7 @@ interface ParamsExtraProps {
 }
 
 const ParamsExtra: FC<ParamsExtraProps> = ({ defaultValue = '', handleUpdateDefault }) => {
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation();
   const [_defaultValue, set_defaultValue] = useState(defaultValue);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +26,7 @@ const ParamsExtra: FC<ParamsExtraProps> = ({ defaultValue = '', handleUpdateDefa
     <Box p={2}>
       <TextField
         fullWidth
-        label={t('defaultValue')}
+        label={t('intents:defaultValue')}
         name="defaultValue"
         onBlur={handleBlur}
         onChange={handleChange}

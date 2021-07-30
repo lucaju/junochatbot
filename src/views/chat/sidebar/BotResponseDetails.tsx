@@ -15,7 +15,7 @@ const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speech }) => {
   const open = Boolean(anchorEl);
 
   const { metadata } = speech;
-  const { intent, intentDetectionConfidence, languageCode, queryText } = metadata ?? {};
+  const { intent, intentDetectionConfidence, queryText } = metadata ?? {};
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (chat.debug) console.log({ dialogFlowResponseDetail: json(metadata) });

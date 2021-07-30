@@ -5,7 +5,7 @@ import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LanguageMenu: FC = () => {
-  const { t, i18n } = useTranslation(['home']);
+  const { t, i18n } = useTranslation();
   const { ui } = useAppState();
   const actions = useActions();
 
@@ -45,7 +45,7 @@ const LanguageMenu: FC = () => {
             sx={{ textTransform: 'uppercase' }}
             value={value}
           >
-            {t(`${name}`)}
+            {t(`home:${name}`)}
           </MenuItem>
         ))}
       </Menu>

@@ -20,7 +20,7 @@ interface MenuProps {
 
 const Menu: FC<MenuProps> = ({ compactMode, items }) => {
   const { session } = useAppState();
-  const { t } = useTranslation(['navMenu', 'common']);
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -33,7 +33,13 @@ const Menu: FC<MenuProps> = ({ compactMode, items }) => {
         {items.map(({ path, icon, restricted, title, tKey }) => {
           if (restricted && session.user && !restricted.includes(session.user.roleTypeId)) return;
           return (
-            <NavItem key={title} isCompact={compactMode} icon={icon} path={path} title={t(tKey)} />
+            <NavItem
+              key={title}
+              isCompact={compactMode}
+              icon={icon}
+              path={path}
+              title={t(`navMenu:${tKey}`)}
+            />
           );
         })}
       </List>

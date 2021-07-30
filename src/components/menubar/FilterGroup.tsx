@@ -10,12 +10,12 @@ interface FilterGroupProps {
 
 const FilterGroup: FC<FilterGroupProps> = ({ handleFilter, value = -1 }) => {
   const { users } = useAppState();
-  const { t } = useTranslation(['common']);
-  const [groups, setGroups] = useState([{ id: -1, name: t('all') }]);
+  const { t } = useTranslation();
+  const [groups, setGroups] = useState([{ id: -1, name: t('common:all') }]);
   const [filterValue, setFilterValue] = useState(value);
 
   useEffect(() => {
-    setGroups([{ id: -1, name: t('all') }, ...users.groups]);
+    setGroups([{ id: -1, name: t('common:all') }, ...users.groups]);
     return () => {};
   }, [users.groups]);
 
@@ -34,7 +34,7 @@ const FilterGroup: FC<FilterGroupProps> = ({ handleFilter, value = -1 }) => {
           color: ({ palette }) => (isOn ? palette.primary.main : undefined),
         },
       }}
-      label={t('group')}
+      label={t('common:group')}
       name="filterGroup"
       onChange={handleChange}
       select

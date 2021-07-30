@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Hero: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -153,10 +153,10 @@ const Hero: FC = () => {
           />
         </svg>
 
-        <Typography variant={isMobile ? 'h4' : 'h3'}>{t('title')}</Typography>
+        <Typography variant={isMobile ? 'h4' : 'h3'}>{t('home:title')}</Typography>
         <Box sx={{ maxWidth: isMobile ? 350 : 400 }}>
           <Typography textAlign="center" variant={isMobile ? 'subtitle1' : 'h5'}>
-            {t('subtitle')}
+            {t('home:subtitle')}
           </Typography>
         </Box>
       </Box>

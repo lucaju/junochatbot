@@ -23,7 +23,7 @@ const MenuBar: FC<MenuBarProps> = ({
   handleSearch,
 }) => {
   const { session, story } = useAppState();
-  const { t } = useTranslation(['stories']);
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -40,7 +40,7 @@ const MenuBar: FC<MenuBarProps> = ({
             onClick={() => handleDetailOpen()}
             startIcon={<AddCircleOutlineIcon />}
           >
-            {t('createStory')}
+            {t('stories:createStory')}
           </Button>
         </>
       ) : (

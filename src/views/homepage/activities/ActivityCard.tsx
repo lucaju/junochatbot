@@ -20,7 +20,7 @@ interface ActivityCardProps {
 }
 
 const ActivityCard: FC<ActivityCardProps> = ({ activity, showContent }) => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
   const { ui } = useAppState();
   const lang = ui.languageCode ?? 'en_CA';
 
@@ -54,7 +54,7 @@ const ActivityCard: FC<ActivityCardProps> = ({ activity, showContent }) => {
       {link && (
         <CardActions sx={{ justifyContent: 'center' }}>
           <Button fullWidth onClick={handleCardActionClick} size="small">
-            {t(mediaType === 'video' ? 'watch' : 'read')}
+            {mediaType === 'video' ? t('home:watch') : t('home:read')}
           </Button>
         </CardActions>
       )}

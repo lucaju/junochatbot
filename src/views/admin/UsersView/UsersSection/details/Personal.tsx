@@ -14,7 +14,7 @@ interface PersonalProps {
 }
 
 const Personal: FC<PersonalProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -26,7 +26,7 @@ const Personal: FC<PersonalProps> = ({ errors, handleBlur, handleChange, touched
           error={Boolean(touched.firstName && errors.firstName)}
           fullWidth
           helperText={touched.firstName && errors.firstName}
-          label={t('firstName')}
+          label={t('users:firstName')}
           name="firstName"
           onBlur={handleBlur}
           onChange={handleChange}
@@ -38,7 +38,7 @@ const Personal: FC<PersonalProps> = ({ errors, handleBlur, handleChange, touched
           error={Boolean(touched.lastName && errors.lastName)}
           fullWidth
           helperText={touched.lastName && errors.lastName}
-          label={t('lasttName')}
+          label={t('users:lasttName')}
           name="lastName"
           onBlur={handleBlur}
           onChange={handleChange}

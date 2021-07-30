@@ -12,7 +12,7 @@ const UsersView: FC = () => {
   const { session, ui } = useAppState();
   const actions = useActions();
   const navigate = useNavigate();
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -25,7 +25,7 @@ const UsersView: FC = () => {
     if (!session.user || !userTypeAllowed.includes(session.user.roleTypeId)) {
       navigate('/app', { replace: true });
     }
-    actions.ui.setPageTitle(t('users'));
+    actions.ui.setPageTitle(t('users:users'));
     return () => {};
   }, []);
 

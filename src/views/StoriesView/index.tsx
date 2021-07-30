@@ -11,7 +11,7 @@ import MenuBar from './menubar';
 
 const Stories: FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const { session, story, ui } = useAppState();
   const actions = useActions();
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +26,7 @@ const Stories: FC = () => {
     actions.users.resetState();
     actions.story.resetState();
     
-    actions.ui.setPageTitle(t('stories'));
+    actions.ui.setPageTitle(t('common:stories'));
 
     const getCollection = async () => {
       await actions.story.getStories();

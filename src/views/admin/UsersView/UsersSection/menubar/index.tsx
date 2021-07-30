@@ -24,7 +24,7 @@ const MenuBar: FC<MenuBarProps> = ({
   updateFilter,
 }) => {
   const { session, users } = useAppState();
-  const { t } = useTranslation(['users', 'common']);
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -45,7 +45,7 @@ const MenuBar: FC<MenuBarProps> = ({
         onClick={() => handleDetailOpen()}
         startIcon={<AddCircleOutlineIcon />}
       >
-        {t('addUser')}
+        {t('users:addUser')}
       </Button>
       <Box flexGrow={1} />
       <Stack direction={isLG ? 'column' : 'row'} spacing={2}>

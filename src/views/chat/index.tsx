@@ -4,7 +4,6 @@ import { useActions, useAppState } from '@src/overmind';
 import _theme from '@src/theme';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SideBar from './sidebar';
 import Stage from './stage';
@@ -13,7 +12,6 @@ import TopBar from './topbar';
 const sidebarWidth = 450;
 
 const StoryPlay: FC = () => {
-  const { t } = useTranslation(['home']);
   const navigate = useNavigate();
   const { chat, session } = useAppState();
   const actions = useActions();
@@ -28,7 +26,7 @@ const StoryPlay: FC = () => {
   useEffect(() => {
     actions.story.resetState();
     actions.chat.resetState();
-    
+
     if (!storyId) return navigate('/', { replace: true });
     !chat.currentStory ? getStory() : actions.ui.setPageTitle(chat.currentStory.title);
 
@@ -60,7 +58,7 @@ const StoryPlay: FC = () => {
   };
 
   return (
-    <Page title={t('Home')}>
+    <Page title="Juno Chatbot">
       <ThemeProvider theme={_theme(true)}>
         <Box
           sx={{

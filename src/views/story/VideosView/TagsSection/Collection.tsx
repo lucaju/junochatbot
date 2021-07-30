@@ -12,7 +12,7 @@ interface CollectionProps {
 
 const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }) => {
   const { videos } = useAppState();
-  const { t } = useTranslation(['tags']);
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -31,7 +31,7 @@ const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }
       width={isMobile ? 'fit-content' : '100%'}
     >
       {!isMobile && !isLoading && videos.tagCollection.length === 0 && (
-        <NoContent align="left" heading={t('noTagsYet')} size="small"/>
+        <NoContent align="left" heading={t('tags:noTagsYet')} size="small"/>
       )}
       {isLoading
         ? showSkeleton(4)

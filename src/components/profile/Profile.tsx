@@ -38,7 +38,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
   const { session, ui } = useAppState();
   const actions = useActions();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(['profile', 'common']);
+  const { t, i18n } = useTranslation();
 
   const open = Boolean(anchor);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
@@ -92,10 +92,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
         p={2}
       >
         <Avatar
-          src={
-            session.user?.avatarUrl &&
-            `${APP_URL}/uploads/assets${session.user.avatarUrl}`
-          }
+          src={session.user?.avatarUrl && `${APP_URL}/uploads/assets${session.user.avatarUrl}`}
         >
           {!session.user?.avatarUrl && <AccountCircleIcon />}
         </Avatar>
@@ -122,7 +119,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
           <ListItemIcon sx={{ minWidth: 40 }}>
             {ui.darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </ListItemIcon>
-          <ListItemText id="dark-mode" primary={t('darkMode')} />
+          <ListItemText id="dark-mode" primary={t('profile:darkMode')} />
           <ListItemSecondaryAction>
             <Switch
               checked={ui.darkMode}
@@ -138,7 +135,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
           <ListItemIcon sx={{ minWidth: 40 }}>
             <LanguageIcon />
           </ListItemIcon>
-          <ListItemText id="language" primary={t('language')} />
+          <ListItemText id="language" primary={t('profile:language')} />
           <ListItemSecondaryAction>
             <ToggleButtonGroup
               value={ui.languageCode}
@@ -163,14 +160,14 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
           <ListItemIcon sx={{ minWidth: 40 }}>
             <AccountCircleIcon />
           </ListItemIcon>
-          <ListItemText primary={t('changeAvatar')} />
+          <ListItemText primary={t('profile:changeAvatar')} />
         </ListItem>
 
         <ListItem button onClick={() => setPasswordDialogOpen(true)}>
           <ListItemIcon sx={{ minWidth: 40 }}>
             <LockIcon />
           </ListItemIcon>
-          <ListItemText primary={t('changePassword')} />
+          <ListItemText primary={t('profile:changePassword')} />
         </ListItem>
       </List>
 
@@ -178,7 +175,7 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
 
       <Box display="flex" justifyContent="center" mt={2} mb={2}>
         <Button onClick={handleSignOut} size="small" variant="outlined">
-          {t('signOut')}
+          {t('profile:signOut')}
         </Button>
       </Box>
 

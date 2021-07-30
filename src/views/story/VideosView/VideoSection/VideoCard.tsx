@@ -8,27 +8,18 @@ interface VideoCardProps {
 }
 
 const VideoCard: FC<VideoCardProps> = ({ handleEditClick, video }) => {
-  const [elevation, setElevation] = useState(1);
+  const [hover, setHover] = useState(1);
 
-  const mouseOver = () => setElevation(6);
-  const mouseOut = () => setElevation(1);
-
-  // const truncateString = (str:string, num:number) => {
-  //   if (str.length <= num) return str;
-  //   return `${str.slice(0, num)}...`;
-  // };
+  const mouseOver = () => setHover(6);
+  const mouseOut = () => setHover(1);
 
   return (
     <Card
-      elevation={elevation}
+      elevation={hover ? 6 : 1}
       onClick={() => handleEditClick(video.id)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      sx={{
-        // width: 350 ,
-        m: 1,
-        cursor: 'pointer',
-      }}
+      sx={{  m: 1, cursor: 'pointer' }}
     >
       <CardMedia image={video.imageUrl} sx={{ height: 180 }} title={video.title} />
       <CardContent>

@@ -19,7 +19,7 @@ const Credentials: FC<CredentialsProps> = ({
   touched,
   values,
 }) => {
-  const { t } = useTranslation(['users']);
+  const { t } = useTranslation();
   return (
     <Grid item md={12} xs={12}>
       <TextField
@@ -27,7 +27,7 @@ const Credentials: FC<CredentialsProps> = ({
         error={Boolean(touched.userName && errors.userName)}
         fullWidth
         helperText={touched.userName && errors.userName}
-        label={t('email')}
+        label={t('users:email')}
         name="userName"
         onBlur={handleBlur}
         onChange={handleChange}

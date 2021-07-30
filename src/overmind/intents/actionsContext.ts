@@ -114,14 +114,16 @@ export const removeContext = ({ actions }: Context, context: ContextType) => {
     : actions.intents.removeOutputContext(context.id);
 };
 
-export const removeInputContex = ({ state }: Context, id: string) => {
+export const removeInputContex = ({ state }: Context, id?: string) => {
+  if (!id) return;
   if (!state.intents.currentIntent?.inputContexts) return;
   const { inputContexts } = state.intents.currentIntent;
 
   state.intents.currentIntent.inputContexts = inputContexts.filter((context) => context.id !== id);
 };
 
-export const removeOutputContext = ({ state }: Context, id: string) => {
+export const removeOutputContext = ({ state }: Context, id?: string) => {
+  if (!id) return;
   if (!state.intents.currentIntent?.outputContexts) return;
   const { outputContexts } = state.intents.currentIntent;
 

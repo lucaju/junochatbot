@@ -12,7 +12,7 @@ interface CollectionProps {
 
 const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }) => {
   const { users } = useAppState();
-  const { t } = useTranslation(['groups']);
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -26,7 +26,7 @@ const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }
   return (
     <Box display="inline-flex" flexDirection={isMobile ? 'row' : 'column'}>
       {!isMobile && !isLoading && users.groups.length === 0 && (
-        <NoContent align="left" heading={t('noGroupsYet')} size="small" />
+        <NoContent align="left" heading={t('groups:noGroupsYet')} size="small" />
       )}
       {isLoading
         ? showSkeleton(4)

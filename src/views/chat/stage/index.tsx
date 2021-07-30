@@ -12,7 +12,6 @@ import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import { useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player/youtube';
 
 interface playerEvent {
@@ -26,7 +25,6 @@ interface StageProps {
 }
 
 const Stage: FC<StageProps> = ({ sidebarWidth }) => {
-  const { t } = useTranslation(['home']);
   const { chat } = useAppState();
 
   const [url, setUrl] = useState<string>();

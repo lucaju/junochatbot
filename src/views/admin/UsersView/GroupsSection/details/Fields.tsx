@@ -13,7 +13,7 @@ interface FieldsProps {
 }
 
 const Fields: FC<FieldsProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
-  const { t } = useTranslation(['common', 'groups']);
+  const { t } = useTranslation();
 
   return (
     <Stack spacing={2}>
@@ -21,7 +21,7 @@ const Fields: FC<FieldsProps> = ({ errors, handleBlur, handleChange, touched, va
         error={Boolean(touched.name && errors.name)}
         fullWidth
         helperText={touched.name && errors.name}
-        label={t('name')}
+        label={t('common:name')}
         name="name"
         onBlur={handleBlur}
         onChange={handleChange}
@@ -45,7 +45,7 @@ const Fields: FC<FieldsProps> = ({ errors, handleBlur, handleChange, touched, va
         error={Boolean(touched.description && errors.description)}
         fullWidth
         helperText={touched.description && errors.description}
-        label={t('description')}
+        label={t('common:description')}
         name="description"
         onBlur={handleBlur}
         onChange={handleChange}

@@ -13,7 +13,7 @@ interface ResetPasswordFormProps {
 }
 
 const ResetPasswordForm: FC<ResetPasswordFormProps> = ({ resetPassword }) => {
-  const { t } = useTranslation(['auth', 'common']);
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const formValidation = Yup.object().shape({
@@ -21,7 +21,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = ({ resetPassword }) => {
       .min(8)
       .max(255)
       .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
-      .required(t('passwordRequirement', { nCharacters: 8, nNumbers: 2 })),
+      .required(t('auth:passwordRequirement', { nCharacters: 8, nNumbers: 2 })),
   });
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);

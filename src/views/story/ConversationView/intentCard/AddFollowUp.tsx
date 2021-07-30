@@ -11,7 +11,7 @@ interface ContextCardProps {
 const options = ['fallback', 'no', 'yes'];
 
 const AddFollowUp: FC<ContextCardProps> = ({ intent }) => {
-  const { t } = useTranslation(['common', 'intents']);
+  const { t } = useTranslation();
   const actions = useActions();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -55,7 +55,7 @@ const AddFollowUp: FC<ContextCardProps> = ({ intent }) => {
             onClick={(event) => handleChoiceClick(event, option)}
             sx={{ textTransform: 'capitalize' }}
           >
-            {t(option)}
+            {t(`common:${option}`)}
           </MenuItem>
         ))}
       </Menu>

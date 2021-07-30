@@ -3,7 +3,6 @@ import Page from '@src/components/Page';
 import { useAppState, useActions } from '@src/overmind';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import TagsSection from './TagsSection';
 import VideosSection from './VideoSection';
@@ -13,7 +12,6 @@ const VideosView: FC = () => {
   const { storyId } = useParams();
   const { ui } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['videos', 'common']);
   const [isLoading, setIsLoading] = useState(true);
 
   const theme = useTheme();

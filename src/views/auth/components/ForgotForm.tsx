@@ -11,20 +11,20 @@ interface ForgotFormProps {
 }
 
 const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
-  const { t } = useTranslation(['auth', 'common']);
+  const { t } = useTranslation();
 
   const formValidation = Yup.object().shape({
-    email: Yup.string().email(t('mustBeValidEmail')).max(255).required(t('common:required')),
+    email: Yup.string().email(t('auth:mustBeValidEmail')).max(255).required(t('common:required')),
   });
 
   return (
     <Formik
       initialValues={{ email: '' }}
-      onSubmit={async (values: Credential) => await requestPassword(values)}
+      onSubmit={requestPassword}
       validationSchema={formValidation}
     >
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-        <form onSubmit={handleSubmit} style={{width: '100%'}}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <TextField
             autoComplete="username"
             error={Boolean(touched.email && errors.email)}
@@ -50,7 +50,7 @@ const ForgotForm: FC<ForgotFormProps> = ({ requestPassword }) => {
               type="submit"
               variant="contained"
             >
-              {t('getNewPassowrd')}
+              {t('auth:getNewPassowrd')}
             </LoadingButton>
           </Box>
         </form>

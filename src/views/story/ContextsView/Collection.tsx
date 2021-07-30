@@ -16,7 +16,7 @@ interface CollectionProps {
 
 const Collection: FC<CollectionProps> = ({ isLoading = false, searchQuery }) => {
   const { intents } = useAppState();
-  const { t } = useTranslation(['contexts', 'noContent']);
+  const { t } = useTranslation();
 
   const [filteredItems, setFilteredItems] = useState<ContextRelation[]>([]);
   const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
@@ -26,9 +26,9 @@ const Collection: FC<CollectionProps> = ({ isLoading = false, searchQuery }) => 
     setFilteredItems(_items);
     setNoContentMsg(
       intents.contexts.length === 0
-        ? 'noContextsYet'
+        ? t('intents:noContextsYet')
         : _items.length === 0
-        ? 'noContent:noMatch'
+        ? t('common:noMatch')
         : null
     );
     return () => {};
@@ -52,7 +52,7 @@ const Collection: FC<CollectionProps> = ({ isLoading = false, searchQuery }) => 
   return (
     <Box>
       {!isLoading && noContentMsg !== null && (
-        <NoContent align="left" heading={t(noContentMsg)} size="large" />
+        <NoContent align="left" heading={noContentMsg} size="large" />
       )}
       <AnimatePresence initial={false}>
         <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 700: 2, 1150: 3, 1300: 4 }}>

@@ -19,7 +19,7 @@ interface Sponsor {
 }
 
 const Sponsors: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
   const [sponsors, setSponsors] = useState<Sponsor[]>();
 
   const theme = useTheme();
@@ -47,7 +47,7 @@ const Sponsors: FC = () => {
         <Divider sx={{ mb: 15 }} />
         <Stack spacing={6}>
           <Typography align="center" sx={{ textTransform: 'capitalize' }} variant="h4">
-            {t('sponsors')}
+            {t('home:sponsors')}
           </Typography>
           {isMobileSM ? (
             <Stack direction="row">

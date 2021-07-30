@@ -42,7 +42,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
   const { intents } = useAppState();
   const actions = useActions();
   const [displayName, setDisplayName] = useState(intents.currentIntent?.displayName);
-  const { t } = useTranslation(['intents', 'common']);
+  const { t } = useTranslation();
 
   const options = [
     { value: 'context', label: 'contexts' },
@@ -74,7 +74,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
 
   return (
     <Stack spacing={1} alignItems="center">
-      {action === 'create' && t('createIntent')}
+      {action === 'create' && t('intents:createIntent')}
       <TextField
         fullWidth
         label={t('common:name')}
@@ -91,7 +91,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
             <Select fullWidth labelId="tab" id="tab" onChange={handleSelect} value={activeTab}>
               {options.map(({ value, label }) => (
                 <MenuItem key={value} value={value}>
-                  {t(label)}
+                  {t(`intents${label}`)}
                 </MenuItem>
               ))}
             </Select>
@@ -108,7 +108,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
               {options.map(({ value, label }) => (
                 <ToggleButton key={value} aria-label={value} value={value}>
                   <CenterFocusWeakIcon sx={{ mr: 1 }} />
-                  {t(label)}
+                  {t(`${label}`)}
                 </ToggleButton>
               ))}
             </StyledToggleButtonGroup>

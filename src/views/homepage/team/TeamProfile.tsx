@@ -1,7 +1,6 @@
 import { Avatar, Box, Stack, Typography } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export interface TeamProfileProps {
   email?: string;
@@ -11,8 +10,6 @@ export interface TeamProfileProps {
 }
 
 const TeamProfile: FC<TeamProfileProps> = (props) => {
-  const { t } = useTranslation();
-
   const { email, institution, name, picture } = props;
 
   const hanfleClick = () => {
@@ -41,7 +38,9 @@ const TeamProfile: FC<TeamProfileProps> = (props) => {
           <Typography variant="body1" fontWeight={600}>
             {name}
           </Typography>
-          <Typography sx={{lineHeight: '1.3rem' }} variant="overline">{institution}</Typography>
+          <Typography sx={{ lineHeight: '1.3rem' }} variant="overline">
+            {institution}
+          </Typography>
         </Stack>
       </Stack>
     </Box>

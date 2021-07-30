@@ -3,13 +3,13 @@ import { useAppState, useActions } from '@src/overmind';
 import { Video } from '@src/types';
 import { FormikErrors, FormikTouched, useField } from 'formik';
 import { json } from 'overmind';
-import React, { ChangeEvent, FC, FocusEvent, useEffect } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, SyntheticEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ExtraProps {
   errors: FormikErrors<Video>;
-  handleBlur: (e: FocusEvent<any>) => void;
-  handleChange: (e: ChangeEvent<any>) => void;
+  handleBlur: (e: SyntheticEvent<any>) => void;
+  handleChange: (e: SyntheticEvent<any>) => void;
   touched: FormikTouched<Video>;
   values: Partial<Video>;
 }
@@ -17,7 +17,7 @@ interface ExtraProps {
 const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
   const { videos } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const [, meta, helpers] = useField('tags');
   // eslint-disable-next-line no-unused-vars
   const { value } = meta;
@@ -35,7 +35,7 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
         <TextField
           error={Boolean(touched['description'] && errors['description'])}
           fullWidth
-          label={t('description')}
+          label={t('common:description')}
           name="description"
           multiline
           onBlur={handleBlur}
@@ -53,7 +53,7 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
           id="tags"
           isOptionEqualToValue={(option, value) => option.id === value.id}
           multiple
-          onChange={(event: FocusEvent, value, reason) => {
+          onChange={(event: SyntheticEvent, value, reason) => {
             if (reason === 'blur') return handleBlur(event);
             setValue(json(value));
           }}
@@ -62,7 +62,7 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
           renderInput={(params) => (
             <TextField
               {...params}
-              label={t('tags')}
+              label={t('common:tags')}
               fullWidth
               sx={{ textTransform: 'capitalize' }}
               variant="standard"

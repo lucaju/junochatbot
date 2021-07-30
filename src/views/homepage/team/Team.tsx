@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import TeamProfile, { TeamProfileProps } from './TeamProfile';
 
 const Team: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
 
   const [team, setTeam] = useState<TeamProfileProps[]>();
 
@@ -20,7 +20,7 @@ const Team: FC = () => {
       <Container maxWidth="xl">
         <Stack spacing={6}>
           <Typography align="center" sx={{ textTransform: 'capitalize' }} variant="h4">
-            {t('team')}
+            {t('home:team')}
           </Typography>
           <Grid container>
             {team &&

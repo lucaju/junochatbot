@@ -11,7 +11,7 @@ interface MenuBarProps {
 }
 
 const MenuBar: FC<MenuBarProps> = ({ handleSearch, updateFilter }) => {
-  const { t } = useTranslation(['users', 'common']);
+  const { t } = useTranslation();
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 

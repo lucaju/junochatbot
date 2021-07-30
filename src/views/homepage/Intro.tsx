@@ -31,10 +31,13 @@ const Intro: FC = () => {
         <ReactMarkdown
           components={{
             h1: ({ node, ...props }) => (
+              //@ts-ignore
               <Typography component="h2" mb={3} variant="h4" {...props} />
             ),
+            //@ts-ignore
             p: ({ node, ...props }) => <Typography align="center" variant="subtitle1" {...props} />,
             a: ({ node, ...props }) => (
+              //@ts-ignore
               <Link underline="hover" target="_blank" rel="noopener noreferrer" {...props} />
             ),
           }}

@@ -8,7 +8,6 @@ import { useField } from 'formik';
 import { motion, useAnimation } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
-import { useTranslation } from 'react-i18next';
 
 interface FeaturedImageProps {
   title: string;
@@ -16,7 +15,6 @@ interface FeaturedImageProps {
 
 const FeaturedImage: FC<FeaturedImageProps> = ({ title }) => {
   const theme = useTheme();
-  const { t } = useTranslation(['storyGeneral']);
   const [, meta, helpers] = useField('imageUrl');
   const { value } = meta;
   const { setValue } = helpers;

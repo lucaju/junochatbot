@@ -36,7 +36,7 @@ interface DetailsProps {
 const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const { intents } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['intents', 'common', 'errorMessages', 'confirmationDialog']);
+  const { t } = useTranslation();
 
   const [action, setAction] = useState<string>();
   const [activeTab, setActiveTab] = useState('context');
@@ -79,14 +79,14 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
 
     //error
     if (isError(response)) {
-      const message = t('errorMessages:somethingWentWrong');
+      const message = t('error:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       setIsSubmitting(false);
       return;
     }
 
     //success
-    const message = action === 'create' ? t('intentCreated') : t('intentUpdated');
+    const message = action === 'create' ? t('intents:intentCreated') : t('intents:intentUpdated');
     actions.ui.showNotification({ message, type });
 
     setIsSubmitting(false);
@@ -98,7 +98,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
     const response = await actions.intents.deleteIntent(intents.currentIntent?.name);
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
-    const message = isError(response) ? t('errorMessages:somethingWentWrong') : t('intentDeleted');
+    const message = isError(response) ? t('error:somethingWentWrong') : t('intents:intentDeleted');
 
     actions.ui.showNotification({ message, type });
     handleClose();
@@ -155,9 +155,9 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
               submitDelete();
             }}
             isSubmitting={isSubmitting}
-            message={t('confirmationDialog:deleteMessage', { object: t('intent') })}
+            message={t('confirmation:deleteMessage', { object: t('intents:intent') })}
             open={deleteDialogOpen}
-            title={t('intent')}
+            title={t('intents:intent')}
           />
           <ConfirmationDialog
             handleNo={() => setCancelDialogOpen(false)}
@@ -165,7 +165,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
               setCancelDialogOpen(false);
               handleClose();
             }}
-            message={t('confirmationDialog:cancelMessage', { object: t('intent') })}
+            message={t('confirmation:cancelMessage', { object: t('intents:intent') })}
             open={cancelDialogOpen}
           />
         </Dialog>

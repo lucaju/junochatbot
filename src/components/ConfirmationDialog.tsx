@@ -20,7 +20,7 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   handleYes,
   isSubmitting = false,
 }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
 
   return (
     <Dialog
@@ -44,10 +44,10 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
           onClick={handleNo}
           variant="outlined"
         >
-          {t('no')}
+          {t('common:no')}
         </Button>
         <LoadingButton color="secondary" loading={isSubmitting} onClick={handleYes}>
-          {t('yes')}
+          {t('common:yes')}
         </LoadingButton>
       </DialogActions>
     </Dialog>

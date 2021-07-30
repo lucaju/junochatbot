@@ -23,7 +23,7 @@ interface UserCarddProps {
 }
 
 const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
@@ -105,7 +105,7 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
                       fontStyle: 'italic',
                     }}
                   >
-                    {t('draft')}
+                    {t('common:draft')}
                   </Box>
                 ) : (
                   story.published === 1 &&
@@ -118,7 +118,7 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
 
           <Box display="flex" alignItems="flex-start" mt={1}>
             <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-              {`${t('by')} ${author}`}
+              {`${t('common:by')} ${author}`}
             </Typography>
           </Box>
           {story.synopsis && (
@@ -137,7 +137,7 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
               >
                 <Divider sx={{ width: '30%' }} />
                 <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-                  {t('starring')}
+                  {t('common:starring')}
                 </Typography>
                 <Divider sx={{ width: '30%' }} />
               </Box>

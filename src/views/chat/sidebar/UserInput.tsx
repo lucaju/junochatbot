@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const DETECT_INTENT_CHAR_LIMIT = 250;
 
 const UserInput: FC = () => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const actions = useActions();
 
   const [userInputState, setUserInputState] = useState('');
@@ -51,7 +51,7 @@ const UserInput: FC = () => {
       multiline
       onChange={handleUserInput}
       onKeyPress={handleUserTriggerInput}
-      placeholder={t('typeHere')}
+      placeholder={t('common:typeHere')}
       sx={{ pb: 2 }}
       value={userInputState}
     />

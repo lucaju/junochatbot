@@ -10,7 +10,7 @@ interface SearchBoxProps {
 }
 
 const SearchBox: FC<SearchBoxProps> = ({ handleSearch, disabled = false, value = '' }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const [filterValue, setFilterValue] = useState(value);
 
   const handleChange = (value: string) => {
@@ -33,7 +33,7 @@ const SearchBox: FC<SearchBoxProps> = ({ handleSearch, disabled = false, value =
           color: ({ palette }) => (isOn ? palette.primary.main : undefined),
         },
       }}
-      label={t('search')}
+      label={t('common:search')}
       name="filterSearch"
       onChange={(event) => handleChange(event.target.value)}
       size="small"

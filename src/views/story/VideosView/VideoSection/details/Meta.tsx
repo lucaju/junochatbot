@@ -14,7 +14,7 @@ interface MetaProps {
 }
 
 const Meta: FC<MetaProps> = ({ handleRefresh, values, youtubeVideoId }) => {
-  const { t } = useTranslation(['videos', 'common']);
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [refreshed, setRefreshed] = useState(false);
 
@@ -55,7 +55,7 @@ const Meta: FC<MetaProps> = ({ handleRefresh, values, youtubeVideoId }) => {
       <Grid container>
         <Grid item xs={8}>
           <Typography sx={{ textTransform: 'capitalize' }} variant="caption">
-            {t('channel')}
+            {t('videos:channel')}
           </Typography>
           <Typography gutterBottom variant="subtitle2">
             {loading ? <Skeleton /> : values.channelTitle}

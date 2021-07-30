@@ -24,7 +24,7 @@ const LoginView: FC = () => {
   const navigate = useNavigate();
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['auth', 'common', 'errorMessages']);
+  const { t } = useTranslation();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
   const [hasToken, setHasToken] = useState(!!actions.session.getUserToken());
@@ -50,13 +50,13 @@ const LoginView: FC = () => {
     setIsAuthenticating(false);
     if (isError(response)) {
       setHasToken(false);
-      const errorMessage = credential ? t('errorMessages:accontNotRecognized') : '';
+      const errorMessage = credential ? t('error:accontNotRecognized') : '';
       setError({ errorMessage });
     }
   };
 
   return (
-    <Page title={t('signin')}>
+    <Page title={t('auth:signin')}>
       <Container
         maxWidth="xs"
         sx={{
@@ -82,7 +82,7 @@ const LoginView: FC = () => {
               sx={{ textTransform: 'capitalize' }}
               variant="h5"
             >
-              {t('signin')}
+              {t('auth:signin')}
             </Typography>
             {error && <ErrorMessage message={error.errorMessage} />}
             <LoginForm authenticate={authenticate} />
@@ -93,7 +93,7 @@ const LoginView: FC = () => {
                 to="/forgot"
                 variant="body2"
               >
-                {`${t('forgotPassword')}?`}
+                {`${t('auth:forgotPassword')}?`}
               </Link>
               <Link
                 component={RouterLink}

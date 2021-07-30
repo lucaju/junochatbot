@@ -47,7 +47,7 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
     >
       {session.isSignedIn && (
         <>
-          <TopBar appMode={true} handleMenuClick={handleMenuClick} />
+          <TopBar handleMenuClick={handleMenuClick} />
           <NavBar
             compactMode={isCompactNav}
             onMobileClose={() => setMobileNavOpen(false)}

@@ -32,7 +32,7 @@ const initialValues: Partial<Video> = {
 
 const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
   const actions = useActions();
-  const { t } = useTranslation(['videos', 'common', 'errorMessages', 'confirmationDialog']);
+  const { t } = useTranslation();
   const [videoData, setVideoData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | undefined>();
@@ -108,13 +108,13 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
 
     //error
     if (isError(response)) {
-      const message = t('errorMessages:somethingWentWrong');
+      const message = t('error:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return;
     }
 
     //success
-    const message = values.id ? t('videoUpdated') : t('videoAdded');
+    const message = values.id ? t('videos:videoUpdated') : t('videos:videoAdded');
     actions.ui.showNotification({ message, type });
 
     handleBeforeClose();
@@ -126,7 +126,7 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
-    const message = isError(response) ? t('errorMessages:somethingWentWrong') : t('videoDeleted');
+    const message = isError(response) ? t('error:somethingWentWrong') : t('videos:videoDeleted');
 
     actions.ui.showNotification({ message, type });
 
@@ -155,9 +155,10 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
             sx={{
               color: ({ palette }) => palette.primary.light,
               textAlign: 'center',
+              textTransform: 'capitalize',
             }}
           >
-            {t('addVideo')}
+            {t('videos:addVideo')}
           </DialogTitle>
           <DialogContent dividers>
             <Source parseVideoUrl={parseVideoUrl} />
@@ -222,12 +223,12 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
                   submitDelete();
                 }}
                 isSubmitting={isSubmitting}
-                message={`${t('confirmationDialog:assetDeleteWarning')} ${t(
-                  'confirmationDialog:deleteMessage',
-                  { object: t('video') }
+                message={`${t('confirmation:assetDeleteWarning')} ${t(
+                  'confirmation:deleteMessage',
+                  { object: t('common:video') }
                 )}`}
                 open={deleteDialogOpen}
-                title={t('video')}
+                title={t('common:video')}
               />
             </form>
           )}

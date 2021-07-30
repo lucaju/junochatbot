@@ -15,7 +15,7 @@ const ConversationView: FC = () => {
   const actions = useActions();
   const navigate = useNavigate();
   const { storyId } = useParams();
-  const { t } = useTranslation(['intents', 'common']);
+  const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [hasIntents, setHasIntents] = useState(true);
@@ -29,7 +29,7 @@ const ConversationView: FC = () => {
 
     const getCollection = async () => {
       await actions.intents.getIntents();
-      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('common:intents')}`);
+      actions.ui.setPageTitle(`${story.currentStory?.title} - ${t('intents:intents')}`);
       setHasIntents(intents.collection.length > 0);
       setIsLoading(false);
     };

@@ -9,7 +9,7 @@ import Details from './details';
 const GroupsView: FC = () => {
   const { users } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['groups']);
+  const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -56,7 +56,7 @@ const GroupsView: FC = () => {
     >
       <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
         <Typography sx={{ textTransform: 'capitalize' }} variant="h6">
-          {t('groups')}
+          {t('groups:groups')}
         </Typography>
         <IconButton color="primary" onClick={() => handleDetailOpen()} size="small">
           <AddCircleOutlineIcon fontSize="inherit" />

@@ -9,7 +9,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import type { Story } from '@src/types';
 
 const Stories: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
   const { chat } = useAppState();
   const actions = useActions();
   const [isLoading, setIsloading] = useState(true);
@@ -44,7 +44,7 @@ const Stories: FC = () => {
           sx={{ fontWeight: 700, textTransform: 'uppercase', textShadow: '0 0 16px purple' }}
           variant={isMobile ? 'h2' : 'h1'}
         >
-          {t('stories')}
+          {t('home:stories')}
         </Typography>
       </Box>
       <Box

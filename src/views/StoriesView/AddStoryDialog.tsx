@@ -31,7 +31,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
   const actions = useActions();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { t } = useTranslation(['common', 'stories', 'errorMessages']);
+  const { t } = useTranslation();
 
   const handleCancel = () => handleClose();
 
@@ -40,7 +40,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
     const message = isError(response)
-      ? t('errorMessages:somethingWentWrong')
+      ? t('error:somethingWentWrong')
       : t('stories:storyCreated');
     actions.ui.showNotification({ message, type });
 
@@ -49,7 +49,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
   };
 
   const formValidation = Yup.object().shape({
-    title: Yup.string().min(3).max(100).trim().required(t('errorMessages:titleRequired')),
+    title: Yup.string().min(3).max(100).trim().required(t('error:titleRequired')),
     languageCode: Yup.string().required(),
   });
 
@@ -87,7 +87,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
                   error={Boolean(touched.title && errors.title)}
                   fullWidth
                   helperText={touched.title && errors.title}
-                  label={t('title')}
+                  label={t('common:title')}
                   margin="normal"
                   name="title"
                   onBlur={handleBlur}
@@ -99,7 +99,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
 
                 <TextField
                   error={Boolean(touched.languageCode && errors.languageCode)}
-                  label={t('language')}
+                  label={t('common:language')}
                   margin="normal"
                   name="languageCode"
                   onBlur={handleBlur}
@@ -119,11 +119,11 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
             </DialogContent>
             <DialogActions>
               <Button color="inherit" disabled={isSubmitting} onClick={handleCancel}>
-                {t('cancel')}
+                {t('common:cancel')}
               </Button>
               <Box flexGrow={1} />
               <LoadingButton loading={isSubmitting} type="submit" variant="outlined">
-                {t('create')}
+                {t('common:create')}
               </LoadingButton>
             </DialogActions>
           </form>

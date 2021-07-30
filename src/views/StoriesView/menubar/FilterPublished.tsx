@@ -18,15 +18,14 @@ interface FilterPublishedProps {
   value?: number;
 }
 
-
 const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = 0 }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const [filterValue, setFilterValue] = useState(value);
 
   const options: Option[] = [
-    { value: 0, name: t('all') },
-    { value: 1, name: t('published') },
-    { value: -1, name: t('draft') },
+    { value: 0, name: t('common:all') },
+    { value: 1, name: t('common:published') },
+    { value: -1, name: t('common:draft') },
   ];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +44,7 @@ const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = 0 }) 
           color: ({ palette }) => (isOn ? palette.primary.main : undefined),
         },
       }}
-      label={t('status')}
+      label={t('common:status')}
       name="filterPublished"
       onChange={handleChange}
       select
@@ -59,7 +58,7 @@ const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = 0 }) 
     >
       {options.map(({ name, value }) => (
         <MenuItem key={value} sx={{ textTransform: 'capitalize' }} value={value}>
-          {t(name)}
+          {t(`common:${name}`)}
         </MenuItem>
       ))}
     </TextField>

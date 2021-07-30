@@ -8,12 +8,10 @@ interface NoContentProps {
   size?: 'large' | 'medium' | 'small';
 }
 
-const NoContent: FC<NoContentProps> = ({
-  align = 'center',
-  heading = 'noMatch',
-  size = 'medium',
-}) => {
-  const { t } = useTranslation(['noContent']);
+const NoContent: FC<NoContentProps> = ({ align = 'center', heading = '', size = 'medium' }) => {
+  const { t } = useTranslation();
+
+  if (heading === '') heading = t('common:noMatch');
 
   const marginTop = size === 'large' ? 4 : size === 'small' ? 2 : 3;
   const fontWeight = size === 'large' ? 700 : 500;

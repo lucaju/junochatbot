@@ -25,7 +25,7 @@ interface BotProps {
 
 const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }) => {
   const { story } = useAppState();
-  const { t } = useTranslation(['storyGeneral', 'common']);
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isLG = useMediaQuery(theme.breakpoints.down('lg'));
@@ -34,7 +34,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
   return (
     <Stack direction="column" spacing={2}>
       <Typography gutterBottom variant="h6">
-        {t('characterBot')}
+        {t('storyGeneral:characterBot')}
       </Typography>
       <Box display="flex" flexDirection="row" alignItems="flex-start" p={1}>
         <Box flexGrow={1}>
@@ -53,7 +53,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
         <Box width="50px" ml={2} sx={{ mt: '-3px' }}>
           <TextField
             fullWidth
-            label={t('avatar')}
+            label={t('storyGeneral:avatar')}
             name="botAvatar"
             select
             onBlur={handleBlur}
@@ -77,7 +77,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
         <TextField
           error={Boolean(touched['botPersona'] && errors['botPersona'])}
           fullWidth
-          label={t('persona')}
+          label={t('storyGeneral:persona')}
           name="botPersona"
           multiline
           rows={2}
@@ -96,7 +96,7 @@ const Bot: FC<BotProps> = ({ errors, handleBlur, handleChange, touched, values }
               color: 'text.secondary',
             }}
           >
-            {t('messageDelay')}
+            {t('storyGeneral:messageDelay')}
           </Typography>
         </Box>
         <BotDelaySlider />

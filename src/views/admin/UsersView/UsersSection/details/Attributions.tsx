@@ -21,7 +21,7 @@ const Attributions: FC<AttributionsProps> = ({
   values,
 }) => {
   const { session, users } = useAppState();
-  const { t } = useTranslation(['users', 'common']);
+  const { t } = useTranslation();
   const [groupsOptions, setGroupsOptions] = useState<UserGroup[] | undefined>();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const Attributions: FC<AttributionsProps> = ({
             disabled={!session.isAdmin ? true : false}
             error={Boolean(touched.roleTypeId && errors.roleTypeId)}
             fullWidth
-            label={t('role')}
+            label={t('users:role')}
             name="roleTypeId"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -54,7 +54,7 @@ const Attributions: FC<AttributionsProps> = ({
           </TextField>
         ) : (
           <>
-            <Typography sx={{ textTransform: 'capitalize' }} variant="caption">{t('role')}</Typography>
+            <Typography sx={{ textTransform: 'capitalize' }} variant="caption">{t('users:role')}</Typography>
             <Typography>{values.roleTypeId}</Typography>
           </>
         )}

@@ -7,7 +7,7 @@ import Collection from './Collection';
 
 const IntentParams: FC = () => {
   const actions = useActions();
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation();
 
   const addParameter = () => actions.intents.createParameter();
 
@@ -16,7 +16,7 @@ const IntentParams: FC = () => {
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
         <Box display="flex" flexDirection="row" my={1.5}>
           <Button color="primary" onClick={addParameter} startIcon={<AddCircleOutlineIcon />}>
-            {t('addParameter')}
+            {t('intents:addParameter')}
           </Button>
         </Box>
       </Box>

@@ -16,7 +16,7 @@ const THRESHOOLD_SHOW_SEARCH = 3; //items
 
 const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch, updateFilter }) => {
   const { intents } = useAppState();
-  const { t } = useTranslation(['intents']);
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -26,7 +26,7 @@ const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch, updateFilte
   return (
     <Stack direction={isSM ? 'column' : 'row'} spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
       <Button color="primary" onClick={handleCreateClick} startIcon={<AddCircleOutlineIcon />}>
-        {t('createIntent')}
+        {t('intents:createIntent')}
       </Button>
       {!isSM && <Box flexGrow={1} />}
       {intents.collection.length > THRESHOOLD_SHOW_SEARCH && (

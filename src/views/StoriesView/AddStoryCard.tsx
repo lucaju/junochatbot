@@ -8,7 +8,7 @@ interface AddStoryCardProps {
 }
 
 const AddStoryCard: FC<AddStoryCardProps> = ({ openDialog }) => {
-  const { t } = useTranslation(['stories']);
+  const { t } = useTranslation();
   return (
     <Card sx={{ width: 325, borderStyle: 'dashed' }} variant="outlined">
       <CardActionArea onClick={openDialog}>
@@ -16,7 +16,7 @@ const AddStoryCard: FC<AddStoryCardProps> = ({ openDialog }) => {
           <Box display="flex" alignItems="center">
             <AddCircleIcon fontSize="large" sx={{ mr: 1, color: 'primary.light' }} />
             <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
-              {t('createStory')}
+              {t('stories:createStory')}
             </Typography>
           </Box>
         </CardContent>

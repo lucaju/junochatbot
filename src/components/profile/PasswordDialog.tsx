@@ -29,7 +29,7 @@ interface PasswordDialogProps {
 
 const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
   const actions = useActions();
-  const { t } = useTranslation(['common', 'profile', 'auth', 'errorMessages']);
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const formValidation = Yup.object().shape({
@@ -37,7 +37,7 @@ const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
       .min(8)
       .max(255)
       .matches(/^(?=.{8,}$)(?=(?:.*[0-9]){2}).*/)
-      .required(t('passwordRequirement', { nCharacters: 8, nNumbers: 2 })),
+      .required(t('auth:passwordRequirement', { nCharacters: 8, nNumbers: 2 })),
   });
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -54,7 +54,7 @@ const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
 
     const message = isError(response)
       ? response.errorMessage
-      : // ? t('errorMessages:somethingWentWrong')
+      : // ? t('error:somethingWentWrong')
         t('profile:passwordChanged');
 
     actions.ui.showNotification({ message, type });
@@ -103,14 +103,14 @@ const PasswordDialog: FC<PasswordDialogProps> = ({ handleClose, open }) => {
               </form>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>{t('cancel')}</Button>
+              <Button onClick={handleClose}>{t('common:cancel')}</Button>
               <Box flexGrow={1} />
               <LoadingButton
                 loading={isSubmitting}
                 onClick={() => handleSubmit()}
                 variant="contained"
               >
-                {t('submit')}
+                {t('common:submit')}
               </LoadingButton>
             </DialogActions>
           </>

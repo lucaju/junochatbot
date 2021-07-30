@@ -19,7 +19,7 @@ interface CollectionProps {
 const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, searchQuery }) => {
   const { session, users } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['users', 'noContent']);
+  const { t } = useTranslation();
 
   const [filteredItems, setFilteredItems] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +44,7 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
     const _items = items();
     setFilteredItems(_items);
     setNoContentMsg(
-      users.list.length === 0 ? 'noUsersYet' : _items.length === 0 ? 'noContent:noMatch' : null
+      users.list.length === 0 ? t('users:noUsersYet') : _items.length === 0 ? t('common:noMatch') : null
     );
     return () => {};
   }, [filters, searchQuery, users.list]);
@@ -88,7 +88,7 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
   return (
     <Box>
       {!isLoading && noContentMsg !== null && (
-        <NoContent align="left" heading={t(noContentMsg)} size="large" />
+        <NoContent align="left" heading={noContentMsg} size="large" />
       )}
       <AnimatePresence initial={false}>
         <ResponsiveMasonry

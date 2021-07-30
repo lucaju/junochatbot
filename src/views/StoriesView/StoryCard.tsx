@@ -33,7 +33,7 @@ const StoryCard: FC<UserCarddProps> = ({
   story,
   triggerEditStory,
 }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
@@ -112,7 +112,7 @@ const StoryCard: FC<UserCarddProps> = ({
                     fontStyle: 'italic',
                   }}
                 >
-                  {t('draft')}
+                  {t('common:draft')}
                 </Box>
               ) : (
                 story.published === 1 &&
@@ -125,7 +125,7 @@ const StoryCard: FC<UserCarddProps> = ({
 
         <Box display="flex" alignItems="flex-start" mt={1}>
           <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-            {`${t('by')} ${author}`}
+            {`${t('common:by')} ${author}`}
           </Typography>
         </Box>
         {story.synopsis && (
@@ -144,7 +144,7 @@ const StoryCard: FC<UserCarddProps> = ({
             >
               <Divider sx={{ width: '30%' }} />
               <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-                {t('starring')}
+                {t('common:starring')}
               </Typography>
               <Divider sx={{ width: '30%' }} />
             </Box>
@@ -190,11 +190,11 @@ const StoryCard: FC<UserCarddProps> = ({
                   target={'_blank'}
                   to={story.published ? `/story/${story.id}` : `/story/${story.id}?draft=true`}
                 >
-                  {t('play')}
+                  {t('common:play')}
                 </Button>
                 {showEdit && (
                   <Button color={hover ? 'primary' : 'inherit'} fullWidth onClick={handleEditClick}>
-                    {t('edit')}
+                    {t('common:edit')}
                   </Button>
                 )}
               </Stack>

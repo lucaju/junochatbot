@@ -11,7 +11,7 @@ interface FilterStatusProps {
 
 const FilterRole: FC<FilterStatusProps> = ({ handleFilter, value = 'all' }) => {
   const { session, users } = useAppState();
-  const { t } = useTranslation(['users', 'common']);
+  const { t } = useTranslation();
   const [filterValue, setFilterValue] = useState(value);
 
   const filterRoleOptions = [t('common:all'), ...users.roleTypes];
@@ -32,7 +32,7 @@ const FilterRole: FC<FilterStatusProps> = ({ handleFilter, value = 'all' }) => {
           color: ({ palette }) => (isOn ? palette.primary.main : undefined),
         },
       }}
-      label={t('role')}
+      label={t('users:role')}
       name="filterRole"
       onChange={handleChange}
       select

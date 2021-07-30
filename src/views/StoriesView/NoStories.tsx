@@ -9,7 +9,7 @@ interface NoStoriesProps {
 
 const NoStories: FC<NoStoriesProps> = ({ openDialog }) => {
   const theme = useTheme();
-  const { t } = useTranslation(['stories']);
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -30,10 +30,10 @@ const NoStories: FC<NoStoriesProps> = ({ openDialog }) => {
         }}
         variant="h4"
       >
-        {t('noStoriesYet')}
+        {t('stories:noStoriesYet')}
       </Typography>
       <img
-        alt={t('noStoriesYet')}
+        alt={t('stories:noStoriesYet')}
         src="/assets/images/undraw_chat_bot_kli5.svg"
         style={{
           display: 'inline-block',

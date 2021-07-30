@@ -22,11 +22,11 @@ interface LoginFormProps {
 }
 
 const LoginForm: FC<LoginFormProps> = ({ authenticate }) => {
-  const { t } = useTranslation(['auth', 'common']);
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const formValidation = Yup.object().shape({
-    email: Yup.string().email(t('mustBeValidEmail')).max(255).required(t('common:required')),
+    email: Yup.string().email(t('auth:mustBeValidEmail')).max(255).required(t('common:required')),
     password: Yup.string().max(255).required(t('common:required')),
   });
 
@@ -95,7 +95,7 @@ const LoginForm: FC<LoginFormProps> = ({ authenticate }) => {
                 type="submit"
                 variant="contained"
               >
-                {t('signin')}
+                {t('auth:signin')}
               </LoadingButton>
             </Box>
           </Stack>

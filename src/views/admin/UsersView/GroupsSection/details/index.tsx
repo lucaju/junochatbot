@@ -25,7 +25,7 @@ const initialValues: Partial<UserGroup> = {
 
 const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
   const { ui, users } = useActions();
-  const { t } = useTranslation(['groups', 'common', 'errorMessages', 'confirmationDialog']);
+  const { t } = useTranslation();
   const [groupData, setGroupData] = useState<UserGroup | Partial<UserGroup>>(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -61,13 +61,13 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
 
     //error
     if (isError(response)) {
-      const message = t('errorMessages:somethingWentWrong');
+      const message = t('error:somethingWentWrong');
       ui.showNotification({ message, type });
       return;
     }
 
     //success
-    const message = values.id ? t('groupUpdated') : 'groupCreated';
+    const message = values.id ? t('groups:groupUpdated') : t('groups:groupCreated');
     ui.showNotification({ message, type });
 
     handleClose();
@@ -79,7 +79,7 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
-    const message = isError(response) ? t('errorMessages:somethingWentWrong') : t('groupDeleted');
+    const message = isError(response) ? t('error:somethingWentWrong') : t('groups:groupDeleted');
 
     ui.showNotification({ message, type });
 
@@ -112,7 +112,7 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
             values,
           }) => (
             <form onSubmit={handleSubmit}>
-              {!groupData.id && <DialogTitle>{t('newGroup')}</DialogTitle>}
+              {!groupData.id && <DialogTitle>{t('groups:newGroup')}</DialogTitle>}
               <DialogContent dividers>
                 <Fields
                   errors={errors}
@@ -138,9 +138,9 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
                   submitDelete();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('confirmationDialog:deleteMessage', { object: t('group') })}
+                message={t('confirmation:deleteMessage', { object: t('common:group') })}
                 open={deleteDialogOpen}
-                title={t('group')}
+                title={t('common:group')}
               />
             </form>
           )}

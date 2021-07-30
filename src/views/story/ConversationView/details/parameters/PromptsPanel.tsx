@@ -15,7 +15,7 @@ interface promptComp {
 }
 
 const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const [_prompts, set_prompts] = useState<promptComp[]>([]);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
   return (
     <Box p={2}>
       <Stack direction="row" alignItems="center">
-        <Typography sx={{ textTransform: 'capitalize' }}>{t('prompts')}</Typography>
+        <Typography sx={{ textTransform: 'capitalize' }}>{t('common:prompts')}</Typography>
         <IconButton aria-label="add prompt" onClick={addEmpty} size="small">
           <AddCircleOutlineIcon fontSize="small" />
         </IconButton>

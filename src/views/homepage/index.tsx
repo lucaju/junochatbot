@@ -13,10 +13,10 @@ import Team from './team/Team';
 import Topbar from './topbar/Topbar';
 
 const HomeView: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
 
   return (
-    <Page title={t('Home')}>
+    <Page title={t('common:homepage')}>
       {/* <ThemeProvider theme={theme(false)}> */}
         <Stack>
           <Topbar />

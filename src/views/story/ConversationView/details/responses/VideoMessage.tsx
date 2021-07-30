@@ -32,7 +32,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
   const theme = useTheme();
   const { videos } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['intents', 'common']);
+  const { t } = useTranslation();
 
   const defaultSourceOption: sourceOptionType = { id: '-1', label: t('common:choose') };
 

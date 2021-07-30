@@ -18,7 +18,7 @@ import Details from './details';
 const TagsSection: FC = () => {
   const { ui, videos } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['tags', 'common']);
+  const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [hasTags, setHasTags] = useState(true);
@@ -79,7 +79,7 @@ const TagsSection: FC = () => {
         p={1}
       >
         <Typography sx={{ textTransform: 'uppercase' }} variant="h6">
-          {t('tags')}
+          {t('common:tags')}
         </Typography>
         <IconButton color="inherit" onClick={handleSwitchTags}>
           <CloseIcon />
@@ -103,7 +103,7 @@ const TagsSection: FC = () => {
                 startIcon={<AddCircleOutlineIcon />}
                 sx={{ mb: 1 }}
               >
-                {t('addTag')}
+                {t('tags:addTag')}
               </Button>
             )}
           </>

@@ -9,7 +9,7 @@ import MenuBar from './menubar';
 const VideosSection: FC = () => {
   const { story, videos } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['videos', 'common']);
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [hasVideos, setHasVideos] = useState(true);
 

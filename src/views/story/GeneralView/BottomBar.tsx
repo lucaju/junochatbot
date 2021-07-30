@@ -20,7 +20,7 @@ const BottomBar: FC<BottomBarProps> = ({
   publishedField,
   publishedDateField,
 }) => {
-  const { t } = useTranslation(['common', 'storyGeneral']);
+  const { t } = useTranslation();
   const { submitForm } = useFormikContext();
 
   const [, metaPub, helpersPub] = useField(publishedField);
@@ -60,7 +60,7 @@ const BottomBar: FC<BottomBarProps> = ({
               onChange={handleChangePublisehdState}
             />
           }
-          label={t('published')}
+          label={t('common:published')}
           sx={{ textTransform: 'capitalize' }}
         />
         <Box flexGrow={1} />
@@ -73,7 +73,7 @@ const BottomBar: FC<BottomBarProps> = ({
           variant="contained"
           type="submit"
         >
-          {t('save')}
+          {t('common:save')}
         </LoadingButton>
       </Box>
     </>

@@ -53,7 +53,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   const theme = useTheme();
   const { intents } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['intents', 'common']);
+  const { t } = useTranslation();
 
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -75,7 +75,6 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
 
     if (param.value) set_value(param.value);
     if (param.entityTypeDisplayName) setEntityTypeDisplayName(param.entityTypeDisplayName);
-    // if (param.isList) setIsList(param.isList);
     if (param.mandatory) setMandatory(param.mandatory);
 
     return () => {};
@@ -105,11 +104,6 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
         set_value(target.value);
         set_param({ ..._param, value: target.value });
         return;
-      // case 'isList':
-      //   set_param({ ..._param, isList: target.checked });
-      //   setIsList(target.checked);
-      //   setDoUpdate(true);
-      //   return;
       case 'mandatory':
         set_param({ ..._param, mandatory: event.currentTarget.checked });
         setMandatory(target.checked);
@@ -254,18 +248,6 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
           sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.02) }}
         >
           <Stack direction="row" justifyContent="center">
-            {/* <FormControlLabel
-              control={
-                <Switch
-                  checked={isList}
-                  color="primary"
-                  name="isList"
-                  onChange={handleChange}
-                  size="small"
-                />
-              }
-              label={t('isList')}
-            /> */}
             <FormControlLabel
               control={
                 <Switch
@@ -281,13 +263,6 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
             />
           </Stack>
           <Stack direction="row" justifyContent="center">
-            {/* <Button
-              disabled={bottomPanelActive === 1}
-              onClick={() => handleOpenBottomPanel(1)}
-              size="small"
-            >
-              {t('defaultValue')}
-            </Button> */}
             {_param.mandatory && (
               <Button
                 disabled={bottomPanelActive === 2}

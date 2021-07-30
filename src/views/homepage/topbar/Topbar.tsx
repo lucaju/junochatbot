@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import LanguageMenu from './LanguageMenu';
 
 const Topbar: FC = () => {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -37,22 +37,22 @@ const Topbar: FC = () => {
     return (
       <>
         <Button color="inherit" href="#about">
-          {t('about')}
+          {t('home:about')}
         </Button>
         <Button color="inherit" href="#stories">
-          {t('stories')}
+          {t('home:stories')}
         </Button>
         <Button color="inherit" href="#pedagogical">
-          {t('pedagogicalMaterial')}
+          {t('home:pedagogicalMaterial')}
         </Button>
         <Button color="inherit" href="#activities">
-          {t('researchActivities')}
+          {t('home:researchActivities')}
         </Button>
         <Button color="inherit" href="#team">
-          {t('team')}
+          {t('home:team')}
         </Button>
         <Button color="inherit" href="#sponsors">
-          {t('sponsors')}
+          {t('home:sponsors')}
         </Button>
       </>
     );
@@ -108,7 +108,7 @@ const Topbar: FC = () => {
 
           <Box flexGrow={1} />
           <Button color="inherit" onClick={handleNavigateToLogin}>
-            {t('signin')}
+            {t('home:signin')}
           </Button>
         </Toolbar>
       </AppBar>

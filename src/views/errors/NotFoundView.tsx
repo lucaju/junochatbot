@@ -6,7 +6,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 const NotFoundView: FC = () => {
-  const { t } = useTranslation(['notFound']);
+  const { t } = useTranslation();
 
   return (
     <Page
@@ -15,7 +15,7 @@ const NotFoundView: FC = () => {
         height: '100%',
         py: 3,
       }}
-      title={t('pageNotFound')}
+      title={t('error:pageNotFound')}
     >
       <Box display="flex" flexDirection="column" height="100%" justifyContent="center">
         <Container
@@ -37,10 +37,10 @@ const NotFoundView: FC = () => {
             />
           </RouterLink>
           <Typography align="center" sx={{ color: 'text.primary' }} variant="h4">
-            {t('title404')}
+            {t('error:title404')}
           </Typography>
           <Typography align="center" sx={{ color: 'text.primary' }} variant="subtitle2">
-            <Trans i18nKey="notFound:message404">
+            <Trans i18nKey="error:message404">
               You either tried some shady route or you came here by mistake. Go back to the{' '}
               <RouterLink to="/">main page.</RouterLink>
             </Trans>

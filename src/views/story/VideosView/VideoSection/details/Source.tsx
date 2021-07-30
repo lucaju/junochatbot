@@ -7,9 +7,9 @@ interface SourceProps {
 }
 
 const Source: FC<SourceProps> = ({ parseVideoUrl }) => {
-  const { t } = useTranslation(['videos']);
+  const { t } = useTranslation();
 
-  const helperText = `${t('pasteVideo')}, "https://www.youtube.com/watch?v=XyNlqQId-nk"`;
+  const helperText = `${t('videos:pasteVideo')}, "https://www.youtube.com/watch?v=XyNlqQId-nk"`;
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -20,7 +20,7 @@ const Source: FC<SourceProps> = ({ parseVideoUrl }) => {
     <TextField
       fullWidth
       helperText={helperText}
-      label={t('source')}
+      label={t('videos:source')}
       onChange={onChange}
       variant="standard"
     />

@@ -30,7 +30,7 @@ const initialValues: Partial<User> = {
 const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['users', 'common', 'errorMessages', 'confirmationDialog']);
+  const { t } = useTranslation();
   const [userData, setUserData] = useState<User | Partial<User>>(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -94,12 +94,12 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
     //error
     if (isError(response)) {
-      const message = t('errorMessages:somethingWentWrong');
+      const message = t('error:somethingWentWrong');
       actions.ui.showNotification({ message, type });
       return;
     }
     //success
-    const message = values.id ? t('userUpdated') : t('userCreated');
+    const message = values.id ? t('users:userUpdated') : t('users:userCreated');
     actions.ui.showNotification({ message, type });
     handleClose();
   };
@@ -110,7 +110,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
-    const message = isError(response) ? t('errorMessages:somethingWentWrong') : t('userDeleted');
+    const message = isError(response) ? t('error:somethingWentWrong') : t('users:userDeleted');
 
     actions.ui.showNotification({ message, type });
 
@@ -193,9 +193,9 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
                   submitDelete();
                 }}
                 isSubmitting={isSubmitting}
-                message={t('confirmationDialog:deleteMessage', { object: t('user') })}
+                message={t('confirmation:deleteMessage', { object: t('common:user') })}
                 open={deleteDialogOpen}
-                title={t('user')}
+                title={t('common:user')}
               />
             </form>
           )}

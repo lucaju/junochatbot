@@ -26,7 +26,7 @@ const Collection: FC<CollectionProps> = ({
   searchQuery,
   triggerEditStory,
 }) => {
-  const { t } = useTranslation(['noContent']);
+  const { t } = useTranslation();
   const { story } = useAppState();
   const actions = useActions();
   const [filteredItems, setFilteredItems] = useState<Story[]>([]);
@@ -36,7 +36,11 @@ const Collection: FC<CollectionProps> = ({
     const _items = items();
     setFilteredItems(_items);
     setNoContentMsg(
-      story.stories.length === 0 ? 'noStoriesYet' : _items.length === 0 ? 'noMatch' : null
+      story.stories.length === 0
+        ? t('stories:noStoriesYet')
+        : _items.length === 0
+        ? t('common:noMatch')
+        : null
     );
     return () => {};
   }, [filters, searchQuery, groupId, story.stories]);
@@ -105,7 +109,7 @@ const Collection: FC<CollectionProps> = ({
           <NoStories openDialog={handleAddDialogOpen} />
         ) : (
           noContentMsg === 'noMatch' && (
-            <NoContent align="left" heading={t(noContentMsg)} size="large" />
+            <NoContent align="left" heading={noContentMsg} size="large" />
           )
         ))}
       <AnimatePresence initial={false}>

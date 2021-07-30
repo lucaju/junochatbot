@@ -24,7 +24,7 @@ const GeneralView: FC = () => {
   const { storyId } = useParams();
   const { story, ui } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation(['storyGeneral', 'common', 'errorMessages, deleteDialog']);
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [storyData, setStoryData] = useState<Story | undefined>(story.currentStory);
 
@@ -75,7 +75,9 @@ const GeneralView: FC = () => {
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
 
-    const message = isError(response) ? 'errorMessages:somethingWentWrong' : t('storyUpdated');
+    const message = isError(response)
+      ? t('error:somethingWentWrong')
+      : t('storyGeneral:storyUpdated');
 
     actions.ui.showNotification({ message, type });
   };
