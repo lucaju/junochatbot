@@ -49,6 +49,7 @@ const AutocompleteContextMenu: FC<AutocompleteContextMenuProps> = ({
         <Box
           sx={{
             position: 'fixed',
+            zIndex: 1,
             mt: 5.5,
             borderRadius: 1,
             backgroundColor:
