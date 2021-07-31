@@ -56,9 +56,10 @@ export const getUserDetails = async (
   //groups
   const responseGroup = await effects.users.api.getUserGroup(responseDetails.id, token);
 
-  if (responseGroup && !isError(responseGroup)) {
-    user.groupId = responseGroup.id;
-  }
+  if (isError(responseGroup)) return user;
+
+  user.groupId = responseGroup.id;
+  user.group = responseGroup;
 
   return user;
 };

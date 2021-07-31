@@ -48,6 +48,7 @@ export interface User {
   updatedDate?: string;
   avatarUrl?: string | any;
   groupId?: number | string;
+  group?: UserGroup; 
   token?: string;
 }
 

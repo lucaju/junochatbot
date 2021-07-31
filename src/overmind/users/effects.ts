@@ -50,14 +50,13 @@ export const api = {
     return result as User;
   },
 
-  getUserGroup: async (userId: number, token: string): Promise<UserGroup | ErrorMessage | void> => {
+  getUserGroup: async (userId: number, token: string): Promise<UserGroup | ErrorMessage> => {
     const response = await fetch(`${API_URL}/groups/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
     // no content
-    if (response.status === 204) return;
-
+    if (response.status === 204) return { errorMessage: response.statusText };
     if (!response.ok) return { errorMessage: response.statusText };
 
     const result = await response.json();

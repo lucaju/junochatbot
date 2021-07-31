@@ -105,10 +105,10 @@ const Collection: FC<CollectionProps> = ({
   return (
     <Box>
       {!isLoading &&
-        (noContentMsg === 'noStoriesYet' ? (
+        (noContentMsg === t('stories:noStoriesYet') ? (
           <NoStories openDialog={handleAddDialogOpen} />
         ) : (
-          noContentMsg === 'noMatch' && (
+          noContentMsg === t('common:noMatch') && (
             <NoContent align="left" heading={noContentMsg} size="large" />
           )
         ))}

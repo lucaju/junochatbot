@@ -57,9 +57,6 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
 
   const items = () => {
     return users.list
-      .filter(() => {
-        if (session.isAdmin) return true;
-      })
       .filter((item) => {
         if (filters.size === 0) return true;
         let match = true;

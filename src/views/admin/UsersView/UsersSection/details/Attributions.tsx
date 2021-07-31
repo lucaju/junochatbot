@@ -31,7 +31,7 @@ const Attributions: FC<AttributionsProps> = ({
 
   return (
     <>
-      <Grid item md={session.isAdmin ? 5 : 3} xs={12}>
+      <Grid item md={session.isAdmin ? 3 : 6} xs={12}>
         {session.isAdmin && !values.id ? (
           <TextField
             disabled={!session.isAdmin ? true : false}
@@ -48,38 +48,51 @@ const Attributions: FC<AttributionsProps> = ({
           >
             {users.roleTypes.map((value) => (
               <MenuItem key={value} sx={{ textTransform: 'capitalize' }} value={value}>
-                {t(value)}
+                {t(`users:${value}`)}
               </MenuItem>
             ))}
           </TextField>
         ) : (
           <>
-            <Typography sx={{ textTransform: 'capitalize' }} variant="caption">{t('users:role')}</Typography>
+            <Typography sx={{ textTransform: 'capitalize' }} variant="caption">
+              {t('users:role')}
+            </Typography>
             <Typography>{values.roleTypeId}</Typography>
           </>
         )}
       </Grid>
-      <Grid item md={session.isAdmin ? 7 : 9} xs={12}>
-        {groupsOptions && (
-          <TextField
-            disabled={!session.isAdmin ? true : false}
-            error={Boolean(touched.groupId && errors.groupId)}
-            fullWidth
-            label={t('common:group')}
-            name="groupId"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            select
-            sx={{ textTransform: 'capitalize' }}
-            value={values.groupId}
-            variant="outlined"
-          >
-            {users.groups.map(({ id, name }) => (
-              <MenuItem key={id} sx={{ textTransform: 'capitalize' }} value={id}>
-                {t(name)}
-              </MenuItem>
-            ))}
-          </TextField>
+      <Grid item md={session.isAdmin ? 9 : 6} xs={12}>
+        {session.isAdmin ? (
+          <>
+            {groupsOptions && (
+              <TextField
+                disabled={!session.isAdmin ? true : false}
+                error={Boolean(touched.groupId && errors.groupId)}
+                fullWidth
+                label={t('common:group')}
+                name="groupId"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                select
+                sx={{ textTransform: 'capitalize' }}
+                value={values.groupId}
+                variant="outlined"
+              >
+                {users.groups.map(({ id, name }) => (
+                  <MenuItem key={id} sx={{ textTransform: 'capitalize' }} value={id}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          </>
+        ) : (
+          <>
+            <Typography sx={{ textTransform: 'capitalize' }} variant="caption">
+              {t('common:group')}
+            </Typography>
+            <Typography>{session.user?.group?.name}</Typography>
+          </>
         )}
       </Grid>
     </>

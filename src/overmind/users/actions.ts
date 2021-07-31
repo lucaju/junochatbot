@@ -14,6 +14,10 @@ export const getUsers = async (
   const authuser = state.session.user;
   if (!authuser || !authuser.token) return { errorMessage: 'Not authorized' };
 
+  if (!state.session.isAdmin && !state.session.isInstructor) {
+    return { errorMessage: 'Not authorized' };
+  }
+
   let response;
 
   if (groupId) {
@@ -27,8 +31,6 @@ export const getUsers = async (
   if (!groupId && state.session.isAdmin) {
     response = await effects.users.api.getAllUsers(authuser.token);
   }
-
-  if (!groupId && !state.session.isAdmin) return { errorMessage: 'Not authorized' };
 
   if (!response) return { errorMessage: 'Not authorized' };
   if (isError(response)) return response;
