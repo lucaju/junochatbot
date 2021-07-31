@@ -2,7 +2,7 @@ import { Parameter } from '@src/types';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../';
 
-export const createParameter = ({ state }: Context) => {
+export const createParameter = ({ state, actions }: Context) => {
   if (!state.intents.currentIntent) return;
   const { currentIntent } = state.intents;
   const parameters = currentIntent.parameters ?? [];
@@ -13,9 +13,11 @@ export const createParameter = ({ state }: Context) => {
   };
 
   currentIntent.parameters = [freshParam, ...parameters];
+
+  actions.intents.setIntentHaChange(true);
 };
 
-export const addParameter = ({ state }: Context, entityTypeDisplayName: string) => {
+export const addParameter = ({ state, actions }: Context, entityTypeDisplayName: string) => {
   if (!state.intents.currentIntent) return;
   const { currentIntent } = state.intents;
   const parameters = currentIntent.parameters ?? [];
@@ -33,6 +35,8 @@ export const addParameter = ({ state }: Context, entityTypeDisplayName: string) 
   };
 
   currentIntent.parameters = [...parameters, newParam];
+
+  actions.intents.setIntentHaChange(true);
 };
 
 export const updateParameter = ({ state, actions }: Context, updatedParam: Parameter) => {
@@ -55,10 +59,12 @@ export const updateParameter = ({ state, actions }: Context, updatedParam: Param
     }
     return param;
   });
+
+  actions.intents.setIntentHaChange(true);
 };
 
 export const updateParameterByAlias = (
-  { state }: Context,
+  { state, actions }: Context,
   { alias, entityName }: { alias: string; entityName: string }
 ) => {
   if (!state.intents.currentIntent?.parameters) return;
@@ -79,6 +85,8 @@ export const updateParameterByAlias = (
 
     return newParam;
   });
+
+  actions.intents.setIntentHaChange(true);
 };
 
 export const removeParameter = ({ state, actions }: Context, name: string) => {
@@ -90,13 +98,17 @@ export const removeParameter = ({ state, actions }: Context, name: string) => {
   if (param) actions.intents.removeParamFromPhrases(param.displayName);
 
   state.intents.currentIntent.parameters = parameters.filter((param) => param.name !== name);
+
+  actions.intents.setIntentHaChange(true);
 };
 
-export const removeParameterByDisplayName = ({ state }: Context, displayName: string) => {
+export const removeParameterByDisplayName = ({ state, actions }: Context, displayName: string) => {
   if (!state.intents.currentIntent?.parameters) return;
   const { parameters } = state.intents.currentIntent;
 
   state.intents.currentIntent.parameters = parameters.filter(
     (param) => param.displayName !== displayName
   );
+
+  actions.intents.setIntentHaChange(true);
 };

@@ -63,8 +63,15 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   }, [open]);
 
   const changeTab = async (value: string) => {
-    await submit(); //autosave
+    await autoSave();
     setActiveTab(value);
+  };
+
+  const autoSave = async () => {
+    if (intents.currentIntent?.hasChanged) {
+      await submit();
+      actions.intents.setIntentHaChange(false);
+    }
   };
 
   const submit = async () => {

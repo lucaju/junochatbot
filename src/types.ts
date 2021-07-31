@@ -245,6 +245,7 @@ export type Intent = {
   rootFollowupIntentName?: string;
   parentFollowupIntentName?: string;
   followupIntentInfo?: FollowupIntentInfo[];
+  hasChanged?: boolean;
 };
 
 // CHAT

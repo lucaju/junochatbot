@@ -11,11 +11,14 @@ export const extractContextName = (name: string) => {
 };
 
 export const addContext = ({ actions }: Context, type: Type) => {
-  type === 'input' ? actions.intents.addInputContext() : actions.intents.addOutputContext();
+  const hasAdded =
+    type === 'input' ? actions.intents.addInputContext() : actions.intents.addOutputContext();
+  if (hasAdded) actions.intents.setIntentHaChange(true);
 };
 
-export const addInputContext = ({ state }: Context) => {
-  if (!state.intents.currentIntent) return;
+export const addInputContext = ({ state }: Context): boolean => {
+  if (!state.intents.currentIntent) return false;
+
   const { currentIntent } = state.intents;
   const inputs = currentIntent?.inputContexts ?? [];
 
@@ -27,10 +30,12 @@ export const addInputContext = ({ state }: Context) => {
   };
 
   currentIntent.inputContexts = [...inputs, newContext];
+
+  return true;
 };
 
-export const addOutputContext = ({ state }: Context, shortName?: string) => {
-  if (!state.intents.currentIntent) return;
+export const addOutputContext = ({ state }: Context, shortName?: string): boolean => {
+  if (!state.intents.currentIntent) return false;
   const { currentIntent } = state.intents;
   const outputs = currentIntent?.outputContexts ?? [];
 
@@ -48,16 +53,24 @@ export const addOutputContext = ({ state }: Context, shortName?: string) => {
   };
 
   currentIntent.outputContexts = [...outputs, newContext];
+
+  return true;
 };
 
 export const updateContext = ({ actions }: Context, context: ContextType) => {
-  context.type === 'input'
-    ? actions.intents.updateInputContextName(context)
-    : actions.intents.updateOutputContex(context);
+  const hasChanged =
+    context.type === 'input'
+      ? actions.intents.updateInputContextName(context)
+      : actions.intents.updateOutputContex(context);
+
+  if (hasChanged) actions.intents.setIntentHaChange(true);
 };
 
-export const updateInputContextName = ({ state, actions }: Context, context: ContextType) => {
-  if (!state.intents.currentIntent?.inputContexts) return;
+export const updateInputContextName = (
+  { state, actions }: Context,
+  context: ContextType
+): boolean => {
+  if (!state.intents.currentIntent?.inputContexts) return false;
 
   // deconstruct
   const { inputContexts } = state.intents.currentIntent;
@@ -81,10 +94,12 @@ export const updateInputContextName = ({ state, actions }: Context, context: Con
     }
     return context;
   });
+
+  return true;
 };
 
-export const updateOutputContex = ({ state, actions }: Context, context: ContextType) => {
-  if (!state.intents.currentIntent?.outputContexts) return;
+export const updateOutputContex = ({ state, actions }: Context, context: ContextType): boolean => {
+  if (!state.intents.currentIntent?.outputContexts) return false;
 
   // deconstruct
   const { outputContexts } = state.intents.currentIntent;
@@ -106,28 +121,37 @@ export const updateOutputContex = ({ state, actions }: Context, context: Context
     }
     return context;
   });
+
+  return true;
 };
 
 export const removeContext = ({ actions }: Context, context: ContextType) => {
-  context.type === 'input'
-    ? actions.intents.removeInputContex(context.id)
-    : actions.intents.removeOutputContext(context.id);
+  const hasRemoved =
+    context.type === 'input'
+      ? actions.intents.removeInputContex(context.id)
+      : actions.intents.removeOutputContext(context.id);
+
+  if (hasRemoved) actions.intents.setIntentHaChange(true);
 };
 
-export const removeInputContex = ({ state }: Context, id?: string) => {
-  if (!id) return;
-  if (!state.intents.currentIntent?.inputContexts) return;
+export const removeInputContex = ({ state }: Context, id?: string): boolean => {
+  if (!id) return false;
+  if (!state.intents.currentIntent?.inputContexts) return false;
   const { inputContexts } = state.intents.currentIntent;
 
   state.intents.currentIntent.inputContexts = inputContexts.filter((context) => context.id !== id);
+
+  return true;
 };
 
-export const removeOutputContext = ({ state }: Context, id?: string) => {
-  if (!id) return;
-  if (!state.intents.currentIntent?.outputContexts) return;
+export const removeOutputContext = ({ state }: Context, id?: string): boolean => {
+  if (!id) return false;
+  if (!state.intents.currentIntent?.outputContexts) return false;
   const { outputContexts } = state.intents.currentIntent;
 
   state.intents.currentIntent.outputContexts = outputContexts.filter(
     (context) => context.id !== id
   );
+
+  return true;
 };

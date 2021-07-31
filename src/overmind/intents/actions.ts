@@ -198,6 +198,10 @@ export const _createFollowUpIntent = async (
   return response;
 };
 
+export const setIntentHaChange = ({ state }: Context, value: boolean) => {
+  if (state.intents.currentIntent) state.intents.currentIntent.hasChanged = value;
+};
+
 export const updateIntent = async (
   { state, actions, effects }: Context,
   intent?: Intent
@@ -213,7 +217,7 @@ export const updateIntent = async (
   //revert transformation and remove additonal values
   const intentToSubmit = partIntentToSubmit({ ...intent });
 
-  //remove readonly attributes
+  //remove read-only attributes
   delete intentToSubmit.rootFollowupIntentName;
   delete intentToSubmit.parentFollowupIntentName;
   delete intentToSubmit.followupIntentInfo;
@@ -233,7 +237,7 @@ export const updateIntent = async (
   return response;
 };
 
-export const updateDefaultWelcomeIntent = async ({ state, actions, effects }: Context) => {
+export const updateDefaultWelcomeIntent = async ({ state, effects }: Context) => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -270,7 +274,7 @@ export const updateDefaultWelcomeIntent = async ({ state, actions, effects }: Co
   if (isError(response)) return response;
 };
 
-export const updateDefaultFallbackIntent = async ({ state, actions, effects }: Context) => {
+export const updateDefaultFallbackIntent = async ({ state, effects }: Context) => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -294,7 +298,7 @@ export const updateDefaultFallbackIntent = async ({ state, actions, effects }: C
   //revert transformation and remove additonal values
   const intentToSubmit = partIntentToSubmit({ ...defaultFallbackIntent });
 
-  //remove readonly attributes
+  //remove read-only attributes
   delete intentToSubmit.rootFollowupIntentName;
   delete intentToSubmit.parentFollowupIntentName;
   delete intentToSubmit.followupIntentInfo;
@@ -306,13 +310,20 @@ export const updateDefaultFallbackIntent = async ({ state, actions, effects }: C
 const partIntentToSubmit = (intent: Intent): Intent => {
   //* remove UUID from message array
   if (intent.messages) {
-    intent.messages = intent.messages.map((message) => {
+    const messages: Message[] = [];
+    intent.messages.forEach((message) => {
       if ('payload' in message) {
-        return { payload: message.payload };
+        const { payload } = message;
+        if (payload.source === '-1') return;
+        messages.push({ payload });
       } else {
-        return { text: message.text };
+        const { text } = message;
+        if (!text.text || text.text.length === 0 || text.text[0] === '') return;
+        messages.push({ text });
       }
     });
+
+    intent.messages = messages;
   }
 
   //* remvoe UUID from output Context array
@@ -364,6 +375,9 @@ const partIntentToSubmit = (intent: Intent): Intent => {
       return phrase;
     });
   }
+
+  //custo controle attribute
+  delete intent.hasChanged;
 
   return intent;
 };
