@@ -1,11 +1,11 @@
 [{
     "name": "Quebec",
     "logo": "quebec.png",
-    "link": ""
+    "link": "https://www.quebec.ca/gouv/ministere/economie"
   },
   {
     "name": "Université de Montreal",
     "logo": "udm.png",
-    "link": ""
+    "link": "https://www.umontreal.ca/"
   }
 ]
