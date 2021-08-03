@@ -46,9 +46,9 @@ const Pedagogical: FC = () => {
           >
             {content}
           </ReactMarkdown>
-          <Box display="flex" justifyContent="center">
+          {/* <Box display="flex" justifyContent="center">
             <Button sx={{ width: 200 }}>{t('home:pedagogicalMaterial')}</Button>
-          </Box>
+          </Box> */}
         </Stack>
       </Container>
     </Box>
