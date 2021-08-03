@@ -23,16 +23,22 @@
     "picture": "myriam.png"
   },
   {
-    "name": "Maria Grullon",
-    "email": "",
-    "institution": "Université de Montréal",
-    "picture": "maria.png"
-  },
-  {
     "name": "Sirleia Rosa",
     "email": "",
     "institution": "Cégep de Saint Laurent",
     "picture": "sirleia.png"
+  },
+  {
+    "name": "Pier-Marc Gosselin",
+    "email": "pmgosselin@cegepsl.qc.ca",
+    "institution": "Cégep de Saint Laurent",
+    "picture": "pier_marc.png"
+  },
+  {
+    "name": "Maria Grullon",
+    "email": "mdc.grullon.carvajal@umontreal.ca",
+    "institution": "Université de Montréal",
+    "picture": "maria.png"
   },
   {
     "name": "Dave Racek",
@@ -41,21 +47,15 @@
     "picture": ""
   },
   {
-    "name": "Samia Alves Pedraça",
+    "name": "Samia Pedraça",
     "email": "spedraca1@gmail.com",
     "institution": "Concordia University",
-    "picture": ""
+    "picture": "samia.jpeg"
   },
   {
-    "name": "Sami _",
-    "email": "",
-    "institution": "-",
-    "picture": ""
-  },
-  {
-    "name": "Pierre Mark",
-    "email": "",
-    "institution": "-",
+    "name": "Samy Rasmy",
+    "email": "samyrasmy0@gmail.com",
+    "institution": "Université de Montréal",
     "picture": ""
   }
 ]
