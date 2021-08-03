@@ -1,46 +1,9 @@
 [{
-    "title_en-CA": "Research methodology workshop: Anasynthesis",
-    "description_en-CA": "Workshop proposed by Maria Grullon on research methodology, Anasynthèse",
-    "title_fr-CA": "Atelier de méthodologie de recherche: Anasynthèse",
-    "description_fr-CA": "Atelier proposé par Maria Grullon sur la méthodologie de recherche, Anasynthèse",
-    "picture": "activity1.jpg",
-    "mediaType": "video",
-    "link": "https://www.youtube.com/watch?v=RvRhUHTV_8k"
-  },
-  {
-    "title_en-CA": "Chatbot creation workshop",
-    "description_en-CA": "The chatbot creation workshop took place on Friday, August 14, 2020, from 10 a.m. to noon on Zoom. In this bilingual workshop offered by Julia Salles and Luciano Frizzera, participants were supported in the creation of a chatbot on the Dialogflow platform",
-    "title_fr-CA": "Atelier de création de chatbot",
-    "description_fr-CA": "L’atelier de création de chatbot a eu lieu le vendredi 14 août 2020, de 10h à midi sur Zoom. Dans cet atelier bilingue proposé par Julia Salles et Luciano Frizzera, les participant.e.s ont été accompagné.e.s dans la création d’un chatbot sur la plateforme Dialogflow",
-    "picture": "",
-    "mediaType": "video",
-    "link": ""
-  },
-  {
-    "title_en-CA": "Design of educational scenarios",
-    "description_en-CA": "Workshop of Myriam Rafla on the design of educational scenarios for the creation of interactive audiovisual stories",
-    "title_fr-CA": "Design de scénarios pédagogiques",
-    "description_fr-CA": "Atelier de Myriam Rafla sur le design de scénarios pédagogiques pour la création de récits audiovisuels interactifs",
-    "picture": "",
-    "mediaType": "video",
-    "link": ""
-  },
-  {
-    "title_en-CA": "Communication plan and design thinking",
-    "description_en-CA": "Workshop proposed by François Haurat on design thinking and the communication plan",
-    "title_fr-CA": "Plan de communication et design thinking",
-    "description_fr-CA": "Atelier proposé par François Haurat sur le design thinking et le plan de communication",
-    "picture": "",
-    "mediaType": "video",
-    "link": ""
-  },
-  {
-    "title_en-CA": "Conference Presentation",
-    "description_en-CA": "Conference Presentation",
-    "title_fr-CA": "Conference Presentation",
-    "description_fr-CA": "Conference Presentation",
-    "picture": "",
-    "mediaType": "text",
-    "link": ""
-  }
-]
+  "title_en-CA": "From the Ground Up",
+  "description_en-CA": "Paper published in the Viewfinder Magazine",
+  "title_fr-CA": "From the Ground Up",
+  "description_fr-CA": "Article publié dans Viewfinder Magazine",
+  "picture": "finderview_paper.png",
+  "mediaType": "text",
+  "link": "https://learningonscreen.ac.uk/viewfinder/articles/from-the-ground-up/"
+}]
