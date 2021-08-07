@@ -72,7 +72,10 @@
     "pageNotFound": "Page Not Found",
     "somethingWentWrong": "Something went wrong!",
     "title404": "404: The page you are looking for is not here",
-    "titleRequired": "Title required"
+    "titleRequired": "Title required",
+    "videoIDNotFound": "videoID not found",
+    "videoNotFound": "Video not found",
+    "videoUrlInvalid": "Invalid URL"
   },
   "groups": {
     "createGroup": "Crate group",
@@ -192,8 +195,8 @@
     "addVideo": "Add Video",
     "channel": "channel",
     "noVideosYet": "No videos yet",
-    "pasteVideo": "Paste YouTube Video URL. E.g.",
-    "showTags": "showTags",
+    "pasteVideo": "Paste YouTube Video. E.g.",
+    "showTags": "show Tags",
     "source": "source",
     "videoAdded": "Video Added",
     "videoDeleted": "Video Deleted",

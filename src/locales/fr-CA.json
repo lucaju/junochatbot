@@ -72,7 +72,10 @@
     "pageNotFound": "Page non trouvée",
     "somethingWentWrong": "Oups! Petit problème!",
     "title404": "404: La page que vous cherchez n'est pas ici",
-    "titleRequired": "Titre obligatoire"
+    "titleRequired": "Titre obligatoire",
+    "videoIDNotFound": "",
+    "videoNotFound": "",
+    "videoUrlInvalid": ""
   },
   "groups": {
     "createGroup": "Créer un groupe",
@@ -193,7 +196,7 @@
     "channel": "chaîne",
     "noVideosYet": "pas de vidéo",
     "pasteVideo": "coller l'URL YouTube",
-    "showTags": "voir les tags",
+    "showTags": "",
     "source": "source",
     "videoAdded": "Video ajouté",
     "videoDeleted": "Video supprimé",
