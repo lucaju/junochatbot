@@ -1,9 +1,17 @@
-import { Autocomplete, Grid, Stack, TextField } from '@material-ui/core';
-import { useAppState, useActions } from '@src/overmind';
-import { Video } from '@src/types';
+import {
+  Autocomplete,
+  AutocompleteChangeReason,
+  Box,
+  Grid,
+  Stack,
+  TextField,
+} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import { useActions, useAppState } from '@src/overmind';
+import { Tag, Video } from '@src/types';
 import { FormikErrors, FormikTouched, useField } from 'formik';
 import { json } from 'overmind';
-import React, { ChangeEvent, FC, FocusEvent, SyntheticEvent, useEffect } from 'react';
+import React, { FC, SyntheticEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ExtraProps {
@@ -29,6 +37,11 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
     return () => {};
   }, []);
 
+  const tagsOnChange = (event: SyntheticEvent, value: Tag[], reason: AutocompleteChangeReason) => {
+    if (reason === 'blur') return handleBlur(event);
+    setValue(json(value));
+  };
+
   return (
     <Grid item md={12} xs={12}>
       <Stack direction="column" spacing={2}>
@@ -47,28 +60,29 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
           variant="outlined"
         />
         {/* {videos.tagCollection.length > 0 && ( */}
-        <Autocomplete
-          filterSelectedOptions
-          getOptionLabel={(tag) => tag.name}
-          id="tags"
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-          multiple
-          onChange={(event: SyntheticEvent, value, reason) => {
-            if (reason === 'blur') return handleBlur(event);
-            setValue(json(value));
-          }}
-          options={videos.tagCollection}
-          value={values.tags}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={t('common:tags')}
-              fullWidth
-              sx={{ textTransform: 'capitalize' }}
-              variant="standard"
-            />
-          )}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+          <Autocomplete
+            filterSelectedOptions
+            getOptionLabel={(tag) => tag.name}
+            id="tags"
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            multiple
+            onChange={tagsOnChange}
+            options={videos.tagCollection}
+            sx={{ width: '100%' }}
+            value={values.tags}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={t('common:tags')}
+                fullWidth
+                sx={{ textTransform: 'capitalize' }}
+                variant="standard"
+              />
+            )}
+          />
+        </Box>
         {/* )} */}
       </Stack>
     </Grid>
