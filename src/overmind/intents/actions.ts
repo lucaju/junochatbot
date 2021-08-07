@@ -339,10 +339,13 @@ const partIntentToSubmit = (intent: Intent): Intent => {
 
   //* translate inputContexts to inputContextNames
   if (intent.inputContexts) {
-    intent.inputContextNames = intent.inputContexts.map((context) => {
-      return context.name;
+    const inputContextNames: string[] = [];
+    intent.inputContexts.forEach((context) => {
+      if (context.name !== '') inputContextNames.push(context.name);
     });
+    intent.inputContextNames = inputContextNames;
   }
+  delete intent.inputContexts;
 
   //* remove UUID for new parameters
   if (intent.parameters) {
