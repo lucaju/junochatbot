@@ -31,7 +31,12 @@ const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, i
 
       <Box flexGrow={1} />
 
-      <LoadingButton onClick={handleSubmit} loading={isSubmitting} variant="contained">
+      <LoadingButton
+        disabled={!intents.currentIntent?.hasChanged ?? false}
+        loading={isSubmitting}
+        onClick={handleSubmit}
+        variant="contained"
+      >
         {t('common:save')}
       </LoadingButton>
     </>
