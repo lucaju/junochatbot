@@ -10,18 +10,30 @@ router.get('/video/:id', async (req, res) => {
   const PART = 'snippet%2CcontentDetails';
   const API_KEY = process.env.YT_API;
 
-  const ytResponse = await axios.get(
-    `${baseUrl}/videos?part=${PART}&id=${videoID}&key=${API_KEY}`
-  );
+  if (!API_KEY || !videoID) return res.status(400).send();
+
+  const ytResponse = await axios.get(`${baseUrl}/videos?part=${PART}&id=${videoID}&key=${API_KEY}`);
+
+  if (
+    !ytResponse ||
+    !ytResponse.data ||
+    !ytResponse.data.items ||
+    ytResponse.data.items.length === 0
+  ) {
+    return res.status(404).send();
+  }
 
   const video = ytResponse.data.items[0];
+  if (!video) return res.status(404).send();
+
+  const { snippet, contentDetails } = video;
 
   const videData = {
-    title: video.snippet.title,
-    channelTitle: video.snippet.channelTitle,
-    publishedAt: video.snippet.publishedAt,
-    duration: video.contentDetails.duration,
-    imageUrl: video.snippet.thumbnails.medium.url,
+    title: snippet.title,
+    channelTitle: snippet.channelTitle,
+    publishedAt: snippet.publishedAt,
+    duration: contentDetails.duration,
+    imageUrl: snippet.thumbnails.medium.url,
   };
 
   res.status(200).send(videData);
