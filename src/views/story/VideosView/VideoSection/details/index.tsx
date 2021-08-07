@@ -6,6 +6,7 @@ import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Url from 'url-parse';
 import * as Yup from 'yup';
 import Actions from './Actions';
 import Extra from './Extra';
@@ -36,6 +37,7 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
   const [videoData, setVideoData] = useState(initialValues);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | undefined>();
+  const [isValidYTiD, setIsValidYTiD] = useState(false);
   const [dirtyFromYoutube, setDirtyFromYoutube] = useState(false);
 
   useEffect(() => {
@@ -70,24 +72,31 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
   });
 
   const parseVideoUrl = (input: string) => {
-    //REGEX: extract the params from URL. anything after the '/watch?'
-    //ex: https://www.youtube.com/watch?v=2MQx0SXLCcE&t=4274s
-    // -> v=2MQx0SXLCcE&t=4274s
-    const regex = /(?:watch\?)(.+)/;
-    const match = input.match(regex);
-    if (!match) return;
+    const videoUrl = new Url(input, true);
 
-    const rawParams = match[1].split('&');
+    let videoId: string | undefined;
+    if (!['youtu.be', 'www.youtube.com'].includes(videoUrl.hostname))
+      return { errorMessage: t('error:videoUrlInvalid') };
+    if (videoUrl.hostname === 'youtu.be') videoId = videoUrl.pathname.slice(1);
+    if (videoUrl.hostname === 'www.youtube.com') videoId = videoUrl.query?.v;
 
-    const videoParams: Map<string, string> = new Map();
-    rawParams.forEach((params) => {
-      const [key, value] = params.split('=');
-      videoParams.set(key, value);
-    });
+    if (!videoId) return { errorMessage: t('error:videoIDNotFound') };
 
-    const id = videoParams.get('v');
     videoData.url = input;
-    setYoutubeVideoId(id);
+    setYoutubeVideoId(videoId);
+
+    return videoId;
+  };
+
+  const fetchVideo = async (input: string) => {
+    const videoId = parseVideoUrl(input);
+    if (isError(videoId)) return videoId;
+
+    const response = await actions.videos.getYoutubeData(videoId);
+    if (isError(response)) return { errorMessage: t('error:videoNotFound') };
+
+    setIsValidYTiD(true);
+    return;
   };
 
   const fetchYoutubeData = async () => {
@@ -136,6 +145,7 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
   const handleBeforeClose = () => {
     setDirtyFromYoutube(false);
     setYoutubeVideoId(undefined);
+    setIsValidYTiD(false);
     handleClose();
   };
 
@@ -149,7 +159,7 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
       open={open}
       scroll="body"
     >
-      {!videoId && !youtubeVideoId ? (
+      {!videoId && !isValidYTiD ? (
         <>
           <DialogTitle
             sx={{
@@ -161,7 +171,7 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
             {t('videos:addVideo')}
           </DialogTitle>
           <DialogContent dividers>
-            <Source parseVideoUrl={parseVideoUrl} />
+            <Source fetchVideo={fetchVideo} />
           </DialogContent>
         </>
       ) : (

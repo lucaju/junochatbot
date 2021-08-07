@@ -4,7 +4,7 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { Video } from '@src/types';
 import { DateTime, Duration } from 'luxon';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface MetaProps {
@@ -17,10 +17,6 @@ const Meta: FC<MetaProps> = ({ handleRefresh, values, youtubeVideoId }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [refreshed, setRefreshed] = useState(false);
-
-  useEffect(() => {
-    if (youtubeVideoId && values.title === '') fetchData();
-  }, [values.title]);
 
   const fetchData = async () => {
     setLoading(true);
