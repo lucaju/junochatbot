@@ -1,11 +1,12 @@
 import { Box, Container, Link, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-import { useAppState } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 const Intro: FC = () => {
   const [content, setContent] = useState('');
   const { ui } = useAppState();
+  const actions = useActions();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -19,7 +20,9 @@ const Intro: FC = () => {
   }, [ui.languageCode]);
 
   const loadContent = async () => {
-    const file = `intro_${ui.languageCode}.md`;
+    //check if system language is supported. If not, fallback to the firs language supported
+    const lang = actions.ui.isLanguageSupported(ui.languageCode) ? ui.languageCode : ui.languages[0].value;
+    const file = `intro_${lang}.md`;
     const response = await fetch(`./assets/intro/${file}`);
     const text = await response.text();
     setContent(text);

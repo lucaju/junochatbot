@@ -1,5 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
-import { useAppState } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { motion } from 'framer-motion';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,10 @@ interface ActivityCardProps {
 const ActivityCard: FC<ActivityCardProps> = ({ activity, showContent }) => {
   const { t } = useTranslation();
   const { ui } = useAppState();
-  const lang = ui.languageCode ?? 'en_CA';
+  const actions = useActions();
+  
+   //check if system language is supported. If not, fallback to the firs language supported
+  const lang = actions.ui.isLanguageSupported(ui.languageCode) ? ui.languageCode : ui.languages[0].value;
 
   const { link, mediaType, picture } = activity;
   //@ts-ignore

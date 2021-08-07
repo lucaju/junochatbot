@@ -25,6 +25,12 @@ export const switchLanguage = ({ state }: Context, value: string) => {
   state.ui.languageCode = value;
 };
 
+export const isLanguageSupported = ({ state }: Context, value?: string) => {
+  if (!value) return false;
+  const langSupported = state.ui.languages.some((lang) => lang.value === value);
+  return langSupported;
+};
+
 export const showNotification = (
   { state }: Context,
   { message, type, open = true }: { message: string; type: NotificationType; open?: boolean }
