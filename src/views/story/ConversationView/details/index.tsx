@@ -11,7 +11,7 @@ import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useActions, useAppState } from '@src/overmind';
 import { NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Actions from './Actions';
 import Contexts from './contexts';
@@ -112,7 +112,18 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   };
 
   const handleCancelButtonClick = () => {
-    action == 'edit' ? setCancelDialogOpen(true) : handleClose();
+    action == 'edit' && intents.currentIntent?.hasChanged
+      ? setCancelDialogOpen(true)
+      : handleClose();
+  };
+
+  const onBackdropClick = (event: SyntheticEvent<{}, Event>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    action == 'edit' && intents.currentIntent?.hasChanged
+      ? setCancelDialogOpen(true)
+      : handleClose();
   };
 
   const handleDeleteButtonClick = () => setDeleteDialogOpen(true);
@@ -125,7 +136,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           fullWidth
           keepMounted
           maxWidth={action === 'create' ? 'sm' : 'md'}
-          onBackdropClick={action !== 'edit' ? handleCancelButtonClick : undefined}
+          onBackdropClick={onBackdropClick}
           open={open}
           TransitionComponent={Transition}
         >
