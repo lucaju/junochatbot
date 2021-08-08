@@ -1,11 +1,14 @@
 import {
+  Box,
   Divider,
   IconButton,
   ListItemSecondaryAction,
   ListItemText,
   Menu,
   MenuItem,
+  Typography,
 } from '@material-ui/core';
+import { alpha } from '@material-ui/core/styles';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { useActions, useAppState } from '@src/overmind';
 import { sortBy } from '@src/util/utilities';
@@ -77,24 +80,49 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
       onClose={handleClose}
       open={open}
     >
-      {intents.currentIntent?.parameters?.map(({ name, displayName, entityTypeDisplayName }) => (
-        <MenuItem
-          key={name}
-          dense
-          onClick={() => handleClick(entityTypeDisplayName, displayName)}
-          selected={value === displayName}
-        >
-          <ListItemText primary={displayName} />
-          {value === displayName && (
-            <ListItemSecondaryAction>
-              <IconButton aria-label="delete" onClick={handleRemove} size="small">
-                <HighlightOffIcon fontSize="inherit" />
-              </IconButton>
-            </ListItemSecondaryAction>
+      {intents.currentIntent?.parameters && (
+        <Box>
+          <Box
+            mt={-1}
+            px={2}
+            sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.05) }}
+          >
+            <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
+              Current parameters
+            </Typography>
+          </Box>
+
+          {intents.currentIntent?.parameters?.map(
+            ({ name, displayName, entityTypeDisplayName }) => (
+              <MenuItem
+                key={name}
+                dense
+                onClick={() => handleClick(entityTypeDisplayName, displayName)}
+                selected={value === displayName}
+              >
+                <ListItemText primary={displayName} />
+                {value === displayName && (
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="delete" onClick={handleRemove} size="small">
+                      <HighlightOffIcon fontSize="inherit" />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                )}
+              </MenuItem>
+            )
           )}
-        </MenuItem>
-      ))}
-      {intents.currentIntent?.parameters && <Divider sx={{ my: 0.5 }} />}
+          <Divider sx={{ my: 0.5 }} />
+        </Box>
+      )}
+      <Box
+        mt={-1}
+        px={2}
+        sx={{ backgroundColor: ({ palette }) => alpha(palette.text.primary, 0.05) }}
+      >
+        <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
+          Create new parameter
+        </Typography>
+      </Box>
       {entitiesList.map(({ id, name }) => (
         <MenuItem key={id} dense onClick={() => handleClick(name)}>
           {name}
