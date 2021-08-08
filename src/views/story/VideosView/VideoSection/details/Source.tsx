@@ -22,6 +22,7 @@ const Source: FC<SourceProps> = ({ fetchVideo }) => {
 
   return (
     <TextField
+      autoFocus
       error={!!error}
       fullWidth
       helperText={error ? `${error}. ${helperText}` : ''}
