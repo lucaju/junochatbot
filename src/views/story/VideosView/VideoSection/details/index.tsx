@@ -92,11 +92,12 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
     const videoId = parseVideoUrl(input);
     if (isError(videoId)) return videoId;
 
-    const response = await actions.videos.getYoutubeData(videoId);
-    if (isError(response)) return { errorMessage: t('error:videoNotFound') };
+    const ytData = await actions.videos.getYoutubeData(videoId);
+    if (isError(ytData)) return { errorMessage: t('error:videoNotFound') };
 
     setIsValidYTiD(true);
-    return;
+    setVideoData({ ...videoData, ...ytData });
+    setDirtyFromYoutube(true);
   };
 
   const fetchYoutubeData = async () => {
