@@ -132,18 +132,5 @@ export const api = {
 
     return true;
   },
-
-  deleteStory: async (storyId: number, token: string): Promise<boolean | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/stories/${storyId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) return { errorMessage: response.statusText };
-
-    return true;
-  },
+  
 };

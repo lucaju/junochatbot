@@ -157,18 +157,3 @@ export const updateStory = async (
 
   return state.story.currentStory;
 };
-
-// export const deleteStory = async (
-//   { state, effects }: Context,
-//   storyId: number
-// ): Promise<boolean | ErrorMessage> => {
-//   const authUser = state.session.user;
-//   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
-
-//   const response = await effects.story.api.deleteStory(storyId, authUser.token);
-//   if (isError(response)) return response;
-
-//   state.story.stories = state.story.stories.filter((s) => s.id !== storyId);
-
-//   return true;
-// };
