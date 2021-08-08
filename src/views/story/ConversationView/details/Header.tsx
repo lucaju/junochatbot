@@ -54,6 +54,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value.trim();
     if (value.length > INTENT_NAME_CHAR_LIMIT) return;
+    actions.intents.setIntentHaChange(true)
     setDisplayName(value);
   };
 
