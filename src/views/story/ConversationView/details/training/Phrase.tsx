@@ -1,6 +1,6 @@
 import { Box, IconButton, Typography, useTheme, Zoom } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { Part as PartType, TrainingPhrase } from '@src/types';
 import React, {
   FC,
@@ -38,6 +38,7 @@ const Phrase: FC<PhraseProps> = ({
   timesAddedCount = 1,
   type = 'EXAMPLE',
 }) => {
+  const { intents } = useAppState();
   const actions = useActions();
   const theme = useTheme();
 
@@ -96,6 +97,7 @@ const Phrase: FC<PhraseProps> = ({
   };
 
   const handleSelectionChange = (event: SyntheticEvent<HTMLElement, Event>) => {
+    if (intents.currentIntent?.isFallback) return;
     if (contextMenuOpen) return;
 
     const selection = window.getSelection();
@@ -103,8 +105,7 @@ const Phrase: FC<PhraseProps> = ({
     if (selection.type !== 'Range') return;
     // @ts-ignore
     if (selection.baseNode !== selection.extentNode) {
-      selection.removeAllRanges();
-      return;
+      return selection.removeAllRanges();
     }
     // @ts-ignore
     if (selection.baseOffset === selection.extentOffset) return;
@@ -117,6 +118,7 @@ const Phrase: FC<PhraseProps> = ({
   };
 
   const handleHihglightClick = (event: MouseEvent<HTMLSpanElement>) => {
+    if (intents.currentIntent?.isFallback) return;
     if (contextMenuOpen) return;
 
     const paramAlias = event.currentTarget.dataset.alias;

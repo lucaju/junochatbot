@@ -35,7 +35,7 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
 
   const handleKeyUp = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key !== '$') return;
-    if (!currentIntent?.parameters) return;
+    if (currentIntent?.isFallback || !currentIntent?.parameters) return;
     setElTarget(event.currentTarget);
     setShowParameters(true);
   };

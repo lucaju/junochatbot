@@ -44,17 +44,19 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
   const [displayName, setDisplayName] = useState(intents.currentIntent?.displayName);
   const { t } = useTranslation();
 
-  const options = [
-    { value: 'context', label: 'contexts' },
-    { value: 'training', label: 'training' },
-    { value: 'parameters', label: 'parameters' },
-    { value: 'responses', label: 'responses' },
-  ];
+  const options = () => {
+    const opts = [];
+    opts.push({ value: 'context', label: 'contexts' });
+    opts.push({ value: 'training', label: 'training' });
+    if (!intents.currentIntent?.isFallback) opts.push({ value: 'parameters', label: 'parameters' });
+    opts.push({ value: 'responses', label: 'responses' });
+    return opts;
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value.trim();
     if (value.length > INTENT_NAME_CHAR_LIMIT) return;
-    actions.intents.setIntentHaChange(true)
+    actions.intents.setIntentHaChange(true);
     setDisplayName(value);
   };
 
@@ -90,7 +92,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
         <>
           {isSM ? (
             <Select fullWidth labelId="tab" id="tab" onChange={handleSelect} value={activeTab}>
-              {options.map(({ value, label }) => (
+              {options().map(({ value, label }) => (
                 <MenuItem key={value} value={value}>
                   {t(`intents${label}`)}
                 </MenuItem>
@@ -106,7 +108,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
               onChange={handleToggleChage}
               value={activeTab}
             >
-              {options.map(({ value, label }) => (
+              {options().map(({ value, label }) => (
                 <ToggleButton key={value} aria-label={value} value={value}>
                   <CenterFocusWeakIcon sx={{ mr: 1 }} />
                   {t(`${label}`)}
