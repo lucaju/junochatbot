@@ -123,11 +123,15 @@ const StoryCard: FC<UserCarddProps> = ({
           </Box>
         </Box>
 
-        <Box display="flex" alignItems="flex-start" mt={1}>
+        <Stack direction="row" alignItems="flex-start" mt={1} spacing={2}>
           <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
             {`${t('common:by')} ${author}`}
           </Typography>
-        </Box>
+          <Divider orientation="vertical" flexItem />
+          <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
+            {`${t('common:owner')} ${story.user.firstName} ${story.user.lastName}`}
+          </Typography>
+        </Stack>
         {story.synopsis && (
           <Box display="flex" alignItems="center" mt={1}>
             <Typography variant="body2">{story.synopsis}</Typography>
