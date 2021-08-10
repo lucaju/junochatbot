@@ -123,11 +123,17 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
           Create new parameter
         </Typography>
       </Box>
-      {entitiesList.map(({ id, name }) => (
-        <MenuItem key={id} dense onClick={() => handleClick(name)}>
-          {name}
-        </MenuItem>
-      ))}
+      {entitiesList
+        .filter(({ id, name }) => {
+          return !intents.currentIntent?.parameters?.some(
+            (param) => param.entityTypeDisplayName === name
+          );
+        })
+        .map(({ id, name }) => (
+          <MenuItem key={id} dense onClick={() => handleClick(name)}>
+            {name}
+          </MenuItem>
+        ))}
     </Menu>
   );
 };
