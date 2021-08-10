@@ -34,6 +34,7 @@
     "name": "name",
     "no": "no",
     "noMatch": "No match found",
+    "owner": "owner",
     "password": "password",
     "play": "play",
     "poster": "poster",
