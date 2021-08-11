@@ -97,18 +97,12 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
 
             <Box sx={{ mr: -1, px: 1, color: 'text.secondary' }}>
               <Typography variant="overline">
-                {story.published === 0 ? (
-                  <Box
-                    component="span"
-                    sx={{
-                      textTransform: 'uppercase',
-                      fontStyle: 'italic',
-                    }}
-                  >
+                {!story.published ? (
+                  <Box component="span" sx={{ textTransform: 'uppercase', fontStyle: 'italic' }}>
                     {t('common:draft')}
                   </Box>
                 ) : (
-                  story.published === 1 &&
+                  story.published &&
                   story.publishedDate &&
                   DateTime.fromISO(story.publishedDate).toFormat('yyyy')
                 )}

@@ -1,8 +1,8 @@
 import { Box, Divider, FormControlLabel, Switch } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
-import { useField, useFormikContext } from 'formik';
+import { useField } from 'formik';
 import { DateTime } from 'luxon';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface BottomBarProps {
@@ -10,18 +10,15 @@ interface BottomBarProps {
   isSubmitting: boolean;
   publishedField: string;
   publishedDateField: string;
-  handleSubmit: () => void;
 }
 
 const BottomBar: FC<BottomBarProps> = ({
   dirty,
-  handleSubmit,
   isSubmitting,
   publishedField,
   publishedDateField,
 }) => {
   const { t } = useTranslation();
-  const { submitForm } = useFormikContext();
 
   const [, metaPub, helpersPub] = useField(publishedField);
   const { value: published } = metaPub;
@@ -31,20 +28,12 @@ const BottomBar: FC<BottomBarProps> = ({
   // const { value: publishedDate } = metaPubDate;
   const { setValue: setPublishedDate } = helpersPubDate;
 
-  const [publishedState, setPublishedState] = useState(published === 1 ? true : false);
-
   const handleChangePublisehdState = () => {
-    const newValue = !publishedState;
-    const pDate = newValue === true ? DateTime.now().toISO() : null;
+    const newValue = !published;
+    const publishDate = newValue === true ? DateTime.now().toISO() : null;
 
-    setPublished(newValue ? 1 : 0);
-    setPublishedDate(pDate);
-    setPublishedState(newValue);
-  };
-
-  const handleClick = () => {
-    // submitForm();
-    handleSubmit();
+    setPublished(newValue);
+    setPublishedDate(publishDate);
   };
 
   return (
@@ -55,8 +44,8 @@ const BottomBar: FC<BottomBarProps> = ({
           control={
             <Switch
               color="primary"
-              checked={publishedState}
-              name="publishedState"
+              checked={published}
+              name="published"
               onChange={handleChangePublisehdState}
             />
           }
@@ -68,7 +57,6 @@ const BottomBar: FC<BottomBarProps> = ({
           color="primary"
           disabled={!dirty}
           loading={isSubmitting}
-          onClick={handleClick}
           sx={{ ml: 2 }}
           variant="contained"
           type="submit"

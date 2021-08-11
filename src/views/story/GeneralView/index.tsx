@@ -61,7 +61,7 @@ const GeneralView: FC = () => {
     synopsis: Yup.string(),
     imageUrl: Yup.mixed(),
     uploadFile: Yup.mixed(),
-    published: Yup.number(),
+    published: Yup.boolean(),
     publishedDate: Yup.mixed(),
     botAvatar: Yup.string(),
     botName: Yup.string(),
@@ -126,7 +126,6 @@ const GeneralView: FC = () => {
                   <Box ml={3} mr={3}>
                     <BottomBar
                       dirty={dirty}
-                      handleSubmit={() => submit(values)}
                       isSubmitting={isSubmitting}
                       publishedField={'published'}
                       publishedDateField="publishedDate"

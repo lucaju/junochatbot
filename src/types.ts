@@ -71,7 +71,8 @@ export interface Story {
   user: User;
   author?: string;
   languageCode: string;
-  published: 0 | 1;
+  projectName?: string;
+  published: boolean;
   publishedDate: string | null;
   synopsis: string;
   botAvatar: string;

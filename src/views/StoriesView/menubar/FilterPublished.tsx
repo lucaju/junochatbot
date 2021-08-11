@@ -18,24 +18,24 @@ interface FilterPublishedProps {
   value?: number;
 }
 
-const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = 0 }) => {
+const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = -1 }) => {
   const { t } = useTranslation();
   const [filterValue, setFilterValue] = useState(value);
 
   const options: Option[] = [
-    { value: 0, name: t('common:all') },
+    { value: -1, name: t('common:all') },
     { value: 1, name: t('common:published') },
-    { value: -1, name: t('common:draft') },
+    { value: 0, name: t('common:draft') },
   ];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     setFilterValue(value);
-    const reset = value === 0 ? true : false;
+    const reset = value === -1 ? true : false;
     handleFilter({ type: 'published', value, reset });
   };
 
-  const isOn = filterValue !== 0;
+  const isOn = filterValue !== -1;
 
   return (
     <TextField
