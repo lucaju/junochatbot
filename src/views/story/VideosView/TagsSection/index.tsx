@@ -31,7 +31,7 @@ const TagsSection: FC = () => {
   useEffect(() => {
     const getCollection = async () => {
       setIsLoading(true);
-      await actions.videos.getTags();
+      if (videos.tagCollection.length === 0) await actions.videos.getTags();
       setIsLoading(false);
       setHasTags(videos.tagCollection.length > 0);
     };

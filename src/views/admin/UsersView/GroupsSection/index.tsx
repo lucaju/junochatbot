@@ -19,16 +19,17 @@ const GroupsView: FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
-    const getCollection = async () => {
-      setIsLoading(true);
-      await actions.users.getGroups();
-      setIsLoading(false);
-    };
-
+    const getCollection = async () => setTimeout(fetchGroups, 1000);
     getCollection();
 
     return () => {};
   }, []);
+
+  const fetchGroups = async () => {
+    setIsLoading(true);
+    if (users.groups.length === 0) actions.users.getGroups();
+    setIsLoading(false)
+  }
 
   const handleDetailOpen = (groupId?: number) => {
     setCurrentGroupId(groupId);

@@ -31,6 +31,7 @@ const Collection: FC<CollectionProps> = ({
   const actions = useActions();
   const [filteredItems, setFilteredItems] = useState<Story[]>([]);
   const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
+  const [_groupId, _setGroupId] = useState<number | undefined>();
 
   useEffect(() => {
     const _items = items();
@@ -46,6 +47,8 @@ const Collection: FC<CollectionProps> = ({
   }, [filters, searchQuery, groupId, story.stories]);
 
   useEffect(() => {
+    _setGroupId(groupId);
+    if (_groupId === groupId) return;
     fetchStories();
     return () => {};
   }, [groupId]);
@@ -72,8 +75,8 @@ const Collection: FC<CollectionProps> = ({
               break;
             }
             case 'published': {
-              const valueAPublished: boolean = value === 1 ? true : false;
-              match = !!item.published === valueAPublished;
+              const valuePublished: boolean = value === 1 ? true : false;
+              match = item.published === valuePublished;
               break;
             }
             default: {

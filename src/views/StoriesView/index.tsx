@@ -25,7 +25,6 @@ const Stories: FC = () => {
     actions.chat.resetState();
     actions.users.resetState();
     actions.story.resetState();
-    
     actions.ui.setPageTitle(t('common:stories'));
 
     const getCollection = async () => {

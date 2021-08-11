@@ -24,11 +24,13 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
   const [filteredItems, setFilteredItems] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
+  const [_groupId, _setGroupId] = useState<number | undefined>();
+
 
   useEffect(() => {
     setIsLoading(true);
     const getCollection = async () => {
-      if (session.isAdmin) await actions.users.getGroups();
+      if (session.isAdmin && users.groups.length === 0) await actions.users.getGroups();
       fetchUsers();
     };
     getCollection();
@@ -36,6 +38,8 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
   }, [session.user?.groupId]);
 
   useEffect(() => {
+    _setGroupId(groupId);
+    if (_groupId === groupId) return;
     fetchUsers();
     return () => {};
   }, [groupId]);
