@@ -34,6 +34,7 @@ export const api = {
     });
 
     if (!response.ok) return { errorMessage: response.statusText };
+    if (response.status === 204) return [];
 
     const result = await response.json();
     return result as User[];
