@@ -1,4 +1,4 @@
-import { CardContent, Typography } from '@material-ui/core';
+import { CardContent, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import Card, { CardProps } from '@material-ui/core/Card';
 import { UserGroup } from '@src/types';
 import React, { FC, useState } from 'react';
@@ -11,6 +11,9 @@ interface GroupCardProps extends CardProps {
 const GroupCard: FC<GroupCardProps> = ({ group, handleEditClick, ...rest }) => {
   const [elevation, setElevation] = useState(0);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const mouseOver = () => setElevation(6);
   const mouseOut = () => setElevation(0);
 
@@ -20,8 +23,14 @@ const GroupCard: FC<GroupCardProps> = ({ group, handleEditClick, ...rest }) => {
       onClick={() => handleEditClick(group.id)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      sx={{ cursor: 'pointer', width: 'max-content', my: 2, mx: 1 }}
-      {...rest}
+      sx={{
+        cursor: 'pointer',
+        width: isMobile ? 'max-content' : 'auto',
+        mb: isMobile ? 0 : 1,
+        mr: isMobile ? 1 : 0,
+        my: 2,
+        mx: 1
+      }}
     >
       <CardContent sx={{ py: 1, px: 2, '&:last-child': { pb: 1 } }}>
         <Typography variant="subtitle1">{group.name}</Typography>
