@@ -16,10 +16,12 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import LanguageMenu from './LanguageMenu';
+import { useAppState } from '@src/overmind';
 
 const Topbar: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { chat } = useAppState();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -39,9 +41,11 @@ const Topbar: FC = () => {
         <Button color="inherit" href="#about">
           {t('home:about')}
         </Button>
-        <Button color="inherit" href="#stories">
-          {t('home:stories')}
-        </Button>
+        {chat.stories.length > 0 && (
+          <Button color="inherit" href="#stories">
+            {t('home:stories')}
+          </Button>
+        )}
         <Button color="inherit" href="#pedagogical">
           {t('home:pedagogicalMaterial')}
         </Button>

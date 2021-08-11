@@ -26,7 +26,9 @@ export const getStories = async ({ state, effects }: Context): Promise<Story[]> 
   const response = await effects.chat.api.getStories();
   if (isError(response)) return [];
 
-  return response.reverse();
+  state.chat.stories = response.reverse();
+
+  return state.chat.stories;
 };
 
 export const getStory = async (

@@ -1,6 +1,6 @@
 import { Box, Container, Skeleton, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import StoryCard from '@src/components/StoryCardFront';
-import { useActions, useAppState } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,6 @@ import type { Story } from '@src/types';
 
 const Stories: FC = () => {
   const { t } = useTranslation();
-  const { chat } = useAppState();
   const actions = useActions();
   const [isLoading, setIsloading] = useState(true);
   const [stories, setStories] = useState<Story[]>([]);
@@ -37,53 +36,57 @@ const Stories: FC = () => {
   };
 
   return (
-    <Box id="stories">
-      <Box mb={isMobile ? -2.5 : -4} sx={{ position: 'relative', zIndex: 0 }} width="100%">
-        <Typography
-          align="center"
-          sx={{ fontWeight: 700, textTransform: 'uppercase', textShadow: '0 0 16px purple' }}
-          variant={isMobile ? 'h2' : 'h1'}
-        >
-          {t('home:stories')}
-        </Typography>
-      </Box>
-      <Box
-        py={1}
-        sx={{
-          position: 'relative',
-          zIndex: 100,
-          backgroundColor: 'black',
-          boxShadow: '0 0 5px 2px black',
-          overflow: 'auto',
-          background:
-            'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
-        }}
-      >
-        <Container maxWidth="xl">
-          <Box maxHeight={'75vh'} sx={{ overflow: 'auto' }}>
-            <AnimatePresence initial={false}>
-              <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1250: 3, 1650: 4 }}>
-                <Masonry>
-                  {isLoading
-                    ? showSkeleton(4)
-                    : stories.map((story) => (
-                        <Box
-                          key={story.id}
-                          component={motion.div}
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          exit={{ scale: 0 }}
-                        >
-                          <StoryCard story={story} />
-                        </Box>
-                      ))}
-                </Masonry>
-              </ResponsiveMasonry>
-            </AnimatePresence>
+    <>
+      {stories.length > 0 && (
+        <Box id="stories">
+          <Box mb={isMobile ? -2.5 : -4} sx={{ position: 'relative', zIndex: 0 }} width="100%">
+            <Typography
+              align="center"
+              sx={{ fontWeight: 700, textTransform: 'uppercase', textShadow: '0 0 16px purple' }}
+              variant={isMobile ? 'h2' : 'h1'}
+            >
+              {t('home:stories')}
+            </Typography>
           </Box>
-        </Container>
-      </Box>
-    </Box>
+          <Box
+            py={1}
+            sx={{
+              position: 'relative',
+              zIndex: 100,
+              backgroundColor: 'black',
+              boxShadow: '0 0 5px 2px black',
+              overflow: 'auto',
+              background:
+                'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
+            }}
+          >
+            <Container maxWidth="xl">
+              <Box maxHeight={'75vh'} sx={{ overflow: 'auto' }}>
+                <AnimatePresence initial={false}>
+                  <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1250: 3, 1650: 4 }}>
+                    <Masonry>
+                      {isLoading
+                        ? showSkeleton(4)
+                        : stories.map((story) => (
+                            <Box
+                              key={story.id}
+                              component={motion.div}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              exit={{ scale: 0 }}
+                            >
+                              <StoryCard story={story} />
+                            </Box>
+                          ))}
+                    </Masonry>
+                  </ResponsiveMasonry>
+                </AnimatePresence>
+              </Box>
+            </Container>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 };
 

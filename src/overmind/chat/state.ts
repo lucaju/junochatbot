@@ -6,6 +6,7 @@ type State = {
   currentVideo?: Video;
   debug: Boolean;
   sessionid?: string;
+  stories:Story[]
   videoLog: Video[],
   watchedVideos : Video[],
 };
@@ -13,6 +14,7 @@ type State = {
 export const state: State = {
   chatLog: [],
   debug: false,
+  stories: [],
   videoLog: [],
   watchedVideos: [],
 };
