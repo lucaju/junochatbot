@@ -55,7 +55,7 @@ const TagCard: FC<TagCardProps> = ({ handleEditClick, tag }) => {
       onMouseLeave={mouseOut}
       sx={{
         cursor: 'pointer',
-        width: isMobile ? 'max-content' : '100%',
+        width: isMobile ? 'max-content' : 'auto',
         mb: isMobile ? 0 : 1,
         mr: isMobile ? 1 : 0,
         p: 1,
