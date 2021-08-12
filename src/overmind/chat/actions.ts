@@ -167,7 +167,10 @@ export const getVideosByTag = async ({ state, effects }: Context, tagId: string)
   const storyId = state.chat.currentStory?.id;
   if (!storyId) return;
 
-  const response = await effects.chat.api.getVideosBytag(storyId, Number(tagId));
+  //get user token, if logged in
+  const token = state.session.user?.token ?? undefined;
+
+  const response = await effects.chat.api.getVideosBytag(storyId, Number(tagId), token);
   if (isError(response)) return;
 
   let unwatchedVideos = response.filter((video) => !state.chat.watchedVideos.includes(video));
@@ -187,8 +190,11 @@ export const getVideoByID = async ({ state, effects }: Context, videoId: string)
   const storyId = state.chat.currentStory?.id;
   if (!storyId) return;
 
+  //get user token, if logged in
+  const token = state.session.user?.token ?? undefined;
+
   //DETECT INTENT
-  const response = await effects.chat.api.getVideo(storyId, Number(videoId));
+  const response = await effects.chat.api.getVideo(storyId, Number(videoId), token);
   if (isError(response)) return;
   return response;
 };

@@ -63,16 +63,36 @@ export const api = {
     return result as DetectIntentResponse;
   },
 
-  getVideo: async (storyId: number, viedoId: number): Promise<Video | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/chats/stories/${storyId}/videos/${viedoId}`);
+  getVideo: async (
+    storyId: number,
+    viedoId: number,
+    token?: string
+  ): Promise<Video | ErrorMessage> => {
+    const headers: Headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    if (token) headers.set('Authorization', `Bearer ${token}`);
+
+    const response = await fetch(`${API_URL}/chats/stories/${storyId}/videos/${viedoId}`, {
+      headers,
+    });
     if (!response.ok) return { errorMessage: response.statusText };
 
     const result = await response.json();
     return result as Video;
   },
 
-  getVideosBytag: async (storyId: number, tagId: number): Promise<Video[] | ErrorMessage> => {
-    const response = await fetch(`${API_URL}/chats/stories/${storyId}/tags/${tagId}/videos/all`);
+  getVideosBytag: async (
+    storyId: number,
+    tagId: number,
+    token?: string
+  ): Promise<Video[] | ErrorMessage> => {
+    const headers: Headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    if (token) headers.set('Authorization', `Bearer ${token}`);
+
+    const response = await fetch(`${API_URL}/chats/stories/${storyId}/tags/${tagId}/videos/all`, {
+      headers,
+    });
     if (!response.ok) return { errorMessage: response.statusText };
 
     const result = await response.json();
