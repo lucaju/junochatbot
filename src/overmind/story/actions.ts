@@ -130,22 +130,22 @@ export const updateStory = async (
   let newImage;
   if (newValues.imageUrl?.name) newImage = newValues.imageUrl;
   if (storyData.imageUrl !== null && newValues.imageUrl === null) newImage = null;
-  delete newValues.imageUrl;
 
-  //update story
-  const response = await effects.story.api.updateStory(newValues, authUser.token);
-  if (isError(response)) return response;
 
   //Upload umage
   if (newImage?.name) {
     const response = await effects.story.api.uploadImage(storyData.id, newImage, authUser.token);
-    if (!isError(response)) newValues.imageUrl = response;
+    if (!isError(response)) newValues.imageUrl = response.fileName;
   } else if (newImage === null) {
     const response = await effects.story.api.deleteImage(storyData.id, authUser.token);
     if (!isError(response)) newValues.imageUrl = null;
   } else {
     newValues.imageUrl = storyData.imageUrl;
   }
+
+  //update story
+  const response = await effects.story.api.updateStory(newValues, authUser.token);
+  if (isError(response)) return response;
 
   //update state;
   state.story.stories = state.story.stories.map((s) => {

@@ -153,7 +153,18 @@ export const updateUser = async (
       ? false
       : true;
 
-  //3. update User
+  //3. Upload avatar
+  if (newAvatar?.name) {
+    const response = await effects.users.api.uploadAvatar(newValues.id, newAvatar, authUser.token);
+    if (!isError(response)) newValues.avatarUrl = response.fileName;
+  } else if (newAvatar === null) {
+    const response = await effects.users.api.deleteAvatar(newValues.id, authUser.token);
+    if (!isError(response)) newValues.avatarUrl = null;
+  } else {
+    newValues.avatarUrl = userData.avatarUrl;
+  }
+
+  //4. update User
   if (userDatahasChanged) {
     const response = await effects.users.api.updateUser(newValues, authUser.token);
     if (isError(response)) return response;
@@ -161,7 +172,7 @@ export const updateUser = async (
     newValues = userData as User;
   }
 
-  //4. Update user group
+  //5. Update user group
   if (newGroupId) {
     const response = await effects.users.api.addUserToGroup(
       Number(newGroupId),
@@ -169,17 +180,6 @@ export const updateUser = async (
       authUser.token
     );
     if (!isError(response)) newValues.groupId = newGroupId;
-  }
-
-  //5. Upload avatar
-  if (newAvatar?.name) {
-    const response = await effects.users.api.uploadAvatar(newValues.id, newAvatar, authUser.token);
-    if (!isError(response)) newValues.avatarUrl = response;
-  } else if (newAvatar === null) {
-    const response = await effects.users.api.deleteAvatar(newValues.id, authUser.token);
-    if (!isError(response)) newValues.avatarUrl = null;
-  } else {
-    newValues.avatarUrl = userData.avatarUrl;
   }
 
   //6. update state;
