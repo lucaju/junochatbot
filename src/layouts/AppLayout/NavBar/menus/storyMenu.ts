@@ -14,16 +14,16 @@ export const storyMenu: MenuType[] = [
     icon: AdbIcon,
   },
   {
-    title: 'Video Collection',
-    tKey: 'videoCollection',
-    path: '/app/stories/:storyId/videos',
-    icon: VideoLibraryIcon,
-  },
-  {
     title: 'Conversation Design',
     tKey: 'conversationDesign',
     path: '/app/stories/:storyId/conversation',
     icon: QuestionAnswerIcon,
+  },
+  {
+    title: 'Video Collection',
+    tKey: 'videoCollection',
+    path: '/app/stories/:storyId/videos',
+    icon: VideoLibraryIcon,
   },
   {
     title: 'Contexts',
