@@ -51,6 +51,7 @@
     "tag": "tag",
     "tags": "tags",
     "title": "title",
+    "type": "type",
     "typeHere": "type here",
     "update": "update",
     "user": "user",
@@ -102,6 +103,10 @@
     "team": "team",
     "title": "Chatbot & Storytelling",
     "watch": "watch"
+  },
+  "intent": {
+    "responseAccessContextParameters": "to access this intent' context parameters (temporary memory)",
+    "responseAccessParameters": "to access this intent's parameters (short-term memory)"
   },
   "intents": {
     "add": "add",

@@ -51,6 +51,7 @@
     "tag": "tag",
     "tags": "mots clés",
     "title": "titre",
+    "type": "",
     "typeHere": "écrivez ici",
     "update": "mise à jour",
     "user": "utilisateur",
@@ -102,6 +103,10 @@
     "team": "équipe",
     "title": "Chatbot et Récit",
     "watch": "regardez"
+  },
+  "intent": {
+    "responseAccessContextParameters": "",
+    "responseAccessParameters": ""
   },
   "intents": {
     "add": "créer",
