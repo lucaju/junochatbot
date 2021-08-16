@@ -1,3 +1,4 @@
+import { useDraggable } from '@dnd-kit/core';
 import { Box, Grid, IconButton, Stack, useTheme, Zoom } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
@@ -17,13 +18,17 @@ const TextMessage: FC<TextMessageProps> = ({ message, isDragging = false }) => {
   const actions = useActions();
   const theme = useTheme();
 
+  const { attributes, listeners } = useDraggable({
+    id: message.id ?? '',
+  });
+
   const [hover, setHover] = useState(false);
   const numberOfAlternatives = message.text.text?.length ?? 0;
 
   const addAlternative = () => {
     if (!message.id) return;
     actions.intents.addTextMessageAlternative(message.id);
-  }
+  };
 
   const handleUpdateAlternative = (altIndex: number, value: string) => {
     actions.intents.updateTextMessageAlternative({
@@ -43,7 +48,7 @@ const TextMessage: FC<TextMessageProps> = ({ message, isDragging = false }) => {
   const handleRemove = () => {
     if (!message.id) return;
     actions.intents.removeMessage(message.id);
-  }
+  };
 
   return (
     <Stack
@@ -78,7 +83,9 @@ const TextMessage: FC<TextMessageProps> = ({ message, isDragging = false }) => {
         <Grid container direction="row" spacing={2}>
           <Grid item>
             <Stack direction="column" alignItems="center" mt={0.5} spacing={1}>
-              <FormatAlignLeftIcon />
+              <IconButton {...listeners} {...attributes} size="small" sx={{ cursor: 'grab' }}>
+                <FormatAlignLeftIcon />
+              </IconButton>
               {numberOfAlternatives > 1 && <ShuffleIcon />}
               <IconButton color="primary" onClick={addAlternative} size="small">
                 <AddCircleOutlineIcon fontSize="inherit" />

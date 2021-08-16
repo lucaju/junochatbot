@@ -26,7 +26,7 @@ const SortableItem: FC<SortableItemProps> = ({ children, id }) => {
   const newChildren_ = isValidElement(children) ? cloneElement(children, { isDragging }) : children;
 
   return (
-    <ListItem ref={setNodeRef} style={style} {...attributes} {...listeners} sx={{ p: 0 }}>
+    <ListItem ref={setNodeRef} style={style} {...attributes} sx={{ p: 0 }}>
       {newChildren_}
     </ListItem>
   );

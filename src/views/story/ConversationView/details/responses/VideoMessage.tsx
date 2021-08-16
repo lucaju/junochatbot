@@ -1,6 +1,6 @@
+import { useDraggable } from '@dnd-kit/core';
 import {
   Box,
-  Grid,
   IconButton,
   MenuItem,
   Select,
@@ -33,6 +33,10 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
   const { videos } = useAppState();
   const actions = useActions();
   const { t } = useTranslation();
+
+  const { attributes, listeners } = useDraggable({
+    id: message.id ?? '',
+  });
 
   const defaultSourceOption: sourceOptionType = { id: '-1', label: t('common:choose') };
 
@@ -108,7 +112,9 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
       >
         <Stack direction="row" alignItems="flex-start" spacing={2}>
           <Stack alignItems="center" mt={0.5}>
-            <YouTubeIcon />
+            <IconButton {...listeners} {...attributes} size="small" sx={{ cursor: 'grab' }}>
+              <YouTubeIcon />
+            </IconButton>
             {message.payload.type === 'tag' && <ShuffleIcon sx={{ mt: 1 }} />}
           </Stack>
           <Select
@@ -116,7 +122,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
             fullWidth
             name="source"
             onChange={handleChangeSource}
-            sx={{ maxWidth: 700}}
+            sx={{ maxWidth: 700 }}
             value={source}
             variant="standard"
           >
