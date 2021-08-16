@@ -231,3 +231,30 @@ const _getVideoDuration = (video?: Video) => {
 export const playVideo = async ({ state }: Context, video: Video) => {
   state.chat.currentVideo = { ...video } as Video;
 };
+
+export const reset = async ({ state, actions, effects }: Context) => {
+  const storyId = state.chat.currentStory?.id;
+  if (!storyId) return;
+
+  //get user token, if logged in
+  const token = state.session.user?.token ?? undefined;
+
+  //DETECT INTENT
+  const response = await effects.chat.api.detectIntent({
+    reset: true,
+    sessionid: state.chat.sessionid,
+    storyId,
+    text: 'reset',
+    token,
+  });
+  if (isError(response)) return response;
+
+  state.chat._chatLog = {};
+  state.chat.chatThreadLog = [];
+  state.chat.currentVideo = undefined;
+  state.chat.sessionid = undefined;
+  state.chat.videoLog = [];
+  state.chat.watchedVideos = [];
+
+  await actions.chat.detectedIntent(actions.chat.getInitialProvocation() ?? 'hello');
+};

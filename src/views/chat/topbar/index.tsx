@@ -9,9 +9,10 @@ import {
   useTheme,
 } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import RestartAltIcon from '@material-ui/icons/RestartAlt';
 import Logo from '@src/components/Logo';
 import StoryCard from '@src/components/StoryCardFront';
-import { useAppState } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ interface TopBarProps {
 
 const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
   const { chat } = useAppState();
+  const actions = useActions();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -31,6 +33,8 @@ const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
   const showStoryInfo = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const handleReset = () => actions.chat.reset();
 
   const handleClose = () => setAnchorEl(null);
 
@@ -50,8 +54,11 @@ const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
         <Typography mr={1} variant="h6">
           {!isMobile && chat.currentStory?.title}
         </Typography>
-        <IconButton onClick={showStoryInfo}>
-          <InfoOutlinedIcon />
+        <IconButton onClick={showStoryInfo} size="small">
+          <InfoOutlinedIcon fontSize="small" />
+        </IconButton>
+        <IconButton onClick={handleReset} size="small">
+          <RestartAltIcon fontSize="small" />
         </IconButton>
       </Toolbar>
       <Popover
