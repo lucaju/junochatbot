@@ -11,11 +11,8 @@ import {
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
-import EditAttributesIcon from '@material-ui/icons/EditAttributes';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import { useAppState, useActions } from '@src/overmind';
-import React, { ChangeEvent, FC, FocusEvent, MouseEvent, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 //LIMITS
@@ -36,9 +33,10 @@ interface HeadersProps {
   action?: string;
   activeTab: string;
   changeTab: (value: string) => void;
+  handleSubmit: () => void;
 }
 
-const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
+const Header: FC<HeadersProps> = ({ action, activeTab, changeTab, handleSubmit }) => {
   const { intents } = useAppState();
   const actions = useActions();
   const [displayName, setDisplayName] = useState(intents.currentIntent?.displayName);
@@ -65,6 +63,18 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
     actions.intents.updateCurrentDisplayName(value);
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== 'Enter') return;
+
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (typeof displayName !== 'string' || displayName === '') return;
+    actions.intents.updateCurrentDisplayName(displayName);
+
+    if (action === 'create') handleSubmit();
+  };
+
   const handleToggleChage = (event: MouseEvent<HTMLElement>, value: string | null) => {
     if (!value) return;
     changeTab(value);
@@ -79,11 +89,14 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab }) => {
     <Stack spacing={1} alignItems="center">
       {action === 'create' && t('intents:createIntent')}
       <TextField
+        autoComplete="off"
+        autoFocus={action === 'create'}
         fullWidth
         label={t('common:name')}
         name="displayName"
         onBlur={handleBlur}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         sx={{ textTransform: 'capitalize' }}
         value={displayName}
         variant="standard"

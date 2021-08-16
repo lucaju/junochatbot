@@ -146,7 +146,12 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
               textAlign: 'center',
             }}
           >
-            <Header action={action} activeTab={activeTab} changeTab={changeTab} />
+            <Header
+              action={action}
+              activeTab={activeTab}
+              changeTab={changeTab}
+              handleSubmit={submit}
+            />
           </DialogTitle>
           <Divider />
           {action === 'edit' && (
