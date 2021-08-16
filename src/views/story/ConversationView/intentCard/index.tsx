@@ -106,6 +106,7 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
           direction={isSM ? 'column' : 'row'}
           alignItems={isSM ? 'flex-start' : 'center'}
           spacing={2}
+          minHeight={49}
           mx={-2}
           mt={1}
           mb={-2}
@@ -141,7 +142,9 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
 
           <Box flexGrow={1} />
 
-          {hover && <AddFollowUp intent={intent} />}
+          {hover && !parentFollowupIntentName && (
+            <AddFollowUp handleEdit={handleEditClick} intent={intent} />
+          )}
         </Stack>
       </CardContent>
     </Card>
