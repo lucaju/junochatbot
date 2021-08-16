@@ -5,6 +5,7 @@ import { getIcon } from '@src/util/icons';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import BotResponseDetails from './BotResponseDetails';
+import BotResponseDetails from './metadata';
 import TypingLoop from './TypingLoop';
 
 interface SpeechBubbleProps {
