@@ -1,10 +1,19 @@
-import type { Entity, ErrorMessage, Intent, Message, TrainingPhrase } from '@src/types';
+import type {
+  Entity,
+  ErrorMessage as IError,
+  Intent,
+  Message,
+  Struct,
+  TrainingPhrase,
+  Value,
+} from '@src/types';
 import { isError, sortBy } from '@src/util/utilities';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../';
 import { extractContextName } from './actionsContext';
 import { trainingPhrasesCollection } from '@src/util/trainingPhrases';
 import { responsePresetCollection } from '@src/util/responsePresets';
+import { hasOutputContext } from './actionsContext';
 
 export * from './actionsContext';
 export * from './actionsParameters';
@@ -21,7 +30,7 @@ export const getIntents = async ({
   state,
   actions,
   effects,
-}: Context): Promise<Intent[] | ErrorMessage> => {
+}: Context): Promise<Intent[] | IError> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -44,9 +53,9 @@ export const getIntents = async ({
 };
 
 export const getIntent = async (
-  { state, actions, effects }: Context,
+  { state, effects }: Context,
   intentName: string
-): Promise<Intent | ErrorMessage> => {
+): Promise<Intent | IError> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -88,7 +97,7 @@ export const getIntent = async (
   return currentIntent;
 };
 
-export const createIntent = async ({ state, effects }: Context): Promise<Intent | ErrorMessage> => {
+export const createIntent = async ({ state, effects }: Context): Promise<Intent | IError> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -101,16 +110,24 @@ export const createIntent = async ({ state, effects }: Context): Promise<Intent 
   const response = await effects.intents.api.createIntent(storyId, currentIntent, authUser.token);
   if (isError(response)) return response;
 
-  state.intents.collection = [response, ...state.intents.collection];
-  state.intents.currentIntent = response;
+  const intents = [response, ...state.intents.collection];
+  state.intents.collection = sortBy(intents, 'displayName');
+
+  // state.intents.currentIntent = response;
 
   return response;
 };
 
+type IFollowUpIntent = {
+  originIntent: Intent;
+  followUpType: string;
+  sharedContext: string;
+};
+
 export const createFollowUpIntent = async (
   { state, actions }: Context,
-  { originIntent, followUpType }: { originIntent: Intent; followUpType: string }
-): Promise<Intent | ErrorMessage> => {
+  { originIntent, followUpType }: Omit<IFollowUpIntent, 'sharedContext'>
+): Promise<string | IError> => {
   if (!originIntent.name) return { errorMessage: 'Not Intent' };
 
   // shared context
@@ -125,19 +142,14 @@ export const createFollowUpIntent = async (
   if (isError(responseFollowUpIntentCreation)) return responseFollowUpIntentCreation;
 
   //update origin intent
-  const updatedOriginIntent: Intent = { ...originIntent };
-  const originOutputContexts = updatedOriginIntent.outputContexts ?? [];
-  updatedOriginIntent.outputContexts = [
-    ...originOutputContexts,
-    { name: sharedContext, lifespanCount: 1 },
-  ];
+  if (!hasOutputContext(originIntent.outputContexts, sharedContext)) {
+    await actions.intents._addFollowupSharedContext({ originIntent, sharedContext });
+  }
 
-  const responseOriginIntentUpdate = await actions.intents.updateIntent(updatedOriginIntent);
-  if (isError(responseOriginIntentUpdate)) return responseOriginIntentUpdate;
-
-  //return
   state.intents.currentIntent = responseFollowUpIntentCreation;
-  return responseFollowUpIntentCreation;
+
+  const intentName = responseFollowUpIntentCreation.name ?? '';
+  return intentName;
 };
 
 export const _createFollowUpSharedContext = (
@@ -155,12 +167,8 @@ export const _createFollowUpSharedContext = (
 
 export const _createFollowUpIntent = async (
   { state, effects }: Context,
-  {
-    originIntent,
-    followUpType,
-    sharedContext,
-  }: { originIntent: Intent; followUpType: string; sharedContext: string }
-): Promise<Intent | ErrorMessage> => {
+  { originIntent, followUpType, sharedContext }: IFollowUpIntent
+): Promise<Intent | IError> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -193,7 +201,25 @@ export const _createFollowUpIntent = async (
   const response = await effects.intents.api.createIntent(storyId, followUpIntent, authUser.token);
   if (isError(response)) return response;
 
-  state.intents.collection = [response, ...state.intents.collection];
+  const intents = [response, ...state.intents.collection];
+  state.intents.collection = sortBy(intents, 'displayName');
+
+  return response;
+};
+
+export const _addFollowupSharedContext = async (
+  { actions }: Context,
+  { originIntent, sharedContext }: Omit<IFollowUpIntent, 'followUpType'>
+): Promise<Intent | IError> => {
+  const originOutputContexts = originIntent.outputContexts ?? [];
+
+  originIntent.outputContexts = [
+    ...originOutputContexts,
+    { name: sharedContext, lifespanCount: 1 },
+  ];
+
+  const response = await actions.intents.updateIntent(originIntent);
+  if (isError(response)) return response;
 
   return response;
 };
@@ -205,7 +231,7 @@ export const setIntentHaChange = ({ state }: Context, value: boolean) => {
 export const updateIntent = async (
   { state, actions, effects }: Context,
   intent?: Intent
-): Promise<Intent | ErrorMessage> => {
+): Promise<Intent | IError> => {
   const storyId = state.story.currentStory?.id;
   if (!storyId) return { errorMessage: 'No Story' };
 
@@ -231,8 +257,10 @@ export const updateIntent = async (
   const updatedIntent = 'name' in fetchCurrentIntent ? fetchCurrentIntent : response;
 
   state.intents.collection = state.intents.collection.map((intent) =>
-    response.name === intent.name ? updatedIntent : intent
+    response.name === intent.name ? { ...updatedIntent } : { ...intent }
   );
+
+  state.intents.collection = sortBy([...state.intents.collection], 'displayName');
 
   return response;
 };
@@ -296,7 +324,7 @@ export const updateDefaultFallbackIntent = async ({ state, effects }: Context) =
   defaultFallbackIntent.messages = [message];
 
   //revert transformation and remove additonal values
-  const intentToSubmit = partIntentToSubmit({ ...defaultFallbackIntent });
+  let intentToSubmit = partIntentToSubmit({ ...defaultFallbackIntent });
 
   //remove read-only attributes
   delete intentToSubmit.rootFollowupIntentName;
@@ -388,7 +416,7 @@ const partIntentToSubmit = (intent: Intent): Intent => {
 export const deleteIntent = async (
   { state, effects }: Context,
   intentName?: string
-): Promise<boolean | ErrorMessage> => {
+): Promise<boolean | IError> => {
   if (!intentName) return { errorMessage: 'Not Intent to delete' };
 
   const storyId = state.story.currentStory?.id;
@@ -402,6 +430,9 @@ export const deleteIntent = async (
 
   state.intents.currentIntent = undefined;
   state.intents.collection = state.intents.collection.filter((itt) => itt.name !== intentName);
+  state.intents.collection = state.intents.collection.filter(
+    (itt) => itt.parentFollowupIntentName !== intentName
+  );
 
   return true;
 };
@@ -414,10 +445,7 @@ export const getIntentDisplayNameByName = ({ state }: Context, name?: string) =>
 
 //** Entity */
 
-export const getEntities = async ({
-  state,
-  effects,
-}: Context): Promise<Entity[] | ErrorMessage> => {
+export const getEntities = async ({ state, effects }: Context): Promise<Entity[] | IError> => {
   if (state.intents.entities.length > 0) return state.intents.entities;
 
   const storyId = state.story.currentStory?.id;
