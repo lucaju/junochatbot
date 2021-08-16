@@ -27,7 +27,7 @@ interface StageProps {
 const Stage: FC<StageProps> = ({ sidebarWidth }) => {
   const { chat } = useAppState();
 
-  const [url, setUrl] = useState<string>();
+  const [url, setUrl] = useState<string | undefined>();
   const [played, setPlayed] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -36,30 +36,24 @@ const Stage: FC<StageProps> = ({ sidebarWidth }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
-    if (!chat.currentVideo) return;
-    loadNewVideo(chat.currentVideo.url);
+    chat.currentVideo ? loadVideo(chat.currentVideo.url) : stopVideo();
     return () => {};
   }, [chat.currentVideo]);
 
-  const handleMute = () => {
-    setMuted(!muted);
-  };
-
-  const loadNewVideo = (url: string) => {
+  const loadVideo = (url: string) => {
     setPlayed(0);
     setUrl(url);
     setPlaying(true);
   };
 
-  const handleProgress = (event: playerEvent) => {
-    setPlayed(event.played);
-  };
-
-  const handleEnd = () => {
+  const stopVideo = () => {
     setPlayed(0);
     setUrl(undefined);
     setPlaying(false);
   };
+
+  const handleProgress = (event: playerEvent) => setPlayed(event.played);
+  const handleMute = () => setMuted(!muted);
 
   const handleOnPlayerClick = (event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
     event.preventDefault();
@@ -85,15 +79,15 @@ const Stage: FC<StageProps> = ({ sidebarWidth }) => {
             onClick={handleOnPlayerClick}
           >
             <ReactPlayer
-              url={url}
-              width="100%"
               height="100%"
-              style={{ position: 'absolute', top: 0, left: 0 }}
               muted={muted}
-              onEnded={handleEnd}
+              onEnded={stopVideo}
               onError={(e) => console.log('onError', e)}
               onProgress={handleProgress}
               playing={playing}
+              style={{ position: 'absolute', top: 0, left: 0 }}
+              url={url}
+              width="100%"
             />
           </Box>
           {playing && (
