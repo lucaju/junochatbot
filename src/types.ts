@@ -48,7 +48,7 @@ export interface User {
   updatedDate?: string;
   avatarUrl?: string | any;
   groupId?: number | string;
-  group?: UserGroup; 
+  group?: UserGroup;
   token?: string;
 }
 
@@ -131,7 +131,19 @@ export type ContextRelation = {
   shortname: string;
   inputs?: string[];
   outputs?: string[];
+  lifespanCount?: number;
+  parameters?: Map<string, Value>;
 };
+
+//DETECT INTNET
+export interface RequestDetectIntent {
+  analyzeQueryTextSentiment?: boolean;
+  reset?: boolean;
+  sessionid?: string;
+  storyId: number;
+  text: string;
+  token?: string;
+}
 
 //DIALOG FLOW INTENTS
 
@@ -162,22 +174,18 @@ export type TrainingPhrase = {
   timesAddedCount?: number;
 };
 
-type Struct = {
-  fields: Map<string, Value>;
-};
+export type Struct = Map<string, Value>;
 
-type ListValue = {
-  values: Value;
-};
+// export type Value = {
+//   null_value: null; //	Represents a null value.
+//   number_value: number; //double -	double	Represents a double value. Note that attempting to serialize NaN or Infinity results in error. (We can't serialize these as string "NaN" or "Infinity" values like we do for regular fields, because they would parse as string_value, not number_value).
+//   string_value: string; //Represents a string value.
+//   bool_value: boolean; //Represents a boolean value.
+//   struct_value: Struct; //Represents a structured value.
+//   list_value: ListValue; //Represents a repeated Value.
+// };
 
-type Value = {
-  null_value: null; //	Represents a null value.
-  number_value: number; //double -	double	Represents a double value. Note that attempting to serialize NaN or Infinity results in error. (We can't serialize these as string "NaN" or "Infinity" values like we do for regular fields, because they would parse as string_value, not number_value).
-  string_value: string; //Represents a string value.
-  bool_value: boolean; //Represents a boolean value.
-  struct_value: Struct; //Represents a structured value.
-  list_value: ListValue; //Represents a repeated Value.
-};
+export type Value = null | number | string | boolean | Struct | Value[];
 
 export type Context = {
   id?: string;
@@ -186,6 +194,7 @@ export type Context = {
   name: string;
   lifespanCount?: number;
   parameters?: Map<string, Value>;
+  // parameters?: any;
 };
 
 export type Parameter = {
@@ -255,7 +264,7 @@ export type Intent = {
 export interface DetectIntentResponse {
   queryResult: QueryResult;
   responseId: string;
-  sessionid: string
+  sessionid: string;
 }
 
 export interface QueryResult {
@@ -271,10 +280,19 @@ export interface QueryResult {
   outputContexts: Context[];
   parameters: Struct;
   queryText: string;
-  // sentimentAnalysisResult?: SentimentAnalysisResult;
+  sentimentAnalysisResult?: SentimentAnalysisResult;
   speechRecognitionConfidence?: number;
   webhookSource?: string;
   webhookPayload: Struct;
+}
+
+export interface SentimentAnalysisResult {
+  queryTextSentiment: QueryTextSentiment
+}
+
+export interface QueryTextSentiment {
+  magnitude: number;
+  score:number;
 }
 
 export interface SpeechMessage {
@@ -287,4 +305,9 @@ export interface SpeechMessage {
   type?: 'text' | 'video';
   video?: Video;
   waitingTime?: number;
+}
+
+export interface ThreadChat {
+  id: string;
+  source: 'user' | 'bot';
 }
