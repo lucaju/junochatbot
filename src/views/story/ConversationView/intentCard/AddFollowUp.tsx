@@ -1,16 +1,18 @@
 import { Box, Button, Menu, MenuItem } from '@material-ui/core';
 import { useActions } from '@src/overmind';
 import type { Intent } from '@src/types';
+import { isError } from '@src/util/utilities';
 import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ContextCardProps {
   intent: Intent;
+  handleEdit: (value?: string) => void;
 }
 
 const options = ['fallback', 'no', 'yes'];
 
-const AddFollowUp: FC<ContextCardProps> = ({ intent }) => {
+const AddFollowUp: FC<ContextCardProps> = ({ intent, handleEdit }) => {
   const { t } = useTranslation();
   const actions = useActions();
 
@@ -24,8 +26,14 @@ const AddFollowUp: FC<ContextCardProps> = ({ intent }) => {
 
   const handleChoiceClick = async (event: MouseEvent<HTMLLIElement>, option: string) => {
     event.stopPropagation();
-    await actions.intents.createFollowUpIntent({ originIntent: intent, followUpType: option });
+    const intentName = await actions.intents.createFollowUpIntent({
+      originIntent: intent,
+      followUpType: option,
+    });
+    if (isError(intentName)) return handleClose();
+    
     handleClose();
+    handleEdit(intentName);
   };
 
   const handleClose = () => setAnchorEl(null);
