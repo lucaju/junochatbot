@@ -17,7 +17,7 @@ import { alpha, styled } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { useActions, useAppState } from '@src/overmind';
-import { Parameter as ParameterType } from '@src/types';
+import type { Parameter as ParameterType } from '@src/types';
 import { intentParamColorPalette, sortBy } from '@src/util/utilities';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -61,7 +61,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   const [doUpdate, setDoUpdate] = useState(false);
 
   const [entityTypeDisplayName, setEntityTypeDisplayName] = useState('');
-  const [value, set_value] = useState('');
+  // const [value, set_value] = useState('');
   // const [isList, setIsList] = useState(!!param.isList);
   const [mandatory, setMandatory] = useState(!!param.mandatory);
 
@@ -73,7 +73,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   useEffect(() => {
     set_param(param);
 
-    if (param.value) set_value(param.value);
+    // if (param.value) set_value(param.value);
     if (param.entityTypeDisplayName) setEntityTypeDisplayName(param.entityTypeDisplayName);
     if (param.mandatory) setMandatory(param.mandatory);
 
@@ -83,6 +83,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   useEffect(() => {
     if (doUpdate) {
       update();
+      actions.intents.updateParamsOnPhrases({ originalName: param.displayName, newParam: _param });
       setDoUpdate(false);
     }
     return () => {};
@@ -98,12 +99,14 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
         ) {
           return;
         }
-        set_param({ ..._param, displayName: target.value.trim() });
+        const trimmedValue = target.value.trim();
+        set_param({ ..._param, displayName: trimmedValue, value: `$${trimmedValue}` });
+        // set_value(`$${trimmedValue}`);
         return;
-      case 'value':
-        set_value(target.value);
-        set_param({ ..._param, value: target.value });
-        return;
+      // case 'value':
+      //   set_value(target.value);
+      //   set_param({ ..._param, value: target.value });
+      //   return;
       case 'mandatory':
         set_param({ ..._param, mandatory: event.currentTarget.checked });
         setMandatory(target.checked);
@@ -113,13 +116,13 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
   };
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
     const target = event.currentTarget;
-    if (target.name === 'value') {
-      if (target.value.indexOf('$') !== 0) {
-        const $value = `$${target.value}`;
-        set_value($value);
-        set_param({ ..._param, value: $value });
-      }
-    }
+    // if (target.name === 'value') {
+    //   if (target.value.indexOf('$') !== 0) {
+    //     const $value = `$${target.value}`;
+    //     set_value($value);
+    //     set_param({ ..._param, value: $value });
+    //   }
+    // }
     setDoUpdate(true);
   };
 
@@ -225,8 +228,9 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs>
+            {/* <Grid item xs>
               <TextField
+                disabled
                 fullWidth
                 label={t('common:value')}
                 name="value"
@@ -236,7 +240,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
                 value={value}
                 variant="standard"
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
         <Box

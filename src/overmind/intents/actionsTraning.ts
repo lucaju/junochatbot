@@ -1,4 +1,4 @@
-import { Part, TrainingPhrase } from '@src/types';
+import { Parameter, Part, TrainingPhrase } from '@src/types';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../';
 
@@ -61,6 +61,31 @@ export const removeParamFromPhrases = ({ state, actions }: Context, paramName: s
   state.intents.currentIntent.trainingPhrases = trainingPhrases.map((phrase) => {
     phrase.parts = phrase.parts.map((part) => {
       if (part.alias === paramName) return { text: part.text };
+      return part;
+    });
+    return phrase;
+  });
+
+  actions.intents.setIntentHaChange(true);
+};
+
+interface UpdateParamsOnPhrasesProps {
+  originalName: string;
+  newParam: Parameter;
+}
+export const updateParamsOnPhrases = (
+  { state, actions }: Context,
+  { originalName, newParam }: UpdateParamsOnPhrasesProps
+) => {
+  if (!state.intents.currentIntent?.trainingPhrases) return;
+  const { trainingPhrases } = state.intents.currentIntent;
+
+  state.intents.currentIntent.trainingPhrases = trainingPhrases.map((phrase) => {
+    phrase.parts = phrase.parts.map((part) => {
+      if (part.alias === originalName) {
+        part.alias = newParam.displayName;
+        part.entityType = newParam.entityTypeDisplayName;
+      }
       return part;
     });
     return phrase;
