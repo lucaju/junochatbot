@@ -42,7 +42,7 @@ const UserInput: FC = () => {
       autoComplete="off"
       endAdornment={
         <InputAdornment position="end">
-          <IconButton edge="end" onClick={handleSubmit} sx={{ mt: 2, mr: 1 }}>
+          <IconButton edge="end" onClick={handleSubmit} sx={{ mr: 1 }}>
             <SendIcon fontSize="inherit" />
           </IconButton>
         </InputAdornment>
