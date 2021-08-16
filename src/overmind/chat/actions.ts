@@ -1,5 +1,5 @@
 import type {
-  ErrorMessage,
+  ErrorMessage as IError,
   Message,
   QueryResult,
   SpeechMessage,
@@ -12,14 +12,19 @@ import { Context } from '../';
 import { v4 as uuidv4 } from 'uuid';
 import { Duration } from 'luxon';
 
-export const resetState = ({ state, actions }: Context) => {
-  state.chat.chatLog = [];
+export const resetState = ({ state }: Context) => {
+  state.chat._chatLog = {};
+  state.chat.chatThreadLog = [];
   state.chat.currentStory = undefined;
   state.chat.currentVideo = undefined;
   state.chat.debug = false;
   state.chat.sessionid = undefined;
   state.chat.videoLog = [];
   state.chat.watchedVideos = [];
+};
+
+export const getInitialProvocation = ({ state }: Context) => {
+  return state.chat.currentStory?.languageCode === 'fr_CA' ? 'bonjour' : 'hello';
 };
 
 export const getStories = async ({ state, effects }: Context): Promise<Story[]> => {
@@ -34,7 +39,7 @@ export const getStories = async ({ state, effects }: Context): Promise<Story[]> 
 export const getStory = async (
   { actions, effects }: Context,
   storyId: number
-): Promise<Story | ErrorMessage> => {
+): Promise<Story | IError> => {
   const response = await effects.chat.api.getStory(storyId);
   if (isError(response)) return response;
 
@@ -56,10 +61,7 @@ export const setDebug = ({ state }: Context, value: boolean) => {
   state.chat.debug = value;
 };
 
-export const checkOwnership = async (
-  { state, actions }: Context,
-  storyId: number
-): Promise<boolean> => {
+export const checkOwnership = async ({ actions }: Context, storyId: number): Promise<boolean> => {
   const userStories = await actions.story.getStoriesForAuthUser();
   if (isError(userStories)) return false;
   const userOwns = userStories.some((story) => story.id === storyId);
@@ -78,10 +80,15 @@ export const submitUserInput = async ({ state, actions }: Context, userInput: st
     message: userInput,
   };
 
-  const lastLog = state.chat.chatLog[state.chat.chatLog.length - 1];
-  userSpeech.threadId = lastLog && lastLog.source === 'user' ? lastLog.threadId : uuidv4();
+  let lastThread = state.chat.chatThreadLog[state.chat.chatThreadLog.length - 1];
+  const lastInThread = lastThread?.[lastThread?.length - 1] ?? undefined;
+  if (lastInThread?.source === 'user') {
+    lastThread = [...lastThread, userSpeech];
+  } else {
+    state.chat.chatThreadLog = [...state.chat.chatThreadLog, [userSpeech]];
+  }
 
-  state.chat.chatLog = [...state.chat.chatLog, userSpeech];
+  state.chat._chatLog[userSpeech.id] = userSpeech;
 
   actions.chat.detectedIntent(userInput);
 };
@@ -94,12 +101,12 @@ export const detectedIntent = async ({ state, actions, effects }: Context, userI
   const token = state.session.user?.token ?? undefined;
 
   //DETECT INTENT
-  const response = await effects.chat.api.detectIntent(
+  const response = await effects.chat.api.detectIntent({
+    sessionid: state.chat.sessionid,
     storyId,
-    userInput,
-    state.chat.sessionid,
-    token
-  );
+    text: userInput,
+    token,
+  });
   if (isError(response)) return response;
 
   if (!state.chat.sessionid) state.chat.sessionid = response.sessionid;
@@ -109,16 +116,26 @@ export const detectedIntent = async ({ state, actions, effects }: Context, userI
 
   const messages: SpeechMessage[] = await actions.chat._processMessages(queryResult);
 
-  state.chat.chatLog = [...state.chat.chatLog, ...messages];
+  messages.forEach((message) => (state.chat._chatLog[message.id] = message));
 };
 
-export const _processMessages = async ({ actions }: Context, queryResult: QueryResult) => {
+export const _processMessages = async ({ state, actions }: Context, queryResult: QueryResult) => {
   const { fulfillmentMessages } = queryResult;
   if (!fulfillmentMessages) return [] as SpeechMessage[];
 
   const messages: SpeechMessage[] = [];
 
-  const threadId = uuidv4();
+  let lastThread = state.chat.chatThreadLog[state.chat.chatThreadLog.length - 1];
+  if (!lastThread) {
+    state.chat.chatThreadLog = [...state.chat.chatThreadLog, []];
+    lastThread = state.chat.chatThreadLog[state.chat.chatThreadLog.length - 1];
+  } else {
+    const lastInThread = lastThread[lastThread.length - 1];
+    if (lastInThread?.source !== 'bot') {
+      state.chat.chatThreadLog = [...state.chat.chatThreadLog, []];
+      lastThread = state.chat.chatThreadLog[lastThread.length - 1];
+    }
+  }
 
   const waitingTime = (i: number) => {
     if (i === 0) return 0;
@@ -132,7 +149,6 @@ export const _processMessages = async ({ actions }: Context, queryResult: QueryR
 
     const botSpeech: SpeechMessage = {
       id: uuidv4(),
-      threadId,
       source: 'bot',
       metadata: queryResult,
       waitingTime: waitingTime(i),
@@ -149,9 +165,24 @@ export const _processMessages = async ({ actions }: Context, queryResult: QueryR
         : _getVideoDuration(botSpeech.video);
 
     messages.push(botSpeech);
+    if (botSpeech.type === 'text') lastThread.push(botSpeech);
   }
 
   return messages;
+};
+
+export const isLastInThread = ({ state }: Context, id: string) => {
+  let isLast = false;
+
+  for (const thread of state.chat.chatThreadLog) {
+    const threadLength = thread.length;
+    const speeachIndex = thread.findIndex((item) => item.id === id);
+    if (speeachIndex === -1) continue;
+    isLast = threadLength - 1 === speeachIndex;
+    return isLast;
+  }
+
+  return isLast;
 };
 
 export const getVideo = async ({ actions }: Context, videoMessage: VideoMessage) => {

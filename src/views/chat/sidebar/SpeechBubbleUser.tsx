@@ -1,23 +1,21 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
-import type { SpeechMessage } from '@src/types';
+import { useActions, useAppState } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC, useEffect } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 
 interface SpeechBubbleUserProps {
-  lastInThread: boolean;
   scrollConversation: () => void;
-  speech: SpeechMessage;
+  speechId: string;
 }
 
-const SpeechBubbleUser: FC<SpeechBubbleUserProps> = ({
-  lastInThread,
-  scrollConversation,
-  speech,
-}) => {
+const SpeechBubbleUser: FC<SpeechBubbleUserProps> = memo(({ scrollConversation, speechId }) => {
   const theme = useTheme();
-  const { message } = speech;
+  const actions = useActions();
+  const { id, message } = useAppState((state) => state.chat._chatLog[speechId]);
+  const [isLastInThread, setIsLastInThread] = useState(false);
 
   useEffect(() => {
+    setIsLastInThread(actions.chat.isLastInThread(id));
     scrollConversation();
     return () => {};
   }, []);
@@ -36,7 +34,7 @@ const SpeechBubbleUser: FC<SpeechBubbleUserProps> = ({
         animate="visible"
         alignSelf="flex-end"
         maxWidth="75%"
-        mb={lastInThread ? 4 : 0.5}
+        mb={isLastInThread ? 4 : 0.5}
         mx={1}
         py={1}
         px={1.5}
@@ -45,7 +43,7 @@ const SpeechBubbleUser: FC<SpeechBubbleUserProps> = ({
           color: theme.palette.common.white,
           borderTopLeftRadius: 8,
           borderTopRightRadius: 8,
-          borderBottomRightRadius: !lastInThread ? 0 : 8,
+          borderBottomRightRadius: !isLastInThread ? 0 : 8,
           borderBottomLeftRadius: 8,
         }}
       >
@@ -55,6 +53,6 @@ const SpeechBubbleUser: FC<SpeechBubbleUserProps> = ({
       </Box>
     </AnimatePresence>
   );
-};
+});
 
 export default SpeechBubbleUser;

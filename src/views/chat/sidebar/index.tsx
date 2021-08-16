@@ -1,7 +1,9 @@
 import { Drawer, Paper, Stack, useMediaQuery, useTheme } from '@material-ui/core';
+import { useActions } from '@src/overmind';
 import React, { FC } from 'react';
 import Conversation from './Conversation';
 import UserInput from './UserInput';
+
 interface SideBarProps {
   width: number;
 }
@@ -9,6 +11,9 @@ interface SideBarProps {
 const SideBar: FC<SideBarProps> = ({ width }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { chat } = useActions();
+
+  const handleReset = () => chat.reset();
 
   return (
     <Drawer

@@ -1,22 +1,20 @@
 import { Box, Stack } from '@material-ui/core';
 import { useActions, useAppState } from '@src/overmind';
-import type { SpeechMessage } from '@src/types';
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import SpeechBubbleBot from './SpeechBubbleBot';
-import SpeechBubbleUser from './SpeechBubbleUser';
+import SpeechBubble from './SpeechBubble';
 
 const Conversation: FC = () => {
-  const { chat } = useAppState();
+  const { chatLog, currentStory } = useAppState(({ chat }) => chat);
   const actions = useActions();
   const [scrollConversation, setScrollConversation] = useState(false);
   const ref = useRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (!chat.currentStory) return;
-    const triggerBotMesssage = chat.currentStory?.languageCode === 'fr_CA' ? 'bonjour' : 'hello';
+    if (!currentStory) return;
+    const triggerBotMesssage = currentStory?.languageCode === 'fr_CA' ? 'bonjour' : 'hello';
     const timer = setTimeout(() => actions.chat.detectedIntent(triggerBotMesssage), 1000);
     return () => clearTimeout(timer);
-  }, [chat.currentStory]);
+  }, [currentStory]);
 
   // update conversation
   useLayoutEffect(() => {
@@ -25,21 +23,7 @@ const Conversation: FC = () => {
       ref.current.scrollTop = ref.current.scrollHeight;
       setScrollConversation(false);
     }
-  }, [chat.chatLog, scrollConversation]);
-
-  const isLastInThread = (speech: SpeechMessage, i: number) => {
-    const isLastLog = i === chat.chatLog.length - 1;
-
-    let lastInThread = isLastLog
-      ? true
-      : speech.threadId !== chat.chatLog[i + 1].threadId
-      ? false
-      : true;
-
-    lastInThread = isLastLog || chat.chatLog[i + 1].video ? true : false;
-
-    return lastInThread;
-  };
+  }, [chatLog, scrollConversation]);
 
   const doScrollConversation = () => {
     setScrollConversation(true);
@@ -48,23 +32,9 @@ const Conversation: FC = () => {
   return (
     <Box ref={ref} height="100%" py={2} px={0.5} sx={{ overflow: 'auto' }}>
       <Stack justifyContent="flex-end" alignItems="baseline">
-        {chat.chatLog.map((speech, i) =>
-          speech.source === 'user' ? (
-            <SpeechBubbleUser
-              key={speech.id}
-              scrollConversation={doScrollConversation}
-              speech={speech}
-              lastInThread={isLastInThread(speech, i)}
-            />
-          ) : (
-            <SpeechBubbleBot
-              key={speech.id}
-              scrollConversation={doScrollConversation}
-              speech={speech}
-              lastInThread={isLastInThread(speech, i)}
-            />
-          )
-        )}
+        {chatLog.map(({ id }) => (
+          <SpeechBubble key={id} scrollConversation={doScrollConversation} speechId={id} />
+        ))}
       </Stack>
     </Box>
   );

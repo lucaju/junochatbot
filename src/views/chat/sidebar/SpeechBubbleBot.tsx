@@ -1,30 +1,37 @@
 import { Box, Stack, Typography, useTheme } from '@material-ui/core';
 import { useActions, useAppState } from '@src/overmind';
-import type { SpeechMessage } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC, useEffect, useState } from 'react';
-import BotResponseDetails from './BotResponseDetails';
+import React, { FC, memo, useEffect, useState } from 'react';
 import BotResponseDetails from './metadata';
 import TypingLoop from './TypingLoop';
 
 interface SpeechBubbleProps {
-  lastInThread: boolean;
   scrollConversation: () => void;
-  speech: SpeechMessage;
+  speechId: string;
 }
 
-const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation, speech }) => {
-  const { message, speechTime = 0, type = 'text', video, waitingTime = 0 } = speech;
+const SpeechBubbleBot: FC<SpeechBubbleProps> = memo(({ scrollConversation, speechId }) => {
+  const { currentStory, debug } = useAppState(({ chat }) => chat);
+  const {
+    id,
+    message,
+    speechTime = 0,
+    type = 'text',
+    video,
+    waitingTime = 0,
+  } = useAppState(({ chat }) => chat._chatLog[speechId]);
+  // const { message, speechTime = 0, type = 'text', video, waitingTime = 0 } = speech;
 
-  const { chat } = useAppState();
   const actions = useActions();
   const theme = useTheme();
-  const BotAvatar = getIcon(chat.currentStory?.botAvatar ?? 'abd');
+  const BotAvatar = getIcon(currentStory?.botAvatar ?? 'abd');
   const [showContent, setShowContent] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
+  const [isLastInThread, setIsLastInThread] = useState(false);
 
   useEffect(() => {
+    setIsLastInThread(actions.chat.isLastInThread(id));
     waitingTime === 0 ? onWaitingTime() : timerWaiting();
     return () => {};
   }, []);
@@ -68,13 +75,13 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation,
               maxWidth="75%"
               alignSelf="flex-start"
               alignItems="flex-end"
-              mb={lastInThread ? 4 : 0.5}
+              mb={isLastInThread ? 4 : 0.5}
               mx={1}
-              px={lastInThread || showTyping ? 0 : 3.5}
+              px={isLastInThread || showTyping ? 0 : 3.5}
             >
-              {(lastInThread || showTyping) && (
+              {(isLastInThread || showTyping) && (
                 <Stack alignItems="center" mr={1}>
-                  {lastInThread && chat.debug && <BotResponseDetails speech={speech} />}
+                  {isLastInThread && debug && <BotResponseDetails speechId={id} />}
                   <BotAvatar
                     component={motion.svg}
                     variants={avatarAnimation}
@@ -99,7 +106,7 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation,
                   borderTopLeftRadius: 8,
                   borderTopRightRadius: 8,
                   borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: !lastInThread ? 0 : 8,
+                  borderBottomLeftRadius: !isLastInThread ? 0 : 8,
                 }}
               >
                 {showTyping ? (
@@ -116,6 +123,6 @@ const SpeechBubble: FC<SpeechBubbleProps> = ({ lastInThread, scrollConversation,
       )}
     </>
   );
-};
+});
 
-export default SpeechBubble;
+export default SpeechBubbleBot;
