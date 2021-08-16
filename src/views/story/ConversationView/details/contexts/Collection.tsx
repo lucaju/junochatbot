@@ -22,7 +22,7 @@ const Collection: FC<CollectionProps> = ({ type }) => {
   const reachedLimit = contexts && contexts.length >= (type === 'input' ? MAX_INPUT : MAX_OUPUT);
 
   const handleAddNew = () => {
-    if (contexts?.[contexts?.length - 1].name === '') return;
+    if (contexts?.[contexts?.length - 1]?.name === '') return;
     actions.intents.addContext(type);
   };
 

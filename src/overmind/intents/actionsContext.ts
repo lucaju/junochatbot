@@ -78,21 +78,19 @@ export const updateInputContextName = (
 
   //guard
   if (shortName === '') return actions.intents.removeInputContex(id);
+  if (hasInputContext(inputContexts, shortName)) return actions.intents.removeInputContex(id);
 
   //new name
   const NAME_PREFIX = `projects/${state.intents.currentProjectName}/agent/sessions/-/contexts/`;
   const name = `${NAME_PREFIX}${shortName}`;
 
-  //update
   state.intents.currentIntent.inputContexts = inputContexts.map((context) => {
     if (context.id === id) {
       //if this is a newly created input context, add it to output as well
       if (context.shortName === '') actions.intents.addOutputContext(shortName);
-
-      context.name = name;
-      context.shortName = shortName;
+      return { ...context, name, shortName };
     }
-    return context;
+    return { ...context };
   });
 
   return true;
@@ -107,6 +105,7 @@ export const updateOutputContex = ({ state, actions }: Context, context: Context
 
   //guard
   if (shortName === '' || lifespanCount === 0) return actions.intents.removeOutputContext(id);
+  if (hasOutputContext(outputContexts, shortName)) return actions.intents.removeOutputContext(id);
 
   //new name
   const NAME_PREFIX = `projects/${state.intents.currentProjectName}/agent/sessions/-/contexts/`;
@@ -114,15 +113,27 @@ export const updateOutputContex = ({ state, actions }: Context, context: Context
 
   //update
   state.intents.currentIntent.outputContexts = outputContexts.map((context) => {
-    if (context.id === id) {
-      context.name = name;
-      context.shortName = shortName;
-      context.lifespanCount = lifespanCount;
-    }
-    return context;
+    if (context.id === id) return { ...context, name, shortName, lifespanCount };
+    return { ...context };
   });
 
   return true;
+};
+
+export const hasInputContext = (
+  intentContexts: ContextType[] | undefined,
+  contextName?: string
+) => {
+  if (!intentContexts || !contextName) return false;
+  return intentContexts.some(({ shortName }) => shortName === contextName);
+};
+
+export const hasOutputContext = (
+  intentContexts: ContextType[] | undefined,
+  contextName?: string
+) => {
+  if (!intentContexts || !contextName) return false;
+  return intentContexts.some(({ shortName }) => shortName === contextName);
 };
 
 export const removeContext = ({ actions }: Context, context: ContextType) => {

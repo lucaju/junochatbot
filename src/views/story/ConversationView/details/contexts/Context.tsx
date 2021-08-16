@@ -28,12 +28,13 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
   const NameHTMLRef = useRef<HTMLElement>(null);
   const LifespanHTMLRef = useRef<HTMLElement>(null);
   const [hover, setHover] = useState(false);
-
-  const { lifespanCount = 5, shortName, type } = context;
+  const [active, setAtive] = useState(false);
   const [query, setQuery] = useState('');
+  const { lifespanCount = 5, shortName, type } = context;
 
   useEffect(() => {
     if (shortName === '' && NameHTMLRef.current) NameHTMLRef.current.focus();
+    if (shortName === '') setAtive(true);
     return () => {};
   }, [NameHTMLRef]);
 
@@ -46,19 +47,21 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
       return;
     }
 
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' || (type === 'input' && event.key === 'Tab')) {
       event.stopPropagation();
       event.preventDefault();
       handleUpdate();
       return;
     }
 
+    if (!active) setAtive(true);
+
     if (!NameHTMLRef || !NameHTMLRef.current) return;
 
     if (!containerRef) setContainerRef(event.currentTarget.parentElement ?? event.currentTarget);
     const currentText = NameHTMLRef.current.textContent ?? '';
     setQuery(currentText + event.key);
-    NameHTMLRef.current.focus();
+    // NameHTMLRef.current.focus();
   };
 
   const handleKeyDownLife = (event: KeyboardEvent<HTMLElement>) => {
@@ -74,6 +77,8 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
         ? +LifespanHTMLRef.current.textContent
         : lifespanCount;
 
+    if (!active) setAtive(true);
+
     if (ALLOWED_KEYS_LIFESPAN.includes(event.key)) return;
 
     if (event.key === 'ArrowUp') {
@@ -88,14 +93,10 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
 
     if (event.key.match(/\d/) && LifespanHTMLRef.current.textContent.length < 3) return;
 
-    if (event.key === 'Enter') handleUpdate();
+    if (['Enter', 'Tab'].includes(event.key)) handleUpdate();
 
     event.stopPropagation();
     event.preventDefault();
-  };
-
-  const handleBlur = () => {
-    // handleUpdate();
   };
 
   const handleUpdate = () => {
@@ -112,6 +113,10 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
       lifespanCount: newLifeCount,
     };
     actions.intents.updateContext(updatedContext);
+
+    NameHTMLRef?.current?.blur();
+    LifespanHTMLRef?.current?.blur();
+    setAtive(false);
   };
 
   const handleRemoveClick = () => {
@@ -128,25 +133,28 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
     handleUpdate();
   };
 
+  const handleClickAway = (event: MouseEvent | TouchEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (active) handleUpdate();
+  };
+
   return (
-    <ClickAwayListener onClickAway={handleUpdate}>
+    <ClickAwayListener onClickAway={handleClickAway}>
       <Stack>
-        <Box
-          display="flex"
-          flexDirection="row"
+        <Stack
+          direction="row"
           alignItems="center"
           my={1}
           onMouseEnter={ononMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <Box
-            display="flex"
-            flexDirection="row"
+          <Stack
+            direction="row"
             alignItems="center"
             py={0.5}
             px={2}
             borderRadius={3}
-            onBlur={handleBlur}
             sx={{
               backgroundColor: theme.palette.action.hover,
               '&:focus-within': {
@@ -188,7 +196,7 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
                 </Typography>
               </>
             )}
-          </Box>
+          </Stack>
           <Zoom in={hover}>
             <IconButton
               aria-label="delete"
@@ -199,7 +207,7 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
               <HighlightOffIcon fontSize="inherit" />
             </IconButton>
           </Zoom>
-        </Box>
+        </Stack>
         <AutocompleteContextMenu
           anchorEl={containerRef}
           handleSelect={handleAutocompleteClick}
