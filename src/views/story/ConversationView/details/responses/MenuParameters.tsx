@@ -1,14 +1,15 @@
 import { Menu, MenuItem } from '@material-ui/core';
 import { useAppState } from '@src/overmind';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { getCursorXY } from './helper';
 
 interface MenuParametersProps {
-  handleClick: (value: string, position: number) => void;
-  handleClose: () => void;
   inputElement: HTMLInputElement | undefined;
+  onClose: () => void;
+  onSelect: (value: string, position: number) => void;
   open: boolean;
   target: HTMLElement | undefined;
+  type: 'parameters' | 'contexts' | null;
 }
 
 type MenuAnchorPositionType = {
@@ -17,20 +18,29 @@ type MenuAnchorPositionType = {
 };
 
 const MenuParameters: FC<MenuParametersProps> = ({
-  handleClick,
-  handleClose,
   inputElement,
+  onClose,
+  onSelect,
   open,
   target,
+  type,
 }) => {
-  const {
-    intents: { currentIntent },
-  } = useAppState();
+  const { intents } = useAppState();
+  const { currentIntent } = intents;
   const [charPosition, setCharPosition] = useState(0);
   const [anchorPosition, setAnchorPosition] = useState<MenuAnchorPositionType>({ top: 0, left: 0 });
+  const [options, setOptions] = useState<string[]>([]);
+  const [subMenuOpen, setSubMenuOpen] = useState(false);
+  const [context, setContext] = useState<string | undefined>();
+  const ref = useRef<HTMLLIElement | null>(null);
 
   useEffect(() => {
-    if (open) setAnchorPosition(callAnchorPosition());
+    if (open) {
+      listOptions();
+      setAnchorPosition(callAnchorPosition());
+      setSubMenuOpen(false);
+      setContext(undefined);
+    }
     return () => {};
   }, [open]);
 
@@ -50,26 +60,88 @@ const MenuParameters: FC<MenuParametersProps> = ({
     };
   };
 
+  const listOptions = () => {
+    let list: string[] = [];
+    if (type === 'parameters' && currentIntent?.parameters) {
+      list = currentIntent?.parameters?.map(({ value }) => value ?? '');
+    }
+    if (type === 'contexts') {
+      const inputContexts = currentIntent?.inputContexts
+        ? currentIntent.inputContexts.map(({ shortName }) => shortName ?? '')
+        : [];
+
+      const outputContexts = currentIntent?.outputContexts
+        ? currentIntent.outputContexts.map(({ shortName }) => shortName ?? '')
+        : [];
+
+      list = Array.from(new Set([...inputContexts, ...outputContexts]));
+    }
+    setOptions(list);
+  };
+
+  const handleMainClick = (value: string) => {
+    type === 'parameters' ? onSelect(value, charPosition) : openSubMenu(value);
+  };
+
+  const openSubMenu = (value: string) => {
+    setContext(value);
+    setSubMenuOpen(true);
+  };
+
+  const closeSubMenu = () => {
+    setContext(undefined);
+    setSubMenuOpen(false);
+  };
+
+  const handleSubMenuClick = (value: string) => {
+    closeSubMenu();
+    onSelect(`${context}.${value}`, charPosition);
+  };
+
+  const handleClose = () => {
+    closeSubMenu();
+    onClose();
+  };
+
   return (
-    <Menu
-      anchorPosition={anchorPosition}
-      anchorReference="anchorPosition"
-      onClose={handleClose}
-      open={open}
-    >
-      {currentIntent?.parameters?.map(({ value }, i) => (
-        <MenuItem
-          key={i}
-          onClick={() => {
-            if (!value) return;
-            handleClick(value, charPosition);
+    <>
+      <Menu
+        autoFocus={false}
+        anchorPosition={anchorPosition}
+        anchorReference="anchorPosition"
+        onBackdropClick={handleClose}
+        onClose={handleClose}
+        open={open}
+      >
+        {options.map((value, i) => (
+          <MenuItem
+            key={i}
+            ref={ref}
+            onClick={() => handleMainClick(value)}
+            selected={value === context}
+          >
+            {value}
+          </MenuItem>
+        ))}
+      </Menu>
+      {type === 'contexts' && subMenuOpen && (
+        <Menu
+          anchorPosition={{
+            top: anchorPosition.top,
+            left: anchorPosition.left + (ref.current?.getBoundingClientRect().width ?? 100),
           }}
-          value={value}
+          anchorReference="anchorPosition"
+          onClose={onClose}
+          open={subMenuOpen}
         >
-          {value}
-        </MenuItem>
-      ))}
-    </Menu>
+          {intents.parameters.map(({ name, displayName }) => (
+            <MenuItem key={name} onClick={() => handleSubMenuClick(displayName)}>
+              {displayName}
+            </MenuItem>
+          ))}
+        </Menu>
+      )}
+    </>
   );
 };
 

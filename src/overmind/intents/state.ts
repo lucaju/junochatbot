@@ -1,4 +1,4 @@
-import type { ContextRelation, Entity, Intent } from '@src/types';
+import type { ContextRelation, Entity, Intent, Parameter } from '@src/types';
 import { derived } from 'overmind';
 
 type State = {
@@ -7,6 +7,7 @@ type State = {
   currentProjectName?: string;
   contexts: ContextRelation[];
   entities: Entity[];
+  parameters: Parameter[];
 };
 
 export const state: State = {
@@ -58,5 +59,12 @@ export const state: State = {
     });
 
     return contextCollection;
+  }),
+  parameters: derived((state: State) => {
+    let list: Parameter[] = [];
+    state.collection.forEach(({ parameters }) => {
+      if (parameters) list = [...list, ...parameters];
+    });
+    return list;
   }),
 };

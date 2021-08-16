@@ -27,17 +27,31 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
   const [elTarget, setElTarget] = useState<HTMLElement>();
   const [hover, setHover] = useState(false);
   const [value, setValue] = useState(content);
-  const [showParameters, setShowParameters] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [menuType, setMenuType] = useState<'parameters' | 'contexts' | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.currentTarget.value);
   };
 
   const handleKeyUp = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key !== '$') return;
-    if (currentIntent?.isFallback || !currentIntent?.parameters) return;
+    if (currentIntent?.isFallback) return;
+    if (event.key === '$') displayParams(event);
+    if (event.key === '#') displayContext(event);
+  };
+
+  const displayParams = (event: KeyboardEvent<HTMLElement>) => {
+    if (!currentIntent?.parameters) return;
+    setMenuType('parameters');
     setElTarget(event.currentTarget);
-    setShowParameters(true);
+    setShowMenu(true);
+  };
+
+  const displayContext = (event: KeyboardEvent<HTMLElement>) => {
+    if (!currentIntent?.inputContexts && !currentIntent?.outputContexts) return;
+    setMenuType('contexts');
+    setElTarget(event.currentTarget);
+    setShowMenu(true);
   };
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
@@ -46,22 +60,22 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
     handleUpdate(index, value);
   };
 
-  const handleParamSelect = (param: string, position: number) => {
+  const handleMenuSelect = (param: string, position: number) => {
     handleParamsClose();
     if (!param) return;
 
-    const paramName = param.substring(1);
+    const paramName = menuType === 'parameters' ? param.substring(1) : param;
     const partA = value.substring(0, position);
     const partB = value.substring(position);
     const newValue = `${partA}${paramName}${partB}`;
 
     setValue(newValue);
-    setShowParameters(false);
   };
 
   const handleParamsClose = () => {
-    setShowParameters(false);
+    setShowMenu(false);
     setElTarget(undefined);
+    setMenuType(null);
   };
 
   return (
@@ -84,11 +98,12 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
       />
       {currentIntent?.parameters && (
         <MenuParameters
-          handleClick={handleParamSelect}
-          handleClose={handleParamsClose}
           inputElement={TFref.current}
-          open={showParameters}
+          onClose={handleParamsClose}
+          onSelect={handleMenuSelect}
+          open={showMenu}
           target={elTarget}
+          type={menuType}
         />
       )}
       <Zoom in={removable && hover}>
