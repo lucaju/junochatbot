@@ -44,9 +44,9 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab, handleSubmit }
 
   const options = () => {
     const opts = [];
-    opts.push({ value: 'context', label: 'contexts' });
     opts.push({ value: 'training', label: 'training' });
     if (!intents.currentIntent?.isFallback) opts.push({ value: 'parameters', label: 'parameters' });
+    opts.push({ value: 'context', label: 'contexts' });
     opts.push({ value: 'responses', label: 'responses' });
     return opts;
   };

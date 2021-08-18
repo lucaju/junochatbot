@@ -15,14 +15,14 @@ const Training: FC = () => {
   return (
     <Box>
       <Box display="flex" flexDirection="column" alignItems="center" my={1.5}>
+        <Button color="primary" onClick={addNewPhrase} startIcon={<AddCircleOutlineIcon />}>
+          {t('intents:addPhrase')}
+        </Button>
         <Typography gutterBottom variant="caption">
           {intents.currentIntent?.isFallback
             ? t('intents:trainingFallbackExplainer')
             : t('intents:trainingExplainer')}
         </Typography>
-        <Button color="primary" onClick={addNewPhrase} startIcon={<AddCircleOutlineIcon />}>
-          {t('intents:addPhrase')}
-        </Button>
       </Box>
       <Collection />
     </Box>
