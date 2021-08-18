@@ -1,4 +1,4 @@
-import { Stack, ThemeProvider } from '@material-ui/core';
+import { Stack, ThemeProvider, Typography, Box } from '@material-ui/core';
 import Page from '@src/components/Page';
 import theme from '@src/theme';
 import React, { FC } from 'react';
@@ -18,16 +18,21 @@ const HomeView: FC = () => {
   return (
     <Page title={t('common:homepage')}>
       {/* <ThemeProvider theme={theme(false)}> */}
-        <Stack>
-          <Topbar />
-          <Hero />
-          <Intro />
-          <Stories />
-          <Pedagogical />
-          <ResearchActivities />
-          <Team />
-          <Sponsors />
-        </Stack>
+      <Stack>
+        <Box display="flex" justifyContent="center" mt={6} mb={-6}>
+          <Typography textAlign="center" variant="overline">
+            {t('common:betterOnChrome')}
+          </Typography>
+        </Box>
+        <Topbar />
+        <Hero />
+        <Intro />
+        <Stories />
+        <Pedagogical />
+        <ResearchActivities />
+        <Team />
+        <Sponsors />
+      </Stack>
       {/* </ThemeProvider> */}
     </Page>
   );
