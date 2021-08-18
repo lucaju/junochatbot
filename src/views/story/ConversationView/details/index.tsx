@@ -39,7 +39,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const { t } = useTranslation();
 
   const [action, setAction] = useState<string>();
-  const [activeTab, setActiveTab] = useState('context');
+  const [activeTab, setActiveTab] = useState('training');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,7 +57,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
 
     return () => {
       setAction(undefined);
-      setActiveTab('context');
+      setActiveTab('training');
       setDeleteDialogOpen(false);
     };
   }, [open]);
