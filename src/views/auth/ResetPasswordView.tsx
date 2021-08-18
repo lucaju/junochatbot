@@ -100,7 +100,7 @@ const ResetPasswordView: FC = () => {
             variant="body2"
           >
             <ArrowBackIcon fontSize="small" sx={{ mb: -0.5, mt: 0.5, mr: 2 }} />
-            {t('signin')}
+            {t('common:signin')}
           </Link>
         </>
       </Container>
