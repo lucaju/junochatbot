@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@material-ui/core';
+import { Box, Button, Tooltip, Typography } from '@material-ui/core';
 import { alpha } from '@material-ui/core/styles';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useActions, useAppState } from '@src/overmind';
@@ -9,6 +9,7 @@ import Collection from './Collection';
 const Responses: FC = () => {
   const {
     intents: { currentIntent },
+    videos,
   } = useAppState();
   const actions = useActions();
   const { t } = useTranslation();
@@ -58,12 +59,36 @@ const Responses: FC = () => {
           <Button color="primary" onClick={addTextMessage} startIcon={<AddCircleOutlineIcon />}>
             {t('intents:addText')}
           </Button>
-          <Button color="primary" onClick={addVideoMessage} startIcon={<AddCircleOutlineIcon />}>
-            {t('intents:addVideo')}
-          </Button>
-          <Button color="primary" onClick={addVideoTagMessage} startIcon={<AddCircleOutlineIcon />}>
-            {t('intents:addVideoTag')}
-          </Button>
+          <Tooltip
+            disableHoverListener={videos.collection.length > 0}
+            title={videos.collection.length === 0 && `${t('videos:noVideosYet')}`}
+          >
+            <span>
+              <Button
+                color="primary"
+                disabled={videos.collection.length === 0}
+                onClick={addVideoMessage}
+                startIcon={<AddCircleOutlineIcon />}
+              >
+                {t('intents:addVideo')}
+              </Button>
+            </span>
+          </Tooltip>
+          <Tooltip
+            disableHoverListener={videos.tagCollection.length > 0}
+            title={videos.tagCollection.length === 0 && `${t('tags:noTagsYet')}`}
+          >
+            <span>
+              <Button
+                color="primary"
+                disabled={videos.tagCollection.length === 0}
+                onClick={addVideoTagMessage}
+                startIcon={<AddCircleOutlineIcon />}
+              >
+                {t('intents:addVideoTag')}
+              </Button>
+            </span>
+          </Tooltip>
         </Box>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" m={2}>
