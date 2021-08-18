@@ -10,7 +10,11 @@ export const resetState = ({ state, actions }: Context) => {
   actions.videos.resetState();
 };
 
-export const getStories = async ({ state, effects }: Context): Promise<Story[] | ErrorMessage> => {
+export const getStories = async ({
+  state,
+  actions,
+  effects,
+}: Context): Promise<Story[] | ErrorMessage> => {
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
@@ -28,11 +32,13 @@ export const getStories = async ({ state, effects }: Context): Promise<Story[] |
   if (isError(response)) return response;
 
   state.story.stories = response.reverse();
+  actions.story._setUserHasStory();
+
   return state.story.stories;
 };
 
 export const getStoriesByGroup = async (
-  { state, effects }: Context,
+  { state, actions, effects }: Context,
   groupId: number
 ): Promise<Story[] | ErrorMessage> => {
   const authUser = state.session.user;
@@ -43,6 +49,8 @@ export const getStoriesByGroup = async (
   if (isError(response)) return response;
 
   state.story.stories = response.reverse();
+  actions.story._setUserHasStory();
+
   return state.story.stories;
 };
 
@@ -104,7 +112,7 @@ export const createStory = async (
   if (isError(response)) return response;
 
   //load Story
-  await actions.story.getStory(response.id)
+  await actions.story.getStory(response.id);
 
   //make sure all intents are loaded
   await actions.intents.getIntents();
@@ -131,7 +139,6 @@ export const updateStory = async (
   if (newValues.imageUrl?.name) newImage = newValues.imageUrl;
   if (storyData.imageUrl !== null && newValues.imageUrl === null) newImage = null;
 
-
   //Upload umage
   if (newImage?.name) {
     const response = await effects.story.api.uploadImage(storyData.id, newImage, authUser.token);
@@ -156,4 +163,10 @@ export const updateStory = async (
   state.story.currentStory = response;
 
   return state.story.currentStory;
+};
+
+export const _setUserHasStory = ({ state }: Context) => {
+  if (state.story.userHasStory === true) return;
+  const hasStory = state.story.stories.some((story) => story.user?.id === state.session.user?.id);
+  state.story.userHasStory = hasStory;
 };

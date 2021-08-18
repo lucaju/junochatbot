@@ -1,18 +1,14 @@
 import type { Language, Story } from '@src/types';
 
 type State = {
-  stories: Story[];
   currentStory?: Story;
-  languages: Language[];
   icons: { value: string }[];
+  languages: Language[];
+  stories: Story[];
+  userHasStory?: boolean;
 };
 
 export const state: State = {
-  stories: [] as Story[],
-  languages: [
-    { value: 'en-CA', name: 'English' },
-    { value: 'fr-CA', name: 'French' },
-  ],
   icons: [
     { value: 'adb' },
     { value: 'face' },
@@ -20,4 +16,9 @@ export const state: State = {
     { value: 'bug' },
     { value: 'child' },
   ],
+  languages: [
+    { value: 'en-CA', name: 'English' },
+    { value: 'fr-CA', name: 'French' },
+  ],
+  stories: [],
 };

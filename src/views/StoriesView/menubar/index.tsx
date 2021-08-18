@@ -30,23 +30,17 @@ const MenuBar: FC<MenuBarProps> = ({
   const isLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   return (
-    <Stack direction={isSM ? 'column' : 'row'} spacing={2} justifyContent="flex-end" sx={{ pt: 3 }}>
-      {!story.stories.some((story) => {
-        return story.user?.id === session.user?.id;
-      }) ? (
-        <>
-          <Button
-            color="primary"
-            onClick={() => handleDetailOpen()}
-            startIcon={<AddCircleOutlineIcon />}
-          >
-            {t('stories:createStory')}
-          </Button>
-        </>
+    <Stack direction={isSM ? 'column' : 'row'} justifyContent="flex-end" spacing={2} pt={2}>
+      {!story.userHasStory ? (
+        <Button
+          color="primary"
+          onClick={() => handleDetailOpen()}
+          startIcon={<AddCircleOutlineIcon />}
+        >
+          {t('stories:createStory')}
+        </Button>
       ) : (
-        <>
-          <FilterMyStory handleFilter={updateFilter} value={session.user?.id} />
-        </>
+        <FilterMyStory handleFilter={updateFilter} value={session.user?.id} />
       )}
       {!isSM && <Box flexGrow={1} />}
       <Stack direction="row" spacing={2} justifyContent="flex-end">
