@@ -3,24 +3,15 @@ import { derived } from 'overmind';
 
 type State = {
   collection: Intent[];
+  contexts: ContextRelation[];
   currentIntent?: Intent;
   currentProjectName?: string;
-  contexts: ContextRelation[];
   entities: Entity[];
   parameters: Parameter[];
 };
 
 export const state: State = {
   collection: [] as Intent[],
-  currentIntent: undefined,
-  entities: [] as Entity[],
-  currentProjectName: derived((state: State) => {
-    const currentIntentName = state.currentIntent?.name;
-    if (!currentIntentName) return;
-    const splitName = currentIntentName.split('/');
-    const [, projectName] = splitName;
-    return projectName;
-  }),
   contexts: derived((state: State) => {
     const contextCollection: ContextRelation[] = [];
 
@@ -60,6 +51,15 @@ export const state: State = {
 
     return contextCollection;
   }),
+  currentIntent: undefined,
+  currentProjectName: derived((state: State) => {
+    const currentIntentName = state.currentIntent?.name;
+    if (!currentIntentName) return;
+    const splitName = currentIntentName.split('/');
+    const [, projectName] = splitName;
+    return projectName;
+  }),
+  entities: [],
   parameters: derived((state: State) => {
     let list: Parameter[] = [];
     state.collection.forEach(({ parameters }) => {
