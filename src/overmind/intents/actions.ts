@@ -113,7 +113,7 @@ export const createIntent = async ({ state, effects }: Context): Promise<Intent 
   const intents = [response, ...state.intents.collection];
   state.intents.collection = sortBy(intents, 'displayName');
 
-  // state.intents.currentIntent = response;
+  state.intents.currentIntent = response;
 
   return response;
 };
