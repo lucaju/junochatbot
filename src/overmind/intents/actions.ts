@@ -482,8 +482,6 @@ export const getTagById = ({ state }: Context, id: number) => {
   return tag;
 };
 
-///
-
 //Current
 
 export const createNewIntent = ({ state }: Context) => {
@@ -497,4 +495,16 @@ export const closeCurrentIntent = ({ state }: Context) => {
 export const updateCurrentDisplayName = ({ state }: Context, value: string) => {
   if (!state.intents.currentIntent) return;
   state.intents.currentIntent.displayName = value;
+};
+
+export const isDeletable = ({ state }: Context) => {
+  if (!state.intents.currentIntent) return true;
+  const currentIntent = state.intents.currentIntent;
+  if (currentIntent.displayName === 'Default Fallback Intent') return false;
+};
+
+export const isRenamable = ({ state }: Context) => {
+  if (!state.intents.currentIntent) return true;
+  const currentIntent = state.intents.currentIntent;
+  if (currentIntent.displayName === 'Default Fallback Intent') return false;
 };

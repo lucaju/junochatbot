@@ -34,9 +34,16 @@ interface HeadersProps {
   activeTab: string;
   changeTab: (value: string) => void;
   handleSubmit: () => void;
+  renamable?: boolean;
 }
 
-const Header: FC<HeadersProps> = ({ action, activeTab, changeTab, handleSubmit }) => {
+const Header: FC<HeadersProps> = ({
+  action,
+  activeTab,
+  changeTab,
+  handleSubmit,
+  renamable = true,
+}) => {
   const { intents } = useAppState();
   const actions = useActions();
   const [displayName, setDisplayName] = useState(intents.currentIntent?.displayName);
@@ -91,6 +98,7 @@ const Header: FC<HeadersProps> = ({ action, activeTab, changeTab, handleSubmit }
       <TextField
         autoComplete="off"
         autoFocus={action === 'create'}
+        disabled={!renamable}
         fullWidth
         label={t('common:name')}
         name="displayName"

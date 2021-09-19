@@ -151,6 +151,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
               activeTab={activeTab}
               changeTab={changeTab}
               handleSubmit={submit}
+              renamable={actions.intents.isRenamable()}
             />
           </DialogTitle>
           <Divider />
@@ -165,6 +166,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           <Divider />
           <DialogActions>
             <Actions
+              deletable={actions.intents.isDeletable()}
               handleCancel={handleCancelButtonClick}
               handleDelete={handleDeleteButtonClick}
               isSubmitting={isSubmitting}

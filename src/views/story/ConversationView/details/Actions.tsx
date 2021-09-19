@@ -6,13 +6,20 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ActionsProps {
+  deletable?: boolean;
   handleSubmit: () => void;
   handleCancel: () => void;
   handleDelete: () => void;
   isSubmitting: boolean;
 }
 
-const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, isSubmitting }) => {
+const Actions: FC<ActionsProps> = ({
+  deletable = true,
+  handleCancel,
+  handleDelete,
+  handleSubmit,
+  isSubmitting,
+}) => {
   const { t } = useTranslation();
   const { intents } = useAppState();
 
@@ -23,7 +30,7 @@ const Actions: FC<ActionsProps> = ({ handleCancel, handleDelete, handleSubmit, i
       {intents.currentIntent?.name && (
         <>
           <Box flexGrow={1} />
-          <Button disabled={isSubmitting} onClick={handleDelete} variant="outlined">
+          <Button disabled={isSubmitting || !deletable} onClick={handleDelete} variant="outlined">
             {t('common:delete')}
           </Button>
         </>
