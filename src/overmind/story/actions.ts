@@ -131,6 +131,9 @@ export const updateStory = async (
   const authUser = state.session.user;
   if (!authUser || !authUser.token) return { errorMessage: 'Not authorized' };
 
+  //stash currentStory user
+  const currentStoryUser = state.story.currentStory?.user;
+
   //1. Split data
   let newValues: Partial<Story> = { ...values };
   delete newValues.user;
@@ -160,7 +163,11 @@ export const updateStory = async (
     return s;
   });
 
-  state.story.currentStory = response;
+  //reapply currentStory User
+  const story: Story = { ...response };
+  if (currentStoryUser) story.user = currentStoryUser;
+
+  state.story.currentStory = story;
 
   return state.story.currentStory;
 };
