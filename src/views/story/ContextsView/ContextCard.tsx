@@ -1,5 +1,5 @@
-import { Box, Card, CardContent, Chip, Typography } from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
+import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { ContextRelation } from '@src/types';
 import React, { FC, useState } from 'react';
 

@@ -1,8 +1,8 @@
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AdbIcon from '@material-ui/icons/Adb';
-import BugReportIcon from '@material-ui/icons/BugReport';
-import ChildCareIcon from '@material-ui/icons/ChildCare';
-import FaceIcon from '@material-ui/icons/Face';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AdbIcon from '@mui/icons-material/Adb';
+import BugReportIcon from '@mui/icons-material/BugReport';
+import ChildCareIcon from '@mui/icons-material/ChildCare';
+import FaceIcon from '@mui/icons-material/Face';
 
 const icons: Map<string, any> = new Map();
 icons.set('adb', AdbIcon);

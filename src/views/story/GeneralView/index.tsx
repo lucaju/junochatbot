@@ -5,7 +5,7 @@ import {
   Stack,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

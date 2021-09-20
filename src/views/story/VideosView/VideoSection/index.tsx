@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

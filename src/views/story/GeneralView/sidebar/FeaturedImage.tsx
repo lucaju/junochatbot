@@ -1,7 +1,7 @@
-import { Box, CardMedia, IconButton, useTheme } from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PanoramaIcon from '@material-ui/icons/Panorama';
+import { Box, CardMedia, IconButton, useTheme } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PanoramaIcon from '@mui/icons-material/Panorama';
 import { APP_URL } from '@src/config/config.js';
 import type { DropFile } from '@src/types';
 import { useField } from 'formik';

@@ -1,4 +1,4 @@
-import { MenuItem, TextField } from '@material-ui/core';
+import { MenuItem, TextField } from '@mui/material';
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@material-ui/core';
+import { Box, useTheme } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import { Part as PartType } from '@src/types';
 import { intentParamColorPalette } from '@src/util/utilities';

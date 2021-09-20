@@ -1,5 +1,5 @@
-import { Container, Link, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Container, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
 import { useAppState, useActions } from '@src/overmind';

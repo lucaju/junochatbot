@@ -1,4 +1,4 @@
-import { Box, Container, Skeleton, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Container, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import StoryCard from '@src/components/StoryCardFront';
 import { useActions } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';

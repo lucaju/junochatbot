@@ -1,4 +1,4 @@
-import { Box, Container, Link, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Container, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';

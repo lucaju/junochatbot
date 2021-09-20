@@ -1,5 +1,5 @@
-import { Box, TextField } from '@material-ui/core';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+import { Box, TextField } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import type { Credential } from '@src/types';
 import { Formik } from 'formik';
 import React, { FC } from 'react';

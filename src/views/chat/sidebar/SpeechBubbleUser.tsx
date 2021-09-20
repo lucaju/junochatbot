@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@material-ui/core';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, memo, useEffect, useState } from 'react';

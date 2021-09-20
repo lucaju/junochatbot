@@ -1,4 +1,4 @@
-import { Box, Paper, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import TopBar from '@src/components/TopBar';
 import { useAppState, useActions } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';

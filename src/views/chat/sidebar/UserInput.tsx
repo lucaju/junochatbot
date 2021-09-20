@@ -1,5 +1,5 @@
-import { FilledInput, IconButton, InputAdornment } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
+import { FilledInput, IconButton, InputAdornment } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import { useActions } from '@src/overmind';
 import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';

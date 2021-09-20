@@ -1,4 +1,4 @@
-import { Box, MenuItem, MenuList, useTheme } from '@material-ui/core';
+import { Box, MenuItem, MenuList, useTheme } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import type { ContextRelation } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';

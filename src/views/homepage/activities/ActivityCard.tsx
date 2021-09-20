@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { motion } from 'framer-motion';
 import React, { FC } from 'react';

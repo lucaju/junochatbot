@@ -1,5 +1,5 @@
-import { Box, IconButton, TextField, Zoom } from '@material-ui/core';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { Box, IconButton, TextField, Zoom } from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useAppState } from '@src/overmind';
 import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, useRef, useState } from 'react';
 import MenuParameters from './MenuParameters';

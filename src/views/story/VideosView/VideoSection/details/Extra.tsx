@@ -5,8 +5,8 @@ import {
   Grid,
   Stack,
   TextField,
-} from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useActions, useAppState } from '@src/overmind';
 import { Tag, Video } from '@src/types';
 import { FormikErrors, FormikTouched, useField } from 'formik';

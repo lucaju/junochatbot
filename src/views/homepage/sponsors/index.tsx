@@ -1,4 +1,4 @@
-import { Box, Container, Divider, Stack, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Container, Divider, Stack, useMediaQuery, useTheme } from '@mui/material';
 import React, { FC } from 'react';
 import Partners from './Partners';
 import Sponsorship from './Sponsorship';

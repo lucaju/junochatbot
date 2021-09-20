@@ -8,11 +8,11 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
-import ForumIcon from '@material-ui/icons/Forum';
-import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
-import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore';
+} from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import ForumIcon from '@mui/icons-material/Forum';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import type { Intent } from '@src/types';
 import { motion } from 'framer-motion';
 import React, { FC, useState } from 'react';

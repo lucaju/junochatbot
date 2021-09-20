@@ -10,8 +10,8 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+} from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useActions, useAppState } from '@src/overmind';
 import { NotificationType, Story } from '@src/types';
 import { isError } from '@src/util/utilities';

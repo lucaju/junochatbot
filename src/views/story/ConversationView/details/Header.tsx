@@ -8,9 +8,9 @@ import {
   Stack,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import { useAppState, useActions } from '@src/overmind';
 import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';

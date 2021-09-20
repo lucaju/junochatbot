@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Typography } from '@material-ui/core';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { FC } from 'react';
 

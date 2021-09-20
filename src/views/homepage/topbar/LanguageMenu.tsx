@@ -1,5 +1,5 @@
-import { Button, Menu, MenuItem } from '@material-ui/core';
-import LanguageIcon from '@material-ui/icons/Language';
+import { Button, Menu, MenuItem } from '@mui/material';
+import LanguageIcon from '@mui/icons-material/Language';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,4 +1,4 @@
-import { Box, Stack, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Stack, useMediaQuery, useTheme } from '@mui/material';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { HandleFilterType } from '@src/types';
 import React, { FC } from 'react';

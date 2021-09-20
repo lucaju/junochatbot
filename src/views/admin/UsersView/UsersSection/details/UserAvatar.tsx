@@ -1,6 +1,6 @@
-import { Avatar, Box, IconButton, useTheme } from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { Avatar, Box, IconButton, useTheme } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { APP_URL } from '@src/config/config.js';
 import type { DropFile } from '@src/types';
 import { useField } from 'formik';

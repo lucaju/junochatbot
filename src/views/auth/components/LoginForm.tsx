@@ -7,10 +7,10 @@ import {
   InputLabel,
   Stack,
   TextField,
-} from '@material-ui/core';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+} from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LoadingButton from '@mui/lab/LoadingButton';
 import type { Credential } from '@src/types';
 import { Formik } from 'formik';
 import React, { FC, MouseEvent, useState } from 'react';

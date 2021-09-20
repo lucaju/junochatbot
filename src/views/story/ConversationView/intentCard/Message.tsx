@@ -1,7 +1,7 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
-import ShuffleIcon from '@material-ui/icons/Shuffle';
-import YouTubeIcon from '@material-ui/icons/YouTube';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 import { useActions } from '@src/overmind';
 import type { Message as MesasgeType } from '@src/types';
 import React, { FC } from 'react';

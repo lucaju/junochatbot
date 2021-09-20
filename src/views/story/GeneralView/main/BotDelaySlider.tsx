@@ -1,4 +1,4 @@
-import { Slider } from '@material-ui/core';
+import { Slider } from '@mui/material';
 import { useField } from 'formik';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';

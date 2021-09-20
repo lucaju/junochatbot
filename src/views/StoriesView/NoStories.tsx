@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@material-ui/core';
+import { Box, Typography, useTheme } from '@mui/material';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import AddStoryCard from './AddStoryCard';

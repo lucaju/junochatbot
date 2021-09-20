@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@mui/material';
 import { User } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';

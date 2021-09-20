@@ -1,4 +1,4 @@
-import { Box, TextField } from '@material-ui/core';
+import { Box, TextField } from '@mui/material';
 import React, { ChangeEvent, FC, FocusEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

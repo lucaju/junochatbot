@@ -1,4 +1,4 @@
-import { Box, ThemeProvider, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, ThemeProvider, useMediaQuery, useTheme } from '@mui/material';
 import Page from '@src/components/Page';
 import { useActions, useAppState } from '@src/overmind';
 import _theme from '@src/theme';

@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';

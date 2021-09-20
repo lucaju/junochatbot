@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from '@material-ui/core';
+import { Menu, MenuItem } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { getCursorXY } from './helper';

@@ -9,10 +9,10 @@ import {
   useMediaQuery,
   useTheme,
   Zoom,
-} from '@material-ui/core';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import ShuffleIcon from '@material-ui/icons/Shuffle';
-import YouTubeIcon from '@material-ui/icons/YouTube';
+} from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 import { useActions, useAppState } from '@src/overmind';
 import { Payload } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';

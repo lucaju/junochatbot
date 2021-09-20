@@ -11,11 +11,11 @@ import {
   useMediaQuery,
   useTheme,
   Zoom,
-} from '@material-ui/core';
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
-import { alpha, styled } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+} from '@mui/material';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import { alpha, styled } from '@mui/material/styles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useActions, useAppState } from '@src/overmind';
 import type { Parameter as ParameterType } from '@src/types';
 import { intentParamColorPalette, sortBy } from '@src/util/utilities';

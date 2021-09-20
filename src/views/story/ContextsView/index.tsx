@@ -1,4 +1,4 @@
-import { Box, Container } from '@material-ui/core';
+import { Box, Container } from '@mui/material';
 import Page from '@src/components/Page';
 import { useActions, useAppState } from '@src/overmind';
 import { isError } from '@src/util/utilities';

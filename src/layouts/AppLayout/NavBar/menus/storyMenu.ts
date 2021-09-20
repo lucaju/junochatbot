@@ -1,9 +1,9 @@
-import AdbIcon from '@material-ui/icons/Adb';
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import DeviceHubIcon from '@material-ui/icons/DeviceHub';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import AdbIcon from '@mui/icons-material/Adb';
+import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
+import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import { MenuType } from '../Menu';
 
 export const storyMenu: MenuType[] = [

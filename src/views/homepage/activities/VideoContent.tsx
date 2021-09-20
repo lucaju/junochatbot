@@ -1,4 +1,4 @@
-import { Dialog, useMediaQuery, useTheme } from '@material-ui/core';
+import { Dialog, useMediaQuery, useTheme } from '@mui/material';
 import React, { FC } from 'react';
 import ReactPlayer from 'react-player/youtube';
 import { ActivityProps } from './ActivityCard';

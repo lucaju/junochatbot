@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { Box, Button, Typography } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';

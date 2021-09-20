@@ -7,9 +7,9 @@ import {
   Menu,
   MenuItem,
   Typography,
-} from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+} from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useActions, useAppState } from '@src/overmind';
 import { sortBy } from '@src/util/utilities';
 import React, { FC, MouseEvent, useEffect } from 'react';

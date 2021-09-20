@@ -7,8 +7,8 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
 import { useActions, useAppState } from '@src/overmind';

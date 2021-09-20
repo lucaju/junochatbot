@@ -1,4 +1,4 @@
-import Box, { BoxProps } from '@material-ui/core/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import React, { FC } from 'react';
 
 interface LogoProps extends BoxProps {

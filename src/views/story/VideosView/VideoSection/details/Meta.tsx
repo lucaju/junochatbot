@@ -1,7 +1,7 @@
-import { Box, Grid, IconButton, Skeleton, Typography } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import RefreshIcon from '@material-ui/icons/Refresh';
+import { Box, Grid, IconButton, Skeleton, Typography } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { Video } from '@src/types';
 import { DateTime, Duration } from 'luxon';
 import React, { FC, useState } from 'react';

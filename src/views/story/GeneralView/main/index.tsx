@@ -1,4 +1,4 @@
-import { Stack } from '@material-ui/core';
+import { Stack } from '@mui/material';
 import { Story as StoryType } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';

@@ -1,4 +1,4 @@
-import { Box, Stack } from '@material-ui/core';
+import { Box, Stack } from '@mui/material';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { useAppState } from '@src/overmind';
 import React, { FC } from 'react';

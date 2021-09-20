@@ -1,5 +1,5 @@
-import { Box, IconButton, Typography, useTheme, Zoom } from '@material-ui/core';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { Box, IconButton, Typography, useTheme, Zoom } from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useActions, useAppState } from '@src/overmind';
 import { Part as PartType, TrainingPhrase } from '@src/types';
 import React, {

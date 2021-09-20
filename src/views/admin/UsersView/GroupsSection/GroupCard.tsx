@@ -1,5 +1,5 @@
-import { CardContent, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-import Card, { CardProps } from '@material-ui/core/Card';
+import { CardContent, Typography, useMediaQuery, useTheme } from '@mui/material';
+import Card, { CardProps } from '@mui/material/Card';
 import { UserGroup } from '@src/types';
 import React, { FC, useState } from 'react';
 

@@ -1,5 +1,5 @@
 import { useSortable } from '@dnd-kit/sortable';
-import { ListItem } from '@material-ui/core';
+import { ListItem } from '@mui/material';
 import React, { cloneElement, FC, isValidElement, useEffect } from 'react';
 
 interface SortableItemProps {

@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@material-ui/core';
+import { Box, Container, Typography } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

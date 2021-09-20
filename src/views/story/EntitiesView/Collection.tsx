@@ -1,4 +1,4 @@
-import { Box, Skeleton } from '@material-ui/core';
+import { Box, Skeleton } from '@mui/material';
 import NoContent from '@src/components/NoContent';
 import { useAppState } from '@src/overmind';
 import { Entity } from '@src/types';

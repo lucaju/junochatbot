@@ -6,9 +6,9 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

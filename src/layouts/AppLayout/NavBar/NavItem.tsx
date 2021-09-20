@@ -1,4 +1,4 @@
-import { Box, Button, useTheme } from '@material-ui/core';
+import { Box, Button, useTheme } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import React, { FC } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';

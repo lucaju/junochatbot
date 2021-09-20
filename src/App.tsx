@@ -1,4 +1,4 @@
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import React, { FC } from 'react';
 import { useRoutes } from 'react-router-dom';
 import Notification from './components/Notification';

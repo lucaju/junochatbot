@@ -1,4 +1,4 @@
-import { Box, Stack } from '@material-ui/core';
+import { Box, Stack } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import SpeechBubble from './SpeechBubble';

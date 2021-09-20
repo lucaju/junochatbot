@@ -5,8 +5,8 @@ import {
   DialogTitle,
   Divider,
   Slide,
-} from '@material-ui/core';
-import { TransitionProps } from '@material-ui/core/transitions';
+} from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
 import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useActions, useAppState } from '@src/overmind';
 import { NotificationType } from '@src/types';

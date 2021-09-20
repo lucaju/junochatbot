@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Stack, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TeamProfile, { TeamProfileProps } from './TeamProfile';

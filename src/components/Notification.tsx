@@ -1,4 +1,4 @@
-import { Alert, Slide, Snackbar } from '@material-ui/core';
+import { Alert, Slide, Snackbar } from '@mui/material';
 import { useAppState, useActions } from '@src/overmind';
 import React from 'react';
 

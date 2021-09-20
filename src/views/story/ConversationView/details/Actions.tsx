@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button } from '@material-ui/core';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+import { Box, Button } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useAppState } from '@src/overmind';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';

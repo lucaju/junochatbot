@@ -1,6 +1,6 @@
-import { Box, Button, Tooltip, Typography } from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { Box, Button, Tooltip, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

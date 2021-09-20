@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Chip, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import { Video } from '@src/types';
 import React, { FC, useState } from 'react';
 

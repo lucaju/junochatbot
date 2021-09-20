@@ -7,9 +7,9 @@ import {
   Toolbar,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import VolumeOffIcon from '@material-ui/icons/VolumeOff';
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+} from '@mui/material';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import ReactPlayer from 'react-player/youtube';

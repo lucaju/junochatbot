@@ -1,4 +1,4 @@
-import { Box, Stack, useTheme } from '@material-ui/core';
+import { Box, Stack, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { FC } from 'react';
 

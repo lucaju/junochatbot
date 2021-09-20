@@ -1,4 +1,4 @@
-import { Box, Button, Menu, MenuItem } from '@material-ui/core';
+import { Box, Button, Menu, MenuItem } from '@mui/material';
 import { useActions } from '@src/overmind';
 import type { Intent } from '@src/types';
 import { isError } from '@src/util/utilities';

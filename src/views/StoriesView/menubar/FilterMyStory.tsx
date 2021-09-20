@@ -1,4 +1,4 @@
-import { ToggleButton } from '@material-ui/core';
+import { ToggleButton } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

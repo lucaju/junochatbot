@@ -1,4 +1,4 @@
-import { Stack, ThemeProvider, Typography, Box } from '@material-ui/core';
+import { Stack, ThemeProvider, Typography, Box } from '@mui/material';
 import Page from '@src/components/Page';
 import theme from '@src/theme';
 import React, { FC } from 'react';

@@ -1,4 +1,4 @@
-import { Box, Chip, TextField, Typography } from '@material-ui/core';
+import { Box, Chip, TextField, Typography } from '@mui/material';
 import { Story as StoryType } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';

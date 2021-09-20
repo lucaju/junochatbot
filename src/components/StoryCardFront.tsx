@@ -7,7 +7,7 @@ import {
   Chip,
   Divider,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { APP_URL } from '@src/config/config.js';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';

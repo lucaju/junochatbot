@@ -7,7 +7,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { motion, useAnimation } from 'framer-motion';

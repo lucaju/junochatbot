@@ -1,5 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
-import TimerIcon from '@material-ui/icons/Timer';
+import { Box, Typography } from '@mui/material';
+import TimerIcon from '@mui/icons-material/Timer';
 import React, { FC } from 'react';
 
 interface ContextProps {

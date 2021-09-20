@@ -1,5 +1,5 @@
-import { Box, IconButton, Popover, Typography } from '@material-ui/core';
-import BubbleChartIcon from '@material-ui/icons/BubbleChart';
+import { Box, IconButton, Popover, Typography } from '@mui/material';
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import { useActions, useAppState } from '@src/overmind';
 import { json } from 'overmind';
 import React, { FC, MouseEvent, useState } from 'react';

@@ -1,4 +1,4 @@
-import { Box, List } from '@material-ui/core';
+import { Box, List } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import { RoleType } from '@src/types';
 import React, { FC } from 'react';

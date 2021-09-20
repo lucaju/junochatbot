@@ -1,6 +1,6 @@
-import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles'
-import EditIcon from '@material-ui/icons/Edit';
+import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { alpha } from '@mui/material/styles'
+import EditIcon from '@mui/icons-material/Edit';
 import { useActions, useAppState } from '@src/overmind';
 import { Tag } from '@src/types';
 import React, { FC, MouseEvent, useState } from 'react';

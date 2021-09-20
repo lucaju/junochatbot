@@ -1,5 +1,5 @@
-import { InputAdornment, TextField } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { InputAdornment, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

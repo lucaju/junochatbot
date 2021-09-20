@@ -13,12 +13,12 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
-} from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import LanguageIcon from '@material-ui/icons/Language';
-import LockIcon from '@material-ui/icons/Lock';
+} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import LanguageIcon from '@mui/icons-material/Language';
+import LockIcon from '@mui/icons-material/Lock';
 import { APP_URL } from '@src/config/config.js';
 import { useAppState, useActions } from '@src/overmind';
 import { UserGroup } from '@src/types';

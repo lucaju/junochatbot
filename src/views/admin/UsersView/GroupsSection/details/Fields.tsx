@@ -1,4 +1,4 @@
-import { Stack, TextField } from '@material-ui/core';
+import { Stack, TextField } from '@mui/material';
 import { UserGroup } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';

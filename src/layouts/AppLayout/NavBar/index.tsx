@@ -1,5 +1,5 @@
-import { Box, Drawer, IconButton, useMediaQuery, useTheme } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { Box, Drawer, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import Logo from '@src/components/Logo';
 import { useAppState } from '@src/overmind';
 import { RoleType } from '@src/types';

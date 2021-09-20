@@ -1,4 +1,4 @@
-import { Box, Link, Stack, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Link, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

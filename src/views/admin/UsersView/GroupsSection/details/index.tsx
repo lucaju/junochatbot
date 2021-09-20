@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useAppState, useActions } from '@src/overmind';
 import { NotificationType, UserGroup } from '@src/types';

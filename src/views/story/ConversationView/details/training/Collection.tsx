@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import { TrainingPhrase } from '@src/types';
 import { AnimatePresence, motion } from 'framer-motion';

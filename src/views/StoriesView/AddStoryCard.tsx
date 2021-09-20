@@ -1,5 +1,5 @@
-import { Box, Card, CardActionArea, CardContent, Typography } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { Box, Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 

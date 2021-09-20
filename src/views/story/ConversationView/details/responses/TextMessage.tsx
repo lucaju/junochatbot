@@ -1,9 +1,9 @@
 import { useDraggable } from '@dnd-kit/core';
-import { Box, Grid, IconButton, Stack, useTheme, Zoom } from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import ShuffleIcon from '@material-ui/icons/Shuffle';
+import { Box, Grid, IconButton, Stack, useTheme, Zoom } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
 import { useActions } from '@src/overmind';
 import { Text } from '@src/types';
 import React, { FC, useState } from 'react';

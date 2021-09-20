@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { HandleFilterType } from '@src/types';
 import React, { FC, useState } from 'react';
 import Collection from './Collection';

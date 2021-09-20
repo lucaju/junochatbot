@@ -1,4 +1,4 @@
-import { Box, Container } from '@material-ui/core';
+import { Box, Container } from '@mui/material';
 import Page from '@src/components/Page';
 import { useAppState, useActions } from '@src/overmind';
 import { HandleFilterType } from '@src/types';

@@ -10,10 +10,10 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-} from '@material-ui/core';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+} from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useActions } from '@src/overmind';
 import { Credential, NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';

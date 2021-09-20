@@ -9,8 +9,8 @@ import {
   Paper,
   Stack,
   Typography,
-} from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
+} from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { APP_URL } from '@src/config/config.js';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';

@@ -1,4 +1,4 @@
-import { Drawer, Paper, Stack, useMediaQuery, useTheme } from '@material-ui/core';
+import { Drawer, Paper, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useActions } from '@src/overmind';
 import React, { FC } from 'react';
 import Conversation from './Conversation';

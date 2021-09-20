@@ -1,4 +1,4 @@
-import { Stack } from '@material-ui/core';
+import { Stack } from '@mui/material';
 import React, { FC } from 'react';
 import Collection from './Collection';
 

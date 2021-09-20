@@ -1,7 +1,7 @@
-import { Avatar, Box, CardContent, Stack, Typography } from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
-import Card, { CardProps } from '@material-ui/core/Card';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Avatar, Box, CardContent, Stack, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import Card, { CardProps } from '@mui/material/Card';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { APP_URL } from '@src/config/config.js';
 import { User } from '@src/types';
 import React, { FC, useState } from 'react';

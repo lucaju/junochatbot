@@ -7,9 +7,9 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import RestartAltIcon from '@material-ui/icons/RestartAlt';
+} from '@mui/material';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Logo from '@src/components/Logo';
 import StoryCard from '@src/components/StoryCardFront';
 import { useActions, useAppState } from '@src/overmind';

@@ -8,10 +8,10 @@ import {
   DialogTitle,
   IconButton,
   useTheme,
-} from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { APP_URL } from '@src/config/config.js';
 import { useAppState, useActions } from '@src/overmind';
 import { DropFile, NotificationType } from '@src/types';

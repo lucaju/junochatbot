@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@material-ui/core';
+import { Box, Container, Typography } from '@mui/material';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
 import React, { FC } from 'react';

@@ -1,4 +1,4 @@
-import { Container, Grid, useMediaQuery, useTheme } from '@material-ui/core';
+import { Container, Grid, useMediaQuery, useTheme } from '@mui/material';
 import Page from '@src/components/Page';
 import { useAppState, useActions } from '@src/overmind';
 import { RoleType } from '@src/types';

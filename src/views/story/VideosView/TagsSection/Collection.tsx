@@ -1,4 +1,4 @@
-import { Box, Skeleton, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import NoContent from '@src/components/NoContent';
 import { useAppState } from '@src/overmind';
 import React, { FC } from 'react';

@@ -1,4 +1,4 @@
-import { MenuItem, TextField } from '@material-ui/core';
+import { MenuItem, TextField } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import { HandleFilterType, RoleType } from '@src/types';
 import React, { ChangeEvent, FC, useState } from 'react';

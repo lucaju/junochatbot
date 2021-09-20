@@ -6,7 +6,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useAppState } from '@src/overmind';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';

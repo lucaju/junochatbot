@@ -1,5 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
-import EditAttributesIcon from '@material-ui/icons/EditAttributes';
+import { Box, Typography } from '@mui/material';
+import EditAttributesIcon from '@mui/icons-material/EditAttributes';
 import type { Parameter as ParameterType } from '@src/types';
 import React, { FC } from 'react';
 

@@ -9,9 +9,9 @@ import {
   Toolbar,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import { alpha } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
+} from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import MenuIcon from '@mui/icons-material/Menu';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

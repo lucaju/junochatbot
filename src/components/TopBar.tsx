@@ -7,9 +7,9 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import MenuIcon from '@material-ui/icons/Menu';
+} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
 import { APP_URL } from '@src/config/config.js';
 import { useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useState } from 'react';

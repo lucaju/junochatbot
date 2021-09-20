@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@material-ui/core';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { getIcon } from '@src/util/icons';
 import { AnimatePresence, motion } from 'framer-motion';
