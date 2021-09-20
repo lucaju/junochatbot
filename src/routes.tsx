@@ -30,7 +30,7 @@ const routes = [
       { path: ':storyId/conversation', element: <ConversationView /> },
       { path: ':storyId/contexts', element: <ContextsView /> },
       { path: ':storyId/entities', element: <EntitiesView /> },
-      { path: '/', element: <Navigate to="/app/" /> },
+      { index: true, element: <Navigate to="/app/" /> },
       { path: '*', element: <Navigate to="/app/" /> },
     ],
   },
@@ -38,8 +38,8 @@ const routes = [
     path: '/app',
     element: <AppLayout />,
     children: [
-      { path: '/', element: <StoriesView /> },
-      { path: '/users', element: <UsersView /> },
+      { index: true, element: <StoriesView /> },
+      { path: 'users', element: <UsersView /> },
     ],
   },
   {
@@ -57,7 +57,7 @@ const routes = [
       { path: 'resetpassword', element: <ResetPasswordView /> },
       { path: '404', element: <NotFoundView /> },
       // { path: '*', element: <Navigate to="/404" /> },
-      { path: '/', element: <HomeView /> },
+      { index: true, element: <HomeView /> },
     ],
   },
 ];

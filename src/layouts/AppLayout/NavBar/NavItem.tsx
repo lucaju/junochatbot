@@ -26,17 +26,6 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
     <>
       {isCompact ? (
         <Button
-          activeStyle={{
-            active: {
-              color: theme.palette.primary.main,
-              '& $title': {
-                fontWeight: theme.typography.fontWeightMedium,
-              },
-              '& $icon': {
-                color: theme.palette.primary.main,
-              },
-            },
-          }}
           color={navToIntact ? 'primary' : 'inherit'}
           component={RouterLink}
           fullWidth
@@ -51,6 +40,7 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             textAlign: 'center',
             lineHeight: '12px',
           }}
+          // style={({ isActive }) => ({ color: isActive ? 'red' : navToIntact ? 'primary' : 'text.secondary' })}
           target={navToIntact ? '_blank' : ''}
           to={!navToIntact ? path : isStoryPublished ? path : `${path}?draft=true`}
         >
@@ -63,17 +53,6 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
         </Button>
       ) : (
         <Button
-          activeStyle={{
-            active: {
-              color: theme.palette.primary.main,
-              '& $title': {
-                fontWeight: theme.typography.fontWeightMedium,
-              },
-              '& $icon': {
-                color: theme.palette.primary.main,
-              },
-            },
-          }}
           color={navToIntact ? 'primary' : 'inherit'}
           component={RouterLink}
           fullWidth
@@ -87,6 +66,7 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             textTransform: 'none',
             justifyContent: 'flex-start',
           }}
+          // style={({ isActive }) => ({ color: isActive ? 'red' : navToIntact ? 'primary' : 'text.secondary' })}
           target={navToIntact ? '_blank' : ''}
           to={!navToIntact ? path : isStoryPublished ? path : `${path}?draft=true`}
         >
