@@ -14,16 +14,14 @@ router.get('/video/:id', async (req, res) => {
 
   const ytResponse = await axios.get(`${baseUrl}/videos?part=${PART}&id=${videoID}&key=${API_KEY}`);
 
-  if (
-    !ytResponse ||
-    !ytResponse.data ||
-    !ytResponse.data.items ||
-    ytResponse.data.items.length === 0
-  ) {
-    return res.status(404).send();
-  }
+  const data: any = ytResponse.data;
+  if (!data) return res.status(404).send();
 
-  const video = ytResponse.data.items[0];
+  const items: any[] = data.items;
+  if (!data) return res.status(404).send();
+  if (items.length === 0) return res.status(404).send();
+
+  const video = items[0];
   if (!video) return res.status(404).send();
 
   const { snippet, contentDetails } = video;
