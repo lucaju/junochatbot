@@ -56,7 +56,7 @@ const GeneralView: FC = () => {
   const formValidation = Yup.object().shape({
     id: Yup.number(),
     title: Yup.string().trim().max(125).required(t('common:required')),
-    author: Yup.string(),
+    author: Yup.string().nullable(),
     languageCode: Yup.string(),
     synopsis: Yup.string(),
     imageUrl: Yup.mixed(),
