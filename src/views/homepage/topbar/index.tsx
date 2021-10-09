@@ -1,3 +1,4 @@
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Box,
@@ -11,14 +12,17 @@ import {
   useTheme,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import MenuIcon from '@mui/icons-material/Menu';
+import { useAppState } from '@src/overmind';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import LanguageMenu from './LanguageMenu';
-import { useAppState } from '@src/overmind';
 
-const Topbar: FC = () => {
+interface TopbarProps {
+  onAnchor: (anchorName?: string) => void;
+}
+
+const Topbar: FC<TopbarProps> = ({ onAnchor }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { chat } = useAppState();
@@ -28,39 +32,33 @@ const Topbar: FC = () => {
 
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
-  const handleNavigateToLogin = () => {
-    navigate('/login', { replace: true });
-  };
-
   const openSideBar = () => setSideBarOpen(true);
   const closeSideBar = () => setSideBarOpen(false);
 
-  const fullMenu = () => {
-    return (
-      <>
-        <Button color="inherit" href="#about">
-          {t('home:about')}
+  const FullMenu = () => (
+    <>
+      <Button color="inherit" onClick={() => onAnchor('about')}>
+        {t('home:about')}
+      </Button>
+      {chat.stories.length > 0 && (
+        <Button color="inherit" onClick={() => onAnchor('stories')}>
+          {t('home:stories')}
         </Button>
-        {chat.stories.length > 0 && (
-          <Button color="inherit" href="#stories">
-            {t('home:stories')}
-          </Button>
-        )}
-        <Button color="inherit" href="#pedagogical">
-          {t('home:pedagogicalMaterial')}
-        </Button>
-        <Button color="inherit" href="#activities">
-          {t('home:researchActivities')}
-        </Button>
-        <Button color="inherit" href="#team">
-          {t('home:team')}
-        </Button>
-        <Button color="inherit" href="#sponsors">
-          {t('home:sponsors')}
-        </Button>
-      </>
-    );
-  };
+      )}
+      <Button color="inherit" onClick={() => onAnchor('pedagogical')}>
+        {t('home:pedagogicalMaterial')}
+      </Button>
+      <Button color="inherit" onClick={() => onAnchor('activities')}>
+        {t('home:researchActivities')}
+      </Button>
+      <Button color="inherit" onClick={() => onAnchor('team')}>
+        {t('home:team')}
+      </Button>
+      <Button color="inherit" onClick={() => onAnchor('sponsors')}>
+        {t('home:sponsors')}
+      </Button>
+    </>
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -85,7 +83,7 @@ const Topbar: FC = () => {
             onClick={closeSideBar}
             onKeyDown={closeSideBar}
           >
-            {fullMenu()}
+            <FullMenu />
           </Stack>
         </Drawer>
         <Toolbar variant="dense">
@@ -101,19 +99,18 @@ const Topbar: FC = () => {
               >
                 <MenuIcon sx={{ mr: 2 }} />
               </IconButton>
-              <LanguageMenu />
             </>
           ) : (
-            <>
-              {fullMenu()}
-              <LanguageMenu />
-            </>
+            <FullMenu />
           )}
 
           <Box flexGrow={1} />
-          <Button color="inherit" onClick={handleNavigateToLogin}>
-            {t('home:signin')}
-          </Button>
+          <Stack direction="row" spacing={2}>
+            <LanguageMenu />
+            <Button color="inherit" onClick={() => navigate('/login', { replace: true })}>
+              {t('home:signin')}
+            </Button>
+          </Stack>
         </Toolbar>
       </AppBar>
     </Box>

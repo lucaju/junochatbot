@@ -1,8 +1,6 @@
-import { Box, Drawer, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Box, Drawer, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import Logo from '@src/components/Logo';
-import { useAppState } from '@src/overmind';
-import { RoleType } from '@src/types';
 import React, { FC, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import Menu from './Menu';
@@ -23,7 +21,6 @@ const NavBar: FC<NavBarProps> = ({
   showStoryMenu = false,
 }) => {
   const location = useLocation();
-  const { session } = useAppState();
   const theme = useTheme();
   const breakpointsUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -32,8 +29,6 @@ const NavBar: FC<NavBarProps> = ({
       onMobileClose();
     }
   }, [location.pathname]);
-
-  const userTypeAllowed = [RoleType.ADMIN, RoleType.INSTRUCTOR];
 
   return (
     <Drawer
@@ -75,12 +70,8 @@ const NavBar: FC<NavBarProps> = ({
         </Box>
       )}
       {showStoryMenu && <Menu compactMode={compactMode} items={storyMenu} />}
-      {session.user && userTypeAllowed.includes(session.user.roleTypeId) && (
-        <>
-          <Box flexGrow={1} />
-          <Menu compactMode={compactMode} items={adminMenu} />
-        </>
-      )}
+      <Box flexGrow={1} />
+      <Menu compactMode={compactMode} items={adminMenu} />
     </Drawer>
   );
 };

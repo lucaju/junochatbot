@@ -1,7 +1,6 @@
-import { Stack, ThemeProvider, Typography, Box } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import Page from '@src/components/Page';
-import theme from '@src/theme';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ResearchActivities from './activities';
 import Hero from './Hero';
@@ -15,6 +14,20 @@ import Topbar from './topbar';
 const HomeView: FC = () => {
   const { t } = useTranslation();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const ScrollTo = (anchorName?: string) => {
+    if (!anchorName) anchorName = 'top';
+    const anchor = document.querySelector(`#${anchorName}`);
+
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const location = anchorName === 'top' ? '/' : `/#${anchorName}`;
+    }
+  };
+
   return (
     <Page title={t('common:homepage')}>
       {/* <ThemeProvider theme={theme(false)}> */}
@@ -24,7 +37,7 @@ const HomeView: FC = () => {
             {t('common:betterOnChrome')}
           </Typography>
         </Box>
-        <Topbar />
+        <Topbar onAnchor={ScrollTo} />
         <Hero />
         <Intro />
         <Stories />

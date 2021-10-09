@@ -56,6 +56,7 @@
     "tag": "tag",
     "tags": "tags",
     "title": "title",
+    "tutorial": "tutorial",
     "type": "type",
     "typeHere": "type here",
     "update": "update",
@@ -107,6 +108,7 @@
     "subtitle": "Research-development on the use of chatbots for audiovisual storytelling",
     "team": "team",
     "title": "Chatbot & Storytelling",
+    "tutorial": "Tutorial",
     "watch": "watch"
   },
   "intent": {
@@ -189,6 +191,9 @@
     "tagCreated": "Tag Created",
     "tagDeleted": "Tag Deleted",
     "tagUpdated": "Tag Updated"
+  },
+  "tutoral": {
+    "introduction": "Introduction"
   },
   "users": {
     "addUser": "Add User",

@@ -1,5 +1,6 @@
 import ForumIcon from '@mui/icons-material/Forum';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import InfoIcon from '@mui/icons-material/Info';
 import { RoleType } from '@src/types';
 import { MenuType } from '../Menu';
 
@@ -17,5 +18,11 @@ export const adminMenu: MenuType[] = [
     path: '/app/users',
     icon: PeopleAltIcon,
     restricted: [RoleType.ADMIN, RoleType.INSTRUCTOR],
+  },
+  {
+    title: 'Tutorial',
+    tKey: 'tutorial',
+    path: '/tutorial',
+    icon: InfoIcon,
   },
 ];

@@ -7,6 +7,7 @@ import { ForgotView, LoginView, ResetPasswordView } from './views/auth';
 import NotFoundView from './views/errors/NotFoundView';
 import HomeView from './views/homepage';
 import StoryPlay from './views/chat';
+import TutorialView from './views/tutorial';
 import StoriesView from './views/StoriesView';
 import {
   ContextsView,
@@ -46,6 +47,11 @@ const routes = [
     path: '/story',
     element: <BlankLayout />,
     children: [{ path: ':storyId', element: <StoryPlay /> }],
+  },
+  {
+    path: '/tutorial',
+    element: <BlankLayout />,
+    children: [{ index: true, element: <TutorialView /> }],
   },
   {
     path: '/',
