@@ -19,23 +19,37 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Item from './Item';
 import Topbar from './topbar';
+import { useAppState } from '@src/overmind';
+import { RoleType } from '@src/types';
 
 const BASE_URL = '/assets/pedagogical/tutorial';
+
+interface Item {
+  id: string;
+  path: string;
+  title: string;
+  userTypeAllowed?: RoleType[];
+}
+
+const items: Item[] = [
+  {
+    id: 'introduction',
+    path: `${BASE_URL}/introduction`,
+    title: 'Introduction',
+    userTypeAllowed: [RoleType.ADMIN, RoleType.INSTRUCTOR],
+  },
+  { id: 'signup', path: `${BASE_URL}/signup`, title: 'Signing up' },
+  { id: 'creation', path: `${BASE_URL}/creation`, title: 'Creating Stories' },
+];
 
 interface Props {
   children: ReactElement;
 }
 
-const items = [
-  { id: 'introduction', path: `${BASE_URL}/introduction`, title: 'Introduction' },
-  { id: 'signup', path: `${BASE_URL}/signup`, title: 'Signing up' },
-  { id: 'creation', path: `${BASE_URL}/creation`, title: 'Creating Stories' },
-];
-
 const TutorialVIew: FC<Props> = (props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const { user } = useAppState().session;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -43,6 +57,21 @@ const TutorialVIew: FC<Props> = (props) => {
     window.scrollTo(0, 0);
     navigate('/tutorial', { replace: true });
   }, []);
+
+  const getItems = () => {
+    const _items: Item[] = [];
+    items.forEach((item) => {
+      //public
+      if (!item.userTypeAllowed) {
+        _items.push(item);
+        return;
+      }
+      //retrct
+      if (!user) return;
+      if (item.userTypeAllowed.includes(user.roleTypeId)) _items.push(item);
+    });
+    return _items;
+  };
 
   const ScrollTo = (event: MouseEvent<HTMLElement>, anchorName?: string) => {
     if (!anchorName) anchorName = 'top';
@@ -103,19 +132,15 @@ const TutorialVIew: FC<Props> = (props) => {
               divider={<Divider orientation={isMobile ? 'horizontal' : 'vertical'} flexItem />}
               spacing={isMobile ? 0 : 2}
             >
-              {items.map(({ id, title }) => (
-                <Button
-                  key={id}
-                  // href={`#${id}`}
-                  onClick={(event) => ScrollTo(event, id)}
-                >
+              {getItems().map(({ id, title }) => (
+                <Button key={id} onClick={(event) => ScrollTo(event, id)}>
                   {title}
                 </Button>
               ))}
             </Stack>
           </Stack>
           <Stack spacing={isMobile ? 10 : 20}>
-            {items.map(({ id, path }) => (
+            {getItems().map(({ id, path }) => (
               <Item key={id} id={id} path={path} />
             ))}
           </Stack>
