@@ -49,8 +49,9 @@ export const getUser = async (
 
   let user = state.users.list.find((_user) => _user.id === userId && _user.firstName);
   if (!user) {
-    let user = await effects.users.api.getUser(userId, authUser.token);
-    if (isError(user)) return user;
+    const responseUser = await effects.users.api.getUser(userId, authUser.token);
+    if (isError(responseUser)) return responseUser;
+    user = responseUser;
   }
 
   if (!user) return { errorMessage: 'Not User found' };
@@ -96,6 +97,8 @@ export const createUser = async (
 
   const groupId = newUserData.groupId ?? undefined;
   delete newUserData.groupId;
+
+  console.log(newUserData);
 
   //2. Create user
   const user = await effects.users.api.createUser(newUserData, authUser.token);

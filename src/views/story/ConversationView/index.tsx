@@ -18,6 +18,7 @@ const ConversationView: FC = () => {
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasIntents, setHasIntents] = useState(true);
   const [currentIntentId, setCurrentIntentId] = useState<string | undefined>();
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -44,8 +45,6 @@ const ConversationView: FC = () => {
     };
 
     story.currentStory ? getCollection() : getStory();
-
-    return () => {};
   }, []);
 
   const handleDetailOpen = (intentId?: string) => {

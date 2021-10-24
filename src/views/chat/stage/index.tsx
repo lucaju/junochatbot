@@ -1,15 +1,6 @@
-import {
-  Backdrop,
-  Box,
-  Fab,
-  Paper,
-  Slider,
-  Toolbar,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { Backdrop, Box, Fab, Paper, Slider, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import ReactPlayer from 'react-player/youtube';
@@ -37,7 +28,6 @@ const Stage: FC<StageProps> = ({ sidebarWidth }) => {
 
   useEffect(() => {
     chat.currentVideo ? loadVideo(chat.currentVideo.url) : stopVideo();
-    return () => {};
   }, [chat.currentVideo]);
 
   const loadVideo = (url: string) => {
@@ -72,10 +62,7 @@ const Stage: FC<StageProps> = ({ sidebarWidth }) => {
         >
           <Box
             display="flex"
-            sx={{
-              position: 'relative',
-              aspectRatio: '16 / 9',
-            }}
+            sx={{ position: 'relative', aspectRatio: '16 / 9' }}
             onClick={handleOnPlayerClick}
           >
             <ReactPlayer

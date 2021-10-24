@@ -105,7 +105,7 @@ const createSemanticParts = (
 ) => {
   let newParts: Part[] = [];
 
-  let preText = textContent.substring(0, startOffset - 1);
+  const preText = textContent.substring(0, startOffset - 1);
   if (preText.length !== 0) {
     const partPre: Part = { text: `${preText} ` };
     newParts = [...newParts, partPre];

@@ -1,5 +1,5 @@
 import mock from '@src/../test/mockData';
-import { API_URL } from '@src/config/config.js';
+import { API_URL } from '@src/config/config';
 import type {
   DetectIntentResponse,
   ErrorMessage as IError,
@@ -13,7 +13,7 @@ const MOCK_UP = false; //true;
 export const api = {
   getStories: async (): Promise<Story[] | IError> => {
     if (MOCK_UP) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         setTimeout(() => {
           resolve(mock.dataStories);
         }, 1000);
@@ -30,7 +30,7 @@ export const api = {
 
   getStory: async (storyId: number): Promise<Story | IError> => {
     if (MOCK_UP) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         setTimeout(() => {
           resolve(mock.dataStories[0]);
         }, 1000);

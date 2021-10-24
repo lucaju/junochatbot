@@ -1,3 +1,5 @@
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -5,10 +7,8 @@ import {
   Stack,
   Typography,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import CloseIcon from '@mui/icons-material/Close';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +21,7 @@ const TagsSection: FC = () => {
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasTags, setHasTags] = useState(true);
   const [currentTagId, setCurrentTagId] = useState<number | undefined>();
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -37,8 +38,6 @@ const TagsSection: FC = () => {
     };
 
     getCollection();
-
-    return () => {};
   }, []);
 
   const handleDetailOpen = (tagId?: number) => {

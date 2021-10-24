@@ -9,12 +9,11 @@ import Phrase from './Phrase';
 const ITEMS_PER_PAGE = 20;
 
 const Collection: FC = () => {
-  const {
-    intents: { currentIntent },
-  } = useAppState();
+  const { currentIntent } = useAppState().intents;
 
   const [items, setItems] = useState<TrainingPhrase[]>([]);
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 

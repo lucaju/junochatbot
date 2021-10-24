@@ -4,10 +4,9 @@ import AppLayout from './layouts/AppLayout';
 import BlankLayout from './layouts/BlankLayout';
 import UsersView from './views/admin/UsersView';
 import { ForgotView, LoginView, ResetPasswordView } from './views/auth';
+import StoryPlay from './views/chat';
 import NotFoundView from './views/errors/NotFoundView';
 import HomeView from './views/homepage';
-import StoryPlay from './views/chat';
-import TutorialView from './views/tutorial';
 import StoriesView from './views/StoriesView';
 import {
   ContextsView,
@@ -16,6 +15,7 @@ import {
   GeneralView,
   VideosView,
 } from './views/story';
+import TutorialView from './views/tutorial';
 
 // * react-router-dom REFERENCES:
 // https://medium.com/frontend-digest/whats-new-in-react-router-6-732b06cc83e4
@@ -62,7 +62,6 @@ const routes = [
       { path: 'newuser', element: <ResetPasswordView /> },
       { path: 'resetpassword', element: <ResetPasswordView /> },
       { path: '404', element: <NotFoundView /> },
-      // { path: '*', element: <Navigate to="/404" /> },
       { index: true, element: <HomeView /> },
     ],
   },

@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material';
 import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
+import { Box, Typography } from '@mui/material';
 import type { Context as ContextType } from '@src/types';
 import React, { FC } from 'react';
 import Context from './Context';

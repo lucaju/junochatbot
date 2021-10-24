@@ -40,7 +40,6 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             textAlign: 'center',
             lineHeight: '12px',
           }}
-          // style={({ isActive }) => ({ color: isActive ? 'red' : navToIntact ? 'primary' : 'text.secondary' })}
           target={navToIntact ? '_blank' : ''}
           to={!navToIntact ? path : isStoryPublished ? path : `${path}?draft=true`}
         >
@@ -66,7 +65,6 @@ const NavItem: FC<NavItemProps> = ({ icon: Icon, isCompact, path, title }) => {
             textTransform: 'none',
             justifyContent: 'flex-start',
           }}
-          // style={({ isActive }) => ({ color: isActive ? 'red' : navToIntact ? 'primary' : 'text.secondary' })}
           target={navToIntact ? '_blank' : ''}
           to={!navToIntact ? path : isStoryPublished ? path : `${path}?draft=true`}
         >

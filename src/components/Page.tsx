@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
 import { useAppState } from '@src/overmind';
 import React, { forwardRef } from 'react';
 import { Helmet } from 'react-helmet';

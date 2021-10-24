@@ -1,3 +1,5 @@
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {
   AppBar,
   Box,
@@ -8,8 +10,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Logo from '@src/components/Logo';
 import StoryCard from '@src/components/StoryCardFront';
 import { useActions, useAppState } from '@src/overmind';
@@ -68,10 +68,7 @@ const TopBar: FC<TopBarProps> = ({ sidebarWidth }) => {
         open={open}
         //@ts-expect-error
         placement="bottom-end"
-        sx={{
-          top: 40,
-          left: isMobile ? 0 : -312,
-        }}
+        sx={{ top: 40, left: isMobile ? 0 : -312 }}
       >
         <Box sx={{ width: 400, m: -2 }}>
           {chat.currentStory && <StoryCard disabled story={chat.currentStory} />}

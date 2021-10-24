@@ -1,5 +1,5 @@
 import { Alert, Slide, Snackbar } from '@mui/material';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import React from 'react';
 
 const TransitionRight = (props: any) => {

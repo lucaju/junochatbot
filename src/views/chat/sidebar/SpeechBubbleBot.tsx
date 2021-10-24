@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { getIcon } from '@src/util/icons';
@@ -21,7 +23,6 @@ const SpeechBubbleBot: FC<SpeechBubbleProps> = memo(({ scrollConversation, speec
     video,
     waitingTime = 0,
   } = useAppState(({ chat }) => chat._chatLog[speechId]);
-  // const { message, speechTime = 0, type = 'text', video, waitingTime = 0 } = speech;
 
   const actions = useActions();
   const theme = useTheme();
@@ -33,7 +34,6 @@ const SpeechBubbleBot: FC<SpeechBubbleProps> = memo(({ scrollConversation, speec
   useEffect(() => {
     setIsLastInThread(actions.chat.isLastInThread(id));
     waitingTime === 0 ? onWaitingTime() : timerWaiting();
-    return () => {};
   }, []);
 
   const timerWaiting = () => setTimeout(() => onWaitingTime(), waitingTime);

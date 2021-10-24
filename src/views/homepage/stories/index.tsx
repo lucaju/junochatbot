@@ -1,12 +1,12 @@
 import { Box, Container, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import StoryCard from '@src/components/StoryCardFront';
 import { useActions } from '@src/overmind';
+import type { Story } from '@src/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
-import type { Story } from '@src/types';
 
 const Stories: FC = () => {
   const { t } = useTranslation();
@@ -19,7 +19,6 @@ const Stories: FC = () => {
 
   useEffect(() => {
     fetchData();
-    return () => {};
   }, []);
 
   const fetchData = async () => {

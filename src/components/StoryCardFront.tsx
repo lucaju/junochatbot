@@ -8,7 +8,7 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import { APP_URL } from '@src/config/config.js';
+import { APP_URL } from '@src/config/config';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { motion, useAnimation } from 'framer-motion';

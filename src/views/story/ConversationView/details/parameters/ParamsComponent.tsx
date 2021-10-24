@@ -1,3 +1,5 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {
   Box,
   Button,
@@ -14,8 +16,6 @@ import {
 } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { alpha, styled } from '@mui/material/styles';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useActions, useAppState } from '@src/overmind';
 import type { Parameter as ParameterType } from '@src/types';
 import { intentParamColorPalette, sortBy } from '@src/util/utilities';
@@ -29,6 +29,7 @@ interface ExpandMoreProps extends IconButtonProps {
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
@@ -76,8 +77,6 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
     // if (param.value) set_value(param.value);
     if (param.entityTypeDisplayName) setEntityTypeDisplayName(param.entityTypeDisplayName);
     if (param.mandatory) setMandatory(param.mandatory);
-
-    return () => {};
   }, [param]);
 
   useEffect(() => {
@@ -86,7 +85,6 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
       actions.intents.updateParamsOnPhrases({ originalName: param.displayName, newParam: _param });
       setDoUpdate(false);
     }
-    return () => {};
   }, [doUpdate]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +97,7 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
         ) {
           return;
         }
+        // eslint-disable-next-line no-case-declarations
         const trimmedValue = target.value.trim();
         set_param({ ..._param, displayName: trimmedValue, value: `$${trimmedValue}` });
         // set_value(`$${trimmedValue}`);
@@ -114,8 +113,9 @@ const ParamsComponent: FC<ParamsComponentProps> = ({ index, name = '', param }) 
         return;
     }
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    const target = event.currentTarget;
+    // const target = event.currentTarget;
     // if (target.name === 'value') {
     //   if (target.value.indexOf('$') !== 0) {
     //     const $value = `$${target.value}`;

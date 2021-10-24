@@ -7,13 +7,7 @@ interface PlayerProps {
 }
 
 const Player: FC<PlayerProps> = ({ url = '' }) => (
-  <Box
-    display="flex"
-    sx={{
-      position: 'relative',
-      aspectRatio: '16 / 9',
-    }}
-  >
+  <Box display="flex" sx={{ position: 'relative', aspectRatio: '16 / 9' }}>
     <ReactPlayer
       url={url}
       width="100%"

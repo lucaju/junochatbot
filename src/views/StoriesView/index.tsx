@@ -34,8 +34,6 @@ const Stories: FC = () => {
       setHasStories(story.stories.length > 0);
     };
     getCollection();
-
-    return () => {};
   }, []);
 
   const handleAddDialogOpen = () => setAddStoryOpenn(true);

@@ -1,4 +1,4 @@
-import { API_URL } from '@src/config/config.js';
+import { API_URL } from '@src/config/config';
 import type { Credential, ErrorMessage, User } from '@src/types';
 import base64 from 'base-64';
 

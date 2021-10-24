@@ -17,11 +17,7 @@ const VideoContent: FC<VideoContentProps> = ({ onClose, content }) => {
 
   return (
     <Dialog maxWidth={false} onClose={onClose} open={open} sx={{ overflow: 'hidden' }}>
-      <ReactPlayer
-        url={link}
-        width={isMobileSM ? 480 : 640}
-        height={isMobileSM ? 270 : 360}
-      />
+      <ReactPlayer url={link} width={isMobileSM ? 480 : 640} height={isMobileSM ? 270 : 360} />
     </Dialog>
   );
 };

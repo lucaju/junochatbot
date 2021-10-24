@@ -1,8 +1,8 @@
-import { Container, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Container, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ const ForgotView: FC = () => {
 
   useEffect(() => {
     if (session.isSignedIn) navigate('/app', { replace: true });
-    return () => {};
   }, []);
 
   const requestPassword = async (values: Credential) => {
@@ -36,21 +35,12 @@ const ForgotView: FC = () => {
 
   return (
     <Page
-      sx={{
-        height: '100%',
-        py: 3,
-        backgroundColor: 'background.default',
-      }}
+      sx={{ height: '100%', py: 3, backgroundColor: 'background.default' }}
       title={t('auth:forgotPassword')}
     >
       <Container
         maxWidth="xs"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          mt: 8,
-        }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}
       >
         <Logo height={isSM ? 120 : 160} sx={{ mb: 8 }} type="full" />
         <>

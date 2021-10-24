@@ -1,6 +1,7 @@
 import { NotificationType } from '@src/types';
 import { Context } from '../';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const onInitializeOvermind = ({ state }: Context, overmind: any) => {
   //LANGUAGE
   const prefLanguage = localStorage.getItem('i18nextLng');

@@ -33,7 +33,7 @@ export const api = {
     token: string
   ): Promise<Intent | ErrorMessage> => {
     if (MOCK_UP) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         setTimeout(() => {
           const intent = mock.dataIntents.find((itt) => itt.name === intentName);
           if (intent) resolve(intent);

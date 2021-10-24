@@ -1,6 +1,6 @@
 import { Container, Grid, useMediaQuery, useTheme } from '@mui/material';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { RoleType } from '@src/types';
 import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,6 @@ const UsersView: FC = () => {
       navigate('/app', { replace: true });
     }
     actions.ui.setPageTitle(t('users:users'));
-    return () => {};
   }, []);
 
   return (

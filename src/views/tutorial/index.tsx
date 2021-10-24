@@ -14,13 +14,13 @@ import {
   Zoom,
 } from '@mui/material';
 import Page from '@src/components/Page';
+import { useAppState } from '@src/overmind';
+import { RoleType } from '@src/types';
 import React, { FC, MouseEvent, ReactElement, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Item from './Item';
 import Topbar from './topbar';
-import { useAppState } from '@src/overmind';
-import { RoleType } from '@src/types';
 
 const BASE_URL = '/assets/pedagogical/tutorial';
 
@@ -43,7 +43,7 @@ const items: Item[] = [
 ];
 
 interface Props {
-  children: ReactElement;
+  children?: ReactElement;
 }
 
 const TutorialVIew: FC<Props> = (props) => {
@@ -66,7 +66,7 @@ const TutorialVIew: FC<Props> = (props) => {
         _items.push(item);
         return;
       }
-      //retrct
+      //retrict
       if (!user) return;
       if (item.userTypeAllowed.includes(user.roleTypeId)) _items.push(item);
     });
@@ -87,10 +87,7 @@ const TutorialVIew: FC<Props> = (props) => {
   };
 
   const ScrollTop = ({ children }: Props) => {
-    const trigger = useScrollTrigger({
-      disableHysteresis: true,
-      threshold: 100,
-    });
+    const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 100 });
 
     return (
       <Zoom in={trigger}>
@@ -148,7 +145,7 @@ const TutorialVIew: FC<Props> = (props) => {
             <Fab aria-label="scroll back to top" color="secondary" size="small">
               <KeyboardArrowUpIcon />
             </Fab>
-          </ScrollTop>
+          </ScrollTop>s
         </Container>
       </Box>
     </Page>

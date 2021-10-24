@@ -1,3 +1,6 @@
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Box,
   Button,
@@ -11,9 +14,6 @@ import {
   InputAdornment,
   InputLabel,
 } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { useActions } from '@src/overmind';
 import { Credential, NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';

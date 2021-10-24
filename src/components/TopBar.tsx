@@ -1,3 +1,5 @@
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Avatar,
@@ -8,9 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import MenuIcon from '@mui/icons-material/Menu';
-import { APP_URL } from '@src/config/config.js';
+import { APP_URL } from '@src/config/config';
 import { useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';

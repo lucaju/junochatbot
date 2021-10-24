@@ -1,3 +1,6 @@
+import ForumIcon from '@mui/icons-material/Forum';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import {
   Box,
   Card,
@@ -10,9 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import ForumIcon from '@mui/icons-material/Forum';
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import { useActions } from '@src/overmind';
 import type { Intent } from '@src/types';
 import { motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
@@ -20,7 +21,6 @@ import AddFollowUp from './AddFollowUp';
 import Contexts from './Contexts';
 import Message from './Message';
 import Paramenter from './Parameter';
-import { useActions } from '@src/overmind';
 
 interface ContextCardProps {
   intent: Intent;
@@ -59,12 +59,7 @@ const ContextCard: FC<ContextCardProps> = ({ handleEditClick, intent }) => {
       onClick={() => handleEditClick(name)}
       onMouseEnter={mouseOver}
       onMouseLeave={mouseOut}
-      sx={{
-        my: 1,
-        ml: parentFollowupIntentName ? 6 : 1.5,
-        mr: 1.5,
-        cursor: 'pointer',
-      }}
+      sx={{ my: 1, ml: parentFollowupIntentName ? 6 : 1.5, mr: 1.5, cursor: 'pointer' }}
       component={motion.div}
       initial={{ height: 0 }}
       animate={{ height: 'auto' }}

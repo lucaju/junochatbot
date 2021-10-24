@@ -1,6 +1,6 @@
 import ForumIcon from '@mui/icons-material/Forum';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import InfoIcon from '@mui/icons-material/Info';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { RoleType } from '@src/types';
 import { MenuType } from '../Menu';
 

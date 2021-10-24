@@ -23,9 +23,11 @@ const ActivityCard: FC<ActivityCardProps> = ({ activity, showContent }) => {
   const { t } = useTranslation();
   const { ui } = useAppState();
   const actions = useActions();
-  
-   //check if system language is supported. If not, fallback to the firs language supported
-  const lang = actions.ui.isLanguageSupported(ui.languageCode) ? ui.languageCode : ui.languages[0].value;
+
+  //check if system language is supported. If not, fallback to the firs language supported
+  const lang = actions.ui.isLanguageSupported(ui.languageCode)
+    ? ui.languageCode
+    : ui.languages[0].value;
 
   const { link, mediaType, picture } = activity;
   //@ts-ignore

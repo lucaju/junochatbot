@@ -1,11 +1,4 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Slide,
-} from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Slide } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import ConfirmationDialog from '@src/components/ConfirmationDialog';
 import { useActions, useAppState } from '@src/overmind';
@@ -117,6 +110,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
       : handleClose();
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const onBackdropClick = (event: SyntheticEvent<{}, Event>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -140,12 +134,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
           open={open}
           TransitionComponent={Transition}
         >
-          <DialogTitle
-            sx={{
-              color: ({ palette }) => palette.primary.light,
-              textAlign: 'center',
-            }}
-          >
+          <DialogTitle sx={{ color: ({ palette }) => palette.primary.light, textAlign: 'center' }}>
             <Header
               action={action}
               activeTab={activeTab}

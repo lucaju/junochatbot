@@ -1,6 +1,6 @@
-import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { alpha } from '@mui/material/styles'
 import EditIcon from '@mui/icons-material/Edit';
+import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { useActions, useAppState } from '@src/overmind';
 import { Tag } from '@src/types';
 import React, { FC, MouseEvent, useState } from 'react';
@@ -76,11 +76,7 @@ const TagCard: FC<TagCardProps> = ({ handleEditClick, tag }) => {
         <IconButton
           onClick={handleEditButtonClick}
           size="small"
-          sx={{
-            ml: 2,
-            width: 20,
-            height: 20,
-          }}
+          sx={{ ml: 2, width: 20, height: 20 }}
         >
           <EditIcon fontSize="inherit" />
         </IconButton>

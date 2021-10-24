@@ -8,7 +8,7 @@ interface GroupCardProps extends CardProps {
   handleEditClick: (groupId: number) => void;
 }
 
-const GroupCard: FC<GroupCardProps> = ({ group, handleEditClick, ...rest }) => {
+const GroupCard: FC<GroupCardProps> = ({ group, handleEditClick }) => {
   const [elevation, setElevation] = useState(0);
 
   const theme = useTheme();
@@ -29,7 +29,7 @@ const GroupCard: FC<GroupCardProps> = ({ group, handleEditClick, ...rest }) => {
         mb: isMobile ? 0 : 1,
         mr: isMobile ? 1 : 0,
         my: 2,
-        mx: 1
+        mx: 1,
       }}
     >
       <CardContent sx={{ py: 1, px: 2, '&:last-child': { pb: 1 } }}>

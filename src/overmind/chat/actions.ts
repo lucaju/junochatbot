@@ -8,9 +8,9 @@ import type {
   VideoMessage,
 } from '@src/types';
 import { isError } from '@src/util/utilities';
-import { Context } from '../';
-import { v4 as uuidv4 } from 'uuid';
 import { Duration } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
+import { Context } from '../';
 
 export const resetState = ({ state }: Context) => {
   state.chat._chatLog = {};
@@ -144,7 +144,7 @@ export const _processMessages = async ({ state, actions }: Context, queryResult:
     return prevWaitingtime + prevTypingtime;
   };
 
-  for (let i: number = 0; i < fulfillmentMessages.length; i++) {
+  for (let i = 0; i < fulfillmentMessages.length; i++) {
     const message: Message = fulfillmentMessages[i];
 
     const botSpeech: SpeechMessage = {
@@ -230,7 +230,7 @@ export const getVideoByID = async ({ state, effects }: Context, videoId: string)
   return response;
 };
 
-export const _getMessageTypingTime = ({ state }: Context, text: string = '') => {
+export const _getMessageTypingTime = ({ state }: Context, text = '') => {
   // Average human typying speed: 1 word/600ms;
   // Average characters per word: 5;
   // Average typing speed 1 character/120ms

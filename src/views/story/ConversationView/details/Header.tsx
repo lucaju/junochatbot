@@ -1,17 +1,17 @@
+import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
-  Stack,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useSortable } from '@dnd-kit/sortable';
 import { ListItem } from '@mui/material';
-import React, { cloneElement, FC, isValidElement, useEffect } from 'react';
+import React, { cloneElement, FC, isValidElement } from 'react';
 
 interface SortableItemProps {
   id: string;
@@ -11,9 +12,9 @@ const SortableItem: FC<SortableItemProps> = ({ children, id }) => {
     id,
   });
 
-  useEffect(() => {
-    return () => {};
-  }, []);
+  // useEffect(() => {
+  //   return () => {};
+  // }, []);
 
   const _transition = transition !== null ? transition : undefined;
   const style = transform

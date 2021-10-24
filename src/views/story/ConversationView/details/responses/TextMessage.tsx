@@ -1,9 +1,9 @@
 import { useDraggable } from '@dnd-kit/core';
-import { Box, Grid, IconButton, Stack, useTheme, Zoom } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
+import { Box, Grid, IconButton, Stack, useTheme, Zoom } from '@mui/material';
 import { useActions } from '@src/overmind';
 import { Text } from '@src/types';
 import React, { FC, useState } from 'react';
@@ -18,9 +18,7 @@ const TextMessage: FC<TextMessageProps> = ({ message, isDragging = false }) => {
   const actions = useActions();
   const theme = useTheme();
 
-  const { attributes, listeners } = useDraggable({
-    id: message.id ?? '',
-  });
+  const { attributes, listeners } = useDraggable({ id: message.id ?? '' });
 
   const [hover, setHover] = useState(false);
   const numberOfAlternatives = message.text.text?.length ?? 0;

@@ -748,8 +748,8 @@ export const dataIntents: Intent[] = [
     ],
     messages: [
       { text: { text: ['Cool, let’s see it.', 'Nice'] } },
-      { payload: { type: 'video', source: [24] } },
-      { payload: { type: 'tag', source: [3] } },
+      { payload: { type: 'video', source: '24' } },
+      { payload: { type: 'tag', source: '3' } },
       { text: { text: ['What do you think of this research?'] } },
     ],
     rootFollowupIntentName:

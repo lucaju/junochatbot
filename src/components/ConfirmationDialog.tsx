@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 

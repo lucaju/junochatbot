@@ -1,12 +1,9 @@
-import path from 'path';
-
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-// import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import { ESBuildMinifyPlugin } from 'esbuild-loader';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-// import TerserPlugin from 'terser-webpack-plugin';
+import path from 'path';
 import webpack, { EntryObject, ResolveOptions, RuleSetRule, WebpackPluginInstance } from 'webpack';
 import WebpackBar from 'webpackbar';
 
@@ -35,16 +32,13 @@ const output = {
 };
 
 const resolve: ResolveOptions = {
-  alias: {
-    '@src': path.resolve(__dirname, 'src/'),
-  },
+  alias: { '@src': path.resolve(__dirname, 'src/') },
   extensions: ['.tsx', '.ts', '.js'],
 };
 
 const optimization = {
   emitOnErrors: env === 'development' ? true : false,
   minimize: env === 'development' ? false : true,
-  // minimizer: env === 'development' ? [] : [new TerserPlugin(), new CssMinimizerPlugin()],
   minimizer:
     env === 'development' ? [] : [new ESBuildMinifyPlugin({ target: 'es2020', css: true })],
   sideEffects: env === 'development' ? false : true,
@@ -71,15 +65,6 @@ const plugins: WebpackPluginInstance[] = [
 ];
 
 const rules: RuleSetRule[] = [
-  // {
-  //   rules: [
-  //     {
-  //       test: /\.tsx?$/,
-  //       exclude: /node_modules/,
-  //       use: 'ts-loader',
-  //     },
-  //   ],
-  // },
   {
     test: /\.tsx?$/,
     loader: 'esbuild-loader',
@@ -88,11 +73,6 @@ const rules: RuleSetRule[] = [
       target: 'es2020',
     },
   },
-  // {
-  //   test: /\.jsx?$/,
-  //   exclude: /node_modules/,
-  //   use: 'babel-loader',
-  // },
   {
     test: /\.js$/,
     loader: 'esbuild-loader',
@@ -108,21 +88,17 @@ const rules: RuleSetRule[] = [
   {
     test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
     type: 'asset',
-    generator: {
-      filename: 'fonts/[name][ext][query]',
-    },
+    generator: { filename: 'fonts/[name][ext][query]' },
   },
   {
     test: /\.(png|jpg|jpeg|gif)$/i,
     type: 'asset/resource',
-    generator: {
-      filename: 'images/[name][ext][query]',
-    },
+    generator: { filename: 'images/[name][ext][query]' },
   },
-  // {
-  //   test: /\.svg$/,
-  //   loader: 'svg-inline-loader',
-  // },
+  {
+    test: /\.svg$/,
+    loader: 'svg-inline-loader',
+  },
 ];
 
 const hints = env === 'development' ? false : 'warning';

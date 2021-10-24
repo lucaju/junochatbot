@@ -1,3 +1,6 @@
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Avatar,
   Box,
@@ -9,17 +12,14 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { APP_URL } from '@src/config/config.js';
-import { useAppState, useActions } from '@src/overmind';
+import { APP_URL } from '@src/config/config';
+import { useActions, useAppState } from '@src/overmind';
 import { DropFile, NotificationType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
 import { motion, useAnimation } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
-import { FileRejection, useDropzone } from 'react-dropzone';
+import { useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
@@ -49,7 +49,6 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
     const avatarFile = typeof value === 'string' ? value : value?.file?.name;
     file ? setImage(file.preview) : setImage(avatarFile);
     value === null || value === '' ? setShowDropzone(true) : setShowDropzone(false);
-    return () => {};
   }, [value]);
 
   useEffect(() => {
@@ -88,7 +87,7 @@ const AvatarDialog: FC<AvatarDialogProps> = ({ handleClose, open }) => {
     });
   };
 
-  const onDrop = async (acceptedFiles: Array<File>, fileRejections: Array<FileRejection>) => {
+  const onDrop = async (acceptedFiles: Array<File>) => {
     const accepted = acceptedFiles.length > 0;
 
     !accepted &&

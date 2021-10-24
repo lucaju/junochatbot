@@ -1,3 +1,4 @@
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {
   Box,
   Divider,
@@ -9,11 +10,10 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useActions, useAppState } from '@src/overmind';
+import { Entity } from '@src/types';
 import { sortBy } from '@src/util/utilities';
 import React, { FC, MouseEvent, useEffect } from 'react';
-import { Entity } from '@src/types';
 
 interface EntitiesMenuProps {
   addPart: (value: string, paramName?: string) => void;
@@ -49,7 +49,6 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
       if (intents.entities.length === 0) await actions.intents.getEntities();
     };
     if (open) fetchEntities();
-    return () => {};
   }, [open]);
 
   const handleClick = (entityName?: string, paramName?: string) => {
@@ -71,12 +70,7 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
       anchorReference={anchorReference}
       keepMounted
       id="entities-menu"
-      PaperProps={{
-        sx: {
-          maxHeight: CONTEXTMENU_ITEM_HEIGHT * 4.5,
-          mt: 1,
-        },
-      }}
+      PaperProps={{ sx: { maxHeight: CONTEXTMENU_ITEM_HEIGHT * 4.5, mt: 1 } }}
       onClose={handleClose}
       open={open}
     >
@@ -124,7 +118,7 @@ const EntitiesMenu: FC<EntitiesMenuProps> = ({
         </Typography>
       </Box>
       {entitiesList
-        .filter(({ id, name }) => {
+        .filter(({ name }) => {
           return !intents.currentIntent?.parameters?.some(
             (param) => param.entityTypeDisplayName === name
           );

@@ -1,5 +1,5 @@
-import { Box, Divider, FormControlLabel, Switch } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Box, Divider, FormControlLabel, Switch } from '@mui/material';
 import { useField } from 'formik';
 import { DateTime } from 'luxon';
 import React, { FC } from 'react';
@@ -24,7 +24,7 @@ const BottomBar: FC<BottomBarProps> = ({
   const { value: published } = metaPub;
   const { setValue: setPublished } = helpersPub;
 
-  const [, metaPubDate, helpersPubDate] = useField(publishedDateField);
+  const [, , helpersPubDate] = useField(publishedDateField);
   // const { value: publishedDate } = metaPubDate;
   const { setValue: setPublishedDate } = helpersPubDate;
 

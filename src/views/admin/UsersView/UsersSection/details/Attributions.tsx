@@ -1,9 +1,9 @@
 import { Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { useAppState } from '@src/overmind';
+import { User, UserGroup } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppState } from '@src/overmind';
-import { User, UserGroup } from '@src/types';
 
 interface AttributionsProps {
   errors: FormikErrors<User>;
@@ -26,7 +26,6 @@ const Attributions: FC<AttributionsProps> = ({
 
   useEffect(() => {
     setGroupsOptions(users.groups);
-    return () => {};
   }, [users.groups]);
 
   return (

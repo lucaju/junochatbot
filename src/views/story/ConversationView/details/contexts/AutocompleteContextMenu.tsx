@@ -32,8 +32,6 @@ const AutocompleteContextMenu: FC<AutocompleteContextMenuProps> = ({
 
     setOptions(matchContexts);
     setOpen(matchContexts.length > 0 && !!anchorEl);
-
-    return () => {};
   }, [query]);
 
   const handleClose = () => setOpen(false);

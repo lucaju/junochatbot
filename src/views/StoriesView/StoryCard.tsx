@@ -11,14 +11,14 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { APP_URL } from '@src/config/config.js';
+import { APP_URL } from '@src/config/config';
 import { Story } from '@src/types';
 import { getIcon } from '@src/util/icons';
 import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import { DateTime } from 'luxon';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink as RouterLink, useNavigate } from 'react-router-dom';
+import { NavLink as RouterLink } from 'react-router-dom';
 
 interface UserCarddProps {
   showLaunch?: boolean;
@@ -34,7 +34,6 @@ const StoryCard: FC<UserCarddProps> = ({
   triggerEditStory,
 }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const hasImage = story.imageUrl;
   const BotAvatar = getIcon(story.botAvatar);

@@ -4,11 +4,11 @@ import { useActions, useAppState } from '@src/overmind';
 import { Story } from '@src/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 //@ts-ignore
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import NoStories from './NoStories';
 import StoryCard from './StoryCard';
-import { useTranslation } from 'react-i18next';
 interface CollectionProps {
   filters: Map<string, number>;
   isLoading: boolean;
@@ -43,14 +43,12 @@ const Collection: FC<CollectionProps> = ({
         ? t('common:noMatch')
         : null
     );
-    return () => {};
   }, [filters, searchQuery, groupId, story.stories]);
 
   useEffect(() => {
     _setGroupId(groupId);
     if (_groupId === groupId) return;
     fetchStories();
-    return () => {};
   }, [groupId]);
 
   const fetchStories = async () => {

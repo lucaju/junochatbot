@@ -1,13 +1,11 @@
 import { Box } from '@mui/material';
-import React, { FC } from 'react';
-import ParamsComponent from './ParamsComponent';
 import { useAppState } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC } from 'react';
+import ParamsComponent from './ParamsComponent';
 
 const Collection: FC = () => {
-  const {
-    intents: { currentIntent },
-  } = useAppState();
+  const { currentIntent }  = useAppState().intents;
 
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" rowGap={0.5}>

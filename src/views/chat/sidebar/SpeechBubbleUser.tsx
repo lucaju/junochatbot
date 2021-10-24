@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
 import { Box, Typography, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -17,7 +19,6 @@ const SpeechBubbleUser: FC<SpeechBubbleUserProps> = memo(({ scrollConversation, 
   useEffect(() => {
     setIsLastInThread(actions.chat.isLastInThread(id));
     scrollConversation();
-    return () => {};
   }, []);
 
   const bubbleAnimation = {

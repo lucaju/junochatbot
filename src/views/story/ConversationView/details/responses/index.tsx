@@ -7,10 +7,8 @@ import { useTranslation } from 'react-i18next';
 import Collection from './Collection';
 
 const Responses: FC = () => {
-  const {
-    intents: { currentIntent },
-    videos,
-  } = useAppState();
+  const { currentIntent } = useAppState().intents;
+  const { videos } = useAppState();
   const actions = useActions();
   const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>();

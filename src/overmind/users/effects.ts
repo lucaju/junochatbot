@@ -1,5 +1,5 @@
 import mock from '@src/../test/mockData';
-import { API_URL } from '@src/config/config.js';
+import { API_URL } from '@src/config/config';
 import type { ErrorMessage, User, UserGroup } from '@src/types';
 
 const MOCK_UP = false;
@@ -11,7 +11,7 @@ type ResponseUploadAvatar = {
 export const api = {
   getAllUsers: async (token: string): Promise<User[] | ErrorMessage> => {
     if (MOCK_UP) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         setTimeout(() => {
           resolve(mock.dataUsers);
         }, 1000);
@@ -142,7 +142,7 @@ export const api = {
 
   getGroups: async (token: string): Promise<UserGroup[] | ErrorMessage> => {
     if (MOCK_UP) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         setTimeout(() => {
           resolve(mock.dataUserGroups);
         }, 1000);

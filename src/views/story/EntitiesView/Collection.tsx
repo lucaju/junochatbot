@@ -24,7 +24,6 @@ const Collection: FC<CollectionProps> = ({ filters, isLoading = false, searchQue
 
   useEffect(() => {
     setFilteredItems(items());
-    return () => {};
   }, [filters, searchQuery, intents.entities]);
 
   const items = () => {

@@ -1,8 +1,8 @@
-import { Container, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Container, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import type { Credential, ErrorMessage as ErrorMessageType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ const ResetPasswordView: FC = () => {
   const location = useLocation();
   const { session } = useAppState();
   const actions = useActions();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth']);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState<ErrorMessageType | undefined>();
 
@@ -24,10 +24,7 @@ const ResetPasswordView: FC = () => {
   const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
-    if (session.isSignedIn || !resetToken) {
-      navigate('/app', { replace: true });
-    }
-    return () => {};
+    if (session.isSignedIn || !resetToken) navigate('/app', { replace: true });
   }, []);
 
   const query = new URLSearchParams(location.search);
@@ -100,7 +97,7 @@ const ResetPasswordView: FC = () => {
             variant="body2"
           >
             <ArrowBackIcon fontSize="small" sx={{ mb: -0.5, mt: 0.5, mr: 2 }} />
-            {t('common:signin')}
+            {t('auth:signin')}
           </Link>
         </>
       </Container>

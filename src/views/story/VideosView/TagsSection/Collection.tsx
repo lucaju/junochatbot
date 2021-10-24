@@ -31,7 +31,7 @@ const Collection: FC<CollectionProps> = ({ handleDetailOpen, isLoading = false }
       width={isMobile ? 'fit-content' : '100%'}
     >
       {!isMobile && !isLoading && videos.tagCollection.length === 0 && (
-        <NoContent align="left" heading={t('tags:noTagsYet')} size="small"/>
+        <NoContent align="left" heading={t('tags:noTagsYet')} size="small" />
       )}
       {isLoading
         ? showSkeleton(4)

@@ -2,7 +2,7 @@ import { Box, Skeleton } from '@mui/material';
 import NoContent from '@src/components/NoContent';
 import { useAppState } from '@src/overmind';
 import { Intent } from '@src/types';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import IntentCard from './intentCard/';
@@ -36,7 +36,6 @@ const Collection: FC<CollectionProps> = ({
         ? t('common:noMatch')
         : null
     );
-    return () => {};
   }, [filters, searchQuery, intents.collection]);
 
   const items = () => {

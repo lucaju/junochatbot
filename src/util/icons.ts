@@ -12,8 +12,7 @@ icons.set('bug', BugReportIcon);
 icons.set('child', ChildCareIcon);
 
 export const getIcon = (name: string): any => {
-    const icon = icons.get(name)
-    if (!icon) return AdbIcon;
-    return icon;
-}
-
+  const icon = icons.get(name);
+  if (!icon) return AdbIcon;
+  return icon;
+};

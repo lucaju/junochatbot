@@ -31,7 +31,7 @@ const AddFollowUp: FC<ContextCardProps> = ({ intent, handleEdit }) => {
       followUpType: option,
     });
     if (isError(intentName)) return handleClose();
-    
+
     handleClose();
     handleEdit(intentName);
   };

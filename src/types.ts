@@ -287,12 +287,12 @@ export interface QueryResult {
 }
 
 export interface SentimentAnalysisResult {
-  queryTextSentiment: QueryTextSentiment
+  queryTextSentiment: QueryTextSentiment;
 }
 
 export interface QueryTextSentiment {
   magnitude: number;
-  score:number;
+  score: number;
 }
 
 export interface SpeechMessage {

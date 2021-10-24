@@ -1,5 +1,5 @@
-import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import FilterGroup from '@src/components/menubar/FilterGroup';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { useAppState } from '@src/overmind';

@@ -7,7 +7,7 @@ module.exports = {
       node_args: '--experimental-top-level-await',
       env: {
         NODE_ENV: 'production',
-      }
+      },
     },
   ],
 };

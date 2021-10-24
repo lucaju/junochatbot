@@ -30,10 +30,4 @@ app.get('*', (req, res) => {
   res.status(200).sendFile(path.join(publicPath, 'index.html'));
 });
 
-// app.use('*', express.static(path.join(publicPath, 'index.html')));
-
-// error
-// app.use((req, res) => res.status(404).send('404: Page not Found'));
-// app.use((error, req, res) => res.status(500).send('500: Internal Server Error'));
-
 export default app;

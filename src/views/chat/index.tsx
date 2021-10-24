@@ -29,8 +29,6 @@ const StoryPlay: FC = () => {
 
     if (!storyId) return navigate('/', { replace: true });
     !chat.currentStory ? getStory() : actions.ui.setPageTitle(chat.currentStory.title);
-
-    return () => {};
   }, []);
 
   const getStory = async () => {

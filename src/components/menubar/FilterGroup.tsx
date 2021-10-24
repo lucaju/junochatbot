@@ -16,7 +16,6 @@ const FilterGroup: FC<FilterGroupProps> = ({ handleFilter, value = -1 }) => {
 
   useEffect(() => {
     setGroups([{ id: -1, name: t('common:all') }, ...users.groups]);
-    return () => {};
   }, [users.groups]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

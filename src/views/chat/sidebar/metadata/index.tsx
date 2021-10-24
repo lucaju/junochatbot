@@ -1,6 +1,6 @@
-import { Box, IconButton, Popover, Typography } from '@mui/material';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
-import { useActions, useAppState } from '@src/overmind';
+import { IconButton, Popover, Typography } from '@mui/material';
+import { useAppState } from '@src/overmind';
 import { json } from 'overmind';
 import React, { FC, MouseEvent, useState } from 'react';
 import Attribute from './Attribute';
@@ -10,7 +10,6 @@ interface BotResponseDetailsProps {
 }
 
 const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speechId }) => {
-  const { intents } = useActions();
   const { metadata } = useAppState(({ chat }) => chat._chatLog[speechId]);
   const debug = useAppState(({ chat }) => chat.debug);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -40,10 +39,7 @@ const BotResponseDetails: FC<BotResponseDetailsProps> = ({ speechId }) => {
       {open && (
         <Popover
           anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           id="DialogFlow Response Details"
           onClose={handleClose}
           open={open}

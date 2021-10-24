@@ -39,8 +39,6 @@ const Details: FC<DetailsProps> = ({ handleClose, open, tagId }) => {
       }
     };
     fetch();
-
-    return () => {};
   }, [open]);
 
   const formValidation = Yup.object().shape({

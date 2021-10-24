@@ -1,12 +1,5 @@
-import {
-  Autocomplete,
-  AutocompleteChangeReason,
-  Box,
-  Grid,
-  Stack,
-  TextField,
-} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Autocomplete, AutocompleteChangeReason, Box, Grid, Stack, TextField } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { Tag, Video } from '@src/types';
 import { FormikErrors, FormikTouched, useField } from 'formik';
@@ -26,15 +19,14 @@ const Extra: FC<ExtraProps> = ({ errors, handleBlur, handleChange, touched, valu
   const { videos } = useAppState();
   const actions = useActions();
   const { t } = useTranslation();
-  const [, meta, helpers] = useField('tags');
+  const [, , helpers] = useField('tags');
   // eslint-disable-next-line no-unused-vars
-  const { value } = meta;
+  // const { value } = meta;
   const { setValue } = helpers;
 
   useEffect(() => {
     const fetchData = async () => await actions.videos.getTags();
     if (videos.tagCollection.length === 0) fetchData();
-    return () => {};
   }, []);
 
   const tagsOnChange = (event: SyntheticEvent, value: Tag[], reason: AutocompleteChangeReason) => {

@@ -1,6 +1,6 @@
 import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import TopBar from '@src/components/TopBar';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
@@ -25,7 +25,6 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
       if (!isSignIn) navigate('/', { replace: true });
     };
     checkUser();
-    return () => {};
   }, []);
 
   const handleMenuClick = () => {
@@ -37,14 +36,7 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        overflow: 'hidden',
-        height: '100%',
-        width: '100%',
-      }}
-    >
+    <Box sx={{ display: 'flex', overflow: 'hidden', height: '100%', width: '100%' }}>
       {session.isSignedIn && (
         <>
           <TopBar handleMenuClick={handleMenuClick} />
@@ -71,20 +63,8 @@ const AppLayout: FC<AppLayoutProps> = ({ showStoryMenu = false }) => {
                   : '256px',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flex: '1 1 auto',
-                overflow: 'hidden',
-              }}
-            >
-              <Box
-                sx={{
-                  flex: '1 1 auto',
-                  overflow: 'auto',
-                  height: 'calc(100vh - 64px)',
-                }}
-              >
+            <Box sx={{ display: 'flex', flex: '1 1 auto', overflow: 'hidden' }}>
+              <Box sx={{ flex: '1 1 auto', overflow: 'auto', height: 'calc(100vh - 64px)' }}>
                 <Outlet />
               </Box>
             </Box>

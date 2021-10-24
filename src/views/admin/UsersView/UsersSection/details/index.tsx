@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, Grid } from '@mui/material';
 import ConfirmationDialog from '@src/components/ConfirmationDialog';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { NotificationType, RoleType, User } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -74,7 +74,6 @@ const Details: FC<DetailsProps> = ({ open, handleClose, userId }) => {
 
       fetchData();
     }
-    return () => {};
   }, [open]);
 
   const formValidation = Yup.object().shape({

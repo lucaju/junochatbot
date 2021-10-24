@@ -21,7 +21,6 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
       catSet.add(ui.languageCode === 'en-CA' ? category_en_CA : category_fr_CA);
     });
     setcategories([t('common:all'), ...Array.from(catSet).sort()]);
-    return () => {};
   }, [intents.entities]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,19 +35,14 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
   return (
     <TextField
       InputProps={{
-        sx: {
-          color: ({ palette }) => (isOn ? palette.primary.main : undefined),
-        },
+        sx: { color: ({ palette }) => (isOn ? palette.primary.main : undefined) },
       }}
       label={t('common:category')}
       name="filterEntityCategory"
       onChange={handleChange}
       select
       size="small"
-      sx={{
-        minWidth: 100,
-        textTransform: 'capitalize',
-      }}
+      sx={{ minWidth: 100, textTransform: 'capitalize' }}
       variant="outlined"
       value={filterValue}
     >

@@ -1,19 +1,17 @@
-import { Box } from '@mui/material';
 import { DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { Box } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { Message as MessageType } from '@src/types';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
 import SortableItem from './SortableItem';
 import TextMessage from './TextMessage';
 import VideoMessage from './VideoMessage';
-import { AnimatePresence, motion } from 'framer-motion';
 
 const Collection: FC = () => {
-  const {
-    intents: { currentIntent },
-  } = useAppState();
+  const { currentIntent } = useAppState().intents;
   const actions = useActions();
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -22,7 +20,6 @@ const Collection: FC = () => {
 
   useEffect(() => {
     setList(currentIntent?.messages ?? []);
-    return () => {};
   }, [currentIntent?.messages]);
 
   useEffect(() => {

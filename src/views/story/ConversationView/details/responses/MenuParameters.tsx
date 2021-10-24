@@ -41,7 +41,6 @@ const MenuParameters: FC<MenuParametersProps> = ({
       setSubMenuOpen(false);
       setContext(undefined);
     }
-    return () => {};
   }, [open]);
 
   const callAnchorPosition = () => {

@@ -27,20 +27,13 @@ const FilterRole: FC<FilterStatusProps> = ({ handleFilter, value = 'all' }) => {
 
   return (
     <TextField
-      InputProps={{
-        sx: {
-          color: ({ palette }) => (isOn ? palette.primary.main : undefined),
-        },
-      }}
+      InputProps={{ sx: { color: ({ palette }) => (isOn ? palette.primary.main : undefined) } }}
       label={t('users:role')}
       name="filterRole"
       onChange={handleChange}
       select
       size="small"
-      sx={{
-        width: 125,
-        textTransform: 'capitalize',
-      }}
+      sx={{ width: 125, textTransform: 'capitalize' }}
       variant="outlined"
       value={filterValue}
     >

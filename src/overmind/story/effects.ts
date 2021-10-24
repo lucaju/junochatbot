@@ -1,5 +1,5 @@
 import mock from '@src/../test/mockData';
-import { API_URL } from '@src/config/config.js';
+import { API_URL } from '@src/config/config';
 import type { ErrorMessage, Story } from '@src/types';
 
 type ResponseUploadImage = {
@@ -11,7 +11,7 @@ const MOCK_UP = false; //true;
 export const api = {
   getAllStories: async (token: string): Promise<Story[] | ErrorMessage> => {
     if (MOCK_UP) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         setTimeout(() => {
           resolve(mock.dataStories);
         }, 1000);
@@ -132,5 +132,4 @@ export const api = {
 
     return true;
   },
-  
 };

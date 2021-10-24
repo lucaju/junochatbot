@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Container, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
@@ -21,7 +22,9 @@ const Intro: FC = () => {
 
   const loadContent = async () => {
     //check if system language is supported. If not, fallback to the firs language supported
-    const lang = actions.ui.isLanguageSupported(ui.languageCode) ? ui.languageCode : ui.languages[0].value;
+    const lang = actions.ui.isLanguageSupported(ui.languageCode)
+      ? ui.languageCode
+      : ui.languages[0].value;
     const file = `intro_${lang}.md`;
     const response = await fetch(`./assets/intro/${file}`);
     const text = await response.text();

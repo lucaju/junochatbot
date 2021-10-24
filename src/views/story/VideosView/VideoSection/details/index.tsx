@@ -55,8 +55,6 @@ const Details: FC<DetailsProps> = ({ handleClose, open, videoId }) => {
       }
     };
     fetch();
-
-    return () => {};
   }, [open]);
 
   const formValidation = Yup.object().shape({

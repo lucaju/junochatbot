@@ -1,3 +1,8 @@
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import LanguageIcon from '@mui/icons-material/Language';
+import LockIcon from '@mui/icons-material/Lock';
 import {
   Avatar,
   Box,
@@ -12,15 +17,10 @@ import {
   Switch,
   ToggleButton,
   ToggleButtonGroup,
-  Typography,
+  Typography
 } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import LanguageIcon from '@mui/icons-material/Language';
-import LockIcon from '@mui/icons-material/Lock';
-import { APP_URL } from '@src/config/config.js';
-import { useAppState, useActions } from '@src/overmind';
+import { APP_URL } from '@src/config/config';
+import { useActions, useAppState } from '@src/overmind';
 import { UserGroup } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, MouseEvent, useEffect, useState } from 'react';
@@ -52,7 +52,6 @@ const Profile: FC<ProfileProps> = ({ anchor, handleClose }) => {
       if (!isError(response)) setGroup(response);
     };
     fetchGroup();
-    return () => {};
   }, []);
 
   const switchAppearenceMode = () => {

@@ -1,13 +1,13 @@
-import { Box, CardMedia, IconButton, useTheme } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PanoramaIcon from '@mui/icons-material/Panorama';
-import { APP_URL } from '@src/config/config.js';
+import { Box, CardMedia, IconButton, useTheme } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import { APP_URL } from '@src/config/config';
 import type { DropFile } from '@src/types';
 import { useField } from 'formik';
 import { motion, useAnimation } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
-import { FileRejection, useDropzone } from 'react-dropzone';
+import { useDropzone } from 'react-dropzone';
 
 interface FeaturedImageProps {
   title: string;
@@ -28,7 +28,6 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ title }) => {
     const posterFile = typeof value === 'string' ? value : value?.file?.name;
     file ? setImage(file.preview) : setImage(posterFile);
     value === null || value === '' ? setShowDropzone(true) : setShowDropzone(false);
-    return () => {};
   }, []);
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const FeaturedImage: FC<FeaturedImageProps> = ({ title }) => {
     });
   };
 
-  const onDrop = async (acceptedFiles: Array<File>, fileRejections: Array<FileRejection>) => {
+  const onDrop = async (acceptedFiles: Array<File>) => {
     const accepted = acceptedFiles.length > 0;
 
     await dropZoneAnim.start({

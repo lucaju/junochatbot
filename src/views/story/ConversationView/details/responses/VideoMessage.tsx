@@ -1,4 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 import {
   Box,
   IconButton,
@@ -6,13 +9,9 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
-  useMediaQuery,
   useTheme,
   Zoom,
 } from '@mui/material';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import ShuffleIcon from '@mui/icons-material/Shuffle';
-import YouTubeIcon from '@mui/icons-material/YouTube';
 import { useActions, useAppState } from '@src/overmind';
 import { Payload } from '@src/types';
 import React, { FC, useEffect, useState } from 'react';
@@ -34,13 +33,9 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
   const actions = useActions();
   const { t } = useTranslation();
 
-  const { attributes, listeners } = useDraggable({
-    id: message.id ?? '',
-  });
+  const { attributes, listeners } = useDraggable({ id: message.id ?? '' });
 
   const defaultSourceOption: sourceOptionType = { id: '-1', label: t('common:choose') };
-
-  const isSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [hover, setHover] = useState(false);
   const [source, setSource] = useState('-1');
@@ -56,22 +51,16 @@ const VideoMessage: FC<VideoMessageProps> = ({ message, isDragging = false }) =>
 
     setSourceOptions([defaultSourceOption, ...mappedOptions]);
     setSource('-1');
-    return () => {};
   }, []);
 
   useEffect(() => {
     const sourceValue = message.payload.source;
     setSource(sourceValue === '' ? '-1' : sourceValue);
-
-    return () => {};
   }, [message.payload.source]);
 
   const handleChangeSource = (event: SelectChangeEvent<string>) => {
     const value = event.target.value;
-    actions.intents.updateVideoSource({
-      messageId: message.id,
-      source: value,
-    });
+    actions.intents.updateVideoSource({ messageId: message.id, source: value });
   };
 
   const handleRemove = () => {

@@ -1,5 +1,5 @@
 import mock from '@src/../test/mockData';
-import { API_URL } from '@src/config/config.js';
+import { API_URL } from '@src/config/config';
 import type { ErrorMessage, Tag, Video } from '@src/types';
 
 const MOCK_UP = false;
@@ -7,7 +7,7 @@ const MOCK_UP = false;
 export const api = {
   getVideos: async (storyId: number, token: string): Promise<Video[] | ErrorMessage> => {
     if (MOCK_UP) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         setTimeout(() => {
           resolve(mock.dataVideoCollection);
         }, 1000);

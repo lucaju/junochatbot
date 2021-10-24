@@ -1,5 +1,5 @@
-import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 import { useActions } from '@src/overmind';
 import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,7 @@ const UserInput: FC = () => {
   };
 
   const handleSubmit = () => {
-    let userInput = userInputState.trim();
+    const userInput = userInputState.trim();
     if (userInput === '') return;
     if (userInput.length > DETECT_INTENT_CHAR_LIMIT) {
       userInput.substring(0, DETECT_INTENT_CHAR_LIMIT);

@@ -31,7 +31,6 @@ const Collection: FC<CollectionProps> = ({ isLoading = false, searchQuery }) => 
         ? t('common:noMatch')
         : null
     );
-    return () => {};
   }, [searchQuery, intents.contexts]);
 
   const items = () => {

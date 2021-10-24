@@ -1,5 +1,5 @@
-import { Box, IconButton, Typography, useTheme, Zoom } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { Box, IconButton, Typography, useTheme, Zoom } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { Part as PartType, TrainingPhrase } from '@src/types';
 import React, {
@@ -57,7 +57,6 @@ const Phrase: FC<PhraseProps> = ({
 
   useEffect(() => {
     if (name?.includes('new-')) TypRef.current.focus();
-    return () => {};
   }, []);
 
   useEffect(() => {
@@ -71,7 +70,6 @@ const Phrase: FC<PhraseProps> = ({
     actions.intents.updatePhrase(updatedPhrase);
 
     setChanged(false);
-    return () => {};
   }, [changed]);
 
   const handleBlur = () => {

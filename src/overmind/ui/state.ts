@@ -8,9 +8,9 @@ type State = {
   notification: Notification;
   languageCode?: string;
   videoView: {
-    tagFilter: number | null,
+    tagFilter: number | null;
     tagsPanelVisible: boolean;
-  }
+  };
 };
 
 export const state: State = {
@@ -29,5 +29,5 @@ export const state: State = {
   videoView: {
     tagFilter: null,
     tagsPanelVisible: false,
-  }
+  },
 };

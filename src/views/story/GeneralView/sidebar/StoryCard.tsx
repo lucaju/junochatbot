@@ -44,7 +44,6 @@ const StoryCard: FC<StoryCardProps> = ({ values }) => {
 
   useEffect(() => {
     setBotAvatar(getIcon(values.botAvatar));
-    return () => {};
   }, [values]);
 
   return (

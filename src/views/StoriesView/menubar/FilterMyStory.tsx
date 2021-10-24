@@ -23,8 +23,6 @@ const FilterMyStory: FC<FilterMyStoryProps> = ({ handleFilter, value = 0 }) => {
     setFilterValue(!filterValue);
   };
 
-  const isOn = () => filterValue === true;
-
   return (
     <ToggleButton
       onChange={handleChange}

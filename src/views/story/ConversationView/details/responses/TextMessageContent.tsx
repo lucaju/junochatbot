@@ -1,5 +1,5 @@
-import { Box, IconButton, TextField, Zoom } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { Box, IconButton, TextField, Zoom } from '@mui/material';
 import { useAppState } from '@src/overmind';
 import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, useRef, useState } from 'react';
 import MenuParameters from './MenuParameters';
@@ -19,9 +19,7 @@ const TextMessageContent: FC<TextMessageContentProps> = ({
   handleUpdate,
   removable = true,
 }) => {
-  const {
-    intents: { currentIntent },
-  } = useAppState();
+  const { currentIntent } = useAppState().intents;
   const TFref = useRef();
 
   const [elTarget, setElTarget] = useState<HTMLElement>();

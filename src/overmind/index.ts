@@ -3,7 +3,7 @@ import {
   createActionsHook,
   createEffectsHook,
   createReactionHook,
-  createStateHook
+  createStateHook,
 } from 'overmind-react';
 import { namespaced } from 'overmind/config';
 import * as chat from './chat';

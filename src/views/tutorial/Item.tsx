@@ -1,4 +1,5 @@
-import { Paper, ListItem, Link, Typography, useTheme } from '@mui/material';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Link, ListItem, Paper, Typography, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';

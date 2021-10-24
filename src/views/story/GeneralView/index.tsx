@@ -1,20 +1,13 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Stack,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, CircularProgress, Container, Stack, useMediaQuery, useTheme } from '@mui/material';
+import Page from '@src/components/Page';
+import { useActions, useAppState } from '@src/overmind';
+import { NotificationType, Story } from '@src/types';
+import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
-import { NotificationType, Story } from '@src/types';
-import { isError } from '@src/util/utilities';
 import BottomBar from './BottomBar';
 import Main from './main';
 import SideBar from './sidebar';
@@ -49,8 +42,6 @@ const GeneralView: FC = () => {
     };
 
     !story.currentStory ? getStory() : actions.ui.setPageTitle(story.currentStory.title);
-
-    return () => {};
   }, []);
 
   const formValidation = Yup.object().shape({

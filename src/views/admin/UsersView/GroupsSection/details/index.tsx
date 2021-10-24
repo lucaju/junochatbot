@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import ConfirmationDialog from '@src/components/ConfirmationDialog';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions } from '@src/overmind';
 import { NotificationType, UserGroup } from '@src/types';
 import { isError } from '@src/util/utilities';
 import { Formik } from 'formik';
@@ -41,8 +41,6 @@ const Details: FC<DetailsProps> = ({ groupId, handleClose, open }) => {
       if (!isError(selectedGroup)) setGroupData(json(selectedGroup));
     };
     fetch();
-
-    return () => {};
   }, [open]);
 
   const formValidation = Yup.object().shape({

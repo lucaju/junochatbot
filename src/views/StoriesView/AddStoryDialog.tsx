@@ -1,3 +1,4 @@
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Box,
   Button,
@@ -11,7 +12,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { useActions, useAppState } from '@src/overmind';
 import { NotificationType, Story } from '@src/types';
 import { isError } from '@src/util/utilities';
@@ -39,9 +39,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
     const response = await actions.story.createStory(values as Omit<Story, 'id'>);
 
     const type = isError(response) ? NotificationType.ERROR : NotificationType.SUCCESS;
-    const message = isError(response)
-      ? t('error:somethingWentWrong')
-      : t('stories:storyCreated');
+    const message = isError(response) ? t('error:somethingWentWrong') : t('stories:storyCreated');
     actions.ui.showNotification({ message, type });
 
     if (isError(response)) return;
@@ -56,10 +54,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
   return (
     <Dialog aria-labelledby="new-story-dialog" fullWidth onClose={handleClose} open={open}>
       <Formik
-        initialValues={{
-          title: '',
-          languageCode: ui.languageCode,
-        }}
+        initialValues={{ title: '', languageCode: ui.languageCode }}
         onSubmit={submit}
         validationSchema={formValidation}
       >
@@ -67,12 +62,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
           <form onSubmit={handleSubmit}>
             <DialogContent dividers>
               <Typography
-                sx={{
-                  my: 1.5,
-                  textAlign: 'center',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                }}
+                sx={{ my: 1.5, textAlign: 'center', textTransform: 'uppercase', fontWeight: 700 }}
                 variant="h6"
               >
                 {t('stories:newStory')}

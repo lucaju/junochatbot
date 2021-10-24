@@ -1,3 +1,4 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Box,
   CircularProgress,
@@ -8,7 +9,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Logo from '@src/components/Logo';
 import Page from '@src/components/Page';
 import { useActions, useAppState } from '@src/overmind';
@@ -34,14 +34,12 @@ const LoginView: FC = () => {
 
   useEffect(() => {
     if (hasToken) authenticate();
-    return () => {};
   }, []);
 
   useEffect(() => {
     if (session.isSignedIn) {
       navigate('/app', { replace: true });
     }
-    return () => {};
   }, [session.isSignedIn]);
 
   const authenticate = async (credential?: Credential) => {

@@ -135,7 +135,7 @@ export const updateStory = async (
   const currentStoryUser = state.story.currentStory?.user;
 
   //1. Split data
-  let newValues: Partial<Story> = { ...values };
+  const newValues: Partial<Story> = { ...values };
   delete newValues.user;
 
   let newImage;

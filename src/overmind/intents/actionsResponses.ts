@@ -12,9 +12,7 @@ export const addTextMessage = ({ state, actions }: Context) => {
 
   const newTextMessage: Text = {
     id: `new-${uuidv4()}`,
-    text: {
-      text: [''],
-    },
+    text: { text: [''] },
   };
 
   currentIntent.messages = [...messages, newTextMessage];
@@ -32,10 +30,7 @@ export const addVideoMessage = ({ state, actions }: Context) => {
 
   const newVideoMessage: Payload = {
     id: `new-${uuidv4()}`,
-    payload: {
-      type: 'video',
-      source: '-1',
-    },
+    payload: { type: 'video', source: '-1' },
   };
 
   currentIntent.messages = [...messages, newVideoMessage];
@@ -53,10 +48,7 @@ export const addVideoTagMessage = ({ state, actions }: Context) => {
 
   const newVideoMessage: Payload = {
     id: `new-${uuidv4()}`,
-    payload: {
-      type: 'tag',
-      source: '-1',
-    },
+    payload: { type: 'tag', source: '-1' },
   };
 
   currentIntent.messages = [...messages, newVideoMessage];

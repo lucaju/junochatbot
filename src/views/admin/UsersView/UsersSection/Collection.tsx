@@ -26,7 +26,6 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
   const [noContentMsg, setNoContentMsg] = useState<string | null>(null);
   const [_groupId, _setGroupId] = useState<number | undefined>();
 
-
   useEffect(() => {
     setIsLoading(true);
     const getCollection = async () => {
@@ -34,23 +33,24 @@ const Collection: FC<CollectionProps> = ({ groupId, filters, handleDetailOpen, s
       fetchUsers();
     };
     getCollection();
-    return () => {};
   }, [session.user?.groupId]);
 
   useEffect(() => {
     _setGroupId(groupId);
     if (_groupId === groupId) return;
     fetchUsers();
-    return () => {};
   }, [groupId]);
 
   useEffect(() => {
     const _items = items();
     setFilteredItems(_items);
     setNoContentMsg(
-      users.list.length === 0 ? t('users:noUsersYet') : _items.length === 0 ? t('common:noMatch') : null
+      users.list.length === 0
+        ? t('users:noUsersYet')
+        : _items.length === 0
+        ? t('common:noMatch')
+        : null
     );
-    return () => {};
   }, [filters, searchQuery, users.list]);
 
   const fetchUsers = async () => {

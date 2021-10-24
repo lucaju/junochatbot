@@ -1,5 +1,5 @@
-import { Box, IconButton, Stack, Typography } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Prompt from './Prompt';
@@ -20,12 +20,8 @@ const PromptsPanel: FC<PromptsPanelProps> = ({ prompts, handleUpdate }) => {
 
   useEffect(() => {
     if (!prompts) return set_prompts([]);
-    const updatedPrompts: promptComp[] = prompts.map((prompt, i) => ({
-      id: i,
-      prompt,
-    }));
+    const updatedPrompts: promptComp[] = prompts.map((prompt, i) => ({ id: i, prompt }));
     set_prompts(updatedPrompts);
-    return () => {};
   }, [prompts]);
 
   const addEmpty = () => {

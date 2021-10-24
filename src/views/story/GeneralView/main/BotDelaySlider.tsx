@@ -12,7 +12,7 @@ const BotDelaySlider: FC = () => {
 
   //on characters per millisecond
   const marks = [
-    { value: 0, label: t('common:immediately')},
+    { value: 0, label: t('common:immediately') },
     { value: 80, label: t('common:slow') },
     { value: 100, label: '' },
     { value: 120, label: '' },
@@ -34,10 +34,7 @@ const BotDelaySlider: FC = () => {
       marks={marks}
       max={180}
       step={null}
-      sx={{
-        ml: 2,
-        '& .MuiSlider-markLabel': { fontSize: '0.75rem' },
-      }}
+      sx={{ ml: 2, '& .MuiSlider-markLabel': { fontSize: '0.75rem' } }}
     />
   );
 };

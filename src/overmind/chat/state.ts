@@ -1,17 +1,17 @@
-import type { Story, SpeechMessage, ThreadChat, Video } from '@src/types';
+import type { SpeechMessage, Story, Video } from '@src/types';
 import { derived } from 'overmind';
 
 type State = {
-  _chatLog: {[x:string]: SpeechMessage}
+  _chatLog: { [x: string]: SpeechMessage };
   chatLog: SpeechMessage[];
   chatThreadLog: SpeechMessage[][];
   currentStory?: Story;
   currentVideo?: Video;
-  debug: Boolean;
+  debug: boolean;
   sessionid?: string;
-  stories:Story[]
-  videoLog: Video[],
-  watchedVideos : Video[],
+  stories: Story[];
+  videoLog: Video[];
+  watchedVideos: Video[];
 };
 
 export const state: State = {

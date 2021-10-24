@@ -40,19 +40,14 @@ const FilterPublished: FC<FilterPublishedProps> = ({ handleFilter, value = -1 })
   return (
     <TextField
       InputProps={{
-        sx: {
-          color: ({ palette }) => (isOn ? palette.primary.main : undefined),
-        },
+        sx: { color: ({ palette }) => (isOn ? palette.primary.main : undefined) },
       }}
       label={t('common:status')}
       name="filterPublished"
       onChange={handleChange}
       select
       size="small"
-      sx={{
-        width: 125,
-        textTransform: 'capitalize',
-      }}
+      sx={{ width: 125, textTransform: 'capitalize' }}
       variant="outlined"
       value={filterValue}
     >

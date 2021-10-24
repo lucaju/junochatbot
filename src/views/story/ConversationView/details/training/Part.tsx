@@ -11,7 +11,7 @@ interface PartProps {
   type?: 'empty' | 'text' | 'semantic';
 }
 
-const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) => {
+const Part: FC<PartProps> = ({ handleClick, part = {}, type = 'empty' }) => {
   const theme = useTheme();
   const { intents } = useAppState();
   const { alias, entityType, text, userDefined } = part;
@@ -42,11 +42,7 @@ const Part: FC<PartProps> = ({ index, handleClick, part = {}, type = 'empty' }) 
       data-user-define={userDefined}
       onContextMenu={onContextMenu}
       onClick={entityType ? handleClick : undefined}
-      sx={{
-        color,
-        backgroundColor,
-        cursor: entityType ? 'pointer' : 'default',
-      }}
+      sx={{ color, backgroundColor, cursor: entityType ? 'pointer' : 'default' }}
     >
       {type === 'empty' ? <>&nbsp;</> : text}
     </Box>

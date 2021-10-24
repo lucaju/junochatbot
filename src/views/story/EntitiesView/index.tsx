@@ -1,6 +1,6 @@
 import { Box, Container } from '@mui/material';
 import Page from '@src/components/Page';
-import { useAppState, useActions } from '@src/overmind';
+import { useActions, useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
 import { isError } from '@src/util/utilities';
 import React, { FC, useEffect, useState } from 'react';
@@ -40,8 +40,6 @@ const EntitiesView: FC = () => {
     };
 
     story.currentStory ? getCollection() : getStory();
-
-    return () => {};
   }, []);
 
   const updateFilters = ({ type, value, reset }: HandleFilterType) => {

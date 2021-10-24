@@ -1,9 +1,9 @@
 import { Box, Chip, TextField, Typography } from '@mui/material';
+import { useAppState } from '@src/overmind';
 import { Story as StoryType } from '@src/types';
 import { FormikErrors, FormikTouched } from 'formik';
 import React, { ChangeEvent, FC, FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppState } from '@src/overmind';
 
 interface StoryProps {
   errors: FormikErrors<StoryType>;

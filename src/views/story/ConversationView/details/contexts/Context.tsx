@@ -1,14 +1,13 @@
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import TimerIcon from '@mui/icons-material/Timer';
 import {
-  Box,
   ClickAwayListener,
   IconButton,
   Stack,
   Typography,
   useTheme,
-  Zoom,
+  Zoom
 } from '@mui/material';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import TimerIcon from '@mui/icons-material/Timer';
 import { useActions } from '@src/overmind';
 import type { Context as ContextType } from '@src/types';
 import React, { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
@@ -35,7 +34,6 @@ const ContextComponent: FC<ContextComponentProps> = ({ context }) => {
   useEffect(() => {
     if (shortName === '' && NameHTMLRef.current) NameHTMLRef.current.focus();
     if (shortName === '') setAtive(true);
-    return () => {};
   }, [NameHTMLRef]);
 
   const handleKeyDownName = (event: KeyboardEvent<HTMLElement>) => {

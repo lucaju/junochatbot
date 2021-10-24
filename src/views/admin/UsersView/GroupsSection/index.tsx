@@ -1,5 +1,5 @@
-import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,15 +21,13 @@ const GroupsView: FC = () => {
   useEffect(() => {
     const getCollection = async () => setTimeout(fetchGroups, 1000);
     getCollection();
-
-    return () => {};
   }, []);
 
   const fetchGroups = async () => {
     setIsLoading(true);
     if (users.groups.length === 0) actions.users.getGroups();
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   const handleDetailOpen = (groupId?: number) => {
     setCurrentGroupId(groupId);

@@ -1,12 +1,12 @@
-import { Avatar, Box, IconButton, useTheme } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { APP_URL } from '@src/config/config.js';
+import { Avatar, Box, IconButton, useTheme } from '@mui/material';
+import { APP_URL } from '@src/config/config';
 import type { DropFile } from '@src/types';
 import { useField } from 'formik';
 import { motion, useAnimation } from 'framer-motion';
 import React, { FC, useEffect, useState } from 'react';
-import { FileRejection, useDropzone } from 'react-dropzone';
+import { useDropzone } from 'react-dropzone';
 
 const UserAvatar: FC = () => {
   const theme = useTheme();
@@ -24,7 +24,6 @@ const UserAvatar: FC = () => {
     const avatarFile = typeof value === 'string' ? value : value?.file?.name;
     file ? setImage(file.preview) : setImage(avatarFile);
     value === null || value === '' ? setShowDropzone(true) : setShowDropzone(false);
-    return () => {};
   }, [value]);
 
   useEffect(() => {
@@ -63,7 +62,7 @@ const UserAvatar: FC = () => {
     });
   };
 
-  const onDrop = async (acceptedFiles: Array<File>, fileRejections: Array<FileRejection>) => {
+  const onDrop = async (acceptedFiles: Array<File>) => {
     const accepted = acceptedFiles.length > 0;
 
     !accepted &&
@@ -166,7 +165,7 @@ const UserAvatar: FC = () => {
             src={!file ? `${APP_URL}/uploads/assets${image}` : ''}
             sx={{ height: 80, width: 80 }}
           >
-            {file && <img src={file.preview} height={80}/>}
+            {file && <img src={file.preview} height={80} />}
           </Avatar>
         </>
       )}

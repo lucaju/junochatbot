@@ -1,5 +1,5 @@
-import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import SearchBox from '@src/components/menubar/SearchBox';
 import { useAppState } from '@src/overmind';
 import { HandleFilterType } from '@src/types';
@@ -14,7 +14,7 @@ interface MenuBarProps {
 
 const THRESHOOLD_SHOW_SEARCH = 3; //items
 
-const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch, updateFilter }) => {
+const MenuBar: FC<MenuBarProps> = ({ handleDetailOpen, handleSearch }) => {
   const { intents } = useAppState();
   const { t } = useTranslation();
 

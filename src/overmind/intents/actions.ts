@@ -1,19 +1,10 @@
-import type {
-  Entity,
-  ErrorMessage as IError,
-  Intent,
-  Message,
-  Struct,
-  TrainingPhrase,
-  Value,
-} from '@src/types';
+import type { Entity, ErrorMessage as IError, Intent, Message, TrainingPhrase } from '@src/types';
+import { responsePresetCollection } from '@src/util/responsePresets';
+import { trainingPhrasesCollection } from '@src/util/trainingPhrases';
 import { isError, sortBy } from '@src/util/utilities';
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../';
-import { extractContextName } from './actionsContext';
-import { trainingPhrasesCollection } from '@src/util/trainingPhrases';
-import { responsePresetCollection } from '@src/util/responsePresets';
-import { hasOutputContext } from './actionsContext';
+import { extractContextName, hasOutputContext } from './actionsContext';
 
 export * from './actionsContext';
 export * from './actionsParameters';
@@ -324,7 +315,7 @@ export const updateDefaultFallbackIntent = async ({ state, effects }: Context) =
   defaultFallbackIntent.messages = [message];
 
   //revert transformation and remove additonal values
-  let intentToSubmit = partIntentToSubmit({ ...defaultFallbackIntent });
+  const intentToSubmit = partIntentToSubmit({ ...defaultFallbackIntent });
 
   //remove read-only attributes
   delete intentToSubmit.rootFollowupIntentName;

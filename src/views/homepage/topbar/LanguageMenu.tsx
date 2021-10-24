@@ -1,5 +1,5 @@
-import { Button, Menu, MenuItem } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,6 @@ const LanguageMenu: FC = () => {
   const open = Boolean(anchorEl);
 
   const handleClick = (value: string) => {
-    // if (!value) value = ui.languageCode;
     i18n.changeLanguage(value);
     actions.ui.switchLanguage(value);
     handleClose();

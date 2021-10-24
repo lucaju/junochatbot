@@ -10,17 +10,8 @@ const Hero: FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const letterAnimation = {
-    initial: {
-      opacity: 0,
-      rotate: -45,
-      pathLength: 0,
-    },
-    animate: {
-      opacity: 1,
-      rotate: 0,
-      pathLength: 1,
-      transition: { duration: 2 },
-    },
+    initial: { opacity: 0, rotate: -45, pathLength: 0 },
+    animate: { opacity: 1, rotate: 0, pathLength: 1, transition: { duration: 2 } },
   };
 
   return (

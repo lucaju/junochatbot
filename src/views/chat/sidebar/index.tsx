@@ -1,5 +1,5 @@
 import { Drawer, Paper, Stack, useMediaQuery, useTheme } from '@mui/material';
-import { useActions } from '@src/overmind';
+// import { useActions } from '@src/overmind';
 import React, { FC } from 'react';
 import Conversation from './Conversation';
 import UserInput from './UserInput';
@@ -11,9 +11,9 @@ interface SideBarProps {
 const SideBar: FC<SideBarProps> = ({ width }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { chat } = useActions();
+  // const { chat } = useActions();
 
-  const handleReset = () => chat.reset();
+  // const handleReset = () => chat.reset();
 
   return (
     <Drawer
@@ -32,10 +32,7 @@ const SideBar: FC<SideBarProps> = ({ width }) => {
       <Paper
         elevation={3}
         square
-        sx={{
-          width: isMobile ? '100%' : width,
-          height: isMobile ? '25vh' : '100vh',
-        }}
+        sx={{ width: isMobile ? '100%' : width, height: isMobile ? '25vh' : '100vh' }}
       >
         <Stack height="100%" justifyContent="space-between">
           <Conversation />

@@ -1,5 +1,5 @@
-import { Box, IconButton, Stack, Typography } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC } from 'react';
@@ -13,9 +13,7 @@ const MAX_INPUT = 5;
 const MAX_OUPUT = 30;
 
 const Collection: FC<CollectionProps> = ({ type }) => {
-  const {
-    intents: { currentIntent },
-  } = useAppState();
+  const { currentIntent } = useAppState().intents;
   const actions = useActions();
 
   const contexts = type === 'input' ? currentIntent?.inputContexts : currentIntent?.outputContexts;

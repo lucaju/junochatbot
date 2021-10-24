@@ -1,7 +1,7 @@
-import { Box, Grid, IconButton, Skeleton, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { Box, Grid, IconButton, Skeleton, Typography } from '@mui/material';
 import { Video } from '@src/types';
 import { DateTime, Duration } from 'luxon';
 import React, { FC, useState } from 'react';
@@ -13,7 +13,7 @@ interface MetaProps {
   youtubeVideoId?: string;
 }
 
-const Meta: FC<MetaProps> = ({ handleRefresh, values, youtubeVideoId }) => {
+const Meta: FC<MetaProps> = ({ handleRefresh, values }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [refreshed, setRefreshed] = useState(false);

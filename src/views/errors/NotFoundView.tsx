@@ -10,31 +10,16 @@ const NotFoundView: FC = () => {
 
   return (
     <Page
-      sx={{
-        backgroundColor: 'background.default',
-        height: '100%',
-        py: 3,
-      }}
+      sx={{ backgroundColor: 'background.default', height: '100%', py: 3 }}
       title={t('error:pageNotFound')}
     >
       <Box display="flex" flexDirection="column" height="100%" justifyContent="center">
         <Container
           maxWidth="md"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            mt: 4,
-          }}
+          sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}
         >
           <RouterLink to="/">
-            <Logo
-              sx={{
-                width: 300,
-                mb: 8,
-              }}
-              type="full"
-            />
+            <Logo sx={{ width: 300, mb: 8 }} type="full" />
           </RouterLink>
           <Typography align="center" sx={{ color: 'text.primary' }} variant="h4">
             {t('error:title404')}
