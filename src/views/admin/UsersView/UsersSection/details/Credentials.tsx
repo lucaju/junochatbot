@@ -26,7 +26,7 @@ const Credentials: FC<CredentialsProps> = ({
         disabled={!!values.id}
         error={Boolean(touched.userName && errors.userName)}
         fullWidth
-        helperText={touched.userName && errors.userName}
+        helperText={touched.userName && errors.userName && 'Must be a valid email'}
         label={t('users:email')}
         name="userName"
         onBlur={handleBlur}
