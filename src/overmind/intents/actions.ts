@@ -345,8 +345,11 @@ const partIntentToSubmit = (intent: Intent): Intent => {
     intent.messages = messages;
   }
 
-  //* remvoe UUID from output Context array
   if (intent.outputContexts) {
+    //* remvove output w/o a name
+    intent.outputContexts = intent.outputContexts.filter((context) => context.name !== '');
+
+    //* remvove UUID from output Context array
     intent.outputContexts = intent.outputContexts.map((context) => {
       return {
         name: context.name,
