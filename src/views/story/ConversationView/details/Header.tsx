@@ -67,7 +67,9 @@ const Header: FC<HeadersProps> = ({
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value.trim();
-    actions.intents.updateCurrentDisplayName(value);
+    const sanitizeValue = value.replace(/\s/g, '-');
+    setDisplayName(sanitizeValue);
+    actions.intents.updateCurrentDisplayName(sanitizeValue);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
