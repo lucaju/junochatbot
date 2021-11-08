@@ -56,7 +56,7 @@
     "tag": "tag",
     "tags": "mots clés",
     "title": "titre",
-    "tutorial": "",
+    "tutorial": "tutoriel",
     "type": "",
     "typeHere": "écrivez ici",
     "update": "mise à jour",
@@ -108,7 +108,7 @@
     "subtitle": "Recherche-développement sur l'utilisation des agents conversationnels (chatbots) pour le récit audiovisuel",
     "team": "équipe",
     "title": "Chatbot et Récit",
-    "tutorial": "",
+    "tutorial": "Tutoriel",
     "watch": "regardez"
   },
   "intent": {
@@ -194,6 +194,11 @@
   },
   "tutoral": {
     "introduction": ""
+  },
+  "tutorial": {
+    "creating_stories": "Créer des histoires",
+    "introduction": "Introduction",
+    "signing_up": "S'enregistrer"
   },
   "users": {
     "addUser": "créer utilisateur",

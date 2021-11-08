@@ -31,17 +31,6 @@ interface Item {
   userTypeAllowed?: RoleType[];
 }
 
-const items: Item[] = [
-  {
-    id: 'introduction',
-    path: `${BASE_URL}/introduction`,
-    title: 'Introduction',
-    userTypeAllowed: [RoleType.ADMIN, RoleType.INSTRUCTOR],
-  },
-  { id: 'signup', path: `${BASE_URL}/signup`, title: 'Signing up' },
-  { id: 'creation', path: `${BASE_URL}/creation`, title: 'Creating Stories' },
-];
-
 interface Props {
   children?: ReactElement;
 }
@@ -52,6 +41,17 @@ const TutorialVIew: FC<Props> = (props) => {
   const { user } = useAppState().session;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const items: Item[] = [
+    {
+      id: 'introduction',
+      path: `${BASE_URL}/introduction`,
+      title: t('tutorial:introduction'),
+      userTypeAllowed: [RoleType.ADMIN, RoleType.INSTRUCTOR],
+    },
+    { id: 'signup', path: `${BASE_URL}/signup`, title: t('tutorial:signing_up') },
+    { id: 'creation', path: `${BASE_URL}/creation`, title: t('tutorial:creating_stories') },
+  ];
 
   useEffect(() => {
     window.scrollTo(0, 0);

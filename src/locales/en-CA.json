@@ -195,6 +195,11 @@
   "tutoral": {
     "introduction": "Introduction"
   },
+  "tutorial": {
+    "creating_stories": "Creating Stories",
+    "introduction": "Introduction",
+    "signing_up": "Signing up"
+  },
   "users": {
     "addUser": "Add User",
     "email": "email",
