@@ -13,7 +13,7 @@ export const extractContextName = (name: string) => {
 export const addContext = ({ actions }: Context, type: Type) => {
   const hasAdded =
     type === 'input' ? actions.intents.addInputContext() : actions.intents.addOutputContext();
-  if (hasAdded) actions.intents.setIntentHaChange(true);
+  if (hasAdded) actions.intents.setIntentHasChange(true);
 };
 
 export const addInputContext = ({ state }: Context): boolean => {
@@ -58,12 +58,12 @@ export const addOutputContext = ({ state }: Context, shortName?: string): boolea
 };
 
 export const updateContext = ({ actions }: Context, context: ContextType) => {
-  const hasChanged =
-    context.type === 'input'
-      ? actions.intents.updateInputContextName(context)
-      : actions.intents.updateOutputContex(context);
+  const { updateInputContextName, updateOutputContex } = actions.intents;
 
-  if (hasChanged) actions.intents.setIntentHaChange(true);
+  const hasChanged =
+    context.type === 'input' ? updateInputContextName(context) : updateOutputContex(context);
+
+  if (hasChanged) actions.intents.setIntentHasChange(true);
 };
 
 export const updateInputContextName = (
@@ -142,7 +142,7 @@ export const removeContext = ({ actions }: Context, context: ContextType) => {
       ? actions.intents.removeInputContex(context.id)
       : actions.intents.removeOutputContext(context.id);
 
-  if (hasRemoved) actions.intents.setIntentHaChange(true);
+  if (hasRemoved) actions.intents.setIntentHasChange(true);
 };
 
 export const removeInputContex = ({ state }: Context, id?: string): boolean => {

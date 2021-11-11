@@ -17,6 +17,7 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>
 ) {
+  //@ts-ignore
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -63,7 +64,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
   const autoSave = async () => {
     if (intents.currentIntent?.hasChanged) {
       await submit();
-      actions.intents.setIntentHaChange(false);
+      actions.intents.setIntentHasChange(false);
     }
   };
 
@@ -79,7 +80,7 @@ const Details: FC<DetailsProps> = ({ open, handleClose, intentId }) => {
 
     //error
     if (isError(response)) {
-      const message = t('error:somethingWentWrong');
+      const message = `${t('error:somethingWentWrong')} ${response.errorMessage}`;
       actions.ui.showNotification({ message, type });
       setIsSubmitting(false);
       return;

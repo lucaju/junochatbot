@@ -17,7 +17,7 @@ export const addTextMessage = ({ state, actions }: Context) => {
 
   currentIntent.messages = [...messages, newTextMessage];
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const addVideoMessage = ({ state, actions }: Context) => {
@@ -35,7 +35,7 @@ export const addVideoMessage = ({ state, actions }: Context) => {
 
   currentIntent.messages = [...messages, newVideoMessage];
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const addVideoTagMessage = ({ state, actions }: Context) => {
@@ -53,7 +53,7 @@ export const addVideoTagMessage = ({ state, actions }: Context) => {
 
   currentIntent.messages = [...messages, newVideoMessage];
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const removeMessage = ({ state, actions }: Context, id: string) => {
@@ -62,7 +62,7 @@ export const removeMessage = ({ state, actions }: Context, id: string) => {
 
   state.intents.currentIntent.messages = messages.filter((message) => message.id !== id);
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const addTextMessageAlternative = ({ state, actions }: Context, messageId: string) => {
@@ -80,7 +80,7 @@ export const addTextMessageAlternative = ({ state, actions }: Context, messageId
     message.text.text = [...texts, ''];
   }
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const updateTextMessageAlternative = (
@@ -103,7 +103,7 @@ export const updateTextMessageAlternative = (
     message.text.text = message.text.text.map((text, i) => (i === alternativeIndex ? value : text));
   }
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const updateParameterInTextMessage = (
@@ -123,7 +123,7 @@ export const updateParameterInTextMessage = (
     return msg;
   });
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const removeTextMessageAlternative = (
@@ -142,7 +142,7 @@ export const removeTextMessageAlternative = (
     message.text.text = message.text.text.filter((text, i) => i !== alternativeIndex);
   }
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const updateVideoSource = (
@@ -158,11 +158,11 @@ export const updateVideoSource = (
 
   if ('payload' in message) message.payload.source = source;
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const reorderMessages = ({ state, actions }: Context, reoderedMessages: MessageType[]) => {
   if (!state.intents.currentIntent?.messages) return;
   state.intents.currentIntent.messages = reoderedMessages;
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };

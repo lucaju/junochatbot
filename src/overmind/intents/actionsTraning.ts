@@ -15,7 +15,7 @@ export const createPhrase = ({ state, actions }: Context) => {
 
   currentIntent.trainingPhrases = [newPhrase, ...phrases];
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const isSinglePhraseParam = ({ state }: Context, paramAlias: string) => {
@@ -40,7 +40,7 @@ export const updatePhrase = ({ state, actions }: Context, updatedPhrase: Trainin
     phrase.name == updatedPhrase.name ? updatedPhrase : phrase
   );
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const removePhrase = ({ state, actions }: Context, name: string) => {
@@ -51,7 +51,7 @@ export const removePhrase = ({ state, actions }: Context, name: string) => {
     (phrase) => phrase.name !== name
   );
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const removeParamFromPhrases = ({ state, actions }: Context, paramName: string) => {
@@ -66,7 +66,7 @@ export const removeParamFromPhrases = ({ state, actions }: Context, paramName: s
     return phrase;
   });
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 interface UpdateParamsOnPhrasesProps {
@@ -91,5 +91,5 @@ export const updateParamsOnPhrases = (
     return phrase;
   });
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };

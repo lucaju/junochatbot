@@ -14,7 +14,7 @@ export const createParameter = ({ state, actions }: Context) => {
 
   currentIntent.parameters = [freshParam, ...parameters];
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const addParameter = ({ state, actions }: Context, entityTypeDisplayName: string) => {
@@ -36,7 +36,7 @@ export const addParameter = ({ state, actions }: Context, entityTypeDisplayName:
 
   currentIntent.parameters = [...parameters, newParam];
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const updateParameter = ({ state, actions }: Context, updatedParam: Parameter) => {
@@ -60,7 +60,7 @@ export const updateParameter = ({ state, actions }: Context, updatedParam: Param
     return param;
   });
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const updateParameterByAlias = (
@@ -86,7 +86,7 @@ export const updateParameterByAlias = (
     return newParam;
   });
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const removeParameter = ({ state, actions }: Context, name: string) => {
@@ -99,7 +99,7 @@ export const removeParameter = ({ state, actions }: Context, name: string) => {
 
   state.intents.currentIntent.parameters = parameters.filter((param) => param.name !== name);
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };
 
 export const removeParameterByDisplayName = ({ state, actions }: Context, displayName: string) => {
@@ -110,5 +110,5 @@ export const removeParameterByDisplayName = ({ state, actions }: Context, displa
     (param) => param.displayName !== displayName
   );
 
-  actions.intents.setIntentHaChange(true);
+  actions.intents.setIntentHasChange(true);
 };

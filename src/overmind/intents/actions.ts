@@ -98,6 +98,7 @@ export const createIntent = async ({ state, effects }: Context): Promise<Intent 
   const currentIntent = state.intents.currentIntent;
   if (!currentIntent) return { errorMessage: 'Not Intent' };
 
+  delete currentIntent.hasChanged;
   const response = await effects.intents.api.createIntent(storyId, currentIntent, authUser.token);
   if (isError(response)) return response;
 

@@ -138,7 +138,7 @@ export type ContextRelation = {
 //DETECT INTNET
 export interface RequestDetectIntent {
   analyzeQueryTextSentiment?: boolean;
-  reset?: boolean;
+  resetContexts?: boolean;
   sessionid?: string;
   storyId: number;
   text: string;
