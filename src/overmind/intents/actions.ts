@@ -99,6 +99,18 @@ export const createIntent = async ({ state, effects }: Context): Promise<Intent 
   if (!currentIntent) return { errorMessage: 'Not Intent' };
 
   delete currentIntent.hasChanged;
+
+  const isDuplicate = state.intents.collection.some(
+    (intent) =>
+      intent.displayName === currentIntent.displayName && intent.action !== 'input.unknown'
+  );
+
+  if (isDuplicate) {
+    return {
+      errorMessage: `Intent with the display name '${currentIntent.displayName}' already exists`,
+    };
+  }
+
   const response = await effects.intents.api.createIntent(storyId, currentIntent, authUser.token);
   if (isError(response)) return response;
 
