@@ -2,6 +2,7 @@ import { Box, Stack } from '@mui/material';
 import { useActions, useAppState } from '@src/overmind';
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import SpeechBubble from './SpeechBubble';
+import Synopsis from './Synopsis';
 
 const Conversation: FC = () => {
   const { chatLog, currentStory } = useAppState(({ chat }) => chat);
@@ -31,6 +32,7 @@ const Conversation: FC = () => {
 
   return (
     <Box ref={ref} height="100%" py={2} px={0.5} sx={{ overflow: 'auto' }}>
+      {currentStory?.synopsis && <Synopsis />}
       <Stack justifyContent="flex-end" alignItems="baseline">
         {chatLog.map(({ id }) => (
           <SpeechBubble key={id} scrollConversation={doScrollConversation} speechId={id} />
