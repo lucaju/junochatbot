@@ -29,7 +29,7 @@ export const authenticate = async (
     if (isError(response)) return response;
 
     token = response.token;
-    Cookies.set('JunoToken', token);
+    Cookies.set('JunoToken', token, { expires: 3, path: '' });
   }
 
   if (!token) return { errorMessage: '' };
