@@ -272,7 +272,7 @@ export const reset = async ({ state, actions, effects }: Context) => {
 
   //DETECT INTENT
   const response = await effects.chat.api.detectIntent({
-    reset: true,
+    resetContexts: true,
     sessionid: state.chat.sessionid,
     storyId,
     text: 'reset',

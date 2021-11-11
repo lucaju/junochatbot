@@ -47,14 +47,14 @@ export const api = {
   detectIntent: async (request: RequestDetectIntent): Promise<DetectIntentResponse | IError> => {
     const {
       analyzeQueryTextSentiment = true,
-      reset = false,
+      resetContexts = false,
       sessionid,
       storyId,
       text,
       token,
     } = request;
 
-    const body: Partial<RequestDetectIntent> = { analyzeQueryTextSentiment, reset, text };
+    const body: Partial<RequestDetectIntent> = { analyzeQueryTextSentiment, resetContexts, text };
     if (sessionid) body.sessionid = sessionid;
 
     const headers: Headers = new Headers();
