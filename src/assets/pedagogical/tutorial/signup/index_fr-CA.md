@@ -1,19 +1,19 @@
-# Welcome
+# Bienvenue
 
-Welcome, and congratulations to being one of the early users of the Juno chatbot platform.
+Bienvenue, et félicitations pour être l'un des premiers utilisateurs de la plateforme de chatbot Juno.
 
-## Signup
+## Inscription
 
-The first thing you'll want to do is to complete the signup process. To do this, go to your email inbox and look for an email called `Your JunoChatBot Account / Votre compte Juno ChatBot`.
+La première chose à faire est de terminer le processus d'inscription. Pour ce faire, allez dans votre boîte aux lettres électronique et cherchez un email intitulé `Votre compte JunoChatBot / Your Juno ChatBot Account`.
 
-Click on it, and you'll see something like this:
+Cliquez dessus, et vous verrez quelque chose comme ceci :
 
-![Email](email.png)
+![](email_fr.png)
 
-Click on the blue button. You will then see a page like this:
+Cliquez sur le bouton bleu. Vous verrez alors une page comme celle-ci :
 
-![Set password](setpassword.png)
+![](setpassword_fr.png)
 
-Write in the password you want to use, then click the "Signin" arrow in the bottom left.
+Saisissez le mot de passe que vous souhaitez utiliser, puis cliquez sur la flèche "Signin" en bas à gauche.
 
-You'll then be able to sign in with the password you just set and the email you received the invitation in. Welcome aboard!
+Vous pourrez alors vous connecter avec le mot de passe que vous venez de définir et l'e-mail dans lequel vous avez reçu l'invitation. Bienvenue à bord !
