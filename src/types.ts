@@ -12,6 +12,7 @@ export enum RoleType {
 
 export interface ErrorMessage {
   errorMessage: string;
+  httpStatus?: number;
 }
 
 //UI

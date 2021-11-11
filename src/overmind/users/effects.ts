@@ -1,6 +1,7 @@
 import mock from '@src/../test/mockData';
 import { API_URL } from '@src/config/config';
 import type { ErrorMessage, User, UserGroup } from '@src/types';
+import axios from 'axios';
 
 const MOCK_UP = false;
 
@@ -149,14 +150,12 @@ export const api = {
       });
     }
 
-    const response = await fetch(`${API_URL}/groups/all`, {
+    const { status, statusText, data } = await axios.get(`${API_URL}/groups/all`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (!response.ok) return { errorMessage: response.statusText };
-
-    const result = await response.json();
-    return result as UserGroup[];
+    if (status >= 300) return { errorMessage: statusText, httpStatus: status };
+    return data as UserGroup[];
   },
 
   getGroup: async (groupId: number, token: string): Promise<UserGroup | ErrorMessage> => {
