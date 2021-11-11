@@ -228,7 +228,7 @@ export const _addFollowupSharedContext = async (
   return response;
 };
 
-export const setIntentHaChange = ({ state }: Context, value: boolean) => {
+export const setIntentHasChange = ({ state }: Context, value: boolean) => {
   if (state.intents.currentIntent) state.intents.currentIntent.hasChanged = value;
 };
 
@@ -278,8 +278,9 @@ export const updateDefaultWelcomeIntent = async ({ state, effects }: Context) =>
 
   const defaultWelcomeIntent = state.intents.collection.find(
     (intent) => intent.displayName === 'Default Welcome Intent'
-  );
-  if (!defaultWelcomeIntent) return { errorMessage: 'No default welcome intent found' };
+  ) ?? { displayName: 'Default Welcome Intent' };
+
+  if (!defaultWelcomeIntent) return { errorMessage: 'Default welcome intent not found' };
 
   //Add preset training phrases
   const languageCode = state.story.currentStory?.languageCode;
@@ -302,7 +303,10 @@ export const updateDefaultWelcomeIntent = async ({ state, effects }: Context) =>
   delete intentToSubmit.parentFollowupIntentName;
   delete intentToSubmit.followupIntentInfo;
 
-  const response = await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token);
+  const response = intentToSubmit.name
+    ? await effects.intents.api.updateIntent(storyId, intentToSubmit, authUser.token)
+    : await effects.intents.api.createIntent(storyId, intentToSubmit, authUser.token);
+
   if (isError(response)) return response;
 };
 
