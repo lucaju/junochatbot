@@ -388,6 +388,7 @@ const partIntentToSubmit = (intent: Intent): Intent => {
 
   //* remove UUID for new parameters
   if (intent.parameters) {
+    intent.parameters = intent.parameters.filter((parameter) => parameter.name !== undefined);
     intent.parameters = intent.parameters.map((parameter) => {
       if (parameter.name?.includes('new-')) {
         return {
