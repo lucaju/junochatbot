@@ -12,7 +12,8 @@ router.get('/video/:id', async (req, res) => {
 
   if (!API_KEY || !videoID) return res.status(400).send();
 
-  const ytResponse = await axios.get(`${baseUrl}/videos?part=${PART}&id=${videoID}&key=${API_KEY}`);
+  const url = `${baseUrl}/videos?part=${PART}&id=${videoID}&key=${API_KEY}`;
+  const ytResponse = await axios.get(url);
 
   const data: any = ytResponse.data;
   if (!data) return res.status(404).send();
