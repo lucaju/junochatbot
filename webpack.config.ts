@@ -13,13 +13,6 @@ const mode = env === 'development' ? 'development' : 'production';
 const watch = false; //env === 'development' ? true : false;
 const cache = env === 'development' ? true : false;
 const devtool = env === 'development' ? 'inline-source-map' : 'source-map'; //'eval-source-map' (might be faster for dev)
-const devServer =
-  env === 'development'
-    ? {
-        contentBase: path.join(__dirname, 'dist'),
-        historyApiFallback: true,
-      }
-    : {};
 
 const entry: EntryObject = {
   app: [path.resolve(__dirname, 'src', 'index.tsx')],
@@ -108,7 +101,6 @@ const stats = debug ? { children: true } : {};
 
 const webpackConfig: webpack.Configuration = {
   cache,
-  devServer,
   devtool,
   entry,
   mode,
