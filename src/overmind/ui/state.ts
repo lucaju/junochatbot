@@ -20,6 +20,7 @@ export const state: State = {
   languages: [
     { value: 'en-CA', name: 'en' },
     { value: 'fr-CA', name: 'fr' },
+    { value: 'pt-BR', name: 'br' },
   ],
   notification: {
     open: false,

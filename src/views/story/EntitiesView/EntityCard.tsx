@@ -32,14 +32,18 @@ const EntityCard: FC<EntityCardProps> = ({ entity }) => {
       >
         <Box display="flex" flexDirection="row">
           <Typography gutterBottom variant="button">
-            {ui.languageCode === 'en-CA' ? category_en_CA : category_fr_CA}
+            {ui.languageCode === 'en-CA' && category_en_CA}
+            {ui.languageCode === 'fr-CA' && category_fr_CA}
+            {ui.languageCode === 'pt-BR' && category_fr_CA}
           </Typography>
         </Box>
         <Typography gutterBottom variant="h6">
           {name}
         </Typography>
         <Typography gutterBottom variant="body2">
-          {ui.languageCode === 'en-CA' ? description_en_CA : description_fr_CA}
+          {ui.languageCode === 'en-CA' && description_en_CA}
+          {ui.languageCode === 'fr-CA' && description_fr_CA}
+          {ui.languageCode === 'pt-BR' && description_fr_CA}
         </Typography>
       </CardContent>
     </Card>

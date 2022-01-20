@@ -18,7 +18,8 @@ export const state: State = {
   ],
   languages: [
     { value: 'en-CA', name: 'English' },
-    { value: 'fr-CA', name: 'French' },
+    { value: 'fr-CA', name: 'Français' },
+    { value: 'pt-BR', name: 'Português' },
   ],
   stories: [],
 };

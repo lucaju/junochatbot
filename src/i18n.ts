@@ -3,8 +3,9 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import en from './locales/en-CA.json';
 import fr from './locales/fr-CA.json';
+import br from './locales/pt-BR.json';
 
-const resources = { en, fr } as const;
+const resources = { en, fr, br } as const;
 
 i18n
   .use(LanguageDetector)

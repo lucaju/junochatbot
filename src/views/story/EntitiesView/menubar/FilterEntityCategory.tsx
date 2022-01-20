@@ -17,8 +17,20 @@ const FilterEntityCategory: FC<FilterEntityCategoryProps> = ({ handleFilter, val
 
   useEffect(() => {
     const catSet: Set<string> = new Set();
-    intents.entities.forEach(({ category_en_CA, category_fr_CA }) => {
-      catSet.add(ui.languageCode === 'en-CA' ? category_en_CA : category_fr_CA);
+    intents.entities.forEach(({ category_en_CA, category_fr_CA, category_pt_BR }) => {
+      let catLanguage: string;
+      switch (ui.languageCode) {
+        case 'fr-CA':
+          catLanguage = category_fr_CA;
+          break;
+        case 'pt-BR':
+          catLanguage = category_pt_BR;
+          break;
+        default:
+          catLanguage = category_en_CA;
+          break;
+      }
+      catSet.add(catLanguage);
     });
     setcategories([t('common:all'), ...Array.from(catSet).sort()]);
   }, [intents.entities]);

@@ -117,11 +117,13 @@ export type Entity = {
   category?: string;
   category_en_CA: string;
   category_fr_CA: string;
+  category_pt_BR: string;
   name: string;
   extendable?: boolean;
   description?: string;
   description_en_CA: string;
   description_fr_CA: string;
+  description_pt_BR: string;
   outputFormat?: string;
   createdDate?: string;
   updatedDate?: string;

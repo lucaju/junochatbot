@@ -7,11 +7,13 @@ import { useTranslation } from 'react-i18next';
 export interface ActivityProps {
   'description_en-CA'?: string;
   'description_fr-CA'?: string;
+  'description_pt-BR'?: string;
   link?: string;
   mediaType: string;
   picture?: string;
   'title_en-CA'?: string;
   'title_fr-CA'?: string;
+  'title_pt-BR'?: string;
 }
 
 interface ActivityCardProps {
