@@ -21,7 +21,7 @@ const Intro: FC = () => {
   }, [ui.languageCode]);
 
   const loadContent = async () => {
-    //check if system language is supported. If not, fallback to the firs language supported
+    //check if system language is supported. If not, fallback to the first language supported
     const lang = actions.ui.isLanguageSupported(ui.languageCode)
       ? ui.languageCode
       : ui.languages[0].value;

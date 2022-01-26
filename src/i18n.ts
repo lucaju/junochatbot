@@ -13,8 +13,12 @@ i18n
   .init({
     // debug: true,
     defaultNS: 'common',
-    // fallbackLng: 'en-CA',
-    interpolation: { escapeValue: false /* not needed for react!! */ },
+    fallbackLng: {
+      'pt': ['br'],
+      'fr': ['fr', 'en'],
+      default: ['en'],
+    },
+    // interpolation: { escapeValue: false /* not needed for react!! */ },
     // lng: 'en-CA',
     ns: ['common'],
     resources,
