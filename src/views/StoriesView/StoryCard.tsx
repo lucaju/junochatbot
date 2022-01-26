@@ -122,7 +122,7 @@ const StoryCard: FC<UserCarddProps> = ({
           </Typography>
           <Divider orientation="vertical" flexItem />
           <Typography sx={{ textTransform: 'uppercase' }} variant="caption">
-            {`${t('common:owner')} ${story.user.firstName} ${story.user.lastName}`}
+            {`${t('common:owner')} ${story.user?.firstName} ${story.user?.lastName}`}
           </Typography>
         </Stack>
         {story.synopsis && (
