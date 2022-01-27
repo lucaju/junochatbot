@@ -1,3 +1,4 @@
-# AI in an educational context
+# IA em um contexto educacional
 
-This project is based on innovative approaches in education to contribute to the development of a technological and scientific culture among young people and to include society in the debates around the premises and choices concerning the field of artificial intelligence (AI). Understanding the development of chatbots will better equip young people to understand, debate, and to get involved in decision-making related to AI.
+Este projeto baseia-se em abordagens inovadoras na educação para contribuir com o desenvolvimento de uma cultura tecnológica e científica entre os jovens e incluir a sociedade nos debates em torno das premissas e escolhas no campo da inteligência artificial (IA). A compreensão do desenvolvimento de chatbots equipará melhor os jovens a entender, debater e se envolver na tomada de decisões relacionadas à IA.
+
