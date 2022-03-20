@@ -95,7 +95,7 @@ const AddStoryDialog: FC<AddStoryDialogProps> = ({ handleClose, open, triggerEdi
                   onBlur={handleBlur}
                   onChange={handleChange}
                   select
-                  sx={{ minWidth: 80, textTransform: 'capitalize' }}
+                  sx={{ minWidth: 120, textTransform: 'capitalize' }}
                   value={values.languageCode}
                   variant="standard"
                 >
