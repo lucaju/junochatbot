@@ -12,7 +12,7 @@ const Conversation: FC = () => {
 
   useEffect(() => {
     if (!currentStory) return;
-    const triggerBotMesssage = currentStory?.languageCode === 'fr_CA' ? 'bonjour' : 'hello';
+    const triggerBotMesssage = getInitialProvocation();
     const timer = setTimeout(() => actions.chat.detectedIntent(triggerBotMesssage), 1000);
     return () => clearTimeout(timer);
   }, [currentStory]);
@@ -25,6 +25,12 @@ const Conversation: FC = () => {
       setScrollConversation(false);
     }
   }, [chatLog, scrollConversation]);
+
+  const getInitialProvocation = () => {
+    if (currentStory?.languageCode === 'fr_CA') return 'bonjour';
+    if (currentStory?.languageCode === 'pt_BR') return 'olá';
+    return 'hello';
+  };
 
   const doScrollConversation = () => {
     setScrollConversation(true);

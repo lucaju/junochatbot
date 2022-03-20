@@ -24,7 +24,10 @@ export const resetState = ({ state }: Context) => {
 };
 
 export const getInitialProvocation = ({ state }: Context) => {
-  return state.chat.currentStory?.languageCode === 'fr_CA' ? 'bonjour' : 'hello';
+  console.log(state.chat.currentStory?.languageCode);
+  if (state.chat.currentStory?.languageCode === 'fr_CA') return 'bonjour';
+  if (state.chat.currentStory?.languageCode === 'pt_BR') return 'olá';
+  return 'hello';
 };
 
 export const getStories = async ({ state, effects }: Context): Promise<Story[]> => {
@@ -286,6 +289,11 @@ export const reset = async ({ state, actions, effects }: Context) => {
   state.chat.sessionid = undefined;
   state.chat.videoLog = [];
   state.chat.watchedVideos = [];
+
+  const initialProvovation = actions.chat.getInitialProvocation();
+
+  console.log(initialProvovation)
+
 
   await actions.chat.detectedIntent(actions.chat.getInitialProvocation() ?? 'hello');
 };

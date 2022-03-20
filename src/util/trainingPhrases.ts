@@ -35,6 +35,19 @@ const defaultWelcome_FR = [
   'bonjour',
 ];
 
+const defaultWelcome_BR = [
+  'há quanto tempo',
+  'olá',
+  'oi',
+  'opa',
+  'fala aí',
+  'fala',
+  'saudações',
+  'oi tudo bem',
+  'e aí',
+  'eae',
+];
+
 const yes_EN = [
   'yes',
   'okay I will',
@@ -90,6 +103,18 @@ const yes_FR = [
   "je suis d'accord",
   'oui',
   'ça me va',
+];
+
+const yes_BR = [
+  'faça isso',
+  'confirmar',
+  'sim',
+  'isso mesmo',
+  'concordo',
+  'parece bom',
+  "claro",
+  'exatamente',
+  'com certeza',
 ];
 
 const no_EN = [
@@ -151,9 +176,24 @@ const no_FR = [
   'je ne suis',
 ];
 
+const no_BR = [
+  'discordo',
+  'definitivamente não',
+  'não obrigado',
+  'acho que não',
+  'não',
+  'não tenho interesse',
+  'não quero isso',
+  'não faça isso',
+  'não mesmo',
+];
+
 trainingPhrasesCollection.set('yes-en_CA', yes_EN);
 trainingPhrasesCollection.set('yes-fr_CA', yes_FR);
+trainingPhrasesCollection.set('yes-pt_BR', yes_BR);
 trainingPhrasesCollection.set('no-en_CA', no_EN);
 trainingPhrasesCollection.set('no-fr_CA', no_FR);
+trainingPhrasesCollection.set('no-pt_BR', no_BR);
 trainingPhrasesCollection.set('defaultWelcome-en_CA', defaultWelcome_EN);
 trainingPhrasesCollection.set('defaultWelcome-fr_CA', defaultWelcome_FR);
+trainingPhrasesCollection.set('defaultWelcome-pt_BR', defaultWelcome_BR);

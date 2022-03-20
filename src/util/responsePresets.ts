@@ -23,5 +23,13 @@ const fallbackGeneral_FR = [
   'Je ne comprends pas de quoi vous me parlez.',
 ];
 
+const fallbackGeneral_BR = [
+  "Lamento, mas não compreendi.",
+  "Desculpe, mas não compreendi.",
+  "Infelizmente, não captei o que deseja.",
+  'Não consegui compreender, desculpe.',
+];
+
 responsePresetCollection.set('fallbackGeneral-en_CA', fallbackGeneral_EN);
 responsePresetCollection.set('fallbackGeneral-fr_CA', fallbackGeneral_FR);
+responsePresetCollection.set('fallbackGeneral-pt_BR', fallbackGeneral_BR);
