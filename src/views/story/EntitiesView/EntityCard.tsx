@@ -12,7 +12,15 @@ const EntityCard: FC<EntityCardProps> = ({ entity }) => {
   const { ui } = useAppState();
   const [hover, setHover] = useState(false);
 
-  const { category_en_CA, category_fr_CA, description_en_CA, description_fr_CA, name } = entity;
+  const {
+    category_en_CA,
+    category_fr_CA,
+    category_pt_BR,
+    description_en_CA,
+    description_fr_CA,
+    description_pt_BR,
+    name,
+  } = entity;
 
   const mouseOver = () => setHover(true);
   const mouseOut = () => setHover(false);
@@ -34,7 +42,7 @@ const EntityCard: FC<EntityCardProps> = ({ entity }) => {
           <Typography gutterBottom variant="button">
             {ui.languageCode === 'en-CA' && category_en_CA}
             {ui.languageCode === 'fr-CA' && category_fr_CA}
-            {ui.languageCode === 'pt-BR' && category_fr_CA}
+            {ui.languageCode === 'pt-BR' && category_pt_BR}
           </Typography>
         </Box>
         <Typography gutterBottom variant="h6">
@@ -43,7 +51,7 @@ const EntityCard: FC<EntityCardProps> = ({ entity }) => {
         <Typography gutterBottom variant="body2">
           {ui.languageCode === 'en-CA' && description_en_CA}
           {ui.languageCode === 'fr-CA' && description_fr_CA}
-          {ui.languageCode === 'pt-BR' && description_fr_CA}
+          {ui.languageCode === 'pt-BR' && description_pt_BR}
         </Typography>
       </CardContent>
     </Card>
