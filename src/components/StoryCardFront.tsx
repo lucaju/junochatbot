@@ -26,9 +26,11 @@ const StoryCard: FC<UserCarddProps> = ({ disabled = false, story }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
-  const hasImage = story.imageUrl && story.imageUrl.endsWith('.', story.imageUrl.length - 3);
+  const hasImage = story.imageUrl && /\.(gif|jpe?g|png)$/i.test(story.imageUrl);
   const BotAvatar = getIcon(story.botAvatar);
   const animateBot = useAnimation();
+
+  console.log(hasImage);
 
   const author = story.author
     ? story.author
